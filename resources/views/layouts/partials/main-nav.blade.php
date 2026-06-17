@@ -91,6 +91,7 @@
                 </div>
             </li>
 
+            @php $inventoryLowStock = \App\Models\ProductVariant::where('stock', '<=', \App\Http\Controllers\Admin\InventoryController::LOW_STOCK_THRESHOLD)->count(); @endphp
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarInventory" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarInventory">
@@ -98,17 +99,23 @@
                               <iconify-icon icon="solar:box-bold-duotone"></iconify-icon>
                          </span>
                     <span class="nav-text"> Inventory </span>
+                    @if($inventoryLowStock > 0)
+                        <span class="badge bg-warning badge-pill ms-auto">{{ $inventoryLowStock }}</span>
+                    @endif
                 </a>
                 <div class="collapse" id="sidebarInventory">
                     <ul class="nav sub-navbar-nav">
-
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'inventory', 'warehouse'])}}">Warehouse</a>
+                            <a class="sub-nav-link" href="{{ route('admin.inventory.index') }}">All Stock</a>
                         </li>
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'inventory', 'received-orders'])}}">Received Orders</a>
+                            <a class="sub-nav-link" href="{{ route('admin.inventory.low-stock') }}">
+                                Low Stock Alerts
+                                @if($inventoryLowStock > 0)
+                                    <span class="badge bg-warning ms-1">{{ $inventoryLowStock }}</span>
+                                @endif
+                            </a>
                         </li>
-
                     </ul>
                 </div>
             </li>

@@ -1,73 +1,92 @@
-@extends('layouts.vertical', ['title' => 'Warehouse List'])
+@extends('layouts.vertical', ['title' => 'Inventory'])
 
 @section('content')
 
-<div class="row">
-    <div class="col-md-6 col-xl-3">
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+{{-- ── Stat cards ───────────────────────────────────────────────────────────── --}}
+<div class="row g-3 mb-3">
+
+    <div class="col-6 col-xl-3">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-start justify-content-between">
                     <div>
-                        <h4 class="card-title mb-2 d-flex align-items-center gap-2">Total Product Items </h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">3521 <span class="fs-12">(Items)</span></p>
+                        <p class="text-muted fs-13 mb-1">Total Variants</p>
+                        <h2 class="fw-bold mb-0">{{ number_format($stats['total_variants']) }}</h2>
+                        <p class="text-muted fs-12 mt-1 mb-0">metal × gemstone combinations</p>
                     </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:box-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h4 class="card-title mb-2 d-flex align-items-center gap-2">In Stock Product </h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">1311 <span class="fs-12">(Items)</span></p>
-                    </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:reorder-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
+                    <div class="avatar-md bg-primary bg-opacity-10 rounded flex-shrink-0">
+                        <iconify-icon icon="solar:box-bold-duotone" class="fs-32 text-primary avatar-title"></iconify-icon>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-6 col-xl-3">
+    <div class="col-6 col-xl-3">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-start justify-content-between">
                     <div>
-                        <h4 class="card-title mb-2 d-flex align-items-center gap-2">Out Of Stock Product </h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">231 <span class="fs-12">(Items)</span></p>
+                        <p class="text-muted fs-13 mb-1">Total Units in Stock</p>
+                        <h2 class="fw-bold mb-0">{{ number_format($stats['total_stock']) }}</h2>
+                        <p class="text-muted fs-12 mt-1 mb-0">across all variants</p>
                     </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:bag-cross-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
+                    <div class="avatar-md bg-success bg-opacity-10 rounded flex-shrink-0">
+                        <iconify-icon icon="solar:reorder-bold-duotone" class="fs-32 text-success avatar-title"></iconify-icon>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
+    <div class="col-6 col-xl-3">
+        <div class="card {{ $stats['low_stock'] > 0 ? 'border border-warning' : '' }}">
             <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-start justify-content-between">
                     <div>
-                        <h4 class="card-title mb-2 d-flex align-items-center gap-2">Total Visited Customer</h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">2334 <span class="badge text-danger bg-danger-subtle fs-12"><i class="bx bx-down-arrow-alt"></i>4.5%</span> <span class="fs-12">(Last Week)</span></p>
+                        <p class="text-muted fs-13 mb-1">Low Stock</p>
+                        <h2 class="fw-bold mb-0 {{ $stats['low_stock'] > 0 ? 'text-warning' : '' }}">
+                            {{ number_format($stats['low_stock']) }}
+                        </h2>
+                        <p class="text-muted fs-12 mt-1 mb-0">≤ {{ $threshold }} units remaining</p>
                     </div>
+                    <div class="avatar-md {{ $stats['low_stock'] > 0 ? 'bg-warning' : 'bg-light' }} bg-opacity-10 rounded flex-shrink-0">
+                        <iconify-icon icon="solar:danger-triangle-bold-duotone"
+                                      class="fs-32 {{ $stats['low_stock'] > 0 ? 'text-warning' : 'text-muted' }} avatar-title"></iconify-icon>
+                    </div>
+                </div>
+            </div>
+            @if($stats['low_stock'] > 0)
+            <div class="card-footer py-2 bg-warning bg-opacity-10 border-top-0">
+                <a href="{{ route('admin.inventory.low-stock') }}" class="text-warning fw-semibold fs-12">
+                    View low stock alerts <iconify-icon icon="solar:arrow-right-broken" class="align-middle"></iconify-icon>
+                </a>
+            </div>
+            @endif
+        </div>
+    </div>
+
+    <div class="col-6 col-xl-3">
+        <div class="card {{ $stats['out_of_stock'] > 0 ? 'border border-danger' : '' }}">
+            <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between">
                     <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:users-group-two-rounded-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
+                        <p class="text-muted fs-13 mb-1">Out of Stock</p>
+                        <h2 class="fw-bold mb-0 {{ $stats['out_of_stock'] > 0 ? 'text-danger' : '' }}">
+                            {{ number_format($stats['out_of_stock']) }}
+                        </h2>
+                        <p class="text-muted fs-12 mt-1 mb-0">variants at zero</p>
+                    </div>
+                    <div class="avatar-md {{ $stats['out_of_stock'] > 0 ? 'bg-danger' : 'bg-light' }} bg-opacity-10 rounded flex-shrink-0">
+                        <iconify-icon icon="solar:close-circle-bold-duotone"
+                                      class="fs-32 {{ $stats['out_of_stock'] > 0 ? 'text-danger' : 'text-muted' }} avatar-title"></iconify-icon>
                     </div>
                 </div>
             </div>
@@ -76,300 +95,174 @@
 
 </div>
 
-<div class="row">
-    <div class="col-xl-12">
-        <div class="card">
-            <div class="d-flex card-header justify-content-between align-items-center">
-                <div>
-                    <h4 class="card-title">All Warehouse List</h4>
-                </div>
-                <div class="dropdown">
-                    <a href="#" class="dropdown-toggle btn btn-sm btn-outline-light rounded" data-bs-toggle="dropdown" aria-expanded="false">
-                        This Month
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <!-- item-->
-                        <a href="#!" class="dropdown-item">Download</a>
-                        <!-- item-->
-                        <a href="#!" class="dropdown-item">Export</a>
-                        <!-- item-->
-                        <a href="#!" class="dropdown-item">Import</a>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div class="table-responsive">
-                    <table class="table align-middle mb-0 table-hover table-centered">
-                        <thead class="bg-light-subtle">
-                            <tr>
-                                <th style="width: 20px;">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck1">
-                                        <label class="form-check-label" for="customCheck1"></label>
-                                    </div>
-                                </th>
-                                <th>Warehouse ID</th>
-                                <th>Warehouse Name</th>
-                                <th>Location</th>
-                                <th>Manager</th>
-                                <th>Contact Number</th>
-                                <th>Stock Available </th>
-                                <th>Stock Shipping</th>
-                                <th>Warehouse Revenue</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-001</td>
-                                <td>Central Fulfillment</td>
-                                <td>123 Commerce St, NY </td>
-                                <td>John Doe</td>
-                                <td>+1 (555) 123-4567</td>
-                                <td>6490</td>
-                                <td>3022</td>
-                                <td>$25,737</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-002</td>
-                                <td>East Coast Hub</td>
-                                <td>456 Market Ave, NY</td>
-                                <td>Jane Smith</td>
-                                <td>+1 (555) 234-5678</td>
-                                <td>7362</td>
-                                <td>4253</td>
-                                <td>$67,351</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-003</td>
-                                <td>West Coast Depot</td>
-                                <td>789 Trade Blvd, CA</td>
-                                <td>Richard Roe</td>
-                                <td>+1 (555) 345-6789</td>
-                                <td>8842</td>
-                                <td>3221</td>
-                                <td>$45,865</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-004</td>
-                                <td>Southern Distribution</td>
-                                <td>101 Supply Rd, TX</td>
-                                <td>Alice Johnson</td>
-                                <td>+1 (555) 456-7890</td>
-                                <td>5463</td>
-                                <td>2100</td>
-                                <td>$54,655</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-005</td>
-                                <td>Northern Fulfillment</td>
-                                <td>202 Logistics Ln, IL</td>
-                                <td>Michael Brown</td>
-                                <td>+1 (555) 567-8901</td>
-                                <td>12643</td>
-                                <td>7008</td>
-                                <td>$92,533</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-006</td>
-                                <td>Midwest Center</td>
-                                <td>303 Central St, MO </td>
-                                <td>Emily Davis</td>
-                                <td>+1 (555) 678-9012</td>
-                                <td>7553</td>
-                                <td>5600</td>
-                                <td>$43,898</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-007</td>
-                                <td>Southeast Storage</td>
-                                <td>404 Storage Dr, FL</td>
-                                <td>William Green</td>
-                                <td>+1 (555) 789-0123</td>
-                                <td>9381</td>
-                                <td>5343</td>
-                                <td>$76,909</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-008</td>
-                                <td>Northwest Hub</td>
-                                <td>505 Commerce Pl, WA</td>
-                                <td>Jessica White</td>
-                                <td>+1 (555) 890-1234</td>
-                                <td>6500</td>
-                                <td>3453</td>
-                                <td>$32,765</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-009</td>
-                                <td>Southwest Fulfillment</td>
-                                <td>606 Trade Ave, AZ</td>
-                                <td>Christopher Black</td>
-                                <td>+1 (555) 901-2345</td>
-                                <td>7555</td>
-                                <td>9000</td>
-                                <td>$67,565</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck2">
-                                        <label class="form-check-label" for="customCheck2"></label>
-                                    </div>
-                                </td>
-                                <td>#WH-010</td>
-                                <td>Northeast Depot</td>
-                                <td>707 Distribution Rd, MA</td>
-                                <td>Patricia Clark</td>
-                                <td>+1 (555) 012-3456</td>
-                                <td>5499</td>
-                                <td>3433</td>
-                                <td>$43,765</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
+{{-- ── Inventory table ──────────────────────────────────────────────────────── --}}
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between gap-2 flex-wrap">
+        <h4 class="card-title flex-grow-1 mb-0">All Stock</h4>
 
-                        </tbody>
-                    </table>
-                </div>
-                <!-- end table-responsive -->
-            </div>
-            <div class="card-footer border-top">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-end mb-0">
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">Previous</a></li>
-                        <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
+        <form class="d-flex gap-2 flex-wrap align-items-center" method="GET"
+              action="{{ route('admin.inventory.index') }}">
+            <input type="text" name="search" value="{{ request('search') }}"
+                   class="form-control form-control-sm" placeholder="Product name or SKU…" style="width:210px">
+
+            <select name="stock" class="form-select form-select-sm" style="width:150px"
+                    onchange="this.form.submit()">
+                <option value="">All stock levels</option>
+                <option value="out"  {{ request('stock') === 'out'  ? 'selected' : '' }}>Out of stock</option>
+                <option value="low"  {{ request('stock') === 'low'  ? 'selected' : '' }}>Low stock (≤ {{ $threshold }})</option>
+                <option value="ok"   {{ request('stock') === 'ok'   ? 'selected' : '' }}>OK (> {{ $threshold }})</option>
+            </select>
+
+            <button class="btn btn-sm btn-outline-secondary">Search</button>
+            @if(request('search') || request('stock'))
+                <a href="{{ route('admin.inventory.index') }}" class="btn btn-sm btn-outline-danger">Clear</a>
+            @endif
+        </form>
     </div>
 
+    <form action="{{ route('admin.inventory.bulk-stock') }}" method="POST" id="bulk-stock-form">
+        @csrf
+        <div class="table-responsive">
+            <table class="table align-middle mb-0 table-hover table-centered">
+                <thead class="bg-light-subtle">
+                    <tr>
+                        <th>Product</th>
+                        <th>Variant (metal / gemstone)</th>
+                        <th style="width:100px">SKU</th>
+                        <th class="text-end" style="width:90px">Price (€)</th>
+                        <th style="width:130px">Status</th>
+                        <th style="width:140px">Stock</th>
+                        <th style="width:70px">Save</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @forelse($variants as $variant)
+                    @php
+                        $stockLevel = $variant->stock === 0
+                            ? 'out'
+                            : ($variant->stock <= $threshold ? 'low' : 'ok');
+                    @endphp
+                    <input type="hidden" name="stocks[{{ $loop->index }}][id]" value="{{ $variant->id }}">
+                    <tr class="{{ $stockLevel === 'out' ? 'table-danger' : ($stockLevel === 'low' ? 'table-warning' : '') }} bg-opacity-25">
+                        <td>
+                            <a href="{{ route('admin.products.edit', $variant->product) }}"
+                               class="fw-medium text-dark">{{ $variant->product->name }}</a>
+                        </td>
+                        <td>
+                            <span class="text-dark">{{ $variant->metal->name }}</span>
+                            @if($variant->gemstone)
+                                <span class="text-muted"> / {{ $variant->gemstone->name }}</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($variant->sku)
+                                <code class="fs-12">{{ $variant->sku }}</code>
+                            @else
+                                <span class="text-muted">—</span>
+                            @endif
+                        </td>
+                        <td class="text-end">€{{ number_format((float)$variant->price_eur, 2) }}</td>
+                        <td>
+                            @if($stockLevel === 'out')
+                                <span class="badge bg-danger-subtle text-danger">
+                                    <iconify-icon icon="solar:close-circle-broken" class="me-1"></iconify-icon>Out of stock
+                                </span>
+                            @elseif($stockLevel === 'low')
+                                <span class="badge bg-warning-subtle text-warning">
+                                    <iconify-icon icon="solar:danger-triangle-broken" class="me-1"></iconify-icon>Low stock
+                                </span>
+                            @else
+                                <span class="badge bg-success-subtle text-success">
+                                    <iconify-icon icon="solar:check-circle-broken" class="me-1"></iconify-icon>In stock
+                                </span>
+                            @endif
+                        </td>
+                        <td>
+                            <input type="number"
+                                   name="stocks[{{ $loop->index }}][stock]"
+                                   value="{{ $variant->stock }}"
+                                   min="0" max="9999"
+                                   class="form-control form-control-sm stock-input"
+                                   data-original="{{ $variant->stock }}"
+                                   style="width:90px"
+                                   oninput="markDirty(this)">
+                        </td>
+                        <td>
+                            {{-- Per-row quick-save via individual PATCH form --}}
+                            <form action="{{ route('admin.inventory.update-stock', $variant) }}"
+                                  method="POST" class="d-inline row-save-form" style="display:none!important">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" class="row-stock-val" name="stock" value="{{ $variant->stock }}">
+                                <button type="submit"
+                                        class="btn btn-sm btn-success row-save-btn d-none"
+                                        title="Save this row">
+                                    <iconify-icon icon="solar:diskette-broken" class="fs-15"></iconify-icon>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center py-4 text-muted">
+                            No variants found.
+                            @if(request('search') || request('stock'))
+                                <a href="{{ route('admin.inventory.index') }}">Clear filters</a>
+                            @endif
+                        </td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        @if($variants->isNotEmpty())
+        <div class="card-footer d-flex align-items-center justify-content-between gap-3 flex-wrap border-top">
+            <span class="text-muted fs-13" id="dirty-notice" style="display:none">
+                <iconify-icon icon="solar:pen-2-broken" class="align-middle me-1 text-warning"></iconify-icon>
+                Unsaved changes — use row <iconify-icon icon="solar:diskette-broken" class="align-middle"></iconify-icon>
+                buttons or save all below.
+            </span>
+            <button type="submit" class="btn btn-primary ms-auto" id="save-all-btn" disabled>
+                <iconify-icon icon="solar:diskette-broken" class="align-middle me-1"></iconify-icon>
+                Save all changes
+            </button>
+        </div>
+        @endif
+    </form>
+
+    @if($variants->hasPages())
+    <div class="card-footer border-top">
+        {{ $variants->links() }}
+    </div>
+    @endif
 </div>
 
+@endsection
+
+@section('script')
+<script>
+function markDirty(input) {
+    const original = parseInt(input.dataset.original, 10);
+    const current  = parseInt(input.value, 10);
+    const isDirty  = current !== original;
+    const row      = input.closest('tr');
+    const saveBtn  = row.querySelector('.row-save-btn');
+    const rowForm  = row.querySelector('.row-save-form');
+
+    // Sync hidden input in the per-row PATCH form
+    row.querySelector('.row-stock-val').value = input.value;
+
+    if (saveBtn) saveBtn.classList.toggle('d-none', !isDirty);
+    if (rowForm) rowForm.style.display = isDirty ? '' : 'none!important';
+
+    // Check if any input across the whole table is dirty
+    const anyDirty = [...document.querySelectorAll('.stock-input')].some(el => {
+        return parseInt(el.value, 10) !== parseInt(el.dataset.original, 10);
+    });
+
+    document.getElementById('dirty-notice').style.display = anyDirty ? '' : 'none';
+    document.getElementById('save-all-btn').disabled = !anyDirty;
+}
+</script>
 @endsection

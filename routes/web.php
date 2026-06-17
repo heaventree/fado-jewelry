@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\ConsultationController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 
@@ -35,6 +36,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('currencies/{currency}/rate', [CurrencyController::class, 'updateRate'])->name('currencies.update-rate');
     Route::delete('currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
 });
+
+// Inventory — intercept before the Larkon catch-all
+Route::get('general/inventory/warehouse', [InventoryController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.inventory.index');
+Route::get('general/inventory/received-orders', [InventoryController::class, 'lowStock'])->middleware(['auth', 'admin'])->name('admin.inventory.low-stock');
+Route::patch('admin/inventory/{variant}/stock', [InventoryController::class, 'updateStock'])->middleware(['auth', 'admin'])->name('admin.inventory.update-stock');
+Route::post('admin/inventory/bulk-stock', [InventoryController::class, 'bulkUpdateStock'])->middleware(['auth', 'admin'])->name('admin.inventory.bulk-stock');
 
 // Customers — intercept before the Larkon catch-all
 Route::get('users/customer/list', [CustomerController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.customers.index');
