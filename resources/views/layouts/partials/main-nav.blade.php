@@ -62,13 +62,10 @@
                 <div class="collapse" id="sidebarCategory">
                     <ul class="nav sub-navbar-nav">
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'category', 'list'])}}">List</a>
+                            <a class="sub-nav-link" href="{{ route('admin.categories.index') }}">All Categories</a>
                         </li>
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'category', 'edit'])}}">Edit</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'category', 'create'])}}">Create</a>
+                            <a class="sub-nav-link" href="{{ route('admin.categories.create') }}">Add Category</a>
                         </li>
                     </ul>
                 </div>

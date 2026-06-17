@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 
 require __DIR__ . '/auth.php';
@@ -9,6 +10,7 @@ require __DIR__ . '/auth.php';
 // Admin routes — real controllers, must come before the catch-all below
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoryController::class);
 });
 
 // Larkon catch-all — renders Blade views by path segment (unauthenticated views excluded)
