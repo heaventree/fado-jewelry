@@ -1,142 +1,71 @@
-@extends('layouts.vertical', ['title' => 'Orders List'])
+@extends('layouts.vertical', ['title' => 'Orders'])
 
 @section('content')
 
-<div class="row">
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h4 class="card-title mb-2">Payment Refund</h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">490</p>
-                    </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:chat-round-money-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h4 class="card-title mb-2">Order Cancel</h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">241</p>
-                    </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:cart-cross-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
 
-    <div class="col-md-6 col-xl-3">
+{{-- ── Stat cards ──────────────────────────────────────────────────────────── --}}
+<div class="row g-3 mb-3">
+    <div class="col-6 col-xl-3">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <h4 class="card-title mb-2">Order Shipped</h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">630</p>
+                        <h4 class="card-title mb-1">Total Orders</h4>
+                        <p class="fw-semibold fs-22 mb-0">{{ number_format($stats['total']) }}</p>
                     </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:box-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
+                    <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                        <iconify-icon icon="solar:bag-smile-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="col-md-6 col-xl-3">
+    <div class="col-6 col-xl-3">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <h4 class="card-title mb-2">Order Delivering</h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">170</p>
+                        <h4 class="card-title mb-1">Pending</h4>
+                        <p class="fw-semibold fs-22 mb-0 text-warning">{{ number_format($stats['pending']) }}</p>
                     </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:tram-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
+                    <div class="avatar-md bg-warning bg-opacity-10 rounded">
+                        <iconify-icon icon="solar:clock-circle-broken" class="fs-32 text-warning avatar-title"></iconify-icon>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="col-md-6 col-xl-3">
+    <div class="col-6 col-xl-3">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <h4 class="card-title mb-2">Pending Review</h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">210</p>
+                        <h4 class="card-title mb-1">Processing</h4>
+                        <p class="fw-semibold fs-22 mb-0 text-info">{{ number_format($stats['processing']) }}</p>
                     </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:clipboard-remove-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
+                    <div class="avatar-md bg-info bg-opacity-10 rounded">
+                        <iconify-icon icon="solar:settings-broken" class="fs-32 text-info avatar-title"></iconify-icon>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-xl-3">
+    <div class="col-6 col-xl-3">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <h4 class="card-title mb-2">Pending Payment</h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">608</p>
+                        <h4 class="card-title mb-1">Shipped</h4>
+                        <p class="fw-semibold fs-22 mb-0 text-primary">{{ number_format($stats['shipped']) }}</p>
                     </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:clock-circle-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h4 class="card-title mb-2">Delivered</h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">200</p>
-                    </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:clipboard-check-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h4 class="card-title mb-2">In Progress</h4>
-                        <p class="text-muted fw-medium fs-22 mb-0">656</p>
-                    </div>
-                    <div>
-                        <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                            <iconify-icon icon="solar:inbox-line-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                        </div>
+                    <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                        <iconify-icon icon="solar:box-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
                     </div>
                 </div>
             </div>
@@ -144,274 +73,114 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-xl-12">
-        <div class="card">
-            <div class="d-flex card-header justify-content-between align-items-center">
-                <div>
-                    <h4 class="card-title">All Order List</h4>
-                </div>
-                <div class="dropdown">
-                    <a href="#" class="dropdown-toggle btn btn-sm btn-outline-light rounded" data-bs-toggle="dropdown" aria-expanded="false">
-                        This Month
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <!-- item-->
-                        <a href="#!" class="dropdown-item">Download</a>
-                        <!-- item-->
-                        <a href="#!" class="dropdown-item">Export</a>
-                        <!-- item-->
-                        <a href="#!" class="dropdown-item">Import</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table align-middle mb-0 table-hover table-centered">
-                        <thead class="bg-light-subtle">
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Created at</th>
-                                <th>Customer</th>
-                                <th>Priority</th>
-                                <th>Total</th>
-                                <th>Payment Status</th>
-                                <th>Items</th>
-                                <th>Delivery Number</th>
-                                <th>Order Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    #583488/80
-                                </td>
-                                <td>Apr 23 , 2024</td>
-                                <td>
-                                    <a href="#!" class="link-primary fw-medium">Gail C. Anderson</a>
-                                </td>
-                                <td> Normal</td>
-                                <td> $1,230.00</td>
-                                <td> <span class="badge bg-light text-dark  px-2 py-1 fs-13">Unpaid</span></td>
-                                <td> 4</td>
-                                <td> -</td>
-                                <td> <span class="badge border border-secondary text-secondary  px-2 py-1 fs-13">Draft</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
+{{-- ── Orders table ─────────────────────────────────────────────────────────── --}}
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between gap-2 flex-wrap">
+        <h4 class="card-title flex-grow-1 mb-0">All Orders</h4>
 
-                            <tr>
-                                <td>
-                                    #456754/80
-                                </td>
-                                <td>Apr 20 , 2024</td>
-                                <td>
-                                    <a href="#!" class="link-primary fw-medium">Jung S. Ayala</a>
-                                </td>
-                                <td> Normal</td>
-                                <td> $987.00</td>
-                                <td> <span class="badge bg-success text-light  px-2 py-1 fs-13">Paid</span></td>
-                                <td> 2</td>
-                                <td> -</td>
-                                <td> <span class="badge border border-warning text-warning  px-2 py-1 fs-13">Packaging</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    #578246/80
-                                </td>
-                                <td>Apr 19 , 2024</td>
-                                <td>
-                                    <a href="#!" class="link-primary fw-medium">David A. Arnold</a>
-                                </td>
-                                <td> High</td>
-                                <td> $1,478.00</td>
-                                <td> <span class="badge  bg-success text-light px-2 py-1 fs-13">Paid</span></td>
-                                <td> 5</td>
-                                <td> #D-57837678</td>
-                                <td> <span class="badge border border-success text-success  px-2 py-1 fs-13">Completed</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
+        <form class="d-flex gap-2 flex-wrap" method="GET" action="{{ route('admin.orders.index') }}">
+            <input type="text" name="search" value="{{ request('search') }}"
+                   class="form-control form-control-sm" placeholder="Order #, name or email…" style="width:220px">
 
-                            <tr>
-                                <td>
-                                    #348930/80
-                                </td>
-                                <td>Apr 04 , 2024</td>
-                                <td>
-                                    <a href="#!" class="link-primary fw-medium">Cecile D. Gordon</a>
-                                </td>
-                                <td> Normal</td>
-                                <td> $720.00</td>
-                                <td> <span class="badge bg-light text-dark  px-2 py-1 fs-13">Refund</span></td>
-                                <td> 4</td>
-                                <td> -</td>
-                                <td> <span class="badge border border-danger text-danger  px-2 py-1 fs-13">Canceled</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
+            <select name="status" class="form-select form-select-sm" style="width:150px"
+                    onchange="this.form.submit()">
+                <option value="">All statuses</option>
+                @foreach($statuses as $key => $cfg)
+                    <option value="{{ $key }}" {{ request('status') === $key ? 'selected' : '' }}>
+                        {{ $cfg['label'] }}
+                    </option>
+                @endforeach
+            </select>
 
+            <button class="btn btn-sm btn-outline-secondary">Search</button>
 
-                            <tr>
-                                <td>
-                                    #391367/80
-                                </td>
-                                <td>Apr 02 , 2024</td>
-                                <td>
-                                    <a href="#!" class="link-primary fw-medium">William Moreno</a>
-                                </td>
-                                <td> Normal</td>
-                                <td> $1,909.00</td>
-                                <td><span class="badge  bg-success text-light px-2 py-1 fs-13">Paid</span></td>
-                                <td> 6</td>
-                                <td> #D-89734235</td>
-                                <td> <span class="badge border border-success text-success  px-2 py-1 fs-13">Completed</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-
-
-                            <tr>
-                                <td>
-                                    #930447/80
-                                </td>
-                                <td>March 28 , 2024</td>
-                                <td>
-                                    <a href="#!" class="link-primary fw-medium">Alphonse Roy</a>
-                                </td>
-                                <td> High</td>
-                                <td> $879.00</td>
-                                <td><span class="badge  bg-success text-light px-2 py-1 fs-13">Paid</span></td>
-                                <td> 4</td>
-                                <td> #D-35227268</td>
-                                <td><span class="badge border border-success text-success  px-2 py-1 fs-13">Completed</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    #462397/80
-                                </td>
-                                <td>March 20 , 2024</td>
-                                <td>
-                                    <a href="#!" class="link-primary fw-medium">Pierpont Marleau</a>
-                                </td>
-                                <td> High</td>
-                                <td> $1,230.00</td>
-                                <td> <span class="badge bg-light text-dark  px-2 py-1 fs-13">Refund</span></td>
-                                <td> 2</td>
-                                <td> -</td>
-                                <td> <span class="badge border border-danger text-danger  px-2 py-1 fs-13">Canceled</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    #472356/80
-                                </td>
-                                <td>March 12 , 2024</td>
-                                <td>
-                                    <a href="#!" class="link-primary fw-medium">Madeleine Gervais</a>
-                                </td>
-                                <td> Normal</td>
-                                <td> $1,264.00</td>
-                                <td> <span class="badge bg-success text-light  px-2 py-1 fs-13">Paid</span></td>
-                                <td> 3</td>
-                                <td> #D-74922656</td>
-                                <td> <span class="badge border border-success text-success  px-2 py-1 fs-13">Completed</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    #448226/80
-                                </td>
-                                <td>March 02 , 2024</td>
-                                <td>
-                                    <a href="#!" class="link-primary fw-medium">Satordi Gaillou</a>
-                                </td>
-                                <td> High</td>
-                                <td> $1,787.00</td>
-                                <td> <span class="badge bg-success text-light  px-2 py-1 fs-13">Paid</span></td>
-                                <td> 4</td>
-                                <td> -</td>
-                                <td> <span class="badge border border-warning text-warning  px-2 py-1 fs-13">Packaging</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                        <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                    </div>
-                                </td>
-                            </tr>
-
-
-                        </tbody>
-                    </table>
-                </div>
-                <!-- end table-responsive -->
-            </div>
-            <div class="card-footer border-top">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-end mb-0">
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">Previous</a></li>
-                        <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
+            @if(request('search') || request('status'))
+                <a href="{{ route('admin.orders.index') }}" class="btn btn-sm btn-outline-danger">Clear</a>
+            @endif
+        </form>
     </div>
 
+    <div class="table-responsive">
+        <table class="table align-middle mb-0 table-hover table-centered">
+            <thead class="bg-light-subtle">
+                <tr>
+                    <th style="width:90px">Order</th>
+                    <th>Customer</th>
+                    <th style="width:140px">Date</th>
+                    <th style="width:60px" class="text-center">Items</th>
+                    <th style="width:110px" class="text-end">Total</th>
+                    <th style="width:130px">Status</th>
+                    <th style="width:80px">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @forelse($orders as $order)
+                <tr>
+                    <td>
+                        <a href="{{ route('admin.orders.show', $order) }}"
+                           class="fw-semibold text-dark">{{ $order->order_number }}</a>
+                    </td>
+                    <td>
+                        <p class="mb-0 fw-medium">{{ $order->customer_name }}</p>
+                        <p class="mb-0 text-muted fs-12">{{ $order->customer_email }}</p>
+                        @if($order->is_guest)
+                            <span class="badge bg-light text-muted fs-11">Guest</span>
+                        @endif
+                    </td>
+                    <td>
+                        <span class="text-dark">{{ $order->created_at->format('d M Y') }}</span>
+                        <p class="mb-0 text-muted fs-12">{{ $order->created_at->format('H:i') }}</p>
+                    </td>
+                    <td class="text-center">
+                        <span class="fw-medium">{{ $order->items->count() }}</span>
+                    </td>
+                    <td class="text-end fw-semibold">
+                        {{ $order->currency_symbol }}{{ number_format((float)$order->total, 2) }}
+                    </td>
+                    <td>
+                        {{-- Inline status update --}}
+                        <form action="{{ route('admin.orders.update-status', $order) }}" method="POST"
+                              class="d-flex align-items-center gap-1">
+                            @csrf
+                            @method('PATCH')
+                            <select name="status"
+                                    class="form-select form-select-sm border-{{ $order->status_colour }}"
+                                    onchange="this.form.submit()"
+                                    title="Change status">
+                                @foreach($statuses as $key => $cfg)
+                                    <option value="{{ $key }}" {{ $order->status === $key ? 'selected' : '' }}>
+                                        {{ $cfg['label'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{{ route('admin.orders.show', $order) }}"
+                           class="btn btn-light btn-sm" title="View order">
+                            <iconify-icon icon="solar:eye-broken" class="align-middle fs-16"></iconify-icon>
+                        </a>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-muted">
+                        No orders found.
+                        @if(request('search') || request('status'))
+                            <a href="{{ route('admin.orders.index') }}">Clear filters</a>
+                        @endif
+                    </td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    @if($orders->hasPages())
+    <div class="card-footer border-top">
+        {{ $orders->links() }}
+    </div>
+    @endif
 </div>
 
 @endsection
-

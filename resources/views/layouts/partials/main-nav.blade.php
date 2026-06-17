@@ -125,16 +125,7 @@
                     <ul class="nav sub-navbar-nav">
 
                          <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'orders', 'list'])}}">List</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'orders', 'details'])}}">Details</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'orders', 'cart'])}}">Cart</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'orders', 'checkout'])}}">Check Out</a>
+                            <a class="sub-nav-link" href="{{ route('admin.orders.index') }}">All Orders</a>
                         </li>
                     </ul>
                 </div>
