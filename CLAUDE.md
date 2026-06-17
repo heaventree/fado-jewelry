@@ -326,6 +326,111 @@ Check OpenCart's `oc_information` and `oc_information_description` tables for st
 
 ---
 
+## Full project audit checklist
+
+### Admin panel (Larkon) — completion status
+
+| Section | Status | Action needed |
+|---------|--------|---------------|
+| Dashboard | ⬜ Demo data | Wire to real counts (products, orders, revenue, consultations) |
+| Products | ✅ Done Phase 2 Step 1 | Complete |
+| Categories | ✅ Done Phase 2 Step 2 | Complete |
+| Collections | ✅ Done Phase 2 Step 3 | Complete |
+| Currencies | ✅ Done Phase 2 Step 4 | Complete |
+| Orders | ✅ Done Phase 2 Step 5 | Complete |
+| Consultations | ⏳ Phase 2 Step 6 | In progress |
+| Customers | ⬜ Demo data | Wire to users table — list, detail, order history |
+| Inventory | ⬜ Demo data | Wire to product_variants stock field |
+| Invoices | ⬜ Demo data | Wire to orders — printable invoice view |
+| Coupons | ⬜ Not built | Needs coupons table + discount logic on checkout |
+| Roles & permissions | ⬜ Larkon default | Test Spatie permissions package is working |
+| Auth (login/register) | ⬜ Larkon default | Test — should work out of the box |
+| Settings | ⬜ Demo data | Wire to site settings (store name, contact email, etc.) |
+| Product reviews | ⬜ Larkon default | Decide — keep or remove for jewellery store |
+| Sellers/vendors | ⬜ Larkon default | Remove — FADO is single vendor, not marketplace |
+
+### Customer front end — completion status
+
+| Feature | Status | Phase |
+|---------|--------|-------|
+| Global layout (header, footer, mega menu) | ⬜ Not started | Phase 3 Step 1 |
+| Homepage (hero, featured collections) | ⬜ Not started | Phase 3 Step 2 |
+| Collection/category pages with Sheila Fleet banners | ⬜ Not started | Phase 3 Step 3 |
+| Filter sidebar (metal, gemstone, price, category) | ⬜ Not started | Phase 3 Step 3 |
+| Product detail page (carousel, variant selectors) | ⬜ Not started | Phase 3 Step 4 |
+| Ring size US dropdown | ⬜ Not started | Phase 3 Step 4 |
+| Cart | ⬜ Not started | Phase 3 Step 5 |
+| Checkout (guest + account) | ⬜ Not started | Phase 3 Step 5 |
+| Currency switcher (EUR/USD, GeoIP) | ⬜ Not started | Phase 3 Step 5 |
+| Wishlist / favourites | ⬜ Not started | Phase 3 Step 6 |
+| Customer account area (orders, profile, wishlist) | ⬜ Not started | Phase 4 Step 3 |
+| About Us page (image-led, gallery) | ⬜ Not started | Phase 4 Step 1 |
+| Contact / Book a consultation form | ⬜ Not started | Phase 4 Step 2 |
+| Search functionality | ⬜ Not started | Phase 4 |
+| Product reviews (front end) | ⬜ Decide | Phase 4 |
+
+### Data & integration — completion status
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Database migrations | ✅ Done Phase 1 | 16 tables |
+| Eloquent models | ✅ Done Phase 1 | 12 models |
+| Seeders | ✅ Done Phase 1 | Metals, gemstones, sizes, currencies |
+| Currency service (GeoIP) | ✅ Done Phase 1 | ip-api.com, session override |
+| OpenCart import command | ✅ Done Phase 1 | Ready to run when DB access confirmed |
+| OpenCart DB export | ⬜ Pending | Get from cPanel/phpMyAdmin |
+| Product image migration | ⬜ Pending | Download from old server via cPanel |
+| SEO redirects (old URLs → new) | ⬜ Phase 5 | Redirects table already built |
+| XML sitemap | ⬜ Phase 5 | |
+| Meta tags per product/category | ⬜ Phase 5 | |
+
+### Updated build order (revised after audit)
+
+#### Phase 2 — Admin panel (remaining steps)
+- Step 6: Consultation enquiry inbox ⏳
+- Step 7: Wire dashboard to real data
+- Step 8: Wire customers section to users table
+- Step 9: Wire inventory to product_variants stock
+- Step 10: Wire invoices to orders
+- Step 11: Coupons table + admin CRUD
+- Step 12: Remove seller/vendor sections (irrelevant for FADO)
+- Step 13: Test and confirm auth + roles working
+- Step 14: Settings page (store name, contact email, etc.)
+
+#### Phase 3 — Customer front end (Ochaka → Blade)
+- Step 1: Global layout — header, mega menu, footer
+- Step 2: Homepage
+- Step 3: Collection/category pages + filters
+- Step 4: Product detail page
+- Step 5: Cart + checkout + currency switcher
+- Step 6: Wishlist
+
+#### Phase 4 — Supporting pages
+- Step 1: About Us
+- Step 2: Contact / Book a consultation
+- Step 3: Customer account area
+- Step 4: Search
+
+#### Phase 5 — SEO + polish
+#### Phase 6 — QA + launch
+
+---
+
+## Core principle — nothing gets skipped
+
+Both the customer-facing front end AND the admin back end must be fully functional before launch. This means:
+
+1. Everything the client requested in the brief must be built
+2. Everything Larkon ships with by default must be properly wired to real data (not demo/placeholder data)
+3. Only features that are genuinely irrelevant to a jewellery B2C store can be removed
+
+Before starting Phase 3, a full audit must be completed covering:
+- Every Larkon admin section — is it wired to real data or still on demo?
+- Every client requirement from the brief — is it built or still outstanding?
+- Any gaps between what Larkon provides and what FADO needs
+
+---
+
 ## Laravel conventions to follow
 
 - Resourceful controllers (`php artisan make:controller --resource`)
