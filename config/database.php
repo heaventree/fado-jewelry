@@ -63,6 +63,23 @@ return [
             ]) : [],
         ],
 
+        // Legacy OpenCart database — read-only, used only by fado:import-opencart
+        'opencart' => [
+            'driver'    => 'mysql',
+            'host'      => env('OC_DB_HOST', '127.0.0.1'),
+            'port'      => env('OC_DB_PORT', '3306'),
+            'database'  => env('OC_DB_DATABASE', 'opencart'),
+            'username'  => env('OC_DB_USERNAME', 'root'),
+            'password'  => env('OC_DB_PASSWORD', ''),
+            'charset'   => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+            'options'   => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
