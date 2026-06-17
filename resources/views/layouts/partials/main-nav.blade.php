@@ -72,6 +72,26 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link menu-arrow" href="#sidebarCollections" data-bs-toggle="collapse" role="button"
+                   aria-expanded="false" aria-controls="sidebarCollections">
+                         <span class="nav-icon">
+                              <iconify-icon icon="solar:bookmark-circle-bold-duotone"></iconify-icon>
+                         </span>
+                    <span class="nav-text"> Collections </span>
+                </a>
+                <div class="collapse" id="sidebarCollections">
+                    <ul class="nav sub-navbar-nav">
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.collections.index') }}">All Collections</a>
+                        </li>
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.collections.create') }}">Add Collection</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarInventory" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarInventory">
                          <span class="nav-icon">

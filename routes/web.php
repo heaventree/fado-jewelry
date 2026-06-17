@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\ProductController;
 
 require __DIR__ . '/auth.php';
@@ -11,6 +12,7 @@ require __DIR__ . '/auth.php';
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('collections', CollectionController::class);
 });
 
 // Larkon catch-all — renders Blade views by path segment (unauthenticated views excluded)
