@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ConsultationController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 
@@ -36,6 +37,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('currencies/{currency}/rate', [CurrencyController::class, 'updateRate'])->name('currencies.update-rate');
     Route::delete('currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
 });
+
+// Invoices — intercept before the Larkon catch-all
+Route::get('general/invoice/list', [InvoiceController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.invoices.index');
+Route::get('general/invoice/{order}', [InvoiceController::class, 'show'])->middleware(['auth', 'admin'])->name('admin.invoices.show');
 
 // Inventory — intercept before the Larkon catch-all
 Route::get('general/inventory/warehouse', [InventoryController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.inventory.index');
