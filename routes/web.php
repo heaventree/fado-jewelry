@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\ConsultationController;
 use App\Http\Controllers\Admin\CurrencyController;
@@ -33,6 +34,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('currencies/{currency}/rate', [CurrencyController::class, 'updateRate'])->name('currencies.update-rate');
     Route::delete('currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
 });
+
+// Dashboard — intercepts before the Larkon catch-all
+Route::get('dashboards/index', [DashboardController::class, 'index'])->middleware(['auth', 'admin'])->name('dashboard');
 
 // Larkon catch-all — renders Blade views by path segment (unauthenticated views excluded)
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
