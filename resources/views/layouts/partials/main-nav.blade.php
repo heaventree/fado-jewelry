@@ -288,10 +288,7 @@
                     <ul class="nav sub-navbar-nav">
 
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['users', 'customer', 'list'])}}">List</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['users', 'customer',  'details'])}}">Details</a>
+                            <a class="sub-nav-link" href="{{ route('admin.customers.index') }}">All Customers</a>
                         </li>
                     </ul>
                 </div>

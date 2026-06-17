@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\ConsultationController;
 use App\Http\Controllers\Admin\CurrencyController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 
@@ -34,6 +35,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('currencies/{currency}/rate', [CurrencyController::class, 'updateRate'])->name('currencies.update-rate');
     Route::delete('currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
 });
+
+// Customers — intercept before the Larkon catch-all
+Route::get('users/customer/list', [CustomerController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.customers.index');
+Route::get('users/customer/{customer}', [CustomerController::class, 'show'])->middleware(['auth', 'admin'])->name('admin.customers.show');
 
 // Dashboard — intercepts before the Larkon catch-all
 Route::get('dashboards/index', [DashboardController::class, 'index'])->middleware(['auth', 'admin'])->name('dashboard');
