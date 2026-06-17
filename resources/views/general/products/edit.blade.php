@@ -1,315 +1,369 @@
-@extends('layouts.vertical', ['title' => 'Product Edit'])
-
-@section('css')
-@vite(['node_modules/choices.js/public/assets/styles/choices.min.css'])
-@endsection
+@extends('layouts.vertical', ['title' => 'Edit: ' . $product->name])
 
 @section('content')
 
-<div class="row">
+<form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
+@csrf
+@method('PUT')
+
+<div class="row g-3">
+
+    {{-- ── LEFT COLUMN ──────────────────────────────────────────────────────── --}}
     <div class="col-xl-3 col-lg-4">
-        <div class="card">
+
+        <div class="card mb-3">
+            <div class="card-header"><h4 class="card-title mb-0">Status</h4></div>
             <div class="card-body">
-                <img src="/images/product/p-1.png" alt="" class="img-fluid rounded bg-light">
-                <div class="mt-3">
-                    <h4>Men Black Slim Fit T-shirt <span class="fs-14 text-muted ms-1">(Fashion)</span></h4>
-                    <h5 class="text-dark fw-medium mt-3">Price :</h5>
-                    <h4 class="fw-semibold text-dark mt-2 d-flex align-items-center gap-2">
-                        <span class="text-muted text-decoration-line-through">$100</span> $80 <small class="text-muted"> (30% Off)</small>
-                    </h4>
-                    <div class="mt-3">
-                        <h5 class="text-dark fw-medium">Size :</h5>
-                        <div class="d-flex flex-wrap gap-2" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" class="btn-check" id="size-s">
-                            <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-s">S</label>
-
-                            <input type="checkbox" class="btn-check" id="size-m" checked>
-                            <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-m">M</label>
-
-                            <input type="checkbox" class="btn-check" id="size-xl">
-                            <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-xl">Xl</label>
-
-                            <input type="checkbox" class="btn-check" id="size-xxl">
-                            <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-xxl">XXL</label>
-
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <h5 class="text-dark fw-medium">Colors :</h5>
-                        <div class="d-flex flex-wrap gap-2" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" class="btn-check" id="color-dark">
-                            <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-dark"> <i class="bx bxs-circle fs-18 text-dark"></i></label>
-
-                            <input type="checkbox" class="btn-check" id="color-yellow">
-                            <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-yellow"> <i class="bx bxs-circle fs-18 text-warning"></i></label>
-
-                            <input type="checkbox" class="btn-check" id="color-white">
-                            <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-white"> <i class="bx bxs-circle fs-18 text-white"></i></label>
-
-                            <input type="checkbox" class="btn-check" id="color-red">
-                            <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-red"> <i class="bx bxs-circle fs-18 text-danger"></i></label>
-
-                        </div>
-                    </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1"
+                           {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="is_active">Active (visible on site)</label>
                 </div>
             </div>
         </div>
+
+        {{-- Categories --}}
+        <div class="card mb-3">
+            <div class="card-header"><h4 class="card-title mb-0">Categories</h4></div>
+            <div class="card-body" style="max-height:300px;overflow-y:auto">
+                @php $selectedCatIds = old('category_ids', $product->categories->pluck('id')->toArray()); @endphp
+                @foreach($categories as $parent)
+                    @if($parent->children->isNotEmpty())
+                        <p class="text-uppercase fw-semibold fs-11 text-muted mb-1 mt-2">{{ $parent->name }}</p>
+                        @foreach($parent->children as $child)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                       name="category_ids[]" value="{{ $child->id }}"
+                                       id="cat-{{ $child->id }}"
+                                       {{ in_array($child->id, $selectedCatIds) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="cat-{{ $child->id }}">{{ $child->name }}</label>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                   name="category_ids[]" value="{{ $parent->id }}"
+                                   id="cat-{{ $parent->id }}"
+                                   {{ in_array($parent->id, $selectedCatIds) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="cat-{{ $parent->id }}">{{ $parent->name }}</label>
+                        </div>
+                    @endif
+                @endforeach
+                @if($categories->isEmpty())
+                    <p class="text-muted fs-13 mb-0">No categories yet.</p>
+                @endif
+            </div>
+        </div>
+
+        {{-- Collections --}}
+        @if($collections->isNotEmpty())
+        <div class="card mb-3">
+            <div class="card-header"><h4 class="card-title mb-0">Collections</h4></div>
+            <div class="card-body" style="max-height:200px;overflow-y:auto">
+                @php $selectedColIds = old('collection_ids', $product->collections->pluck('id')->toArray()); @endphp
+                @foreach($collections as $col)
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               name="collection_ids[]" value="{{ $col->id }}"
+                               id="col-{{ $col->id }}"
+                               {{ in_array($col->id, $selectedColIds) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="col-{{ $col->id }}">{{ $col->name }}</label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary">Back to List</a>
+        </div>
+
     </div>
 
-    <div class="col-xl-9 col-lg-8 ">
-        <div class="card">
+    {{-- ── RIGHT COLUMN ─────────────────────────────────────────────────────── --}}
+    <div class="col-xl-9 col-lg-8">
+
+        @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        @endif
+
+        @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        {{-- Product info --}}
+        <div class="card mb-3">
+            <div class="card-header"><h4 class="card-title mb-0">Product Information</h4></div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label class="form-label" for="name">Product Name <span class="text-danger">*</span></label>
+                        <input type="text" id="name" name="name"
+                               class="form-control @error('name') is-invalid @enderror"
+                               value="{{ old('name', $product->name) }}" required>
+                        @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="slug">URL Slug</label>
+                        <input type="text" id="slug" name="slug"
+                               class="form-control @error('slug') is-invalid @enderror"
+                               value="{{ old('slug', $product->slug) }}">
+                        @error('slug')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="short_description">Short Description</label>
+                        <input type="text" id="short_description" name="short_description"
+                               class="form-control @error('short_description') is-invalid @enderror"
+                               value="{{ old('short_description', $product->short_description) }}"
+                               maxlength="500">
+                        @error('short_description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="description">Full Description</label>
+                        <textarea id="description" name="description" rows="8"
+                                  class="form-control @error('description') is-invalid @enderror">{{ old('description', $product->description) }}</textarea>
+                        @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Existing images --}}
+        @if($product->images->isNotEmpty())
+        <div class="card mb-3">
+            <div class="card-header"><h4 class="card-title mb-0">Current Images</h4></div>
+            <div class="card-body">
+                <div class="row g-2">
+                    @foreach($product->images->sortBy('sort_order') as $image)
+                    <div class="col-6 col-sm-4 col-md-3">
+                        <div class="border rounded p-2 text-center position-relative">
+                            <img src="{{ $image->url }}" alt="" class="img-fluid rounded mb-2" style="max-height:120px;object-fit:cover">
+                            @if($image->is_primary)
+                                <span class="badge bg-success position-absolute top-0 start-0 m-1">Primary</span>
+                            @endif
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                       name="delete_images[]" value="{{ $image->id }}"
+                                       id="del-img-{{ $image->id }}">
+                                <label class="form-check-label text-danger fs-12" for="del-img-{{ $image->id }}">
+                                    Delete
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="form-text mt-2">Check "Delete" on images to remove them when you save.</div>
+            </div>
+        </div>
+        @endif
+
+        {{-- Upload new images --}}
+        <div class="card mb-3">
+            <div class="card-header"><h4 class="card-title mb-0">Add New Images</h4></div>
+            <div class="card-body">
+                <input type="file" name="images[]" id="images" class="form-control" multiple accept="image/*">
+                <div class="form-text">PNG, JPG, WebP — max 5 MB each.</div>
+                @error('images.*')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+            </div>
+        </div>
+
+        {{-- Variants --}}
+        <div class="card mb-3">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h4 class="card-title mb-0">Metal &amp; Gemstone Variants</h4>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addVariantRow()">
+                    <iconify-icon icon="solar:add-circle-broken" class="align-middle me-1"></iconify-icon>Add Variant
+                </button>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead class="bg-light-subtle">
+                            <tr>
+                                <th style="min-width:160px">Metal <span class="text-danger">*</span></th>
+                                <th style="min-width:150px">Gemstone</th>
+                                <th style="min-width:120px">SKU</th>
+                                <th style="min-width:110px">Price (€) <span class="text-danger">*</span></th>
+                                <th style="min-width:90px">Stock</th>
+                                <th style="width:60px" class="text-center">Active</th>
+                                <th style="width:48px"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="variants-body">
+                        @php
+                            $existingVariants = old('variants')
+                                ? collect(old('variants'))->values()->map(fn($v, $i) => (object)array_merge(['_index' => $i], $v))
+                                : $product->allVariants->values()->map(fn($v, $i) => (object)[
+                                    '_index'      => $i,
+                                    'id'          => $v->id,
+                                    'metal_id'    => $v->metal_id,
+                                    'gemstone_id' => $v->gemstone_id,
+                                    'sku'         => $v->sku,
+                                    'price_eur'   => $v->price_eur,
+                                    'stock'       => $v->stock,
+                                    'is_active'   => $v->is_active,
+                                ]);
+                        @endphp
+                        @foreach($existingVariants as $v)
+                        <tr>
+                            <input type="hidden" name="variants[{{ $v->_index }}][id]" value="{{ $v->id ?? '' }}">
+                            <td>
+                                <select name="variants[{{ $v->_index }}][metal_id]" class="form-select form-select-sm" required>
+                                    <option value="">— Metal —</option>
+                                    @foreach($metals as $metal)
+                                        <option value="{{ $metal->id }}" {{ (string)($v->metal_id ?? '') === (string)$metal->id ? 'selected' : '' }}>
+                                            {{ $metal->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                                <select name="variants[{{ $v->_index }}][gemstone_id]" class="form-select form-select-sm">
+                                    <option value="">None</option>
+                                    @foreach($gemstones as $gem)
+                                        <option value="{{ $gem->id }}" {{ (string)($v->gemstone_id ?? '') === (string)$gem->id ? 'selected' : '' }}>
+                                            {{ $gem->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td><input type="text" name="variants[{{ $v->_index }}][sku]" class="form-control form-control-sm" value="{{ $v->sku ?? '' }}" placeholder="SKU"></td>
+                            <td><input type="number" name="variants[{{ $v->_index }}][price_eur]" class="form-control form-control-sm" value="{{ $v->price_eur ?? '' }}" step="0.01" min="0" required></td>
+                            <td><input type="number" name="variants[{{ $v->_index }}][stock]" class="form-control form-control-sm" value="{{ $v->stock ?? 0 }}" min="0"></td>
+                            <td class="text-center"><input type="checkbox" name="variants[{{ $v->_index }}][is_active]" value="1" class="form-check-input" {{ !empty($v->is_active) ? 'checked' : '' }}></td>
+                            <td><button type="button" class="btn btn-link text-danger p-0" onclick="removeVariantRow(this)" title="Remove"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="fs-18"></iconify-icon></button></td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div id="variants-empty" class="text-center text-muted py-3 fs-13 {{ $existingVariants->isNotEmpty() ? 'd-none' : '' }}">
+                    No variants — click <strong>Add Variant</strong> to add metal/gemstone combinations.
+                </div>
+            </div>
+        </div>
+
+        {{-- Ring sizes --}}
+        <div class="card mb-3">
             <div class="card-header">
-                <h4 class="card-title">Add Product Photo</h4>
+                <h4 class="card-title mb-0">Ring Sizes (US) <small class="text-muted fw-normal fs-13">— only fill in if this is a ring</small></h4>
             </div>
             <div class="card-body">
-                <div class="dropzone bg-light-subtle py-5">
-                    <div class="fallback">
-                        <input name="file" type="file" multiple="multiple">
-                    </div>
-                    <div class="dz-message needsclick">
-                        <i class="bx bx-cloud-upload fs-48 text-primary"></i>
-                        <h3 class="mt-4">Drop your images here, or <span class="text-primary">click to browse</span></h3>
-                        <span class="text-muted fs-13">
-                            1600 x 1200 (4:3) recommended. PNG, JPG and GIF files are allowed
-                        </span>
-                    </div>
-                </div>
-
-                <ul class="list-unstyled mb-0" id="dropzone-preview">
-                    <li class="mt-2" id="dropzone-preview-list">
-                        <!-- This is used as the file preview template -->
-                        <div class="border rounded">
-                            <div class="d-flex p-2">
-                                <div class="flex-shrink-0 me-3">
-                                    <div class="avatar-sm bg-light rounded">
-                                        <img data-dz-thumbnail class="img-fluid rounded d-block" src="#" alt="Dropzone-Image" />
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="pt-1">
-                                        <h5 class="fs-14 mb-1" data-dz-name>&</h5>
-                                        <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                        <strong class="error text-primary" data-dz-errormessage></strong>
-                                    </div>
-                                </div>
-                                <div class="flex-shrink-0 ms-3">
-                                    <button data-dz-remove class="btn btn-sm btn-primary">Delete</button>
-                                </div>
+                @php
+                    $existingSizes = old('sizes')
+                        ? collect(old('sizes'))->map(fn($v) => ['enabled' => !empty($v['enabled']), 'stock' => $v['stock'] ?? 0])
+                        : $product->sizes->keyBy(fn($s) => (string) $s->us_size)->map(fn($s) => ['enabled' => true, 'stock' => $s->stock]);
+                @endphp
+                <div class="row g-2">
+                    @foreach($ringSizes as $size)
+                    @php
+                        $sizeKey  = (string) $size;
+                        $sizeData = $existingSizes[$sizeKey] ?? null;
+                        $enabled  = $sizeData['enabled'] ?? false;
+                        $stock    = $sizeData['stock'] ?? 0;
+                    @endphp
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                        <div class="border rounded p-2 text-center {{ $enabled ? 'border-primary' : '' }}">
+                            <div class="form-check d-flex justify-content-center mb-1">
+                                <input class="form-check-input size-check" type="checkbox"
+                                       name="sizes[{{ $size }}][enabled]" value="1"
+                                       id="size-{{ $size }}"
+                                       {{ $enabled ? 'checked' : '' }}>
+                                <label class="form-check-label ms-1 fw-semibold" for="size-{{ $size }}">
+                                    {{ number_format($size, $size == (int)$size ? 0 : 1) }}
+                                </label>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-                <!-- end dropzon-preview -->
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Product Information</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <form>
-                            <div class="mb-3">
-                                <label for="product-name" class="form-label">Product Name</label>
-                                <input type="text" id="product-name" class="form-control" placeholder="Items Name" value="Men Black Slim Fit T-shirt">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-6">
-                        <form>
-                            <label for="product-categories" class="form-label">Product Categories</label>
-                            <select class="form-control" id="product-categories" data-choices data-choices-groups data-placeholder="Select Categories" name="choices-single-groups">
-                                <option value="">Choose a categories</option>
-                                <option value="Fashion" selected>Fashion</option>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Footwear">Footwear</option>
-                                <option value="Sportswear">Sportswear</option>
-                                <option value="Watches">Watches</option>
-                                <option value="Furniture">Furniture</option>
-                                <option value="Appliances">Appliances</option>
-                                <option value="Headphones">Headphones</option>
-                                <option value="Other Accessories">Other Accessories</option>
-                            </select>
-                        </form>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <form>
-                            <div class="mb-3">
-                                <label for="product-brand" class="form-label">Brand</label>
-                                <input type="text" id="product-brand" class="form-control" placeholder="Brand Name" value="Larkon Fashion">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <form>
-                            <div class="mb-3">
-                                <label for="product-weight" class="form-label">Weight</label>
-                                <input type="text" id="product-weight" class="form-control" placeholder="In gm & kg" value="300gm">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <form>
-                            <label for="gender" class="form-label">Gender</label>
-                            <select class="form-control" id="gender" data-choices data-choices-groups data-placeholder="Select Gender">
-                                <option value="">Select Gender</option>
-                                <option value="Men" selected>Men</option>
-                                <option value="Women">Women</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </form>
-                    </div>
-                </div>
-                <div class="row mb-4">
-                    <div class="col-lg-4">
-                        <div class="mt-3">
-                            <h5 class="text-dark fw-medium">Size :</h5>
-                            <div class="d-flex flex-wrap gap-2" role="group" aria-label="Basic checkbox toggle button group">
-                                <input type="checkbox" class="btn-check" id="size-xs1">
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-xs1">XS</label>
-
-                                <input type="checkbox" class="btn-check" id="size-s1" checked>
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-s1">S</label>
-
-                                <input type="checkbox" class="btn-check" id="size-m1" checked>
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-m1">M</label>
-
-                                <input type="checkbox" class="btn-check" id="size-xl1" checked>
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-xl1">Xl</label>
-
-                                <input type="checkbox" class="btn-check" id="size-xxl1" checked>
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-xxl1">XXL</label>
-                                <input type="checkbox" class="btn-check" id="size-3xl1">
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="size-3xl1">3XL</label>
-
-                            </div>
+                            <input type="number" id="size-stock-{{ $size }}"
+                                   name="sizes[{{ $size }}][stock]"
+                                   class="form-control form-control-sm text-center"
+                                   value="{{ $stock }}" min="0" placeholder="Qty"
+                                   {{ $enabled ? '' : 'disabled' }}>
                         </div>
                     </div>
-                    <div class="col-lg-5">
-                        <div class="mt-3">
-                            <h5 class="text-dark fw-medium">Colors :</h5>
-                            <div class="d-flex flex-wrap gap-2" role="group" aria-label="Basic checkbox toggle button group">
-                                <input type="checkbox" class="btn-check" id="color-dark1" checked>
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-dark1"> <i class="bx bxs-circle fs-18 text-dark"></i></label>
-
-                                <input type="checkbox" class="btn-check" id="color-yellow1" checked>
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-yellow1"> <i class="bx bxs-circle fs-18 text-warning"></i></label>
-
-                                <input type="checkbox" class="btn-check" id="color-white1" checked>
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-white1"> <i class="bx bxs-circle fs-18 text-white"></i></label>
-
-                                <input type="checkbox" class="btn-check" id="color-red1" checked>
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-red1"> <i class="bx bxs-circle fs-18 text-primary"></i></label>
-
-                                <input type="checkbox" class="btn-check" id="color-green1">
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-green1"> <i class="bx bxs-circle fs-18 text-success"></i></label>
-
-                                <input type="checkbox" class="btn-check" id="color-blue1">
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-blue1"> <i class="bx bxs-circle fs-18 text-danger"></i></label>
-
-                                <input type="checkbox" class="btn-check" id="color-sky1">
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-sky1"> <i class="bx bxs-circle fs-18 text-info"></i></label>
-
-                                <input type="checkbox" class="btn-check" id="color-gray1">
-                                <label class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center" for="color-gray1"> <i class="bx bxs-circle fs-18 text-secondary"></i></label>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control bg-light-subtle" id="description" rows="7" placeholder="Short description about the product">Top in sweatshirt fabric made from a cotton blend with a soft brushed inside. Relaxed fit with dropped shoulders, long sleeves and ribbing around the neckline, cuffs and hem. Small metal text applique.</textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <form>
-                            <div class="mb-3">
-                                <label for="product-id" class="form-label">Tag Number</label>
-                                <input type="number" id="product-id" class="form-control" placeholder="#******" value="36294007">
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <form>
-                            <div class="mb-3">
-                                <label for="product-stock" class="form-label">Stock</label>
-                                <input type="number" id="product-stock" class="form-control" placeholder="Quantity" value="465">
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <label for="product-stock" class="form-label">Tag</label>
-                        <select class="form-control" id="choices-multiple-remove-button" data-choices data-choices-removeItem name="choices-multiple-remove-button" multiple>
-                            <option value="Fashion" selected>Fashion</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Watches">Watches</option>
-                            <option value="Headphones">Headphones</option>
-                        </select>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Pricing Details</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <form>
-                            <label for="product-price" class="form-label">Price</label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text fs-20"><i class='bx bx-dollar'></i></span>
-                                <input type="number" id="product-price" class="form-control" placeholder="000" value="80">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <form>
-                            <label for="product-discount" class="form-label">Discount</label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text fs-20"><i class='bx bxs-discount'></i></span>
-                                <input type="number" id="product-discount" class="form-control" placeholder="000" value="30">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <form>
-                            <label for="product-tex" class="form-label">Tex</label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text fs-20"><i class='bx bxs-file-txt'></i></span>
-                                <input type="number" id="product-tex" class="form-control" placeholder="000" value="3">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+
+        {{-- Submit --}}
+        <div class="d-flex gap-2 justify-content-end mb-4">
+            <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary">Back to List</a>
+            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
         </div>
-        <div class="p-3 bg-light mb-3 rounded">
-            <div class="row justify-content-end g-2">
-                <div class="col-lg-2">
-                    <a href="#!" class="btn btn-outline-secondary w-100">Reset</a>
-                </div>
-                <div class="col-lg-2">
-                    <a href="#!" class="btn btn-primary w-100">Save</a>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
+</form>
+
+{{-- Variant template — Blade populates options server-side, JS clones and replaces __INDEX__ --}}
+<template id="variant-row-template">
+    <tr>
+        <td>
+            <select name="variants[__INDEX__][metal_id]" class="form-select form-select-sm" required>
+                <option value="">— Metal —</option>
+                @foreach($metals as $metal)
+                <option value="{{ $metal->id }}">{{ $metal->name }}</option>
+                @endforeach
+            </select>
+        </td>
+        <td>
+            <select name="variants[__INDEX__][gemstone_id]" class="form-select form-select-sm">
+                <option value="">None</option>
+                @foreach($gemstones as $gem)
+                <option value="{{ $gem->id }}">{{ $gem->name }}</option>
+                @endforeach
+            </select>
+        </td>
+        <td><input type="text" name="variants[__INDEX__][sku]" class="form-control form-control-sm" placeholder="SKU"></td>
+        <td><input type="number" name="variants[__INDEX__][price_eur]" class="form-control form-control-sm" step="0.01" min="0" required placeholder="0.00"></td>
+        <td><input type="number" name="variants[__INDEX__][stock]" class="form-control form-control-sm" min="0" value="0"></td>
+        <td class="text-center"><input type="checkbox" name="variants[__INDEX__][is_active]" value="1" class="form-check-input" checked></td>
+        <td><button type="button" class="btn btn-link text-danger p-0" onclick="removeVariantRow(this)" title="Remove"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="fs-18"></iconify-icon></button></td>
+    </tr>
+</template>
 
 @endsection
 
 @section('script-bottom')
-@vite(['resources/js/pages/ecommerce-product-details.js'])
+<script>
+(function () {
+    let variantIndex = {{ $existingVariants->count() }};
+
+    window.addVariantRow = function () {
+        const template = document.getElementById('variant-row-template');
+        const html = template.innerHTML.replace(/__INDEX__/g, variantIndex++);
+        const tbody = document.getElementById('variants-body');
+        tbody.insertAdjacentHTML('beforeend', html);
+        document.getElementById('variants-empty').classList.add('d-none');
+    };
+
+    window.removeVariantRow = function (btn) {
+        btn.closest('tr').remove();
+        if (document.querySelectorAll('#variants-body tr').length === 0) {
+            document.getElementById('variants-empty').classList.remove('d-none');
+        }
+    };
+
+    document.querySelectorAll('.size-check').forEach(function (cb) {
+        cb.addEventListener('change', function () {
+            const sizeNum = this.id.replace('size-', '');
+            const stock = document.getElementById('size-stock-' + sizeNum);
+            stock.disabled = !this.checked;
+            this.closest('.border').classList.toggle('border-primary', this.checked);
+            if (this.checked) stock.focus();
+        });
+    });
+}());
+</script>
 @endsection

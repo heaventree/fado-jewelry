@@ -41,20 +41,11 @@
                 </a>
                 <div class="collapse" id="sidebarProducts">
                     <ul class="nav sub-navbar-nav">
-                    <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'products', 'list'])}}">List</a>
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.products.index') }}">All Products</a>
                         </li>
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'products', 'grid'])}}">Grid</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'products', 'detail'])}}">Details</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'products', 'edit'])}}">Edit</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'products', 'create'])}}">Create</a>
+                            <a class="sub-nav-link" href="{{ route('admin.products.create') }}">Add Product</a>
                         </li>
                     </ul>
                 </div>
