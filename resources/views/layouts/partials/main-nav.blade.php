@@ -131,6 +131,19 @@
                 </div>
             </li>
 
+            @php $consultationUnread = \App\Models\Consultation::whereNull('read_at')->count(); @endphp
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.consultations.index') }}">
+                         <span class="nav-icon">
+                              <iconify-icon icon="solar:calendar-mark-bold-duotone"></iconify-icon>
+                         </span>
+                    <span class="nav-text"> Consultations </span>
+                    @if($consultationUnread > 0)
+                        <span class="badge bg-danger badge-pill ms-auto">{{ $consultationUnread }}</span>
+                    @endif
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarPurchases" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarPurchases">

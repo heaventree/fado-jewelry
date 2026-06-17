@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CollectionController;
+use App\Http\Controllers\Admin\ConsultationController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -20,6 +21,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+
+    // Consultation enquiry inbox
+    Route::get('consultations', [ConsultationController::class, 'index'])->name('consultations.index');
+    Route::get('consultations/{consultation}', [ConsultationController::class, 'show'])->name('consultations.show');
+    Route::delete('consultations/{consultation}', [ConsultationController::class, 'destroy'])->name('consultations.destroy');
 
     // Currency management — custom routes (not a standard CRUD resource)
     Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');

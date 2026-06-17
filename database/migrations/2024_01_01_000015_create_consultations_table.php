@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->text('message')->nullable();
             $table->string('preferred_contact')->default('email');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
