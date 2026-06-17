@@ -1,4 +1,4 @@
-@extends('layouts.vertical', ['title' => 'Add Coupon'])
+@extends('layouts.vertical', ['title' => 'Edit Coupon'])
 
 @section('css')
 @vite(['node_modules/flatpickr/dist/flatpickr.min.css'])
@@ -8,8 +8,11 @@
 
 <div class="d-flex align-items-center justify-content-between mb-3">
     <div>
-        <h4 class="fw-semibold mb-1">Add Coupon</h4>
-        <p class="text-muted mb-0 fs-13">Create a new discount code for the shop.</p>
+        <h4 class="fw-semibold mb-1">Edit Coupon</h4>
+        <p class="text-muted mb-0 fs-13">
+            <code>{{ $coupon->code }}</code> &nbsp;·&nbsp;
+            Used {{ $coupon->times_used }} {{ Str::plural('time', $coupon->times_used) }}
+        </p>
     </div>
     <a href="{{ route('admin.coupons.index') }}" class="btn btn-outline-secondary btn-sm">
         <iconify-icon icon="solar:arrow-left-broken" class="align-middle me-1"></iconify-icon>
@@ -29,16 +32,16 @@
 <div class="card">
 <div class="card-body p-4">
 
-<form action="{{ route('admin.coupons.store') }}" method="POST">
+<form action="{{ route('admin.coupons.update', $coupon) }}" method="POST">
 @csrf
+@method('PATCH')
 
 {{-- Code --}}
 <div class="mb-3">
     <label class="form-label fw-semibold">Coupon Code <span class="text-danger">*</span></label>
-    <input type="text" name="code" value="{{ strtoupper(old('code')) }}"
+    <input type="text" name="code" value="{{ strtoupper(old('code', $coupon->code)) }}"
            class="form-control @error('code') is-invalid @enderror"
-           placeholder="e.g. SUMMER20" style="text-transform:uppercase" maxlength="64" required>
-    <div class="form-text">Customers enter this code at checkout. Auto-uppercased.</div>
+           style="text-transform:uppercase" maxlength="64" required>
     @error('code')<div class="invalid-feedback">{{ $message }}</div>@enderror
 </div>
 
@@ -47,16 +50,16 @@
     <div class="col-6">
         <label class="form-label fw-semibold">Discount Type <span class="text-danger">*</span></label>
         <select name="type" id="coupon-type" class="form-select @error('type') is-invalid @enderror" required>
-            <option value="percent" {{ old('type','percent') === 'percent' ? 'selected' : '' }}>Percentage (%)</option>
-            <option value="fixed"   {{ old('type') === 'fixed'   ? 'selected' : '' }}>Fixed Amount (€)</option>
+            <option value="percent" {{ old('type', $coupon->type) === 'percent' ? 'selected' : '' }}>Percentage (%)</option>
+            <option value="fixed"   {{ old('type', $coupon->type) === 'fixed'   ? 'selected' : '' }}>Fixed Amount (€)</option>
         </select>
         @error('type')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
     <div class="col-6">
         <label class="form-label fw-semibold">Discount Value <span class="text-danger">*</span></label>
         <div class="input-group">
-            <span class="input-group-text" id="value-prefix">%</span>
-            <input type="number" name="value" value="{{ old('value') }}"
+            <span class="input-group-text" id="value-prefix">{{ $coupon->type === 'percent' ? '%' : '€' }}</span>
+            <input type="number" name="value" value="{{ old('value', $coupon->value) }}"
                    class="form-control @error('value') is-invalid @enderror"
                    min="0.01" step="0.01" required>
             @error('value')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -69,30 +72,38 @@
     <label class="form-label fw-semibold">Minimum Order Amount</label>
     <div class="input-group" style="max-width:240px">
         <span class="input-group-text">€</span>
-        <input type="number" name="minimum_order" value="{{ old('minimum_order') }}"
+        <input type="number" name="minimum_order" value="{{ old('minimum_order', $coupon->minimum_order) }}"
                class="form-control @error('minimum_order') is-invalid @enderror"
                min="0" step="0.01" placeholder="No minimum">
         @error('minimum_order')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
-    <div class="form-text">Leave blank for no minimum order requirement.</div>
 </div>
 
 {{-- Usage limit + expiry --}}
 <div class="row g-3 mb-3">
     <div class="col-6">
         <label class="form-label fw-semibold">Usage Limit</label>
-        <input type="number" name="usage_limit" value="{{ old('usage_limit') }}"
+        <input type="number" name="usage_limit" value="{{ old('usage_limit', $coupon->usage_limit) }}"
                class="form-control @error('usage_limit') is-invalid @enderror"
                min="1" step="1" placeholder="Unlimited">
-        <div class="form-text">Max times this code can be used. Blank = unlimited.</div>
+        @if($coupon->times_used > 0)
+            <div class="form-text text-warning">
+                <iconify-icon icon="solar:info-circle-broken" class="align-middle me-1"></iconify-icon>
+                Already used {{ $coupon->times_used }} {{ Str::plural('time', $coupon->times_used) }}.
+                Limit must be ≥ {{ $coupon->times_used }}.
+            </div>
+        @endif
         @error('usage_limit')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
     <div class="col-6">
         <label class="form-label fw-semibold">Expiry Date</label>
-        <input type="text" name="expires_at" value="{{ old('expires_at') }}"
+        <input type="text" name="expires_at"
+               value="{{ old('expires_at', $coupon->expires_at?->format('Y-m-d')) }}"
                class="form-control flatpickr-date @error('expires_at') is-invalid @enderror"
                placeholder="No expiry" autocomplete="off">
-        <div class="form-text">Leave blank for no expiry.</div>
+        @if($coupon->is_expired)
+            <div class="form-text text-danger">This coupon has expired.</div>
+        @endif
         @error('expires_at')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 </div>
@@ -101,16 +112,15 @@
 <div class="mb-4">
     <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" name="is_active" id="is_active" value="1"
-               {{ old('is_active', '1') ? 'checked' : '' }}>
+               {{ old('is_active', $coupon->is_active) ? 'checked' : '' }}>
         <label class="form-check-label fw-semibold" for="is_active">Active</label>
     </div>
-    <div class="form-text">Inactive coupons cannot be applied at checkout.</div>
 </div>
 
 <div class="d-flex gap-2">
     <button type="submit" class="btn btn-primary">
         <iconify-icon icon="solar:diskette-broken" class="align-middle me-1"></iconify-icon>
-        Create Coupon
+        Save Changes
     </button>
     <a href="{{ route('admin.coupons.index') }}" class="btn btn-outline-secondary">Cancel</a>
 </div>
@@ -129,7 +139,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     flatpickr('.flatpickr-date', {
         dateFormat: 'Y-m-d',
-        minDate: 'today',
         allowInput: true,
     });
 
@@ -140,7 +149,6 @@ document.addEventListener('DOMContentLoaded', function () {
         valuePrefix.textContent = typeSelect.value === 'percent' ? '%' : '€';
     }
     typeSelect.addEventListener('change', updatePrefix);
-    updatePrefix();
 });
 </script>
 @endsection

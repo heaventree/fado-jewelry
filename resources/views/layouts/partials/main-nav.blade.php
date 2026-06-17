@@ -295,32 +295,6 @@
                 </div>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarSellers" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarSellers">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:shop-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Sellers </span>
-                </a>
-                <div class="collapse" id="sidebarSellers">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['users', 'seller', 'list'])}}">List</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['users', 'seller', 'details'])}}">Details</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['users', 'seller', 'edit'])}}">Edit</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['users', 'seller', 'create'])}}">Create</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
             <li class="menu-title mt-2">Other</li>
 
             <li class="nav-item">
@@ -334,164 +308,13 @@
                 <div class="collapse" id="sidebarCoupons">
                     <ul class="nav sub-navbar-nav">
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('second', ['other', 'coupons-list'])}}">List</a>
+                            <a class="sub-nav-link" href="{{ route('admin.coupons.index') }}">All Coupons</a>
                         </li>
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('second', ['other', 'coupons-add'])}}">Add</a>
+                            <a class="sub-nav-link" href="{{ route('admin.coupons.create') }}">Add Coupon</a>
                         </li>
                     </ul>
                 </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['other', 'pages-review'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:chat-square-like-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Reviews </span>
-                </a>
-            </li>
-
-            <li class="menu-title mt-2">Other Apps</li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['apps', 'chat'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:chat-round-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Chat </span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['apps', 'email'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:mailbox-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Email </span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['apps', 'calendar'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:calendar-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Calendar </span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['apps', 'todo'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:checklist-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Todo </span>
-                </a>
-            </li>
-
-            <li class="menu-title mt-2">Support</li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['support', 'help-center'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:help-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Help Center </span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['support', 'faqs'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:question-circle-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> FAQs </span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['support', 'privacy-policy'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:document-text-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Privacy Policy </span>
-                </a>
-            </li>
-
-            <li class="menu-title mt-2">Custom</li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarPages" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarPages">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:gift-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Pages </span>
-                </a>
-                <div class="collapse" id="sidebarPages">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['custom', 'pages', 'starter'])}}">Welcome</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['custom', 'pages', 'coming-soon'])}}">Coming Soon</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['custom', 'pages', 'timeline'])}}">Timeline</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['custom', 'pages', 'pricing'])}}">Pricing</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['custom', 'pages', 'maintenance'])}}">Maintenance</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['custom', 'pages', 'error-404'])}}">404 Error</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['custom', 'pages', 'error-404-alt'])}}">404 Error (alt)</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarAuthentication" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarAuthentication">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:lock-keyhole-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Authentication </span>
-                </a>
-                <div class="collapse" id="sidebarAuthentication">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('second', [ 'auth' , 'login']) }}">Sign In</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('second', [ 'auth' , 'register']) }}">Sign Up</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('second', [ 'auth' , 'reset-password']) }}">Reset
-                                Password</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('second', [ 'auth' , 'lock-screen']) }}">Lock
-                                Screen</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['custom', 'widgets'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:atom-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text">Widgets</span>
-                    <span class="badge bg-info badge-pill text-end">9+</span>
-                </a>
             </li>
 
             <li class="menu-title mt-2">Components</li>
