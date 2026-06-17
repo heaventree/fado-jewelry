@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -31,6 +32,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('consultations', [ConsultationController::class, 'index'])->name('consultations.index');
     Route::get('consultations/{consultation}', [ConsultationController::class, 'show'])->name('consultations.show');
     Route::delete('consultations/{consultation}', [ConsultationController::class, 'destroy'])->name('consultations.destroy');
+
+    // Settings
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::patch('settings', [SettingController::class, 'update'])->name('settings.update');
 
     // Coupon management
     Route::get('coupons', [CouponController::class, 'index'])->name('coupons.index');

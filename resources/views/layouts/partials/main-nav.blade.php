@@ -224,7 +224,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['general', 'settings'])}}">
+                <a class="nav-link" href="{{ route('admin.settings.index') }}">
                          <span class="nav-icon">
                               <iconify-icon icon="solar:settings-bold-duotone"></iconify-icon>
                          </span>

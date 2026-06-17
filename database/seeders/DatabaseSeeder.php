@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             GemstoneSeeder::class,
             RingSizeSeeder::class,
             CurrencySeeder::class,
+            SettingsSeeder::class,
         ]);
     }
 }
