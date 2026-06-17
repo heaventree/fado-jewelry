@@ -210,6 +210,15 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.currencies.index') }}">
+                         <span class="nav-icon">
+                              <iconify-icon icon="solar:dollar-minimalistic-bold-duotone"></iconify-icon>
+                         </span>
+                    <span class="nav-text"> Currencies </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('second', ['general', 'settings'])}}">
                          <span class="nav-icon">
                               <iconify-icon icon="solar:settings-bold-duotone"></iconify-icon>
