@@ -106,7 +106,9 @@
 {{-- § 2  ACTIVE FILTER PILLS (shown when any filter is applied)               --}}
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
 @php
-    $hasFilters = !empty($filters['metals']) || !empty($filters['gemstones'])
+    $hasFilters = !empty($filters['metals'])   || !empty($filters['gemstones'])
+               || !empty($filters['collections']) || !empty($filters['second_metals'])
+               || !empty($filters['colours'])
                || $filters['price_min'] > 0 || $filters['price_max'] > 0
                || $filters['search'];
 @endphp
@@ -117,15 +119,18 @@
 
         @foreach($filters['metals'] as $slug)
             @php
-                $metal    = $metals->firstWhere('slug', $slug);
-                $newMetals = array_filter($filters['metals'], fn($s) => $s !== $slug);
+                $metal     = $metals->firstWhere('slug', $slug);
+                $newMetals = array_values(array_filter($filters['metals'], fn($s) => $s !== $slug));
                 $removeUrl = url()->current() . '?' . http_build_query(array_filter([
-                    'metals'    => array_values($newMetals) ?: null,
-                    'gemstones' => $filters['gemstones'] ?: null,
-                    'price_min' => $filters['price_min'] ?: null,
-                    'price_max' => $filters['price_max'] ?: null,
-                    'search'    => $filters['search'] ?: null,
-                    'sort'      => $filters['sort'] !== 'newest' ? $filters['sort'] : null,
+                    'metals'        => $newMetals                   ?: null,
+                    'gemstones'     => $filters['gemstones']        ?: null,
+                    'collections'   => $filters['collections']      ?: null,
+                    'second_metals' => $filters['second_metals']    ?: null,
+                    'colours'       => $filters['colours']          ?: null,
+                    'price_min'     => $filters['price_min']        ?: null,
+                    'price_max'     => $filters['price_max']        ?: null,
+                    'search'        => $filters['search']           ?: null,
+                    'sort'          => $filters['sort'] !== 'newest' ? $filters['sort'] : null,
                 ]));
             @endphp
             @if($metal)
@@ -139,15 +144,18 @@
 
         @foreach($filters['gemstones'] as $slug)
             @php
-                $gem    = $gemstones->firstWhere('slug', $slug);
-                $newGems = array_filter($filters['gemstones'], fn($s) => $s !== $slug);
+                $gem     = $gemstones->firstWhere('slug', $slug);
+                $newGems = array_values(array_filter($filters['gemstones'], fn($s) => $s !== $slug));
                 $removeUrl = url()->current() . '?' . http_build_query(array_filter([
-                    'metals'    => $filters['metals'] ?: null,
-                    'gemstones' => array_values($newGems) ?: null,
-                    'price_min' => $filters['price_min'] ?: null,
-                    'price_max' => $filters['price_max'] ?: null,
-                    'search'    => $filters['search'] ?: null,
-                    'sort'      => $filters['sort'] !== 'newest' ? $filters['sort'] : null,
+                    'metals'        => $filters['metals']           ?: null,
+                    'gemstones'     => $newGems                     ?: null,
+                    'collections'   => $filters['collections']      ?: null,
+                    'second_metals' => $filters['second_metals']    ?: null,
+                    'colours'       => $filters['colours']          ?: null,
+                    'price_min'     => $filters['price_min']        ?: null,
+                    'price_max'     => $filters['price_max']        ?: null,
+                    'search'        => $filters['search']           ?: null,
+                    'sort'          => $filters['sort'] !== 'newest' ? $filters['sort'] : null,
                 ]));
             @endphp
             @if($gem)
@@ -157,6 +165,78 @@
                 {{ $gem->name }} <span style="opacity:.5">&times;</span>
             </a>
             @endif
+        @endforeach
+
+        @foreach($filters['collections'] as $slug)
+            @php
+                $col       = $allCollections->firstWhere('slug', $slug);
+                $newCols   = array_values(array_filter($filters['collections'], fn($s) => $s !== $slug));
+                $removeUrl = url()->current() . '?' . http_build_query(array_filter([
+                    'metals'        => $filters['metals']        ?: null,
+                    'gemstones'     => $filters['gemstones']     ?: null,
+                    'collections'   => $newCols                  ?: null,
+                    'second_metals' => $filters['second_metals'] ?: null,
+                    'colours'       => $filters['colours']       ?: null,
+                    'price_min'     => $filters['price_min']     ?: null,
+                    'price_max'     => $filters['price_max']     ?: null,
+                    'search'        => $filters['search']        ?: null,
+                    'sort'          => $filters['sort'] !== 'newest' ? $filters['sort'] : null,
+                ]));
+            @endphp
+            @if($col)
+            <a href="{{ $removeUrl }}"
+               style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--fado-warm-grey);
+                      padding:4px 12px; border-radius:20px; font-size:.75rem; color: var(--fado-deep-green); text-decoration:none">
+                {{ $col->name }} <span style="opacity:.5">&times;</span>
+            </a>
+            @endif
+        @endforeach
+
+        @foreach($filters['second_metals'] as $slug)
+            @php
+                $sm        = $metals->firstWhere('slug', $slug);
+                $newSMs    = array_values(array_filter($filters['second_metals'], fn($s) => $s !== $slug));
+                $removeUrl = url()->current() . '?' . http_build_query(array_filter([
+                    'metals'        => $filters['metals']        ?: null,
+                    'gemstones'     => $filters['gemstones']     ?: null,
+                    'collections'   => $filters['collections']   ?: null,
+                    'second_metals' => $newSMs                   ?: null,
+                    'colours'       => $filters['colours']       ?: null,
+                    'price_min'     => $filters['price_min']     ?: null,
+                    'price_max'     => $filters['price_max']     ?: null,
+                    'search'        => $filters['search']        ?: null,
+                    'sort'          => $filters['sort'] !== 'newest' ? $filters['sort'] : null,
+                ]));
+            @endphp
+            @if($sm)
+            <a href="{{ $removeUrl }}"
+               style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--fado-warm-grey);
+                      padding:4px 12px; border-radius:20px; font-size:.75rem; color: var(--fado-deep-green); text-decoration:none">
+                Finish: {{ $sm->name }} <span style="opacity:.5">&times;</span>
+            </a>
+            @endif
+        @endforeach
+
+        @foreach($filters['colours'] as $colour)
+            @php
+                $newColours = array_values(array_filter($filters['colours'], fn($c) => $c !== $colour));
+                $removeUrl  = url()->current() . '?' . http_build_query(array_filter([
+                    'metals'        => $filters['metals']        ?: null,
+                    'gemstones'     => $filters['gemstones']     ?: null,
+                    'collections'   => $filters['collections']   ?: null,
+                    'second_metals' => $filters['second_metals'] ?: null,
+                    'colours'       => $newColours               ?: null,
+                    'price_min'     => $filters['price_min']     ?: null,
+                    'price_max'     => $filters['price_max']     ?: null,
+                    'search'        => $filters['search']        ?: null,
+                    'sort'          => $filters['sort'] !== 'newest' ? $filters['sort'] : null,
+                ]));
+            @endphp
+            <a href="{{ $removeUrl }}"
+               style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--fado-warm-grey);
+                      padding:4px 12px; border-radius:20px; font-size:.75rem; color: var(--fado-deep-green); text-decoration:none">
+                Colour: {{ $colour }} <span style="opacity:.5">&times;</span>
+            </a>
         @endforeach
 
         @if($filters['price_min'] > 0 || $filters['price_max'] > 0)
@@ -289,6 +369,60 @@
                         </div>
                         @endif
 
+                        {{-- Collection filter (hidden when already viewing a specific collection) --}}
+                        @if(is_null($activeCollection) && $allCollections->isNotEmpty())
+                        <div class="fado-filter-section" style="margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--fado-cream)">
+                            <h6 class="fado-filter-heading">Collection</h6>
+                            <div style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto; padding-right:4px">
+                                @foreach($allCollections as $col)
+                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.875rem; color: var(--fado-deep-green)">
+                                    <input type="checkbox" name="collections[]" value="{{ $col->slug }}"
+                                           {{ in_array($col->slug, $filters['collections']) ? 'checked' : '' }}
+                                           onchange="document.getElementById('filterForm').submit()"
+                                           style="accent-color: var(--fado-green-mid); width:15px; height:15px; cursor:pointer">
+                                    {{ $col->name }}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+                        {{-- Second metal / finish filter --}}
+                        @if($metals->isNotEmpty())
+                        <div class="fado-filter-section" style="margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--fado-cream)">
+                            <h6 class="fado-filter-heading">Second Metal / Finish</h6>
+                            <div style="display:flex; flex-direction:column; gap:8px">
+                                @foreach($metals as $metal)
+                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.875rem; color: var(--fado-deep-green)">
+                                    <input type="checkbox" name="second_metals[]" value="{{ $metal->slug }}"
+                                           {{ in_array($metal->slug, $filters['second_metals']) ? 'checked' : '' }}
+                                           onchange="document.getElementById('filterForm').submit()"
+                                           style="accent-color: var(--fado-green-mid); width:15px; height:15px; cursor:pointer">
+                                    {{ $metal->name }}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+                        {{-- Colour filter (only shown when colour data exists in DB) --}}
+                        @if($colours->isNotEmpty())
+                        <div class="fado-filter-section" style="margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--fado-cream)">
+                            <h6 class="fado-filter-heading">Colour</h6>
+                            <div style="display:flex; flex-direction:column; gap:8px">
+                                @foreach($colours as $colour)
+                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.875rem; color: var(--fado-deep-green)">
+                                    <input type="checkbox" name="colours[]" value="{{ $colour }}"
+                                           {{ in_array($colour, $filters['colours']) ? 'checked' : '' }}
+                                           onchange="document.getElementById('filterForm').submit()"
+                                           style="accent-color: var(--fado-green-mid); width:15px; height:15px; cursor:pointer">
+                                    {{ $colour }}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+
                         {{-- Price range --}}
                         <div class="fado-filter-section" style="margin-bottom:28px">
                             <h6 class="fado-filter-heading">Price Range (EUR)</h6>
@@ -342,9 +476,15 @@
                                    border-radius:2px; font-size:.8125rem; text-decoration:none">
                         <i class="icon icon-funnel"></i> Filters
                         @if($hasFilters)
+                            @php
+                                $filterCount = count($filters['metals']) + count($filters['gemstones'])
+                                    + count($filters['collections']) + count($filters['second_metals'])
+                                    + count($filters['colours'])
+                                    + ($filters['price_min'] > 0 || $filters['price_max'] > 0 ? 1 : 0);
+                            @endphp
                             <span style="background:var(--fado-green-mid); color:#fff; width:18px; height:18px;
                                          border-radius:50%; font-size:.65rem; display:inline-flex; align-items:center; justify-content:center">
-                                {{ count($filters['metals']) + count($filters['gemstones']) + ($filters['price_min'] > 0 || $filters['price_max'] > 0 ? 1 : 0) }}
+                                {{ $filterCount }}
                             </span>
                         @endif
                     </button>
@@ -361,6 +501,15 @@
                         @endforeach
                         @foreach($filters['gemstones'] as $s)
                             <input type="hidden" name="gemstones[]" value="{{ $s }}">
+                        @endforeach
+                        @foreach($filters['collections'] as $s)
+                            <input type="hidden" name="collections[]" value="{{ $s }}">
+                        @endforeach
+                        @foreach($filters['second_metals'] as $s)
+                            <input type="hidden" name="second_metals[]" value="{{ $s }}">
+                        @endforeach
+                        @foreach($filters['colours'] as $s)
+                            <input type="hidden" name="colours[]" value="{{ $s }}">
                         @endforeach
                         @if($filters['price_min'] > 0)<input type="hidden" name="price_min" value="{{ $filters['price_min'] }}">@endif
                         @if($filters['price_max'] > 0)<input type="hidden" name="price_max" value="{{ $filters['price_max'] }}">@endif
@@ -558,6 +707,57 @@
                                {{ in_array($gem->slug, $filters['gemstones']) ? 'checked' : '' }}
                                style="accent-color:var(--fado-green-mid); width:16px; height:16px; cursor:pointer">
                         {{ $gem->name }}
+                    </label>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            {{-- Collection (hidden when viewing a specific collection) --}}
+            @if(is_null($activeCollection) && $allCollections->isNotEmpty())
+            <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--fado-cream)">
+                <h6 class="fado-filter-heading">Collection</h6>
+                <div style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow-y:auto">
+                    @foreach($allCollections as $col)
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.9rem; color:var(--fado-deep-green)">
+                        <input type="checkbox" name="collections[]" value="{{ $col->slug }}"
+                               {{ in_array($col->slug, $filters['collections']) ? 'checked' : '' }}
+                               style="accent-color:var(--fado-green-mid); width:16px; height:16px; cursor:pointer">
+                        {{ $col->name }}
+                    </label>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            {{-- Second metal / finish --}}
+            @if($metals->isNotEmpty())
+            <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--fado-cream)">
+                <h6 class="fado-filter-heading">Second Metal / Finish</h6>
+                <div style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow-y:auto">
+                    @foreach($metals as $metal)
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.9rem; color:var(--fado-deep-green)">
+                        <input type="checkbox" name="second_metals[]" value="{{ $metal->slug }}"
+                               {{ in_array($metal->slug, $filters['second_metals']) ? 'checked' : '' }}
+                               style="accent-color:var(--fado-green-mid); width:16px; height:16px; cursor:pointer">
+                        {{ $metal->name }}
+                    </label>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            {{-- Colour (only when colour data exists) --}}
+            @if($colours->isNotEmpty())
+            <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--fado-cream)">
+                <h6 class="fado-filter-heading">Colour</h6>
+                <div style="display:flex; flex-direction:column; gap:10px">
+                    @foreach($colours as $colour)
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.9rem; color:var(--fado-deep-green)">
+                        <input type="checkbox" name="colours[]" value="{{ $colour }}"
+                               {{ in_array($colour, $filters['colours']) ? 'checked' : '' }}
+                               style="accent-color:var(--fado-green-mid); width:16px; height:16px; cursor:pointer">
+                        {{ $colour }}
                     </label>
                     @endforeach
                 </div>

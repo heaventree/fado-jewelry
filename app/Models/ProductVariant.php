@@ -11,11 +11,13 @@ class ProductVariant extends Model
     protected $fillable = [
         'product_id',
         'metal_id',
+        'second_metal_id',
         'gemstone_id',
         'sku',
         'price_eur',
         'stock',
         'is_active',
+        'colour',
     ];
 
     protected $casts = [
@@ -31,6 +33,11 @@ class ProductVariant extends Model
     public function metal(): BelongsTo
     {
         return $this->belongsTo(Metal::class);
+    }
+
+    public function secondMetal(): BelongsTo
+    {
+        return $this->belongsTo(Metal::class, 'second_metal_id');
     }
 
     public function gemstone(): BelongsTo

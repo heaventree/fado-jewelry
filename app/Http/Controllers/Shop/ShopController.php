@@ -28,22 +28,24 @@ class ShopController extends Controller
 
     public function jewellery(Request $request): View
     {
-        [$products, $metals, $gemstones, $filters] = $this->buildProductQuery($request);
+        [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request);
 
         $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')->get();
 
         return view('shop.listing', [
-            'pageTitle'      => 'All Jewellery',
-            'pageSubtitle'   => 'Fine Irish jewellery — handcrafted in sterling silver, gold and platinum.',
-            'bannerImage'    => null,
-            'products'       => $products,
-            'metals'         => $metals,
-            'gemstones'      => $gemstones,
-            'filters'        => $filters,
-            'topCategories'  => $topCategories,
-            'activeCategory' => null,
+            'pageTitle'        => 'All Jewellery',
+            'pageSubtitle'     => 'Fine Irish jewellery — handcrafted in sterling silver, gold and platinum.',
+            'bannerImage'      => null,
+            'products'         => $products,
+            'metals'           => $metals,
+            'gemstones'        => $gemstones,
+            'allCollections'   => $allCollections,
+            'colours'          => $colours,
+            'filters'          => $filters,
+            'topCategories'    => $topCategories,
+            'activeCategory'   => null,
             'activeCollection' => null,
-            'breadcrumbs'    => [['label' => 'Jewellery']],
+            'breadcrumbs'      => [['label' => 'Jewellery']],
         ]);
     }
 
@@ -54,7 +56,7 @@ class ShopController extends Controller
         // Include products in this category AND all child categories
         $categoryIds = $cat->children->pluck('id')->prepend($cat->id);
 
-        [$products, $metals, $gemstones, $filters] = $this->buildProductQuery($request, categoryIds: $categoryIds);
+        [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request, categoryIds: $categoryIds);
 
         $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')->get();
 
@@ -71,6 +73,8 @@ class ShopController extends Controller
             'products'         => $products,
             'metals'           => $metals,
             'gemstones'        => $gemstones,
+            'allCollections'   => $allCollections,
+            'colours'          => $colours,
             'filters'          => $filters,
             'topCategories'    => $topCategories,
             'activeCategory'   => $cat,
@@ -89,7 +93,7 @@ class ShopController extends Controller
     {
         $col = Collection::where('slug', $slug)->firstOrFail();
 
-        [$products, $metals, $gemstones, $filters] = $this->buildProductQuery($request, collectionSlug: $slug);
+        [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request, collectionSlug: $slug);
 
         $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')->get();
 
@@ -100,6 +104,8 @@ class ShopController extends Controller
             'products'         => $products,
             'metals'           => $metals,
             'gemstones'        => $gemstones,
+            'allCollections'   => $allCollections,
+            'colours'          => $colours,
             'filters'          => $filters,
             'topCategories'    => $topCategories,
             'activeCategory'   => null,
@@ -177,31 +183,42 @@ class ShopController extends Controller
         ?\Illuminate\Support\Collection $categoryIds = null,
         ?string $collectionSlug = null
     ): array {
-        $metals    = Metal::orderBy('name')->get();
-        $gemstones = Gemstone::orderBy('name')->get();
+        $metals         = Metal::orderBy('name')->get();
+        $gemstones      = Gemstone::orderBy('name')->get();
+        $allCollections = Collection::orderBy('name')->get();
+        $colours        = \App\Models\ProductVariant::query()
+                            ->whereNotNull('colour')
+                            ->distinct()
+                            ->orderBy('colour')
+                            ->pluck('colour');
 
         // Parse filters from request
         $filters = [
-            'metals'    => $request->array('metals'),
-            'gemstones' => $request->array('gemstones'),
-            'price_min' => $request->integer('price_min', 0),
-            'price_max' => $request->integer('price_max', 0),
-            'sort'      => $request->string('sort', 'newest')->toString(),
-            'search'    => $request->string('search')->toString(),
+            'metals'        => $request->array('metals'),
+            'gemstones'     => $request->array('gemstones'),
+            'collections'   => $request->array('collections'),
+            'second_metals' => $request->array('second_metals'),
+            'colours'       => $request->array('colours'),
+            'price_min'     => $request->integer('price_min', 0),
+            'price_max'     => $request->integer('price_max', 0),
+            'sort'          => $request->string('sort', 'newest')->toString(),
+            'search'        => $request->string('search')->toString(),
         ];
 
         $query = Product::query()
             ->where('is_active', true)
-            ->with(['primaryImage', 'variants.metal', 'variants.gemstone']);
+            ->with(['primaryImage', 'variants.metal', 'variants.secondMetal', 'variants.gemstone']);
 
         // Scope by category
         if ($categoryIds) {
             $query->whereHas('categories', fn ($q) => $q->whereIn('categories.id', $categoryIds));
         }
 
-        // Scope by collection
+        // Scope by collection (URL segment takes precedence over checkbox filter)
         if ($collectionSlug) {
             $query->whereHas('collections', fn ($q) => $q->where('slug', $collectionSlug));
+        } elseif (!empty($filters['collections'])) {
+            $query->whereHas('collections', fn ($q) => $q->whereIn('slug', $filters['collections']));
         }
 
         // Text search
@@ -217,11 +234,27 @@ class ShopController extends Controller
             );
         }
 
+        // Second metal / finish filter
+        if (!empty($filters['second_metals'])) {
+            $query->whereHas('variants', fn ($q) => $q
+                ->where('is_active', true)
+                ->whereHas('secondMetal', fn ($m) => $m->whereIn('slug', $filters['second_metals']))
+            );
+        }
+
         // Gemstone filter
         if (!empty($filters['gemstones'])) {
             $query->whereHas('variants', fn ($q) => $q
                 ->where('is_active', true)
                 ->whereHas('gemstone', fn ($g) => $g->whereIn('slug', $filters['gemstones']))
+            );
+        }
+
+        // Colour filter
+        if (!empty($filters['colours'])) {
+            $query->whereHas('variants', fn ($q) => $q
+                ->where('is_active', true)
+                ->whereIn('colour', $filters['colours'])
             );
         }
 
@@ -249,6 +282,6 @@ class ShopController extends Controller
 
         $products = $query->paginate(16)->withQueryString();
 
-        return [$products, $metals, $gemstones, $filters];
+        return [$products, $metals, $gemstones, $allCollections, $colours, $filters];
     }
 }
