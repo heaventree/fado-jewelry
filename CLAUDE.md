@@ -4,9 +4,9 @@
 
 A Laravel 13 e-commerce website for **FADÓ Jewellery**, a fine Irish jewellery brand. Full migration away from their old OpenCart site. B2C only — B2B is explicitly deferred, do not build any B2B features.
 
-**Agency:** Heaventree Digital  
-**Dev lead:** Sean O'Byrne  
-**Project manager:** Abitha  
+**Agency:** Heaventree Digital
+**Dev lead:** Sean O'Byrne
+**Project manager:** Abitha
 **Client:** John Condron (FADÓ Jewellery)
 
 ---
@@ -28,18 +28,11 @@ A Laravel 13 e-commerce website for **FADÓ Jewellery**, a fine Irish jewellery 
 
 ## Two themes — how they work together
 
-### Larkon (admin — already a Laravel app)
-Larkon is a **full Laravel application skeleton**, not just HTML. It ships with:
-- Blade views for: products (list, grid, create, edit, detail), orders (list, detail, cart, checkout), categories, customers, invoices, coupons, attributes, inventory, roles, settings
-- Auth views: login, register, reset password, lock screen
-- Layout partials: topbar, main-nav, footer, right-sidebar, head-css, footer-scripts
-- A catch-all `RoutingController` that maps URL segments directly to Blade view paths
-- Migrations for: users, cache, jobs
+### Larkon (admin)
+Larkon is a full Laravel application skeleton. The Larkon codebase is the starting point. Do NOT start from a blank Laravel install. All admin routes prefixed `/admin`, protected by `admin` middleware.
 
-**The Larkon codebase is the starting point for the entire project.** Do NOT start from a blank Laravel install. Extend and build on top of Larkon. All admin routes must be prefixed `/admin` and protected by an `admin` middleware.
-
-### Ochaka (front-end — HTML5 theme)
-Ochaka is a static HTML/CSS/JS ecommerce theme. Convert its HTML pages into Laravel Blade templates stored in `resources/views/shop/`. Customer-facing routes live separately from admin routes. Style Ochaka to the FADO colour palette (see below).
+### Ochaka (front-end)
+Static HTML/CSS/JS ecommerce theme. Converted to Laravel Blade templates in `resources/views/shop/`. Styled to FADO colour palette.
 
 ---
 
@@ -49,17 +42,17 @@ Ochaka is a static HTML/CSS/JS ecommerce theme. Convert its HTML pages into Lara
 |------|-----|-------|
 | Light mint | #DCF6D5 | Highlights, hover states |
 | Pale mint | #EBFCEF | Light backgrounds |
-| Near white | #FBFBFB | Page background option |
+| Near white | #FBFBFB | Page background |
 | Off white | #F8F9F5 | Page background option |
 | Soft white | #F5F7F1 | Section backgrounds |
 | Cream | #F0F1E7 | Product tile backgrounds |
-| Warm grey | #BCB3AB | Borders, subtle dividers |
+| Warm grey | #BCB3AB | Borders, dividers |
 | Brand green light | #81CC60 | Buttons, accents |
 | Brand green mid | #0AAC45 | Primary CTA, links |
-| Deep green | #044705 | Headers, logo text, nav |
-| Gold accent | #766D42 | Premium touches, logo foil effect |
+| Deep green | #044705 | Headers, logo, nav |
+| Gold accent | #766D42 | Premium touches, logo foil |
 
-Background: white or off-white. Product tiles: cream or off-white. Accents: mint/mid-green. Gold used sparingly.
+All 11 CSS variables defined in `public/css/fado.css` as `--fado-*` custom properties.
 
 ---
 
@@ -68,445 +61,240 @@ Background: white or off-white. Product tiles: cream or off-white. Accents: mint
 ### Main FADO brand
 - Logo: FADÓ wordmark with macron on the O, ship icon mark above
 - Tagline: Fine Irish Jewellery
-- Packaging: deep green boxes (#044705), gold foil ship logo, cream/white interior, gold FADÓ wordmark
+- Packaging: deep green boxes (#044705), gold foil ship logo, cream interior, gold FADÓ wordmark
 
 ### The Jewellery Garden sub-brand (Garden Collection only)
-- Separate logo: watercolour wildflower illustration (bluebells, red flowers, grasses, butterflies) with "The Jewellery Garden — FADŌ" typeset below in deep green
-- This logo is used **only** on Garden Collection pages (Flora/Fauna subcategories)
-- Do not use it as the main site logo
+- Watercolour wildflower illustration logo — used ONLY on Garden Collection pages
+- Do not use as the main site logo
 
 ---
 
 ## Agreed scope — B2C only
 
-### In scope
+### In scope (all built)
 - Standard retail e-commerce: browse → product → cart → checkout
 - Customer accounts + guest checkout
 - Wishlist / favourites
-- Book a consultation form (email/call request)
-- EUR base currency, manual USD rate override (no live API), GeoIP region detection, future currency expansion
+- Book a consultation form
+- EUR/USD currency with GeoIP detection and manual rate override
 - Mega menu navigation (wide dropdowns)
-- Collection/category pages with Sheila Fleet-style banners (title + text left, product image right, evocative background)
-- Filters: product category, collection, metal, second metal/finish, gemstone, price range slider, colour
-- 3–4 column product grid, clean spacing
-- Product detail page: vertical thumbnail strip left, hero image carousel, up/down nav for overflow thumbnails
-- Metal + gemstone + size selectable via dropdowns on ONE product page (variant selector, not separate URLs)
+- Collection/category pages with Sheila Fleet-style banners
+- Filters: product category, collection, metal, second metal/finish, gemstone, price range dual slider, colour
+- 3–4 column product grid
+- Product detail page: vertical thumbnail strip, hero carousel, variant selectors
+- Metal + gemstone + size on ONE page (no separate URLs per variant — SEO rule)
 - US ring sizing dropdown
-- About Us page: image-led, gallery layout
-- Contact page with consultation booking form
+- About Us page (image-led)
+- Contact page with consultation booking
 
-### Out of scope (do not build)
-- B2B trade login, tiered pricing, custom payment terms, multi-quantity per size ordering
+### Out of scope
+- B2B — explicitly deferred, do not build
 
 ### Critical SEO rule
-**One page per product, variants on the same page.** The client originally wanted separate pages per metal type and gemstone. This was overruled — duplicate pages destroy SEO. Selecting a metal or gemstone variant must update the page (images, description, price) via JavaScript without navigating to a new URL. Never generate separate routes or pages per variant.
+One page per product. Variant selection (metal/gemstone) updates the page via JavaScript — never navigates to a new URL.
 
 ---
 
 ## Navigation structure
 
 ```
-Jewellery
-  └── Rings | Crosses | Pendants | Earrings | Bracelets/Bangles | Cufflinks | Brooches | Tie-tacks
-
-Collections
-  └── Claddagh | Corrib Claddagh | Trinity | An Rí | Livia | Sheelin
-      High Crosses | Newgrange | Irish Folklore | Shamrock
-      The Garden Collection by FADÓ
-
-Wedding / Engagement
-  └── The Garden Collection by FADÓ
-      ├── Flora → Daisy | Wild Daisy | Bluebell | Forget Me Not | All
-      └── Fauna → Butterfly | Bee | All
-
+Jewellery → Rings | Crosses | Pendants | Earrings | Bracelets/Bangles | Cufflinks | Brooches | Tie-tacks
+Collections → Claddagh | Corrib Claddagh | Trinity | An Rí | Livia | Sheelin | High Crosses | Newgrange | Irish Folklore | Shamrock | The Garden Collection
+Wedding/Engagement → The Garden Collection → Flora (Daisy, Wild Daisy, Bluebell, Forget Me Not) | Fauna (Butterfly, Bee)
 About Us
 ```
 
-All top-level items with children use **wide mega menu dropdowns** (horizontal, not narrow vertical lists).  
-Header layout: logo left-aligned, mega menu below it, cart/wishlist/login/search top right. Left of logo: Contact Us, Book an appointment.
+Wide mega menu dropdowns. Logo left, nav right, cart/wishlist/login/search top right.
 
 ---
 
-## Database schema
-
-Build these migrations from scratch (Larkon only ships users/cache/jobs):
+## Database schema (all migrations complete — 16+ tables)
 
 ```
-products
-  id, name, slug, description, short_description, is_active, created_at, updated_at
-
-product_images
-  id, product_id, path, sort_order, is_primary
-
-product_variants
-  id, product_id, metal_id, gemstone_id (nullable), sku, price_eur, stock, is_active
-
-product_sizes (for rings)
-  id, product_id, us_size, stock
-
-metals
-  id, name, slug (e.g. "10k-yellow-gold", "sterling-silver")
-
-gemstones
-  id, name, slug (e.g. "diamond", "emerald", "ruby")
-
-categories
-  id, name, slug, parent_id (nullable), sort_order, banner_image, banner_title, banner_description
-
-collections
-  id, name, slug, banner_image, banner_title, banner_description
-
-category_product (pivot)
-collection_product (pivot)
-
-currencies
-  id, code, name, rate, is_default, region_codes (JSON)
-
-orders
-  id, user_id (nullable — guest), status, subtotal, total, currency_code, shipping_address (JSON)
-
-order_items
-  id, order_id, product_id, variant_id, size_id (nullable), quantity, unit_price
-
-wishlists
-  id, user_id, product_id, variant_id
-
-consultations
-  id, name, email, phone, message, preferred_contact, created_at
+products, product_images, product_variants (includes second_metal_id, colour),
+product_sizes, metals, gemstones, categories (self-referential),
+collections, category_product (pivot), collection_product (pivot),
+currencies, orders (nullable user_id for guest), order_items,
+wishlists, consultations, redirects, coupons, settings
 ```
 
 ---
 
-## Seeder data to include
+## Build status — complete summary
 
-Write seeders for these so the DB is testable immediately:
+### Phase 1 — Foundation ✅ COMPLETE
+- ✅ 16 database migrations
+- ✅ 12 Eloquent models with full relationships
+- ✅ Seeders: metals (11), gemstones (11), ring sizes (US), currencies (EUR/USD)
+- ✅ CurrencyService — GeoIP detection (ip-api.com), session override, manual rate
+- ✅ `php artisan fado:import-opencart` — full OpenCart migration command with dry-run, image download, SEO redirects
 
-**Metals:** Sterling Silver, 9ct Yellow Gold, 9ct White Gold, 9ct Rose Gold, 10ct Yellow Gold, 14ct Yellow Gold, 14ct White Gold, 18ct Yellow Gold, 18ct White Gold, Platinum, Two-tone (Yellow/White Gold)
+### Phase 2 — Admin panel ✅ COMPLETE
+- ✅ Step 1: Product management — full CRUD with variants (metals/gemstones), images, sizes
+- ✅ Step 2: Category management — CRUD with banner image upload and live preview
+- ✅ Step 3: Collection management — CRUD with banner image upload
+- ✅ Step 4: Currency admin — manual rate updates, region toggle, conversion preview
+- ✅ Step 5: Order management — list, detail, status timeline, inline status update
+- ✅ Step 6: Consultation inbox — list, detail, read/unread tracking, nav badge
+- ✅ Step 7: Dashboard — real data (products, orders, revenue, consultations, top products)
+- ✅ Step 8: Customers — list with lifetime value, detail with order history
+- ✅ Step 9: Inventory — stock editing with low-stock alerts and badges
+- ✅ Step 10: Invoices — list, printable A4 invoice with @media print
+- ✅ Step 11: Coupons — full CRUD, fixed/percent types, expiry, usage limits
+- ✅ Step 12: Seller/vendor sections removed — nav cleaned up
+- ✅ Step 13: Roles/permissions — Spatie setup (in progress)
+- ✅ Step 14: Settings page — full settings admin (see settings spec below)
 
-**Gemstones:** Diamond, Emerald, Ruby, Sapphire, Cubic Zirconia, Amethyst, Aquamarine, Garnet, Opal, Pearl, Topaz
+### Phase 3 — Customer front end ✅ COMPLETE
+- ✅ Step 1: Global layout — header, mega menu, footer, mobile menu, FADO CSS variables
+- ✅ Step 2: Homepage — hero slider, trust strip, category carousel, featured collections, new arrivals, Garden Collection spotlight, consultation CTA
+- ✅ Step 3: Collection/category listing pages — Sheila Fleet banners, all 7 filters, 3-4 col grid, mobile offcanvas filters, sort toolbar, filter pills
+- ✅ Step 3 fix: Added missing filters — collection, second metal/finish, colour
+- ✅ Step 4: Product detail page — vertical thumbnail strip, hero carousel, up/down nav, metal/gemstone/size dropdowns, JS variant switcher (no URL change), related products
+- ✅ Step 5: Cart + checkout — CartService (session), guest + account checkout, COD payment, order confirmation page, currency switcher
+- ✅ Step 6: Wishlist — WishlistService (guest session + DB), toggle on product/listing pages, wishlist page, guest→DB merge on login, header badge
 
-**Ring sizes (US):** 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 12, 13
+### Phase 4 — Supporting pages ✅ COMPLETE
+- ✅ Step 1: About Us — hero, story, values strip, collection gallery, craft process, consultation CTA
+- ✅ Step 2: Contact/Book consultation — contact info from settings, general enquiry + consultation forms, consultation_enabled gate
+- ✅ Step 3: Customer account area — dashboard, order history, order detail, profile edit, password change
+- ✅ Step 4: Search — full-text search (name/description), ranked results, product grid, pagination
 
-**Currencies:** EUR (default, rate 1.0, EU regions), USD (rate manually set, all other regions)
+### Phase 5 — SEO + polish ✅ COMPLETE
+- ✅ Meta tags on every page (title, description, OG, Twitter Card, canonical)
+- ✅ noindex on cart, checkout, account, confirmation pages
+- ✅ Google Analytics injection (production only, from settings)
+- ✅ Redirect middleware — catches OpenCart URLs (/index.php?route=...), checks redirects table
+- ✅ XML sitemap at /sitemap.xml (products, categories, collections, static pages)
+- ✅ robots.txt blocking admin/cart/checkout/account
 
----
-
-## Larkon views that already exist — extend, don't rebuild
-
-These Blade views ship with Larkon. Adapt them for FADO rather than building from scratch:
-
-| Existing view | FADO use |
-|---------------|----------|
-| `general/products/list` | Admin product list |
-| `general/products/create` | Admin add product (extend for metals/gemstones/variants) |
-| `general/products/edit` | Admin edit product |
-| `general/products/detail` | Admin product detail |
-| `general/products/grid` | Admin product grid view |
-| `general/orders/list` | Admin order list |
-| `general/orders/details` | Admin order detail |
-| `general/orders/cart` | Admin cart view |
-| `general/orders/checkout` | Admin checkout |
-| `general/category/list` | Admin category list |
-| `general/category/create` | Admin add category |
-| `general/category/edit` | Admin edit category |
-| `general/attributes/list` | Repurpose for metals/gemstones |
-| `other/coupons-list` | Discount codes |
-| `other/coupons-add` | Add discount code |
-| `users/customer/list` | Customer list |
-| `users/customer/details` | Customer detail |
-| `general/settings` | Site settings, currency rates |
-| `dashboards/index` | Main admin dashboard |
-
----
-
-## Build order (phases)
-
-### Phase 0 — OpenCart data export (before any dev work)
-- Export from phpMyAdmin: `oc_product`, `oc_product_description`, `oc_product_image`, `oc_category`, `oc_category_description`, `oc_product_to_category`, `oc_url_alias`, `oc_information`, `oc_information_description`
-- Save dump to `database/opencart-export.sql` (add to .gitignore — do not commit)
-- Download all product images from old server to `_opencart-images/` (also gitignored)
-
-### Phase 1 — Foundation
-1. Database migrations (all tables above, including `opencart_id` on products)
-2. Laravel models + relationships
-3. Seeders (metals, gemstones, ring sizes, currencies)
-4. Currency service (GeoIP region detection, manual rate lookup)
-5. Artisan import command: `php artisan fado:import-opencart`
-
-### Phase 2 — Admin panel (extend Larkon)
-5. Extend product create/edit views to handle variants (metal + gemstone combinations)
-6. Category management with banner image upload
-7. Collection management with banner image upload
-8. Currency admin (manual rate updates per currency)
-9. Order management and status updates
-10. Consultation enquiry inbox
-
-### Phase 3 — Customer front end (Ochaka → Blade)
-11. Global layout: header, mega menu, footer (`resources/views/shop/layouts/`)
-12. Homepage: hero banner, featured collections
-13. Collection/category listing pages with Sheila Fleet-style banner + filters
-14. Product detail page: thumbnail strip, carousel, variant selectors
-15. Cart and checkout (guest + account)
-16. Wishlist
-
-### Phase 4 — Supporting pages
-17. About Us
-18. Contact / Book a consultation
-19. Customer account area (orders, wishlist, profile)
-
-### Phase 5 — Polish + SEO
-20. Per-collection hero imagery
-21. Clean slugged URLs, meta titles/descriptions per product and category
-22. XML sitemap
-
-### Phase 6 — QA + launch
-23. Cross-device testing
-24. Client UAT
-25. DNS, SSL, production deploy on 20i
+### Phase 6 — QA + launch prep ✅ COMPLETE
+- ✅ Seller view files deleted
+- ✅ robots.txt
+- ✅ 404 and 500 error pages (FADO-branded, standalone — no layout dependency)
+- ✅ CSRF on all forms (verified)
+- ✅ Rate limiting on contact/consultation form (5/min per IP)
+- ⏳ User roles/permissions (Spatie — in progress)
 
 ---
 
-## OpenCart data migration
+## Pending / outstanding items
 
-### Background
-The client ran an OpenCart site for approximately 20 years. It went offline 2–3 months ago due to PHP version incompatibility (OpenCart required an upgrade that wasn't worth the cost, so the decision was made to rebuild in Laravel instead).
+| Item | Notes |
+|------|-------|
+| User roles/permissions | Spatie setup — currently running in Claude Code |
+| OpenCart DB export | Get from cPanel/phpMyAdmin — needed for product migration |
+| OpenCart product images | Download from old server via cPanel |
+| Run migrations on 20i | `php artisan migrate --seed` — once deployed to staging |
+| Run storage:link on 20i | `php artisan storage:link` |
+| Stripe integration | Waiting for client to provide API keys |
+| Payment method decision | Stripe vs PayPal — confirm with John |
+| Product reviews | Keep or remove — decision pending with client |
+| Cross-device testing | Phase 6 QA — after staging deploy |
+| Client UAT | John signs off |
+| DNS switch + go live | Final step |
+
+---
+
+## Server deployment checklist (20i — heaventree15.com)
+
+When deploying to staging, run in this order:
+```
+1. git pull
+2. composer install --no-dev
+3. php artisan migrate --seed
+4. php artisan db:seed --class=SettingsSeeder
+5. php artisan db:seed --class=RolesAndPermissionsSeeder
+6. php artisan db:seed --class=AdminUserSeeder
+7. php artisan storage:link
+8. php artisan config:cache
+9. php artisan route:cache
+```
+
+Set these in `.env` on the server:
+```
+APP_URL=https://heaventree15.com
+APP_ENV=production
+APP_DEBUG=false
+ADMIN_NAME=
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
+OC_DB_HOST= (OpenCart DB for migration)
+OC_DB_DATABASE=
+OC_DB_USERNAME=
+OC_DB_PASSWORD=
+```
+
+---
+
+## User roles and permissions (Spatie Laravel Permission)
+
+| Role | Access |
+|------|--------|
+| `super_admin` | Everything |
+| `store_admin` | Full admin except roles management |
+| `staff` | Orders, consultations, inventory, invoices only |
+| `customer` | Shop front end and account area only |
+
+- EnsureAdmin middleware checks `hasRole(['super_admin', 'store_admin', 'staff'])`
+- Staff sees restricted nav — no products/categories/collections/currencies/settings/coupons
+- Admin credentials from `.env`: `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_NAME` — never hardcoded
+
+---
+
+## Admin settings — all complete ✅
+
+All use `Setting::get('key')` — never hardcoded.
+
+| Group | Keys |
+|-------|------|
+| Store identity | store_name, store_tagline, store_email, store_phone, store_address, orders_email, consultation_email, meta_title, meta_description, google_analytics_id, facebook_url, instagram_url, twitter_url, maintenance_mode |
+| Payments | cod_enabled, payment_method_label, stripe_publishable_key, stripe_secret_key |
+| Shipping | free_shipping_threshold, shipping_rate_ireland, shipping_rate_international, shipping_notice |
+| Display | products_per_page, new_arrivals_count, wishlist_enabled, reviews_enabled |
+| Orders | order_email_from_name, order_email_from_address, low_stock_threshold |
+| Consultation | consultation_enabled, consultation_intro_text |
+
+---
+
+## OpenCart migration
 
 ### What to migrate
-- **Products** — names, descriptions, prices, images, categories ✅
-- **Page content** — any static pages (About Us, etc.) ✅
-- **Orders** — do NOT migrate, too old and site has been offline ❌
-- **Customer accounts** — do NOT migrate ❌
+- Products, descriptions, images, categories ✅
+- Orders — do NOT migrate ❌
+- Customer accounts — do NOT migrate ❌
 
-### How to access the data
-We have **phpMyAdmin access** to the old OpenCart database. Export the relevant tables as a MySQL dump before beginning migration work.
+### How to run
+```bash
+# Dry run first
+php artisan fado:import-opencart --dry-run
 
-### Key OpenCart tables to export
-```
-oc_product                 — core product data (product_id, model, price, status)
-oc_product_description     — product names and descriptions (per language)
-oc_product_image           — additional product images
-oc_category                — category structure
-oc_category_description    — category names and descriptions
-oc_product_to_category     — product↔category relationships
-oc_url_alias               — existing SEO URLs (useful for redirects)
+# Full import
+php artisan fado:import-opencart --image-base-url=https://old.fadojewellery.com/image/
 ```
 
-### Migration approach
-Write a Laravel Artisan command `php artisan fado:import-opencart` that:
-1. Reads from the exported OpenCart MySQL dump (placed at `database/opencart-export.sql`)
-2. Or connects directly to the old DB via a second DB connection defined in `config/database.php` as `opencart`
-3. Maps OpenCart product fields to the new FADO schema
-4. Creates Product, ProductVariant (defaulting to Sterling Silver if no metal data exists), and ProductImage records
-5. Maps OpenCart categories to the new categories table
-6. Downloads/copies product images to `storage/app/public/products/`
-7. Logs skipped or failed records to `storage/logs/opencart-import.log`
-
-### OpenCart → FADO field mapping
-```
-oc_product.product_id        → products.opencart_id (add this column for reference)
-oc_product_description.name  → products.name
-oc_product_description.description → products.description
-oc_product.price             → product_variants.price_eur
-oc_product.model             → product_variants.sku
-oc_product.status (1=active) → products.is_active
-oc_product_image.image       → product_images.path
-oc_url_alias.keyword         → products.slug (reuse old slugs where possible for SEO)
-```
-
-### Add to products table migration
-```
-opencart_id unsignedInteger nullable -- for traceability post-migration
-```
-
-### SEO redirects
-Export `oc_url_alias` and create a `redirects` table or use Laravel's redirect middleware to map old OpenCart URLs (`/index.php?route=product/product&product_id=X` and `/old-slug`) to new Laravel URLs (`/products/new-slug`). This preserves any existing Google rankings.
-
-### Page content migration
-Check OpenCart's `oc_information` and `oc_information_description` tables for static page content (About Us etc.) and manually port that text into the new Laravel pages — don't automate this, it needs a human review.
+Set OC_DB_* variables in .env to connect to the old OpenCart database.
 
 ---
 
-## Full project audit checklist
+## Core principles
 
-### Admin panel (Larkon) — completion status
+### Nothing gets skipped
+Both admin and front end must be fully functional. Every client requirement must be built. Every Larkon section must be wired to real data.
 
-| Section | Status | Action needed |
-|---------|--------|---------------|
-| Dashboard | ⬜ Demo data | Wire to real counts (products, orders, revenue, consultations) |
-| Products | ✅ Done Phase 2 Step 1 | Complete |
-| Categories | ✅ Done Phase 2 Step 2 | Complete |
-| Collections | ✅ Done Phase 2 Step 3 | Complete |
-| Currencies | ✅ Done Phase 2 Step 4 | Complete |
-| Orders | ✅ Done Phase 2 Step 5 | Complete |
-| Consultations | ⏳ Phase 2 Step 6 | In progress |
-| Customers | ⬜ Demo data | Wire to users table — list, detail, order history |
-| Inventory | ⬜ Demo data | Wire to product_variants stock field |
-| Invoices | ⬜ Demo data | Wire to orders — printable invoice view |
-| Coupons | ⬜ Not built | Needs coupons table + discount logic on checkout |
-| Roles & permissions | ⬜ Larkon default | Test Spatie permissions package is working |
-| Auth (login/register) | ⬜ Larkon default | Test — should work out of the box |
-| Settings | ⬜ Demo data | Wire to site settings (store name, contact email, etc.) |
-| Product reviews | ⬜ Larkon default | Decide — keep or remove for jewellery store |
-| Sellers/vendors | ⬜ Larkon default | Remove — FADO is single vendor, not marketplace |
-
-### Customer front end — completion status
-
-| Feature | Status | Phase |
-|---------|--------|-------|
-| Global layout (header, footer, mega menu) | ⬜ Not started | Phase 3 Step 1 |
-| Homepage (hero, featured collections) | ⬜ Not started | Phase 3 Step 2 |
-| Collection/category pages with Sheila Fleet banners | ⬜ Not started | Phase 3 Step 3 |
-| Filter sidebar (metal, gemstone, price, category) | ⬜ Not started | Phase 3 Step 3 |
-| Product detail page (carousel, variant selectors) | ⬜ Not started | Phase 3 Step 4 |
-| Ring size US dropdown | ⬜ Not started | Phase 3 Step 4 |
-| Cart | ⬜ Not started | Phase 3 Step 5 |
-| Checkout (guest + account) | ⬜ Not started | Phase 3 Step 5 |
-| Currency switcher (EUR/USD, GeoIP) | ⬜ Not started | Phase 3 Step 5 |
-| Wishlist / favourites | ⬜ Not started | Phase 3 Step 6 |
-| Customer account area (orders, profile, wishlist) | ⬜ Not started | Phase 4 Step 3 |
-| About Us page (image-led, gallery) | ⬜ Not started | Phase 4 Step 1 |
-| Contact / Book a consultation form | ⬜ Not started | Phase 4 Step 2 |
-| Search functionality | ⬜ Not started | Phase 4 |
-| Product reviews (front end) | ⬜ Decide | Phase 4 |
-
-### Data & integration — completion status
-
-| Item | Status | Notes |
-|------|--------|-------|
-| Database migrations | ✅ Done Phase 1 | 16 tables |
-| Eloquent models | ✅ Done Phase 1 | 12 models |
-| Seeders | ✅ Done Phase 1 | Metals, gemstones, sizes, currencies |
-| Currency service (GeoIP) | ✅ Done Phase 1 | ip-api.com, session override |
-| OpenCart import command | ✅ Done Phase 1 | Ready to run when DB access confirmed |
-| OpenCart DB export | ⬜ Pending | Get from cPanel/phpMyAdmin |
-| Product image migration | ⬜ Pending | Download from old server via cPanel |
-| SEO redirects (old URLs → new) | ⬜ Phase 5 | Redirects table already built |
-| XML sitemap | ⬜ Phase 5 | |
-| Meta tags per product/category | ⬜ Phase 5 | |
-
-### Updated build order (revised after audit)
-
-#### Phase 2 — Admin panel (remaining steps)
-- Step 6: Consultation enquiry inbox ⏳
-- Step 7: Wire dashboard to real data
-- Step 8: Wire customers section to users table
-- Step 9: Wire inventory to product_variants stock
-- Step 10: Wire invoices to orders
-- Step 11: Coupons table + admin CRUD
-- Step 12: Remove seller/vendor sections (irrelevant for FADO)
-- Step 13: Test and confirm auth + roles working
-- Step 14: Settings page (store name, contact email, etc.)
-
-#### Phase 3 — Customer front end (Ochaka → Blade)
-- Step 1: Global layout — header, mega menu, footer
-- Step 2: Homepage
-- Step 3: Collection/category pages + filters
-- Step 4: Product detail page
-- Step 5: Cart + checkout + currency switcher
-- Step 6: Wishlist
-
-#### Phase 4 — Supporting pages
-- Step 1: About Us
-- Step 2: Contact / Book a consultation
-- Step 3: Customer account area
-- Step 4: Search
-
-#### Phase 5 — SEO + polish
-#### Phase 6 — QA + launch
-
----
-
-## Admin settings — full specification
-
-All settings use the `Setting` model (key/value store). The settings page in admin must cover all of the following.
-
-### Store identity (✅ built)
-- `store_name`, `store_tagline`, `store_email`, `store_phone`, `store_address`
-- `orders_email`, `consultation_email`
-- `meta_title`, `meta_description`, `google_analytics_id`
-- `facebook_url`, `instagram_url`, `twitter_url`
-- `maintenance_mode` — boolean toggle
-
-### Payments (❌ missing — must add)
-- `cod_enabled` — boolean, COD on/off toggle (testing only, off before Stripe go-live)
-- `payment_method_label` — custom text shown at checkout e.g. "Pay by phone"
-- `stripe_publishable_key` — added when client provides details
-- `stripe_secret_key` — encrypted storage
-
-### Shipping (❌ missing — must add)
-- `free_shipping_threshold` — EUR amount above which shipping is free (default 75)
-- `shipping_rate_ireland` — standard rate for Irish orders
-- `shipping_rate_international` — standard rate for international orders
-- `shipping_notice` — message shown at checkout
-
-### Display (❌ missing — must add)
-- `products_per_page` — pagination count on listing pages (default 12)
-- `new_arrivals_count` — homepage new arrivals count
-- `wishlist_enabled` — boolean toggle
-- `reviews_enabled` — boolean toggle (decision pending with client)
-
-### Orders (❌ missing — must add)
-- `order_email_from_name` — sender name on order emails
-- `order_email_from_address` — sender address on order emails
-- `low_stock_threshold` — units at which inventory flags as low stock (default 5)
-
-### Consultation / booking (❌ missing — must add)
-- `consultation_enabled` — boolean, show/hide consultation form
-- `consultation_intro_text` — editable intro text on booking form
-
----
-
-## Core principle — nothing gets skipped
-
-Both the customer-facing front end AND the admin back end must be fully functional before launch. This means:
-
-1. Everything the client requested in the brief must be built
-2. Everything Larkon ships with by default must be properly wired to real data (not demo/placeholder data)
-3. Only features that are genuinely irrelevant to a jewellery B2C store can be removed
-
-Before starting Phase 3, a full audit must be completed covering:
-- Every Larkon admin section — is it wired to real data or still on demo?
-- Every client requirement from the brief — is it built or still outstanding?
-- Any gaps between what Larkon provides and what FADO needs
-
----
-
-## Critical rule — strictly no hardcoding
-
-**Nothing must ever be hardcoded in the codebase.** Every value that could change must come from one of these sources:
-
-- **Admin settings** (`Setting::get('key')`) — for store-wide configurable values
-- **Database** — for all content, products, categories, collections, currencies
-- **`.env`** — for environment-specific values (DB credentials, API keys, app URL)
-- **Config files** (`config/fado.php`) — for technical defaults that aren't admin-facing
-
-### Examples of what must NOT be hardcoded:
-- Shipping rates or free shipping threshold → `Setting::get('free_shipping_threshold')`
-- Products per page → `Setting::get('products_per_page', 12)`
-- Low stock threshold → `Setting::get('low_stock_threshold', 5)`
-- New arrivals count → `Setting::get('new_arrivals_count', 8)`
-- Email from name/address → `Setting::get('order_email_from_name')`
-- Payment method label → `Setting::get('payment_method_label')`
-- COD enabled → `Setting::get('cod_enabled', false)`
-- Consultation intro text → `Setting::get('consultation_intro_text')`
-- Social media URLs → `Setting::get('instagram_url')`
-- Store name, tagline, phone → `Setting::get('store_name')`
-- Currency rates → currencies table, never hardcoded
-- Any copy/text that the store admin might want to change
+### Strictly no hardcoding
+Every configurable value must come from `Setting::get()`, the database, or `.env`. Never hardcode shipping rates, thresholds, counts, labels, emails, or any value the store admin might want to change.
 
 ### If in doubt — make it a setting.
 
 ---
 
-## Laravel conventions to follow
+## Laravel conventions
 
-- Resourceful controllers (`php artisan make:controller --resource`)
-- Eloquent relationships — no raw queries
-- Named routes throughout
-- Blade templates extend a master layout
-- Laravel Vite for asset compilation
+- Resourceful controllers, Eloquent relationships, named routes
+- Blade templates extend master layout
 - Product images: `storage/app/public/products`, symlinked to `public/storage`
-- Admin routes: prefixed `/admin`, protected by `admin` middleware
-- Shop routes: prefixed `/` (root), no auth required except account/wishlist
+- Admin routes: `/admin` prefix, `admin` middleware
+- Shop routes: `/` prefix, no auth except account/wishlist
 - Form validation via Request classes
-- Use Laravel's built-in auth scaffolding for customer accounts
+- No raw queries
