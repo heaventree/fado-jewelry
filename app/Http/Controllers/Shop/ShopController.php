@@ -189,44 +189,6 @@ class ShopController extends Controller
         ));
     }
 
-    public function addToCart(Request $request): RedirectResponse
-    {
-        // Phase 3 Step 5 — full cart logic built here
-        $request->validate([
-            'product_id' => ['required', 'integer'],
-            'variant_id' => ['required', 'integer'],
-            'quantity'   => ['required', 'integer', 'min:1'],
-        ]);
-
-        // Stub: store in session cart until cart controller is built
-        $cart = session('cart', []);
-        $key  = $request->input('variant_id') . '_' . $request->input('size_id');
-
-        if (isset($cart[$key])) {
-            $cart[$key]['quantity'] += (int) $request->input('quantity', 1);
-        } else {
-            $cart[$key] = [
-                'product_id' => $request->input('product_id'),
-                'variant_id' => $request->input('variant_id'),
-                'size_id'    => $request->input('size_id') ?: null,
-                'quantity'   => (int) $request->input('quantity', 1),
-            ];
-        }
-
-        session(['cart' => $cart]);
-
-        return back()->with('cart_success', 'Added to your bag!');
-    }
-
-    public function cart(): View
-    {
-        return view('shop.coming-soon', ['page' => 'Shopping Bag']);
-    }
-
-    public function checkout(): View
-    {
-        return view('shop.coming-soon', ['page' => 'Checkout']);
-    }
 
     public function wishlist(): View
     {
@@ -266,8 +228,8 @@ class ShopController extends Controller
 
     public function switchCurrency(Request $request): RedirectResponse
     {
-        $request->validate(['currency' => ['required', 'in:EUR,USD']]);
-        session(['currency' => $request->input('currency')]);
+        $request->validate(['currency' => ['required', 'string', 'size:3']]);
+        app(\App\Services\CurrencyService::class)->setForSession($request->input('currency'));
         return back();
     }
 

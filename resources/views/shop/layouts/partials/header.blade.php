@@ -17,15 +17,19 @@
                     <span style="opacity:.6; font-size:.75rem">Free delivery on orders over €100</span>
                     {{-- Currency switcher --}}
                     @php
-                        $activeCurrency = session('currency', 'EUR');
+                        $activeCurrencyCode = session('fado_currency', 'EUR');
+                        $availableCurrencies = \App\Models\Currency::orderBy('is_default','desc')->orderBy('code')->get();
                     @endphp
                     <form action="{{ route('shop.currency.switch') }}" method="POST" class="d-inline">
                         @csrf
                         <select name="currency"
                                 onchange="this.form.submit()"
                                 style="background:transparent; border:none; color:rgba(255,255,255,0.85); font-size:.8125rem; cursor:pointer; outline:none">
-                            <option value="EUR" {{ $activeCurrency === 'EUR' ? 'selected' : '' }}>€ EUR</option>
-                            <option value="USD" {{ $activeCurrency === 'USD' ? 'selected' : '' }}>$ USD</option>
+                            @foreach($availableCurrencies as $cur)
+                            <option value="{{ $cur->code }}" {{ $activeCurrencyCode === $cur->code ? 'selected' : '' }}>
+                                {{ $cur->code === 'EUR' ? '€' : ($cur->code === 'USD' ? '$' : '') }} {{ $cur->code }}
+                            </option>
+                            @endforeach
                         </select>
                     </form>
                 </div>

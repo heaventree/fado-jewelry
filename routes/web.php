@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
+use App\Http\Controllers\Shop\CartController;
+use App\Http\Controllers\Shop\CheckoutController;
 use App\Http\Controllers\Shop\ShopController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -35,10 +37,16 @@ Route::prefix('/')->name('shop.')->group(function () {
     // Individual product
     Route::get('/products/{product:slug}', [ShopController::class, 'product'])->name('product');
 
-    // Cart & checkout
-    Route::get('/cart', [ShopController::class, 'cart'])->name('cart');
-    Route::post('/cart/add', [ShopController::class, 'addToCart'])->name('cart.add');
-    Route::get('/checkout', [ShopController::class, 'checkout'])->name('checkout')->middleware('auth');
+    // Cart
+    Route::get('/cart', [CartController::class, 'show'])->name('cart');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+
+    // Checkout (no auth middleware — guest checkout supported)
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'place'])->name('checkout.place');
+    Route::get('/order/{order}/confirmation', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
 
     // Wishlist
     Route::get('/wishlist', [ShopController::class, 'wishlist'])->name('wishlist');
