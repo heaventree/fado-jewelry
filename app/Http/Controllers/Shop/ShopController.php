@@ -197,11 +197,6 @@ class ShopController extends Controller
         return view('shop.coming-soon', ['page' => 'Wishlist']);
     }
 
-    public function account(): View
-    {
-        return view('shop.coming-soon', ['page' => 'My Account']);
-    }
-
     public function about(): View
     {
         return view('shop.about');
@@ -238,7 +233,29 @@ class ShopController extends Controller
 
     public function search(Request $request): View
     {
-        return view('shop.coming-soon', ['page' => 'Search']);
+        $query  = trim($request->string('q')->toString());
+        $perPage = (int) Setting::get('products_per_page', 16);
+
+        $products = collect();
+        $total    = 0;
+
+        if (strlen($query) >= 2) {
+            $builder = Product::query()
+                ->where('is_active', true)
+                ->where(function ($q) use ($query) {
+                    $q->where('name', 'like', '%' . $query . '%')
+                      ->orWhere('description', 'like', '%' . $query . '%')
+                      ->orWhere('short_description', 'like', '%' . $query . '%');
+                })
+                ->with(['primaryImage', 'variants.metal', 'variants.gemstone'])
+                ->orderByRaw("CASE WHEN name LIKE ? THEN 0 ELSE 1 END", ['%' . $query . '%'])
+                ->latest();
+
+            $products = $builder->paginate($perPage)->withQueryString();
+            $total    = $products->total();
+        }
+
+        return view('shop.search', compact('query', 'products', 'total'));
     }
 
     public function newsletterSubscribe(Request $request): RedirectResponse

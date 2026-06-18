@@ -5,6 +5,7 @@ use App\Http\Controllers\RoutingController;
 use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\CheckoutController;
 use App\Http\Controllers\Shop\ShopController;
+use App\Http\Controllers\Shop\AccountController;
 use App\Http\Controllers\Shop\WishlistController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -54,17 +55,22 @@ Route::prefix('/')->name('shop.')->group(function () {
     Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
     Route::post('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
-    // Account
-    Route::get('/account', [ShopController::class, 'account'])->name('account.index')->middleware('auth');
+    // Account (auth-protected — middleware applied in AccountController constructor)
+    Route::get('/account',                         [AccountController::class, 'index'])->name('account.index');
+    Route::get('/account/orders',                  [AccountController::class, 'orders'])->name('account.orders');
+    Route::get('/account/orders/{order}',          [AccountController::class, 'orderShow'])->name('account.order');
+    Route::get('/account/profile',                 [AccountController::class, 'profile'])->name('account.profile');
+    Route::patch('/account/profile',               [AccountController::class, 'profileUpdate'])->name('account.profile.update');
+    Route::patch('/account/profile/password',      [AccountController::class, 'passwordUpdate'])->name('account.password.update');
+
+    // Search
+    Route::get('/search', [ShopController::class, 'search'])->name('search');
 
     // Static pages
     Route::get('/about', [ShopController::class, 'about'])->name('about');
     Route::get('/contact', [ShopController::class, 'contact'])->name('contact');
     Route::post('/contact', [ShopController::class, 'contactStore'])->name('contact.store');
     Route::get('/privacy', [ShopController::class, 'privacy'])->name('privacy');
-
-    // Search
-    Route::get('/shop/search', [ShopController::class, 'search'])->name('search');
 
     // Newsletter subscribe (POST)
     Route::post('/newsletter', [ShopController::class, 'newsletterSubscribe'])->name('newsletter.subscribe');

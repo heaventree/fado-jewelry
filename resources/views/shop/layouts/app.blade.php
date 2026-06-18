@@ -61,7 +61,7 @@
                     <h4 class="fw-semibold" style="color:#044705">Search FADÓ Jewellery</h4>
                     <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ url('/shop/search') }}" method="GET" class="d-flex gap-2">
+                <form action="{{ route('shop.search') }}" method="GET" class="d-flex gap-2">
                     <input type="text" name="q" class="form-control form-control-lg"
                            placeholder="Search for rings, pendants, earrings…" autofocus>
                     <button type="submit" class="btn btn-fado-primary px-4">
