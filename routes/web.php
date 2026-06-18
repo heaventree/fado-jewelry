@@ -73,7 +73,7 @@ Route::prefix('/')->name('shop.')->group(function () {
     // Static pages
     Route::get('/about', [ShopController::class, 'about'])->name('about');
     Route::get('/contact', [ShopController::class, 'contact'])->name('contact');
-    Route::post('/contact', [ShopController::class, 'contactStore'])->name('contact.store');
+    Route::post('/contact', [ShopController::class, 'contactStore'])->name('contact.store')->middleware('throttle:contact');
     Route::get('/privacy', [ShopController::class, 'privacy'])->name('privacy');
 
     // Newsletter subscribe (POST)
