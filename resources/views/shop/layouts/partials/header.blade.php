@@ -78,8 +78,12 @@
                     @endauth
 
                     {{-- Wishlist --}}
-                    <a href="{{ route('shop.wishlist') }}" title="Wishlist">
+                    <a href="{{ route('shop.wishlist') }}" title="Wishlist" style="position:relative">
                         <i class="icon icon-heart"></i>
+                        @php $wishlistCount = session('wishlist_count', 0); @endphp
+                        @if($wishlistCount > 0)
+                            <span class="fado-cart-count" style="background:var(--fado-gold)">{{ $wishlistCount }}</span>
+                        @endif
                     </a>
 
                     {{-- Cart --}}

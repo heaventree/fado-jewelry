@@ -5,6 +5,7 @@ use App\Http\Controllers\RoutingController;
 use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\CheckoutController;
 use App\Http\Controllers\Shop\ShopController;
+use App\Http\Controllers\Shop\WishlistController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CollectionController;
@@ -49,7 +50,9 @@ Route::prefix('/')->name('shop.')->group(function () {
     Route::get('/order/{order}/confirmation', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
 
     // Wishlist
-    Route::get('/wishlist', [ShopController::class, 'wishlist'])->name('wishlist');
+    Route::get('/wishlist', [WishlistController::class, 'show'])->name('wishlist');
+    Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::post('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
     // Account
     Route::get('/account', [ShopController::class, 'account'])->name('account.index')->middleware('auth');

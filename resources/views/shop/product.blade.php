@@ -134,20 +134,19 @@
 
                     {{-- Wishlist overlay button --}}
                     <div style="position:absolute; top:16px; right:16px">
-                        <form method="POST" action="{{ route('shop.wishlist') }}">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <button type="submit"
-                                    style="background:#fff; border:none; width:42px; height:42px; border-radius:50%;
-                                           display:flex; align-items:center; justify-content:center;
-                                           box-shadow:0 2px 12px rgba(0,0,0,.12); cursor:pointer;
-                                           color:var(--fado-deep-green); transition:color .2s"
-                                    title="Save to wishlist"
-                                    onmouseover="this.style.color='var(--fado-green-mid)'"
-                                    onmouseout="this.style.color='var(--fado-deep-green)'">
-                                <i class="icon icon-heart" style="font-size:1rem"></i>
-                            </button>
-                        </form>
+                        <button type="button"
+                                id="wishlistOverlayBtn"
+                                onclick="toggleWishlist(this)"
+                                data-product-id="{{ $product->id }}"
+                                data-wishlisted="{{ app(\App\Services\WishlistService::class)->has($product->id) ? 'true' : 'false' }}"
+                                style="background:#fff; border:none; width:42px; height:42px; border-radius:50%;
+                                       display:flex; align-items:center; justify-content:center;
+                                       box-shadow:0 2px 12px rgba(0,0,0,.12); cursor:pointer;
+                                       color:var(--fado-deep-green); transition:color .2s"
+                                title="Save to wishlist">
+                            <i class="icon {{ app(\App\Services\WishlistService::class)->has($product->id) ? 'icon-heart-fill' : 'icon-heart' }}"
+                               style="font-size:1rem; color:{{ app(\App\Services\WishlistService::class)->has($product->id) ? 'var(--fado-green-mid)' : 'inherit' }}"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -340,16 +339,22 @@
                     </div>
 
                     {{-- Wishlist text button --}}
-                    <button type="button" onclick="addToWishlist()"
+                    @php $isWishlisted = app(\App\Services\WishlistService::class)->has($product->id); @endphp
+                    <button type="button"
+                            id="wishlistTextBtn"
+                            onclick="toggleWishlist(this)"
+                            data-product-id="{{ $product->id }}"
+                            data-wishlisted="{{ $isWishlisted ? 'true' : 'false' }}"
                             style="width:100%; padding:11px; background:transparent;
-                                   border:1px solid var(--fado-warm-grey); border-radius:3px;
-                                   font-size:.875rem; color:var(--fado-deep-green); cursor:pointer;
-                                   display:flex; align-items:center; justify-content:center; gap:8px;
-                                   transition:border-color .2s"
-                            onmouseover="this.style.borderColor='var(--fado-green-mid)'"
-                            onmouseout="this.style.borderColor='var(--fado-warm-grey)'">
-                        <i class="icon icon-heart" style="font-size:.875rem"></i>
-                        Save to Wishlist
+                                   border:1px solid {{ $isWishlisted ? 'var(--fado-green-mid)' : 'var(--fado-warm-grey)' }};
+                                   border-radius:3px; font-size:.875rem;
+                                   color:{{ $isWishlisted ? 'var(--fado-green-mid)' : 'var(--fado-deep-green)' }};
+                                   cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+                                   transition:border-color .2s, color .2s"
+                            onmouseover="this.dataset.wishlisted !== 'true' && (this.style.borderColor='var(--fado-green-mid)')"
+                            onmouseout="this.dataset.wishlisted !== 'true' && (this.style.borderColor='var(--fado-warm-grey)')">
+                        <i class="icon {{ $isWishlisted ? 'icon-heart-fill' : 'icon-heart' }}" style="font-size:.875rem"></i>
+                        {{ $isWishlisted ? 'Saved to Wishlist' : 'Save to Wishlist' }}
                     </button>
                 </form>
 
@@ -720,13 +725,57 @@ function stepQty(delta) {
     input.value = val;
 }
 
-// ── Wishlist stub (Phase 3 Step 6) ────────────────────────────────────────
-function addToWishlist() {
-    const btn = event.currentTarget;
-    btn.innerHTML = '<i class="icon icon-heart" style="font-size:.875rem; color:var(--fado-green-mid)"></i> Saved!';
-    setTimeout(() => {
-        btn.innerHTML = '<i class="icon icon-heart" style="font-size:.875rem"></i> Save to Wishlist';
-    }, 2000);
+// ── Wishlist toggle (AJAX) ─────────────────────────────────────────────────
+function toggleWishlist(triggerBtn) {
+    const productId = triggerBtn.dataset.productId;
+    const variantId = document.getElementById('selectedVariantId')?.value || null;
+
+    fetch('{{ route('shop.wishlist.toggle') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({ product_id: productId, variant_id: variantId || undefined }),
+    })
+    .then(r => r.json())
+    .then(data => {
+        const added = data.added;
+
+        // Update both buttons
+        [document.getElementById('wishlistOverlayBtn'), document.getElementById('wishlistTextBtn')]
+            .forEach(btn => { if (btn) btn.dataset.wishlisted = added ? 'true' : 'false'; });
+
+        // Overlay icon
+        const overlayIcon = document.querySelector('#wishlistOverlayBtn i');
+        if (overlayIcon) {
+            overlayIcon.className = 'icon ' + (added ? 'icon-heart-fill' : 'icon-heart');
+            overlayIcon.style.color = added ? 'var(--fado-green-mid)' : 'inherit';
+        }
+
+        // Text button
+        const textBtn = document.getElementById('wishlistTextBtn');
+        if (textBtn) {
+            textBtn.style.borderColor = added ? 'var(--fado-green-mid)' : 'var(--fado-warm-grey)';
+            textBtn.style.color       = added ? 'var(--fado-green-mid)' : 'var(--fado-deep-green)';
+            textBtn.innerHTML = `<i class="icon ${added ? 'icon-heart-fill' : 'icon-heart'}" style="font-size:.875rem"></i> ${added ? 'Saved to Wishlist' : 'Save to Wishlist'}`;
+            textBtn.dataset.wishlisted = added ? 'true' : 'false';
+        }
+
+        // Header count badge — update without reload
+        const badge = document.querySelector('.fado-header-icons .icon-heart')?.closest('a')?.querySelector('.fado-cart-count');
+        if (data.count > 0) {
+            if (badge) { badge.textContent = data.count; }
+            // If no badge exists yet, a page reload will show it (next navigation)
+        } else if (badge) {
+            badge.remove();
+        }
+    })
+    .catch(() => {
+        // Fallback: navigate to wishlist page
+        window.location.href = '{{ route('shop.wishlist') }}';
+    });
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────

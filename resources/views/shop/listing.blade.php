@@ -569,13 +569,17 @@
                                 {{-- Wishlist button (appears on hover) --}}
                                 <div class="fado-product-actions"
                                      style="position:absolute; top:12px; right:12px; display:flex; flex-direction:column; gap:8px; opacity:0; transition:opacity .2s">
-                                    <button type="button"
-                                            style="background:#fff; border:none; width:36px; height:36px; border-radius:50%;
-                                                   display:flex; align-items:center; justify-content:center;
-                                                   box-shadow:0 2px 8px rgba(0,0,0,.12); cursor:pointer; color:var(--fado-deep-green)"
-                                            title="Save to wishlist">
-                                        <i class="icon icon-heart" style="font-size:.875rem"></i>
-                                    </button>
+                                    <form method="POST" action="{{ route('shop.wishlist.toggle') }}">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <button type="submit"
+                                                style="background:#fff; border:none; width:36px; height:36px; border-radius:50%;
+                                                       display:flex; align-items:center; justify-content:center;
+                                                       box-shadow:0 2px 8px rgba(0,0,0,.12); cursor:pointer; color:var(--fado-deep-green)"
+                                                title="Save to wishlist">
+                                            <i class="icon icon-heart" style="font-size:.875rem"></i>
+                                        </button>
+                                    </form>
                                 </div>
 
                                 {{-- Metal variants pill strip at bottom of image --}}
