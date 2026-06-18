@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Collection;
+use App\Models\Consultation;
 use App\Models\Gemstone;
 use App\Models\Metal;
 use App\Models\Product;
@@ -203,12 +204,31 @@ class ShopController extends Controller
 
     public function about(): View
     {
-        return view('shop.coming-soon', ['page' => 'About Us']);
+        return view('shop.about');
     }
 
     public function contact(): View
     {
-        return view('shop.coming-soon', ['page' => 'Contact Us']);
+        return view('shop.contact');
+    }
+
+    public function contactStore(Request $request): RedirectResponse
+    {
+        if (! Setting::get('consultation_enabled', '1')) {
+            return back()->with('error', 'The consultation form is currently unavailable. Please contact us by phone or email.');
+        }
+
+        $data = $request->validate([
+            'name'              => ['required', 'string', 'max:120'],
+            'email'             => ['required', 'email', 'max:200'],
+            'phone'             => ['nullable', 'string', 'max:30'],
+            'message'           => ['required', 'string', 'max:2000'],
+            'preferred_contact' => ['required', 'in:email,phone'],
+        ]);
+
+        Consultation::create($data);
+
+        return back()->with('consultation_sent', true);
     }
 
     public function privacy(): View
