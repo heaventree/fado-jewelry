@@ -10,6 +10,7 @@ use App\Models\Metal;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ShopController extends Controller
@@ -119,8 +120,102 @@ class ShopController extends Controller
 
     public function product(Product $product): View
     {
-        // Phase 3 Step 4
-        return view('shop.coming-soon', ['page' => $product->name]);
+        abort_unless($product->is_active, 404);
+
+        $product->load([
+            'images',
+            'variants.metal',
+            'variants.secondMetal',
+            'variants.gemstone',
+            'sizes',
+            'categories.parent',
+            'collections',
+        ]);
+
+        $activeVariants = $product->variants; // already scoped to is_active=true
+
+        // Flatten variant data for the JS switcher
+        $variantData = $activeVariants->map(fn ($v) => [
+            'id'            => $v->id,
+            'metal_id'      => $v->metal_id,
+            'metal_name'    => $v->metal?->name,
+            'gemstone_id'   => $v->gemstone_id,
+            'gemstone_name' => $v->gemstone?->name,
+            'price_eur'     => (float) $v->price_eur,
+            'stock'         => $v->stock,
+            'sku'           => $v->sku,
+        ])->values();
+
+        $defaultVariant = $activeVariants->first();
+
+        // Unique metals for the dropdown
+        $metals = $activeVariants
+            ->sortBy('metal.name')
+            ->unique('metal_id')
+            ->map(fn ($v) => $v->metal)
+            ->filter()
+            ->values();
+
+        // Gemstones available for the default metal (shown on first load)
+        $defaultMetalId = $defaultVariant?->metal_id;
+        $gemstones = $activeVariants
+            ->where('metal_id', $defaultMetalId)
+            ->whereNotNull('gemstone_id')
+            ->unique('gemstone_id')
+            ->map(fn ($v) => $v->gemstone)
+            ->filter()
+            ->values();
+
+        // Image list for JS thumbnail switching
+        $imageData = $product->images->map(fn ($img) => [
+            'id'  => $img->id,
+            'url' => Storage::url($img->path),
+        ])->values();
+
+        // Related products from the same categories
+        $categoryIds = $product->categories->pluck('id');
+        $related = Product::with(['primaryImage', 'variants.metal'])
+            ->where('is_active', true)
+            ->where('id', '!=', $product->id)
+            ->when($categoryIds->isNotEmpty(), fn ($q) =>
+                $q->whereHas('categories', fn ($cq) => $cq->whereIn('categories.id', $categoryIds))
+            )
+            ->limit(4)
+            ->get();
+
+        return view('shop.product', compact(
+            'product', 'variantData', 'defaultVariant',
+            'metals', 'gemstones', 'imageData', 'related'
+        ));
+    }
+
+    public function addToCart(Request $request): RedirectResponse
+    {
+        // Phase 3 Step 5 — full cart logic built here
+        $request->validate([
+            'product_id' => ['required', 'integer'],
+            'variant_id' => ['required', 'integer'],
+            'quantity'   => ['required', 'integer', 'min:1'],
+        ]);
+
+        // Stub: store in session cart until cart controller is built
+        $cart = session('cart', []);
+        $key  = $request->input('variant_id') . '_' . $request->input('size_id');
+
+        if (isset($cart[$key])) {
+            $cart[$key]['quantity'] += (int) $request->input('quantity', 1);
+        } else {
+            $cart[$key] = [
+                'product_id' => $request->input('product_id'),
+                'variant_id' => $request->input('variant_id'),
+                'size_id'    => $request->input('size_id') ?: null,
+                'quantity'   => (int) $request->input('quantity', 1),
+            ];
+        }
+
+        session(['cart' => $cart]);
+
+        return back()->with('cart_success', 'Added to your bag!');
     }
 
     public function cart(): View

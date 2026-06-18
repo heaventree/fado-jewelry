@@ -37,6 +37,7 @@ Route::prefix('/')->name('shop.')->group(function () {
 
     // Cart & checkout
     Route::get('/cart', [ShopController::class, 'cart'])->name('cart');
+    Route::post('/cart/add', [ShopController::class, 'addToCart'])->name('cart.add');
     Route::get('/checkout', [ShopController::class, 'checkout'])->name('checkout')->middleware('auth');
 
     // Wishlist
