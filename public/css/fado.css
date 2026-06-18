@@ -1,0 +1,361 @@
+/*
+ * FADO Jewellery — colour palette overrides for the Ochaka theme
+ * Applied on top of Ochaka's styles.css
+ */
+
+:root {
+    --fado-mint-light:   #DCF6D5;
+    --fado-mint-pale:    #EBFCEF;
+    --fado-near-white:   #FBFBFB;
+    --fado-off-white:    #F8F9F5;
+    --fado-soft-white:   #F5F7F1;
+    --fado-cream:        #F0F1E7;
+    --fado-warm-grey:    #BCB3AB;
+    --fado-green-light:  #81CC60;
+    --fado-green-mid:    #0AAC45;
+    --fado-deep-green:   #044705;
+    --fado-gold:         #766D42;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+body {
+    background-color: var(--fado-near-white);
+    color: #2c2c2c;
+}
+
+/* ── Header ────────────────────────────────────────────────────────────────── */
+.fado-header-utility {
+    background-color: var(--fado-deep-green);
+    color: rgba(255,255,255,0.85);
+    font-size: 0.8125rem;
+    padding: 8px 0;
+}
+.fado-header-utility a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.fado-header-utility a:hover { color: #fff; }
+
+.fado-header-main {
+    background-color: #fff;
+    border-bottom: 1px solid var(--fado-cream);
+    padding: 18px 0;
+}
+
+.fado-logo-wordmark {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--fado-deep-green);
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    line-height: 1;
+}
+.fado-logo-wordmark:hover { color: var(--fado-deep-green); text-decoration: none; }
+.fado-logo-tagline {
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    color: var(--fado-gold);
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+/* Header icon buttons (search, wishlist, account, cart) */
+.fado-header-icons a {
+    color: var(--fado-deep-green);
+    font-size: 1.2rem;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+}
+.fado-header-icons a:hover {
+    background: var(--fado-mint-pale);
+    color: var(--fado-green-mid);
+}
+.fado-cart-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--fado-green-mid);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* ── Mega menu ──────────────────────────────────────────────────────────────── */
+.fado-nav {
+    background-color: var(--fado-deep-green);
+}
+.fado-nav .nav-ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+.fado-nav .nav-ul > li > a {
+    display: block;
+    padding: 13px 20px;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.825rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.fado-nav .nav-ul > li > a:hover,
+.fado-nav .nav-ul > li:hover > a {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+}
+.fado-nav .nav-ul > li > a .caret {
+    margin-left: 4px;
+    font-size: 0.65rem;
+    opacity: 0.7;
+    transition: transform 0.2s;
+}
+.fado-nav .nav-ul > li:hover > a .caret { transform: rotate(180deg); }
+
+/* Mega-menu dropdown panel */
+.fado-mega-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: #fff;
+    border-top: 3px solid var(--fado-green-mid);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    z-index: 1000;
+    display: none;
+    padding: 28px 0 32px;
+}
+.fado-nav .nav-ul > li { position: static; }
+.fado-nav .nav-ul > li:hover .fado-mega-menu { display: block; }
+
+.fado-mega-col-heading {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fado-gold);
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--fado-cream);
+}
+.fado-mega-link {
+    display: block;
+    padding: 5px 0;
+    font-size: 0.875rem;
+    color: #2c2c2c;
+    text-decoration: none;
+    transition: color 0.15s, padding-left 0.15s;
+}
+.fado-mega-link:hover {
+    color: var(--fado-green-mid);
+    padding-left: 4px;
+}
+.fado-mega-link-all {
+    margin-top: 10px;
+    font-size: 0.8125rem;
+    color: var(--fado-green-mid);
+    font-weight: 600;
+    text-decoration: none;
+}
+.fado-mega-link-all:hover { color: var(--fado-deep-green); text-decoration: underline; }
+
+/* Sub-group label inside mega menu (Flora, Fauna) */
+.fado-mega-subgroup {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 600;
+    margin-top: 14px;
+    margin-bottom: 6px;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────────── */
+.btn-fado-primary {
+    background-color: var(--fado-green-mid);
+    color: #fff;
+    border: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    transition: background 0.2s;
+    padding: 10px 24px;
+}
+.btn-fado-primary:hover { background-color: var(--fado-deep-green); color: #fff; }
+
+.btn-fado-outline {
+    background: transparent;
+    color: var(--fado-deep-green);
+    border: 1.5px solid var(--fado-deep-green);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+    padding: 9px 24px;
+}
+.btn-fado-outline:hover {
+    background: var(--fado-deep-green);
+    color: #fff;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────────── */
+.fado-footer {
+    background-color: var(--fado-deep-green);
+    color: rgba(255,255,255,0.8);
+}
+.fado-footer a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.fado-footer a:hover { color: #fff; }
+
+.fado-footer-heading {
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fado-gold);
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+.fado-footer-link {
+    display: block;
+    padding: 4px 0;
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.72);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.fado-footer-link:hover { color: #fff; }
+
+.fado-footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 18px 0;
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.5);
+}
+
+.fado-social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.75);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.fado-social-icon:hover {
+    border-color: var(--fado-gold);
+    color: var(--fado-gold);
+    background: rgba(118,109,66,0.12);
+}
+
+/* Newsletter input */
+.fado-newsletter-form {
+    display: flex;
+    gap: 0;
+    margin-top: 14px;
+}
+.fado-newsletter-form input[type="email"] {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+    font-size: 0.875rem;
+    border-radius: 2px 0 0 2px;
+    outline: none;
+}
+.fado-newsletter-form input[type="email"]::placeholder { color: rgba(255,255,255,0.4); }
+.fado-newsletter-form input[type="email"]:focus { border-color: var(--fado-green-light); }
+.fado-newsletter-form button {
+    background: var(--fado-green-mid);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    font-size: 0.875rem;
+    border-radius: 0 2px 2px 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.fado-newsletter-form button:hover { background: var(--fado-green-light); }
+
+/* ── Mobile menu ───────────────────────────────────────────────────────────── */
+.fado-offcanvas-header {
+    background: var(--fado-deep-green);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.fado-mobile-logo {
+    font-family: Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.1em;
+}
+.fado-mobile-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #2c2c2c;
+    text-decoration: none;
+    border-bottom: 1px solid var(--fado-cream);
+    transition: background 0.15s;
+}
+.fado-mobile-nav-link:hover { background: var(--fado-mint-pale); color: var(--fado-deep-green); }
+.fado-mobile-sub-link {
+    display: block;
+    padding: 9px 32px;
+    font-size: 0.875rem;
+    color: #555;
+    text-decoration: none;
+    border-bottom: 1px solid var(--fado-cream);
+    transition: background 0.15s;
+}
+.fado-mobile-sub-link:hover { background: var(--fado-mint-pale); color: var(--fado-green-mid); }
+.fado-mobile-sub-heading {
+    padding: 10px 32px 4px;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--fado-gold);
+    font-weight: 700;
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────────── */
+.text-fado-deep   { color: var(--fado-deep-green) !important; }
+.text-fado-mid    { color: var(--fado-green-mid)  !important; }
+.text-fado-gold   { color: var(--fado-gold)       !important; }
+.bg-fado-cream    { background-color: var(--fado-cream)      !important; }
+.bg-fado-soft     { background-color: var(--fado-soft-white) !important; }
+.bg-fado-deep     { background-color: var(--fado-deep-green) !important; }

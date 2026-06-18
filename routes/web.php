@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
+use App\Http\Controllers\Shop\ShopController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CollectionController;
@@ -17,7 +18,49 @@ use App\Http\Controllers\Admin\ProductController;
 
 require __DIR__ . '/auth.php';
 
-// Admin routes — real controllers, must come before the catch-all below
+// ── Shop (customer-facing) routes ─────────────────────────────────────────────
+Route::prefix('/')->name('shop.')->group(function () {
+
+    // Homepage
+    Route::get('/', [ShopController::class, 'home'])->name('home');
+
+    // Jewellery browse
+    Route::get('/jewellery', [ShopController::class, 'jewellery'])->name('jewellery');
+    Route::get('/jewellery/{category}', [ShopController::class, 'category'])->name('category');
+
+    // Collections
+    Route::get('/collections', [ShopController::class, 'collections'])->name('collections');
+    Route::get('/collections/{slug}', [ShopController::class, 'collection'])->name('collection');
+
+    // Individual product
+    Route::get('/products/{product:slug}', [ShopController::class, 'product'])->name('product');
+
+    // Cart & checkout
+    Route::get('/cart', [ShopController::class, 'cart'])->name('cart');
+    Route::get('/checkout', [ShopController::class, 'checkout'])->name('checkout')->middleware('auth');
+
+    // Wishlist
+    Route::get('/wishlist', [ShopController::class, 'wishlist'])->name('wishlist');
+
+    // Account
+    Route::get('/account', [ShopController::class, 'account'])->name('account.index')->middleware('auth');
+
+    // Static pages
+    Route::get('/about', [ShopController::class, 'about'])->name('about');
+    Route::get('/contact', [ShopController::class, 'contact'])->name('contact');
+    Route::get('/privacy', [ShopController::class, 'privacy'])->name('privacy');
+
+    // Search
+    Route::get('/shop/search', [ShopController::class, 'search'])->name('search');
+
+    // Newsletter subscribe (POST)
+    Route::post('/newsletter', [ShopController::class, 'newsletterSubscribe'])->name('newsletter.subscribe');
+
+    // Currency switcher (POST)
+    Route::post('/currency', [ShopController::class, 'switchCurrency'])->name('currency.switch');
+});
+
+// ── Admin routes — real controllers, must come before the Larkon catch-all ───
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
