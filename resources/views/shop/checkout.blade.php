@@ -1,5 +1,10 @@
 @extends('shop.layouts.app')
-@php use Illuminate\Support\Facades\Storage; @endphp
+@php
+    use Illuminate\Support\Facades\Storage;
+    use App\Models\Setting;
+    $freeShippingThreshold = (float) Setting::get('free_shipping_threshold', 75);
+    $paymentMethodLabel = Setting::get('payment_method_label', 'Secure payment by card');
+@endphp
 
 @section('title', 'Checkout — FADÓ Jewellery')
 
@@ -201,12 +206,10 @@
                         <i class="icon icon-shield-check" style="color:var(--fado-green-mid); font-size:1.25rem; flex-shrink:0; margin-top:2px"></i>
                         <div>
                             <p style="font-size:.875rem; color:var(--fado-deep-green); font-weight:600; margin-bottom:4px">
-                                Secure payment by card
+                                Payment
                             </p>
                             <p style="font-size:.8125rem; color:#666; margin:0; line-height:1.6">
-                                Your order will be confirmed and our team will contact you within one business day
-                                to arrange secure card payment over phone or via a payment link.
-                                No card details are stored on our site.
+                                {{ $paymentMethodLabel }}
                             </p>
                         </div>
                     </div>
@@ -287,7 +290,7 @@
                         <div style="display:flex; justify-content:space-between; margin-bottom:16px">
                             <span style="font-size:.875rem; color:#555">Shipping</span>
                             <span style="font-size:.875rem; color:var(--fado-green-mid); font-weight:600">
-                                @if($subtotalEur >= 75) Free @else Calculated after order @endif
+                                @if($subtotalEur >= $freeShippingThreshold) Free @else Calculated after order @endif
                             </span>
                         </div>
 

@@ -1,5 +1,11 @@
 @extends('shop.layouts.app')
-@php use Illuminate\Support\Facades\Storage; @endphp
+@php
+    use Illuminate\Support\Facades\Storage;
+    use App\Models\Setting;
+    $freeShippingThreshold = (float) Setting::get('free_shipping_threshold', 75);
+    $shippingNotice = Setting::get('shipping_notice', 'Free delivery on orders over €75');
+    $paymentMethodLabel = Setting::get('payment_method_label', 'Secure payment by card');
+@endphp
 
 @section('title', 'Your Bag — FADÓ Jewellery')
 
@@ -218,7 +224,7 @@
                     <div style="display:flex; justify-content:space-between; margin-bottom:16px">
                         <span style="font-size:.875rem; color:#555">Shipping</span>
                         <span style="font-size:.875rem; color:var(--fado-green-mid); font-weight:600">
-                            @if($subtotalEur >= 75) Free @else Calculated at checkout @endif
+                            @if($subtotalEur >= $freeShippingThreshold) Free @else Calculated at checkout @endif
                         </span>
                     </div>
 
@@ -262,7 +268,7 @@
                         </div>
                         <div style="display:flex; align-items:center; gap:8px; font-size:.75rem; color:#888">
                             <i class="icon icon-truck-simple" style="color:var(--fado-green-mid)"></i>
-                            Free delivery over €75
+                            {{ $shippingNotice }}
                         </div>
                     </div>
                 </div>

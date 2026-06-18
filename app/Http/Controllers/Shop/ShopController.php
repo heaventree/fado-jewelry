@@ -8,6 +8,7 @@ use App\Models\Collection;
 use App\Models\Gemstone;
 use App\Models\Metal;
 use App\Models\Product;
+use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -17,11 +18,11 @@ class ShopController extends Controller
 {
     public function home(): View
     {
-        $featuredCollections = Collection::limit(6)->get();
+        $featuredCollections = Collection::limit((int) Setting::get('featured_collections_count', 6))->get();
         $newArrivals = Product::with(['variants.metal', 'primaryImage'])
             ->where('is_active', true)
             ->latest()
-            ->limit(8)
+            ->limit((int) Setting::get('new_arrivals_count', 8))
             ->get();
 
         return view('shop.home', compact('featuredCollections', 'newArrivals'));
@@ -180,7 +181,7 @@ class ShopController extends Controller
             ->when($categoryIds->isNotEmpty(), fn ($q) =>
                 $q->whereHas('categories', fn ($cq) => $cq->whereIn('categories.id', $categoryIds))
             )
-            ->limit(4)
+            ->limit((int) Setting::get('related_products_count', 4))
             ->get();
 
         return view('shop.product', compact(
@@ -337,7 +338,7 @@ class ShopController extends Controller
             default      => $query->latest(),
         };
 
-        $products = $query->paginate(16)->withQueryString();
+        $products = $query->paginate((int) Setting::get('products_per_page', 16))->withQueryString();
 
         return [$products, $metals, $gemstones, $allCollections, $colours, $filters];
     }

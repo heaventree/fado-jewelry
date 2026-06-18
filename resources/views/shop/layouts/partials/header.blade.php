@@ -14,7 +14,7 @@
                     </a>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <span style="opacity:.6; font-size:.75rem">Free delivery on orders over €100</span>
+                    <span style="opacity:.6; font-size:.75rem">{{ \App\Models\Setting::get('shipping_notice', 'Free delivery on orders over €75') }}</span>
                     {{-- Currency switcher --}}
                     @php
                         $activeCurrencyCode = session('fado_currency', 'EUR');

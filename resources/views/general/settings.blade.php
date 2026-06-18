@@ -163,7 +163,7 @@
     </div>
 
     {{-- Social --}}
-    <div class="card">
+    <div class="card mb-4">
         <div class="card-header">
             <h5 class="card-title mb-0 d-flex align-items-center gap-2">
                 <iconify-icon icon="solar:share-bold-duotone" class="text-primary fs-18"></iconify-icon>
@@ -209,6 +209,222 @@
                            placeholder="https://x.com/fadojewellery">
                     @error('twitter_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{-- Payments --}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:card-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                Payment
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3 d-flex align-items-center gap-3">
+                <div class="form-check form-switch mb-0">
+                    <input class="form-check-input" type="checkbox" name="cod_enabled" id="cod_enabled"
+                           value="1" {{ ($settings['cod_enabled'] ?? '1') === '1' ? 'checked' : '' }}>
+                    <label class="form-check-label fw-semibold" for="cod_enabled">
+                        Enable order-on-request checkout (phone / payment link)
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Payment notice text</label>
+                <textarea name="payment_method_label" rows="3"
+                          class="form-control @error('payment_method_label') is-invalid @enderror"
+                          maxlength="500"
+                          placeholder="Pay by card — our team will contact you…">{{ old('payment_method_label', $settings['payment_method_label'] ?? '') }}</textarea>
+                <div class="form-text">Shown to customers during checkout below the Payment heading.</div>
+                @error('payment_method_label')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <label class="form-label fw-semibold">Stripe Publishable Key</label>
+                    <input type="text" name="stripe_publishable_key"
+                           value="{{ old('stripe_publishable_key', $settings['stripe_publishable_key'] ?? '') }}"
+                           class="form-control @error('stripe_publishable_key') is-invalid @enderror"
+                           placeholder="pk_live_…">
+                    @error('stripe_publishable_key')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label fw-semibold">Stripe Secret Key</label>
+                    <input type="password" name="stripe_secret_key"
+                           value="{{ old('stripe_secret_key', $settings['stripe_secret_key'] ?? '') }}"
+                           class="form-control @error('stripe_secret_key') is-invalid @enderror"
+                           placeholder="sk_live_…">
+                    <div class="form-text text-warning">
+                        <iconify-icon icon="solar:danger-triangle-broken" class="align-middle"></iconify-icon>
+                        Prefer storing secrets in <code>.env</code> as <code>STRIPE_SECRET_KEY</code>.
+                    </div>
+                    @error('stripe_secret_key')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Shipping --}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:delivery-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                Shipping
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3 mb-3">
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold">Free shipping threshold (€)</label>
+                    <input type="number" name="free_shipping_threshold" min="0" step="0.01"
+                           value="{{ old('free_shipping_threshold', $settings['free_shipping_threshold'] ?? '75') }}"
+                           class="form-control @error('free_shipping_threshold') is-invalid @enderror">
+                    <div class="form-text">Orders above this amount get free delivery.</div>
+                    @error('free_shipping_threshold')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold">Ireland rate (€)</label>
+                    <input type="number" name="shipping_rate_ireland" min="0" step="0.01"
+                           value="{{ old('shipping_rate_ireland', $settings['shipping_rate_ireland'] ?? '5.95') }}"
+                           class="form-control @error('shipping_rate_ireland') is-invalid @enderror">
+                    @error('shipping_rate_ireland')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold">International rate (€)</label>
+                    <input type="number" name="shipping_rate_international" min="0" step="0.01"
+                           value="{{ old('shipping_rate_international', $settings['shipping_rate_international'] ?? '12.95') }}"
+                           class="form-control @error('shipping_rate_international') is-invalid @enderror">
+                    @error('shipping_rate_international')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+            </div>
+            <div class="mb-0">
+                <label class="form-label fw-semibold">Shipping notice (shown in header)</label>
+                <input type="text" name="shipping_notice" maxlength="200"
+                       value="{{ old('shipping_notice', $settings['shipping_notice'] ?? '') }}"
+                       class="form-control @error('shipping_notice') is-invalid @enderror"
+                       placeholder="Free delivery on orders over €75">
+                @error('shipping_notice')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+    </div>
+
+    {{-- Display --}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:widget-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                Display
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3 mb-3">
+                <div class="col-sm-3">
+                    <label class="form-label fw-semibold">Products per page</label>
+                    <input type="number" name="products_per_page" min="4" max="96"
+                           value="{{ old('products_per_page', $settings['products_per_page'] ?? '16') }}"
+                           class="form-control @error('products_per_page') is-invalid @enderror">
+                    @error('products_per_page')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-3">
+                    <label class="form-label fw-semibold">New arrivals count</label>
+                    <input type="number" name="new_arrivals_count" min="1" max="24"
+                           value="{{ old('new_arrivals_count', $settings['new_arrivals_count'] ?? '8') }}"
+                           class="form-control @error('new_arrivals_count') is-invalid @enderror">
+                    @error('new_arrivals_count')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-3">
+                    <label class="form-label fw-semibold">Featured collections</label>
+                    <input type="number" name="featured_collections_count" min="1" max="12"
+                           value="{{ old('featured_collections_count', $settings['featured_collections_count'] ?? '6') }}"
+                           class="form-control @error('featured_collections_count') is-invalid @enderror">
+                    @error('featured_collections_count')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-3">
+                    <label class="form-label fw-semibold">Related products</label>
+                    <input type="number" name="related_products_count" min="1" max="12"
+                           value="{{ old('related_products_count', $settings['related_products_count'] ?? '4') }}"
+                           class="form-control @error('related_products_count') is-invalid @enderror">
+                    @error('related_products_count')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+            </div>
+            <div class="d-flex gap-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="wishlist_enabled" id="wishlist_enabled"
+                           value="1" {{ ($settings['wishlist_enabled'] ?? '1') === '1' ? 'checked' : '' }}>
+                    <label class="form-check-label fw-semibold" for="wishlist_enabled">Enable wishlist</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="reviews_enabled" id="reviews_enabled"
+                           value="1" {{ ($settings['reviews_enabled'] ?? '0') === '1' ? 'checked' : '' }}>
+                    <label class="form-check-label fw-semibold" for="reviews_enabled">Enable product reviews</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Orders --}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:box-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                Orders &amp; Email
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label class="form-label fw-semibold">From name (order emails)</label>
+                    <input type="text" name="order_email_from_name" maxlength="100"
+                           value="{{ old('order_email_from_name', $settings['order_email_from_name'] ?? '') }}"
+                           class="form-control @error('order_email_from_name') is-invalid @enderror"
+                           placeholder="FADÓ Jewellery">
+                    @error('order_email_from_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label fw-semibold">From address (order emails)</label>
+                    <input type="email" name="order_email_from_address" maxlength="200"
+                           value="{{ old('order_email_from_address', $settings['order_email_from_address'] ?? '') }}"
+                           class="form-control @error('order_email_from_address') is-invalid @enderror"
+                           placeholder="noreply@fadojewellery.ie">
+                    @error('order_email_from_address')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+            </div>
+            <div class="mb-0" style="max-width:200px">
+                <label class="form-label fw-semibold">Low stock threshold</label>
+                <input type="number" name="low_stock_threshold" min="0"
+                       value="{{ old('low_stock_threshold', $settings['low_stock_threshold'] ?? '3') }}"
+                       class="form-control @error('low_stock_threshold') is-invalid @enderror">
+                <div class="form-text">Variants with stock ≤ this are flagged as low stock in the admin.</div>
+                @error('low_stock_threshold')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+    </div>
+
+    {{-- Consultation --}}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:calendar-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                Consultation
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3 form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="consultation_enabled" id="consultation_enabled"
+                       value="1" {{ ($settings['consultation_enabled'] ?? '1') === '1' ? 'checked' : '' }}>
+                <label class="form-check-label fw-semibold" for="consultation_enabled">
+                    Enable consultation booking feature
+                </label>
+            </div>
+            <div class="mb-0">
+                <label class="form-label fw-semibold">Intro text (shown above the consultation form)</label>
+                <textarea name="consultation_intro_text" rows="3"
+                          class="form-control @error('consultation_intro_text') is-invalid @enderror"
+                          maxlength="500"
+                          placeholder="Book a private consultation with our jewellery specialists…">{{ old('consultation_intro_text', $settings['consultation_intro_text'] ?? '') }}</textarea>
+                @error('consultation_intro_text')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
     </div>

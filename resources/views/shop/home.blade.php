@@ -161,7 +161,7 @@
     <div class="container">
         <div class="row text-center g-0">
             @foreach([
-                ['icon' => 'icon-truck-simple', 'label' => 'Free Delivery',    'sub' => 'On orders over €100'],
+                ['icon' => 'icon-truck-simple', 'label' => 'Free Delivery',    'sub' => \App\Models\Setting::get('shipping_notice', 'Free delivery on orders over €75')],
                 ['icon' => 'icon-shield-check',  'label' => 'Hallmark Certified', 'sub' => 'Assay Office Ireland'],
                 ['icon' => 'icon-arrow-counter-clockwise', 'label' => '30-Day Returns', 'sub' => 'Hassle-free exchanges'],
                 ['icon' => 'icon-gift',           'label' => 'Gift Packaging',  'sub' => 'Luxury box included'],

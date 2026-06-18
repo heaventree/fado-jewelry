@@ -1,5 +1,8 @@
 @extends('shop.layouts.app')
-@php use Illuminate\Support\Facades\Storage; @endphp
+@php
+    use Illuminate\Support\Facades\Storage;
+    $freeShippingThreshold = (float) \App\Models\Setting::get('free_shipping_threshold', 75);
+@endphp
 
 @section('title', 'Order Confirmed — FADÓ Jewellery')
 
@@ -130,7 +133,7 @@
                         <div style="display:flex; justify-content:space-between; margin-bottom:12px">
                             <span style="font-size:.875rem; color:#555">Shipping</span>
                             <span style="font-size:.875rem; color:var(--fado-green-mid); font-weight:600">
-                                @if($order->subtotal >= 75) Free @else To be confirmed @endif
+                                @if($order->subtotal >= $freeShippingThreshold) Free @else To be confirmed @endif
                             </span>
                         </div>
                         <div style="display:flex; justify-content:space-between;

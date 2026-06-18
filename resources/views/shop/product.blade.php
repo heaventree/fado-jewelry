@@ -383,7 +383,7 @@
                             <i class="icon icon-caret-down fado-accordion-icon"></i>
                         </summary>
                         <div class="fado-accordion-body" style="font-size:.9rem; color:#555; line-height:1.8">
-                            <p>Free standard delivery on all orders over €75. Orders are dispatched within 2–3 working days and typically arrive within 5–7 working days across Ireland and Europe.</p>
+                            <p>{{ \App\Models\Setting::get('shipping_notice', 'Free delivery on orders over €75') }}. Orders are dispatched within 2–3 working days and typically arrive within 5–7 working days across Ireland and Europe.</p>
                             <p>Express delivery (1–2 working days) is available at checkout. International shipping to the US and worldwide is also available.</p>
                         </div>
                     </details>
