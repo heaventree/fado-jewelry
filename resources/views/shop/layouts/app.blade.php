@@ -5,8 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', config('app.name', 'FADÓ Jewellery')) — Fine Irish Jewellery</title>
-    <meta name="description" content="@yield('meta_description', 'Handcrafted Irish jewellery. Explore our collections of rings, pendants, earrings and more.')">
+    @php
+        use App\Models\Setting;
+        $defaultTitle       = Setting::get('meta_title',       config('app.name', 'FADÓ Jewellery') . ' — Fine Irish Jewellery');
+        $defaultDescription = Setting::get('meta_description', 'Handcrafted Irish jewellery. Explore our collections of rings, pendants, earrings and more.');
+        $gaId               = Setting::get('google_analytics');
+        $canonicalUrl       = request()->url();
+    @endphp
+
+    <title>@yield('title', $defaultTitle)</title>
+    <meta name="description" content="@yield('meta_description', $defaultDescription)">
+    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
+    <link rel="canonical" href="@yield('canonical', $canonicalUrl)">
+
+    {{-- Open Graph --}}
+    <meta property="og:type"        content="@yield('og_type', 'website')">
+    <meta property="og:title"       content="@yield('title', $defaultTitle)">
+    <meta property="og:description" content="@yield('meta_description', $defaultDescription)">
+    <meta property="og:url"         content="@yield('canonical', $canonicalUrl)">
+    <meta property="og:image"       content="@yield('og_image', asset('images/fado-og.jpg'))">
+    <meta property="og:site_name"   content="{{ Setting::get('store_name', 'FADÓ Jewellery') }}">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="@yield('title', $defaultTitle)">
+    <meta name="twitter:description" content="@yield('meta_description', $defaultDescription)">
+    <meta name="twitter:image"       content="@yield('og_image', asset('images/fado-og.jpg'))">
+
+    {{-- Google Analytics (only when ID is set and not in local env) --}}
+    @if($gaId && app()->environment('production'))
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $gaId }}');</script>
+    @endif
 
     {{-- Ochaka theme assets --}}
     <link rel="stylesheet" href="/fonts/fonts.css">

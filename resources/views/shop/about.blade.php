@@ -2,6 +2,8 @@
 @php use App\Models\Setting; @endphp
 
 @section('title', 'About Us — ' . Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_description', 'Learn about FADÓ Jewellery — fine Irish jewellery handcrafted in the Irish tradition. Our story, values and collections.')
+@section('canonical', route('shop.about'))
 
 @section('content')
 

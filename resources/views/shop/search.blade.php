@@ -5,6 +5,7 @@
 @endphp
 
 @section('title', $query ? 'Search: ' . $query . ' — ' . Setting::get('store_name', 'FADÓ Jewellery') : 'Search — ' . Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_robots', 'noindex, follow')
 
 @section('content')
 

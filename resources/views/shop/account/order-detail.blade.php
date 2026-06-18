@@ -1,4 +1,4 @@
-@extends('shop.layouts.app')
+﻿@extends('shop.layouts.app')
 @php
     use Illuminate\Support\Facades\Storage;
     use App\Models\Setting;
@@ -6,6 +6,7 @@
 @endphp
 
 @section('title', 'Order ' . $order->order_number . ' — ' . Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 
@@ -194,3 +195,4 @@
 </div>
 
 @endsection
+

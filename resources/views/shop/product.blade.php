@@ -1,8 +1,20 @@
 @extends('shop.layouts.app')
-@php use Illuminate\Support\Facades\Storage; @endphp
+@php
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Str;
+    use App\Models\Setting;
+    $storeName   = Setting::get('store_name', 'FADÓ Jewellery');
+    $metaDesc    = $product->short_description
+                   ?: Str::limit(strip_tags($product->description ?? ''), 155)
+                   ?: 'Fine Irish jewellery — ' . $product->name . ' — handcrafted in sterling silver, gold and platinum.';
+    $ogImage     = $product->primaryImage ? Storage::url($product->primaryImage->path) : asset('images/fado-og.jpg');
+@endphp
 
-@section('title', $product->name . ' — FADÓ Jewellery')
-@section('meta_description', $product->short_description ?: 'Fine Irish jewellery — ' . $product->name . ' — handcrafted in sterling silver, gold and platinum.')
+@section('title', $product->name . ' — ' . $storeName)
+@section('meta_description', $metaDesc)
+@section('canonical', route('shop.product', $product->slug))
+@section('og_type', 'product')
+@section('og_image', $ogImage)
 
 @section('content')
 

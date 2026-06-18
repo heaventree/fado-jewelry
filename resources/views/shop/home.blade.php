@@ -1,6 +1,9 @@
 @extends('shop.layouts.app')
+@php use App\Models\Setting; @endphp
 
-@section('title', 'FADÓ Jewellery — Fine Irish Jewellery')
+@section('title', Setting::get('meta_title', Setting::get('store_name', 'FADÓ Jewellery') . ' — Fine Irish Jewellery'))
+@section('meta_description', Setting::get('meta_description', 'Handcrafted Irish jewellery. Explore our collections of rings, pendants, earrings and more.'))
+@section('canonical', route('shop.home'))
 
 @section('content')
 

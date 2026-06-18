@@ -1,7 +1,8 @@
-@extends('shop.layouts.app')
+﻿@extends('shop.layouts.app')
 @php use App\Models\Setting; @endphp
 
 @section('title', 'My Profile — ' . Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 
@@ -166,3 +167,4 @@
 </div>
 
 @endsection
+

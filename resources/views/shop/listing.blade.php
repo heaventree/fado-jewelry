@@ -1,7 +1,13 @@
 @extends('shop.layouts.app')
-@php use Illuminate\Support\Str; @endphp
+@php
+    use Illuminate\Support\Str;
+    use App\Models\Setting;
+    $storeName = Setting::get('store_name', 'FADÓ Jewellery');
+    $metaDesc  = $pageSubtitle ?: 'Browse our ' . strtolower($pageTitle) . ' — handcrafted Irish jewellery in sterling silver, gold and platinum.';
+@endphp
 
-@section('title', $pageTitle . ' — FADÓ Jewellery')
+@section('title', $pageTitle . ' — ' . $storeName)
+@section('meta_description', Str::limit(strip_tags($metaDesc), 155))
 
 @section('content')
 

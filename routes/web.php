@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\CheckoutController;
 use App\Http\Controllers\Shop\ShopController;
@@ -21,6 +22,9 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 
 require __DIR__ . '/auth.php';
+
+// Sitemap (public, no auth, outside shop prefix so URL is /sitemap.xml)
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // ── Shop (customer-facing) routes ─────────────────────────────────────────────
 Route::prefix('/')->name('shop.')->group(function () {

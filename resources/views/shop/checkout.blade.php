@@ -6,7 +6,8 @@
     $paymentMethodLabel = Setting::get('payment_method_label', 'Secure payment by card');
 @endphp
 
-@section('title', 'Checkout — FADÓ Jewellery')
+@section('title', 'Checkout — ' . \App\Models\Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 

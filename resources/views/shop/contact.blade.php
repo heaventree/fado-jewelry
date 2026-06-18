@@ -2,6 +2,8 @@
 @php use App\Models\Setting; @endphp
 
 @section('title', 'Contact Us — ' . Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_description', 'Contact ' . Setting::get('store_name', 'FADÓ Jewellery') . ' — send a message or book a personal jewellery consultation.')
+@section('canonical', route('shop.contact'))
 
 @section('content')
 

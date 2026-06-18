@@ -1,7 +1,8 @@
 @extends('shop.layouts.app')
 @php use Illuminate\Support\Facades\Storage; @endphp
 
-@section('title', 'Wishlist — FADÓ Jewellery')
+@section('title', 'Wishlist — ' . \App\Models\Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 

@@ -4,7 +4,8 @@
     $freeShippingThreshold = (float) \App\Models\Setting::get('free_shipping_threshold', 75);
 @endphp
 
-@section('title', 'Order Confirmed — FADÓ Jewellery')
+@section('title', 'Order Confirmed — ' . \App\Models\Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 

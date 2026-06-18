@@ -1,6 +1,9 @@
 @extends('shop.layouts.app')
+@php use App\Models\Setting; @endphp
 
-@section('title', 'Collections — FADÓ Jewellery')
+@section('title', 'Collections — ' . Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_description', 'Explore all FADÓ Jewellery collections — Claddagh, Trinity, High Crosses, The Garden Collection and more. Handcrafted Irish jewellery.')
+@section('canonical', route('shop.collections'))
 
 @section('content')
 
