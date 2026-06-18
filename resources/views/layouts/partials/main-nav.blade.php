@@ -1,3 +1,12 @@
+@php
+    $isStaff      = auth()->check() && auth()->user()->hasRole('staff') && ! auth()->user()->hasRole(['super_admin', 'store_admin']);
+    $isAdminPlus  = auth()->check() && auth()->user()->hasRole(['super_admin', 'store_admin']);
+    $isSuperAdmin = auth()->check() && auth()->user()->hasRole('super_admin');
+
+    $inventoryLowStock   = \App\Models\ProductVariant::where('stock', '<=', \App\Http\Controllers\Admin\InventoryController::LOW_STOCK_THRESHOLD)->count();
+    $consultationUnread  = \App\Models\Consultation::whereNull('read_at')->count();
+@endphp
+
 <div class="main-nav">
     <!-- Sidebar Logo -->
     <div class="logo-box">
@@ -22,21 +31,20 @@
 
             <li class="menu-title">General</li>
 
+            {{-- Dashboard: all admin roles --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('second', [ 'dashboards' , 'index']) }}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:widget-5-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:widget-5-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Dashboard </span>
                 </a>
             </li>
 
+            {{-- Products: super_admin + store_admin only --}}
+            @if($isAdminPlus)
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarProducts" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarProducts">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:t-shirt-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:t-shirt-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Products </span>
                 </a>
                 <div class="collapse" id="sidebarProducts">
@@ -51,12 +59,11 @@
                 </div>
             </li>
 
+            {{-- Category: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarCategory" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarCategory">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:clipboard-list-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:clipboard-list-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Category </span>
                 </a>
                 <div class="collapse" id="sidebarCategory">
@@ -71,12 +78,11 @@
                 </div>
             </li>
 
+            {{-- Collections: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarCollections" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarCollections">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:bookmark-circle-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:bookmark-circle-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Collections </span>
                 </a>
                 <div class="collapse" id="sidebarCollections">
@@ -90,14 +96,13 @@
                     </ul>
                 </div>
             </li>
+            @endif
 
-            @php $inventoryLowStock = \App\Models\ProductVariant::where('stock', '<=', \App\Http\Controllers\Admin\InventoryController::LOW_STOCK_THRESHOLD)->count(); @endphp
+            {{-- Inventory: all admin roles --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarInventory" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarInventory">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:box-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:box-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Inventory </span>
                     @if($inventoryLowStock > 0)
                         <span class="badge bg-warning badge-pill ms-auto">{{ $inventoryLowStock }}</span>
@@ -120,30 +125,26 @@
                 </div>
             </li>
 
+            {{-- Orders: all admin roles --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarOrders" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarOrders">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:bag-smile-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:bag-smile-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Orders </span>
                 </a>
                 <div class="collapse" id="sidebarOrders">
                     <ul class="nav sub-navbar-nav">
-
-                         <li class="sub-nav-item">
+                        <li class="sub-nav-item">
                             <a class="sub-nav-link" href="{{ route('admin.orders.index') }}">All Orders</a>
                         </li>
                     </ul>
                 </div>
             </li>
 
-            @php $consultationUnread = \App\Models\Consultation::whereNull('read_at')->count(); @endphp
+            {{-- Consultations: all admin roles --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.consultations.index') }}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:calendar-mark-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:calendar-mark-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Consultations </span>
                     @if($consultationUnread > 0)
                         <span class="badge bg-danger badge-pill ms-auto">{{ $consultationUnread }}</span>
@@ -151,58 +152,11 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarPurchases" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarPurchases">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:card-send-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Purchases </span>
-                </a>
-                <div class="collapse" id="sidebarPurchases">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'purchase', 'list'])}}">List</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'purchase', 'order'])}}">Order</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'purchase', 'return'])}}">Return</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarAttributes" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarAttributes">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:confetti-minimalistic-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Attributes </span>
-                </a>
-                <div class="collapse" id="sidebarAttributes">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'attributes', 'list'])}}">List</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'attributes', 'edit'])}}">Edit</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['general', 'attributes', 'create'])}}">Create</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
+            {{-- Invoices: all admin roles --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarInvoice" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarInvoice">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:bill-list-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:bill-list-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Invoices </span>
                 </a>
                 <div class="collapse" id="sidebarInvoice">
@@ -214,80 +168,34 @@
                 </div>
             </li>
 
+            {{-- Currencies: super_admin + store_admin only --}}
+            @if($isAdminPlus)
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.currencies.index') }}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:dollar-minimalistic-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Currencies </span>
                 </a>
             </li>
 
+            {{-- Settings: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.settings.index') }}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:settings-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Settings </span>
                 </a>
             </li>
 
             <li class="menu-title mt-2">Users</li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['users', 'pages-profile'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:chat-square-like-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Profile </span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarRoles" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarRoles">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:user-speak-rounded-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Roles </span>
-                </a>
-                <div class="collapse" id="sidebarRoles">
-                    <ul class="nav sub-navbar-nav">
-                        <ul class="nav sub-navbar-nav">
-                            <li class="sub-nav-item">
-                                <a class="sub-nav-link" href="{{ route('third', ['users', 'role', 'list'])}}">List</a>
-                            </li>
-                            <li class="sub-nav-item">
-                                <a class="sub-nav-link" href="{{ route('third', ['users', 'role', 'edit'])}}">Edit</a>
-                            </li>
-                            <li class="sub-nav-item">
-                                <a class="sub-nav-link" href="{{ route('third', ['users', 'role', 'create'])}}">Create</a>
-                            </li>
-                        </ul>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['users', 'pages-permission'])}}">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:checklist-minimalistic-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Permissions </span>
-                </a>
-            </li>
-
+            {{-- Customers: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarCustomers" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarCustomers">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:users-group-two-rounded-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:users-group-two-rounded-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Customers </span>
                 </a>
                 <div class="collapse" id="sidebarCustomers">
                     <ul class="nav sub-navbar-nav">
-
                         <li class="sub-nav-item">
                             <a class="sub-nav-link" href="{{ route('admin.customers.index') }}">All Customers</a>
                         </li>
@@ -295,14 +203,23 @@
                 </div>
             </li>
 
+            {{-- Roles: super_admin only --}}
+            @if($isSuperAdmin)
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('second', ['users', 'pages-permission'])}}">
+                    <span class="nav-icon"><iconify-icon icon="solar:user-speak-rounded-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Roles &amp; Permissions </span>
+                </a>
+            </li>
+            @endif
+
             <li class="menu-title mt-2">Other</li>
 
+            {{-- Coupons: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarCoupons" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarCoupons">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:leaf-bold-duotone"></iconify-icon>
-                         </span>
+                    <span class="nav-icon"><iconify-icon icon="solar:leaf-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Coupons </span>
                 </a>
                 <div class="collapse" id="sidebarCoupons">
@@ -316,335 +233,8 @@
                     </ul>
                 </div>
             </li>
+            @endif {{-- end $isAdminPlus --}}
 
-            <li class="menu-title mt-2">Components</li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarBaseUI" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarBaseUI">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:bookmark-square-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Base UI </span>
-                </a>
-                <div class="collapse" id="sidebarBaseUI">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'accordion'])}}">Accordion</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'alerts'])}}">Alerts</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'avatar'])}}">Avatar</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'badge'])}}">Badge</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'breadcrumb'])}}">Breadcrumb</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'buttons'])}}">Buttons</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'cards'])}}">Card</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'carousel'])}}">Carousel</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'collapse'])}}">Collapse</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'dropdown'])}}">Dropdown</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'list-group'])}}">List Group</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'modal'])}}">Modal</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'tabs'])}}">Tabs</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'offcanvas'])}}">Offcanvas</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'pagination'])}}">Pagination</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'placeholder'])}}">Placeholders</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'popovers'])}}">Popovers</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'progress'])}}">Progress</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'scrollspy'])}}">Scrollspy</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'spinners'])}}">Spinners</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'toasts'])}}">Toasts</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'ui', 'tooltips'])}}">Tooltips</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarExtendedUI" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarExtendedUI">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:case-round-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Advanced UI </span>
-                </a>
-                <div class="collapse" id="sidebarExtendedUI">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'advanced', 'rating'])}}">Ratings</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'advanced', 'sweet-alerts'])}}">Sweet Alert</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'advanced', 'swiper-slider'])}}">Swiper Slider</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'advanced', 'scrollbar'])}}">Scrollbar</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'advanced', 'toastify'])}}">Toastify</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarCharts" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarCharts">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:pie-chart-2-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Charts </span>
-                </a>
-                <div class="collapse" id="sidebarCharts">
-                    <ul class="nav sub-navbar-nav">
-                       <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-area'])}}">Area</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-bar'])}}">Bar</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts','apex-bubble'])}}">Bubble</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts','apex-candlestick'])}}">Candlestick</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts','apex-column'])}}">Column</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts','apex-heatmap'])}}">Heatmap</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-line'])}}">Line</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-mixed'])}}">Mixed</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-timeline'])}}">Timeline</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-boxplot'])}}">Boxplot</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-treemap'])}}">Treemap</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-pie'])}}">Pie</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components',  'charts', 'apex-radar'])}}">Radar</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-radialbar'])}}">RadialBar</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-scatter'])}}">Scatter</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'charts', 'apex-polar-area'])}}">Polar Area</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarForms" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarForms">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:book-bookmark-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Forms </span>
-                </a>
-                <div class="collapse" id="sidebarForms">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components' ,'forms', 'basic'])}}">Basic Elements</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components' ,'forms', 'checkbox-radio'])}}">Checkbox &amp; Radio</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components' ,'forms', 'choice-select'])}}">Choice Select</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components' ,'forms', 'clipboard'])}}">Clipboard</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components' ,'forms', 'flatepicker'])}}">Flatepicker</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components' ,'forms', 'validation'])}}">Validation</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'forms', 'wizard'])}}">Wizard</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'forms', 'file-upload'])}}">File Upload</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'forms', 'editors'])}}">Editors</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'forms', 'input-mask'])}}">Input Mask</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'forms', 'range-slider'])}}">Slider</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarTables" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarTables">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:tuning-2-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Tables </span>
-                </a>
-                <div class="collapse" id="sidebarTables">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'tables', 'basic'])}}">Basic Tables</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'tables', 'gridjs'])}}">Grid Js</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarIcons" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarIcons">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:ufo-2-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Icons </span>
-                </a>
-                <div class="collapse" id="sidebarIcons">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'icons', 'boxicons'])}}">Boxicons</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'icons', 'solar'])}}">Solar Icons</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarMaps" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarMaps">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:streets-map-point-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Maps </span>
-                </a>
-                <div class="collapse" id="sidebarMaps">
-                    <ul class="nav sub-navbar-nav">
-                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'maps', 'google'])}}">Google Maps</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('third', ['components', 'maps', 'vector'])}}">Vector Maps</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0);">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:volleyball-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text">Badge Menu</span>
-                    <span class="badge bg-danger badge-pill text-end">1</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarMultiLevelDemo" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarMultiLevelDemo">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:share-circle-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Menu Item </span>
-                </a>
-                <div class="collapse" id="sidebarMultiLevelDemo">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="javascript:void(0);">Menu Item 1</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link  menu-arrow" href="#sidebarItemDemoSubItem" data-bs-toggle="collapse"
-                               role="button" aria-expanded="false" aria-controls="sidebarItemDemoSubItem">
-                                <span> Menu Item 2 </span>
-                            </a>
-                            <div class="collapse" id="sidebarItemDemoSubItem">
-                                <ul class="nav sub-navbar-nav">
-                                    <li class="sub-nav-item">
-                                        <a class="sub-nav-link" href="javascript:void(0);">Menu Sub item</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link disabled" href="javascript:void(0);">
-                         <span class="nav-icon">
-                              <iconify-icon icon="solar:user-block-rounded-bold-duotone"></iconify-icon>
-                         </span>
-                    <span class="nav-text"> Disable Item </span>
-                </a>
-            </li>
         </ul>
     </div>
 </div>

@@ -14,6 +14,10 @@ class EnsureAdmin
             return redirect()->route('login');
         }
 
+        if (! auth()->user()->hasRole(['super_admin', 'store_admin', 'staff'])) {
+            abort(403, 'Access denied.');
+        }
+
         return $next($request);
     }
 }
