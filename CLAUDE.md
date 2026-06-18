@@ -416,6 +416,46 @@ Check OpenCart's `oc_information` and `oc_information_description` tables for st
 
 ---
 
+## Admin settings — full specification
+
+All settings use the `Setting` model (key/value store). The settings page in admin must cover all of the following.
+
+### Store identity (✅ built)
+- `store_name`, `store_tagline`, `store_email`, `store_phone`, `store_address`
+- `orders_email`, `consultation_email`
+- `meta_title`, `meta_description`, `google_analytics_id`
+- `facebook_url`, `instagram_url`, `twitter_url`
+- `maintenance_mode` — boolean toggle
+
+### Payments (❌ missing — must add)
+- `cod_enabled` — boolean, COD on/off toggle (testing only, off before Stripe go-live)
+- `payment_method_label` — custom text shown at checkout e.g. "Pay by phone"
+- `stripe_publishable_key` — added when client provides details
+- `stripe_secret_key` — encrypted storage
+
+### Shipping (❌ missing — must add)
+- `free_shipping_threshold` — EUR amount above which shipping is free (default 75)
+- `shipping_rate_ireland` — standard rate for Irish orders
+- `shipping_rate_international` — standard rate for international orders
+- `shipping_notice` — message shown at checkout
+
+### Display (❌ missing — must add)
+- `products_per_page` — pagination count on listing pages (default 12)
+- `new_arrivals_count` — homepage new arrivals count
+- `wishlist_enabled` — boolean toggle
+- `reviews_enabled` — boolean toggle (decision pending with client)
+
+### Orders (❌ missing — must add)
+- `order_email_from_name` — sender name on order emails
+- `order_email_from_address` — sender address on order emails
+- `low_stock_threshold` — units at which inventory flags as low stock (default 5)
+
+### Consultation / booking (❌ missing — must add)
+- `consultation_enabled` — boolean, show/hide consultation form
+- `consultation_intro_text` — editable intro text on booking form
+
+---
+
 ## Core principle — nothing gets skipped
 
 Both the customer-facing front end AND the admin back end must be fully functional before launch. This means:
@@ -428,6 +468,33 @@ Before starting Phase 3, a full audit must be completed covering:
 - Every Larkon admin section — is it wired to real data or still on demo?
 - Every client requirement from the brief — is it built or still outstanding?
 - Any gaps between what Larkon provides and what FADO needs
+
+---
+
+## Critical rule — strictly no hardcoding
+
+**Nothing must ever be hardcoded in the codebase.** Every value that could change must come from one of these sources:
+
+- **Admin settings** (`Setting::get('key')`) — for store-wide configurable values
+- **Database** — for all content, products, categories, collections, currencies
+- **`.env`** — for environment-specific values (DB credentials, API keys, app URL)
+- **Config files** (`config/fado.php`) — for technical defaults that aren't admin-facing
+
+### Examples of what must NOT be hardcoded:
+- Shipping rates or free shipping threshold → `Setting::get('free_shipping_threshold')`
+- Products per page → `Setting::get('products_per_page', 12)`
+- Low stock threshold → `Setting::get('low_stock_threshold', 5)`
+- New arrivals count → `Setting::get('new_arrivals_count', 8)`
+- Email from name/address → `Setting::get('order_email_from_name')`
+- Payment method label → `Setting::get('payment_method_label')`
+- COD enabled → `Setting::get('cod_enabled', false)`
+- Consultation intro text → `Setting::get('consultation_intro_text')`
+- Social media URLs → `Setting::get('instagram_url')`
+- Store name, tagline, phone → `Setting::get('store_name')`
+- Currency rates → currencies table, never hardcoded
+- Any copy/text that the store admin might want to change
+
+### If in doubt — make it a setting.
 
 ---
 
