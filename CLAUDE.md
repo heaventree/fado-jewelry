@@ -36,7 +36,32 @@ Static HTML/CSS/JS ecommerce theme. Converted to Laravel Blade templates in `res
 
 ---
 
-## Colour palette
+## Colour palette — CORRECTED usage guidance
+
+After reviewing the client's colour palette image and The Jewellery Garden logo directly, the colour hierarchy is:
+
+| Name | Hex | Correct usage |
+|------|-----|----------------|
+| Light mint | #DCF6D5 | Lightest accent / hover backgrounds |
+| Pale mint | #EBFCEF | Lightest section backgrounds |
+| Near white | #FBFBFB | Primary page background |
+| Off white | #F8F9F5 | Primary page background |
+| Soft white | #F5F7F1 | Section backgrounds |
+| Cream | #F0F1E7 | Section backgrounds, product tile backgrounds |
+| Warm grey | #BCB3AB | Borders, dividers |
+| **Brand green light (#81CC60)** | **Buttons, links, larger accent surfaces, badges** |
+| **Brand green mid (#0AAC45)** | **Header utility bar, footer, large coloured surfaces, primary CTA buttons — THIS is the "big surface" green, not deep green** |
+| **Deep green (#044705)** | **SMALL elements only: heading text, logo wordmark, nav text, tiny badges/pills. Never used as a large background fill.** |
+| Gold accent | #766D42 | Sparing accent touches only |
+
+### Critical correction
+Evidence from the client's own materials: in the palette image, #044705 appears only as a small badge/pill with the FADO wordmark — never as a large swatch or surface. In The Jewellery Garden logo, all text uses a mid-tone sage/olive green (matching #0AAC45/#81CC60 range), not the dark #044705. White is completely dominant in the logo.
+
+**Therefore: replace #044705 wherever it is currently used as a large background fill (header bar, footer, hero overlays, section backgrounds) with #0AAC45 instead.** Reserve #044705 strictly for text (headings, logo, nav labels) and small accent badges — never for surfaces larger than a button or small badge.
+
+---
+
+## Colour palette (original reference)
 
 | Name | Hex | Usage |
 |------|-----|-------|
