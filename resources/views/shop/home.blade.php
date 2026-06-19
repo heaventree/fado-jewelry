@@ -76,27 +76,33 @@
                 </div>
             </div>
 
-            {{-- Slide 2 — Garden Collection --}}
+            {{-- Slide 2 — Garden Collection (light/cream — airy, nature feel) --}}
             <div class="swiper-slide">
                 <div class="fado-slide" style="
-                    background: linear-gradient(135deg, #1a3a1a 0%, #0e2b1a 50%, var(--fado-deep-green) 100%);
+                    background: var(--fado-cream);
                     min-height: 88vh; display:flex; align-items:center; position:relative; overflow:hidden;">
+                    {{-- Soft image wash --}}
                     <div style="position:absolute; inset:0;
                                 background: url('/images/ochaka/slider/slider-22.jpg') center/cover no-repeat;
-                                opacity: .22; pointer-events:none"></div>
+                                opacity: .08; pointer-events:none"></div>
+                    {{-- Decorative botanical circle --}}
+                    <div style="position:absolute; right:-60px; top:50%; transform:translateY(-50%);
+                                width:600px; height:600px; border-radius:50%;
+                                background: radial-gradient(circle, rgba(129,204,96,.12) 0%, transparent 70%);
+                                pointer-events:none"></div>
                     <div class="container position-relative" style="z-index:2">
                         <div class="row justify-content-center text-center">
                             <div class="col-xl-7 col-lg-8">
                                 <p style="font-size:.75rem; letter-spacing:.35em; text-transform:uppercase;
-                                          color: var(--fado-mint-light); margin-bottom:16px" class="wow fadeInUp" data-wow-delay=".1s">
+                                          color: var(--fado-gold); margin-bottom:16px" class="wow fadeInUp" data-wow-delay=".1s">
                                     The Jewellery Garden by FADÓ
                                 </p>
                                 <h1 style="font-family: Georgia, serif; font-size: clamp(2.4rem, 5vw, 4rem);
-                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px"
+                                           color: var(--fado-deep-green); line-height:1.15; font-weight:400; margin-bottom:20px"
                                     class="wow fadeInUp" data-wow-delay=".2s">
                                     Nature, Captured<br>in Gold &amp; Silver
                                 </h1>
-                                <p style="color:rgba(255,255,255,.72); font-size:1.0625rem; line-height:1.75; margin-bottom:36px"
+                                <p style="color:#555; font-size:1.0625rem; line-height:1.75; margin-bottom:36px"
                                    class="wow fadeInUp" data-wow-delay=".3s">
                                     Bluebells, wild daisies, butterflies and bees — Ireland's garden in every piece. Perfect for weddings and engagements.
                                 </p>
@@ -111,14 +117,19 @@
                 </div>
             </div>
 
-            {{-- Slide 3 — Gift giving --}}
+            {{-- Slide 3 — Irish Gold (off-white / split layout) --}}
             <div class="swiper-slide">
                 <div class="fado-slide" style="
-                    background: linear-gradient(to right, var(--fado-deep-green) 0%, #0a3d0a 100%);
+                    background: var(--fado-off-white);
                     min-height: 88vh; display:flex; align-items:center; position:relative; overflow:hidden;">
-                    <div style="position:absolute; right:0; top:0; bottom:0; width:55%;
+                    {{-- Right-side image panel --}}
+                    <div style="position:absolute; right:0; top:0; bottom:0; width:48%;
                                 background: url('/images/ochaka/slider/slider-23.jpg') center/cover no-repeat;
-                                opacity:.35; pointer-events:none"></div>
+                                pointer-events:none"></div>
+                    {{-- Fade from white to transparent over image --}}
+                    <div style="position:absolute; right:0; top:0; bottom:0; width:60%;
+                                background: linear-gradient(to right, var(--fado-off-white) 0%, transparent 50%);
+                                pointer-events:none"></div>
                     <div class="container position-relative" style="z-index:2">
                         <div class="row">
                             <div class="col-xl-5 col-lg-6">
@@ -127,11 +138,11 @@
                                     A gift they'll treasure forever
                                 </p>
                                 <h1 style="font-family: Georgia, serif; font-size: clamp(2.4rem, 5vw, 4rem);
-                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px"
+                                           color: var(--fado-deep-green); line-height:1.15; font-weight:400; margin-bottom:20px"
                                     class="wow fadeInUp" data-wow-delay=".2s">
                                     Handcrafted<br>Irish Gold
                                 </h1>
-                                <p style="color:rgba(255,255,255,.72); font-size:1.0625rem; line-height:1.75; max-width:400px; margin-bottom:36px"
+                                <p style="color:#555; font-size:1.0625rem; line-height:1.75; max-width:400px; margin-bottom:36px"
                                    class="wow fadeInUp" data-wow-delay=".3s">
                                     From 9ct to 18ct gold and platinum — every piece crafted in the Irish tradition for those who matter most.
                                 </p>
@@ -139,6 +150,14 @@
                                     <a href="{{ route('shop.jewellery', ['metal' => '9ct-yellow-gold']) }}"
                                        class="btn-fado-primary" style="display:inline-block; padding:14px 32px; text-decoration:none; border-radius:2px; font-weight:600">
                                         Shop Gold Jewellery
+                                    </a>
+                                    <a href="{{ route('shop.collections') }}"
+                                       style="display:inline-block; padding:13px 32px; text-decoration:none; border-radius:2px;
+                                              border: 1.5px solid var(--fado-deep-green); color: var(--fado-deep-green); font-size:.875rem; font-weight:500;
+                                              transition: border-color .2s, background .2s"
+                                       onmouseover="this.style.background='var(--fado-deep-green)'; this.style.color='#fff'"
+                                       onmouseout="this.style.background='transparent'; this.style.color='var(--fado-deep-green)'">
+                                        View Collections
                                     </a>
                                 </div>
                             </div>
@@ -430,24 +449,47 @@
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
 {{-- § 7  ABOUT BAND                                                            --}}
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
-<section style="padding: 72px 0; background: var(--fado-deep-green)">
-    <div class="container text-center">
-        <p style="font-size:.7rem; letter-spacing:.3em; text-transform:uppercase; color: var(--fado-gold); margin-bottom:16px" class="wow fadeInUp">Our Story</p>
-        <h2 style="font-family: Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.5rem); color:#fff;
-                   font-weight:400; max-width:700px; margin:0 auto 24px; line-height:1.4" class="wow fadeInUp" data-wow-delay=".1s">
-            Irish Jewellery, Crafted with Heart
-        </h2>
-        <p style="font-size:1.0625rem; color:rgba(255,255,255,.72); max-width:600px; margin:0 auto 36px; line-height:1.8" class="wow fadeInUp" data-wow-delay=".2s">
-            FADÓ — meaning "long ago" in Irish — honours centuries of Irish craftsmanship. Each piece is designed to carry meaning, to be worn every day, and to be passed down through generations.
-        </p>
-        <a href="{{ route('shop.about') }}" class="wow fadeInUp" data-wow-delay=".3s"
-           style="display:inline-block; padding:13px 36px; border: 1.5px solid rgba(255,255,255,.5);
-                  color:#fff; text-decoration:none; border-radius:2px; font-size:.875rem; font-weight:500;
-                  transition: border-color .2s, background .2s"
-           onmouseover="this.style.borderColor='#fff'; this.style.background='rgba(255,255,255,.08)'"
-           onmouseout="this.style.borderColor='rgba(255,255,255,.5)'; this.style.background='transparent'">
-            Our Story →
-        </a>
+<section style="padding: 80px 0; background: var(--fado-soft-white); border-top: 1px solid var(--fado-cream); border-bottom: 1px solid var(--fado-cream)">
+    <div class="container">
+        <div class="row align-items-center justify-content-center g-5">
+            <div class="col-lg-5 text-center text-lg-start wow fadeInUp">
+                <p style="font-size:.7rem; letter-spacing:.3em; text-transform:uppercase; color: var(--fado-gold); margin-bottom:16px">Our Story</p>
+                <h2 style="font-family: Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.5rem); color: var(--fado-deep-green);
+                           font-weight:400; margin-bottom:24px; line-height:1.4">
+                    Irish Jewellery,<br>Crafted with Heart
+                </h2>
+                <p style="font-size:1.0625rem; color:#555; line-height:1.8; margin-bottom:32px">
+                    FADÓ — meaning "long ago" in Irish — honours centuries of Irish craftsmanship. Each piece is designed to carry meaning, to be worn every day, and to be passed down through generations.
+                </p>
+                <a href="{{ route('shop.about') }}"
+                   class="btn-fado-outline" style="display:inline-block; padding:12px 32px; text-decoration:none; border-radius:2px">
+                    Our Story →
+                </a>
+            </div>
+            <div class="col-lg-4 d-none d-lg-block wow fadeInUp" data-wow-delay=".15s">
+                {{-- Simple decorative accent — three stacked value chips --}}
+                <div style="display:flex; flex-direction:column; gap:16px">
+                    @foreach([
+                        ['icon' => 'icon-medal', 'title' => 'Hallmark Certified',    'sub' => 'Assay Office Ireland — every piece certified'],
+                        ['icon' => 'icon-hands-clapping', 'title' => 'Handcrafted Heritage', 'sub' => 'Designed and finished in the Irish tradition'],
+                        ['icon' => 'icon-heart',  'title' => 'Made to be Treasured',  'sub' => 'Pieces designed to be worn and passed on'],
+                    ] as $v)
+                    <div style="display:flex; align-items:flex-start; gap:16px; background:#fff;
+                                border-radius:6px; padding:18px 20px; border: 1px solid var(--fado-cream);
+                                box-shadow: 0 2px 8px rgba(0,0,0,.04)">
+                        <div style="width:40px; height:40px; border-radius:50%; background: var(--fado-mint-pale);
+                                    display:flex; align-items:center; justify-content:center; flex-shrink:0">
+                            <i class="icon {{ $v['icon'] }}" style="color: var(--fado-green-mid); font-size:1.1rem"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:.875rem; font-weight:700; color: var(--fado-deep-green); margin-bottom:2px">{{ $v['title'] }}</div>
+                            <div style="font-size:.8125rem; color:#777; line-height:1.5">{{ $v['sub'] }}</div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 

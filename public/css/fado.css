@@ -132,6 +132,7 @@ body {
 .fado-nav .nav-ul > li:hover > a .caret { transform: rotate(180deg); }
 
 /* Mega-menu dropdown panel */
+.fado-nav { position: relative; } /* anchor for absolute mega-menu */
 .fado-mega-menu {
     position: absolute;
     left: 0;
@@ -143,6 +144,10 @@ body {
     z-index: 1000;
     display: none;
     padding: 28px 0 32px;
+    /* constrain on very wide screens */
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .fado-nav .nav-ul > li { position: static; }
 .fado-nav .nav-ul > li:hover .fado-mega-menu { display: block; }
