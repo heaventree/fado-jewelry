@@ -471,51 +471,58 @@
 <section style="padding:56px 0 80px; background:#fff; border-top:1px solid var(--fado-cream)">
     <div class="container">
         <h2 class="h2 fw-normal text-center mb-32">You might also like</h2>
-        <div class="row g-4">
+        <div class="wrapper-shop tf-grid-layout tf-col-2 md-col-2 xl-col-4">
             @foreach($related as $rel)
             @php
                 $relImg  = $rel->primaryImage;
+                $relImg2 = $rel->images->skip(1)->first();
                 $relFrom = $rel->variants->min('price_eur');
-                $relMets = $rel->variants->pluck('metal.name')->filter()->unique()->take(2);
             @endphp
-            <div class="col-6 col-lg-3">
-                <a href="{{ route('shop.product', $rel) }}" class="fado-related-card d-block text-decoration-none">
-                    <div style="background:var(--fado-cream); border-radius:3px; overflow:hidden;
-                                aspect-ratio:3/4; margin-bottom:12px; position:relative">
+            <div class="card-product grid wow fadeInUp">
+                <div class="card-product_wrapper">
+                    <a href="{{ route('shop.product', $rel) }}" class="product-img">
                         @if($relImg)
-                            <img src="{{ Storage::url($relImg->path) }}" alt="{{ $rel->name }}"
-                                 style="width:100%; height:100%; object-fit:cover; object-position:center top;
-                                        transition:transform .4s ease">
+                            <img class="lazyload img-product" src="{{ Storage::url($relImg->path) }}" data-src="{{ Storage::url($relImg->path) }}" alt="{{ $rel->name }}">
+                            @if($relImg2)
+                            <img class="lazyload img-hover" src="{{ Storage::url($relImg2->path) }}" data-src="{{ Storage::url($relImg2->path) }}" alt="{{ $rel->name }}">
+                            @endif
                         @else
-                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center">
-                                <i class="icon icon-gem" style="font-size:2.5rem; color:var(--fado-warm-grey)"></i>
-                            </div>
+                            <img class="lazyload img-product" src="/images/ochaka/products/jewelry/product-5.jpg" data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="{{ $rel->name }}">
                         @endif
-                        @if($relMets->isNotEmpty())
-                        <div style="position:absolute; bottom:0; left:0; right:0; padding:6px 8px;
-                                    background:linear-gradient(transparent, rgba(4,71,5,.5)); display:flex; gap:4px">
-                            @foreach($relMets as $m)
-                            <span style="font-size:.6rem; background:rgba(255,255,255,.18); color:#fff;
-                                         border:1px solid rgba(255,255,255,.3); padding:2px 6px; border-radius:10px">
-                                {{ $m }}
-                            </span>
-                            @endforeach
-                        </div>
+                    </a>
+                    <ul class="product-action_list">
+                        <li>
+                            <a href="{{ route('shop.product', $rel) }}" class="hover-tooltip tooltip-left box-icon">
+                                <span class="icon icon-bag"></span>
+                                <span class="tooltip">Shop now</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('shop.product', $rel) }}" class="hover-tooltip tooltip-left box-icon">
+                                <span class="icon icon-view"></span>
+                                <span class="tooltip">Quick view</span>
+                            </a>
+                        </li>
+                        <li class="wishlist">
+                            <a href="{{ route('shop.wishlist.toggle', $rel->id) }}"
+                               class="hover-tooltip tooltip-left box-icon"
+                               onclick="event.preventDefault(); fetch(this.href, {method:'POST', headers:{'X-CSRF-TOKEN':'{{ csrf_token() }}','Accept':'application/json'}}).then(()=>location.reload())">
+                                <span class="icon icon-heart"></span>
+                                <span class="tooltip">Add to Wishlist</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-product_info">
+                    <a href="{{ route('shop.product', $rel) }}" class="name-product h4 link">{{ $rel->name }}</a>
+                    <div class="price-wrap">
+                        @if($relFrom)
+                            <span class="price-new h6">From €{{ number_format((float)$relFrom, 2) }}</span>
+                        @else
+                            <span class="price-new h6 fw-normal" style="font-style:italic">Price on enquiry</span>
                         @endif
                     </div>
-                    <p class="fado-related-name"
-                       style="font-size:.875rem; font-weight:600; color:var(--fado-deep-green);
-                              margin-bottom:4px; line-height:1.4; transition:color .2s">
-                        {{ $rel->name }}
-                    </p>
-                    <p style="font-size:.8125rem; color:var(--fado-warm-grey); margin:0">
-                        @if($relFrom)
-                            From <strong style="color:var(--fado-deep-green)">€{{ number_format((float)$relFrom, 2) }}</strong>
-                        @else
-                            <span style="font-style:italic">Price on enquiry</span>
-                        @endif
-                    </p>
-                </a>
+                </div>
             </div>
             @endforeach
         </div>
