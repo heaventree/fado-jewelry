@@ -446,7 +446,7 @@
                     <a href="{{ url()->current() }}" class="tf-btn animate-btn">Clear filters</a>
                 </div>
                 @else
-                <div class="wrapper-shop tf-grid-layout tf-col-3 md-col-2" id="productGrid">
+                <div class="wrapper-shop tf-grid-layout tf-col-2 md-col-2 xl-col-3" id="productGrid">
                     @foreach($products as $product)
                     @php
                         $img    = $product->primaryImage;
