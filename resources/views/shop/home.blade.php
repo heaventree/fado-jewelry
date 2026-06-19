@@ -20,27 +20,6 @@
                     <div class="sld_image">
                         <img src="{{ Storage::url('banners/Banner 1.png') }}" data-src="{{ Storage::url('banners/Banner 1.png') }}" alt="FADÓ Jewellery — Claddagh Collection" class="lazyload">
                     </div>
-                    <div class="sld_content">
-                        <div class="container">
-                            <div class="content-sld_wrap">
-                                <p class="sub-title_sld-2 font-2 h3 text-white fade-item fade-item-1">
-                                    Fine Irish Jewellery
-                                </p>
-                                <h1 class="title_sld text-display text-white fade-item fade-item-2">
-                                    The Claddagh Collection
-                                </h1>
-                                <p class="sub-text_sld h5 text-white fade-item fade-item-3">
-                                    Love, loyalty and friendship — Ireland's most enduring symbol, crafted in silver, gold and platinum.
-                                </p>
-                                <div class="fade-item fade-item-4">
-                                    <a href="{{ route('shop.collection', 'claddagh') }}" class="tf-btn animate-btn fw-semibold">
-                                        Shop Claddagh
-                                        <i class="icon icon-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -49,27 +28,6 @@
                 <div class="slider-wrap">
                     <div class="sld_image">
                         <img src="{{ Storage::url('banners/Banner 2.png') }}" data-src="{{ Storage::url('banners/Banner 2.png') }}" alt="The Jewellery Garden by FADÓ" class="lazyload">
-                    </div>
-                    <div class="sld_content">
-                        <div class="container">
-                            <div class="content-sld_wrap">
-                                <p class="sub-title_sld-2 font-2 h3 text-white fade-item fade-item-1">
-                                    The Jewellery Garden by FADÓ
-                                </p>
-                                <h1 class="title_sld text-display text-white fade-item fade-item-2">
-                                    Nature, Captured in Gold &amp; Silver
-                                </h1>
-                                <p class="sub-text_sld h5 text-white fade-item fade-item-3">
-                                    Bluebells, wild daisies, butterflies and bees — Ireland's garden in every piece.
-                                </p>
-                                <div class="fade-item fade-item-4">
-                                    <a href="{{ route('shop.collection', 'the-garden-collection') }}" class="tf-btn animate-btn fw-semibold">
-                                        Explore the Garden Collection
-                                        <i class="icon icon-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -80,27 +38,6 @@
                     <div class="sld_image">
                         <img src="{{ Storage::url('banners/Banner 3.png') }}" data-src="{{ Storage::url('banners/Banner 3.png') }}" alt="Handcrafted Irish Gold" class="lazyload">
                     </div>
-                    <div class="sld_content">
-                        <div class="container">
-                            <div class="content-sld_wrap">
-                                <p class="sub-title_sld-2 font-2 h3 text-white fade-item fade-item-1">
-                                    A gift they'll treasure forever
-                                </p>
-                                <h1 class="title_sld text-display text-white fade-item fade-item-2">
-                                    Handcrafted Irish Gold
-                                </h1>
-                                <p class="sub-text_sld h5 text-white fade-item fade-item-3">
-                                    From 9ct to 18ct gold and platinum — every piece crafted in the Irish tradition.
-                                </p>
-                                <div class="fade-item fade-item-4">
-                                    <a href="{{ route('shop.jewellery') }}" class="tf-btn animate-btn fw-semibold">
-                                        Shop Gold Jewellery
-                                        <i class="icon icon-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -109,27 +46,6 @@
                 <div class="slider-wrap">
                     <div class="sld_image">
                         <img src="{{ Storage::url('banners/Banner 4.png') }}" data-src="{{ Storage::url('banners/Banner 4.png') }}" alt="FADÓ Fine Irish Jewellery" class="lazyload">
-                    </div>
-                    <div class="sld_content">
-                        <div class="container">
-                            <div class="content-sld_wrap">
-                                <p class="sub-title_sld-2 font-2 h3 text-white fade-item fade-item-1">
-                                    Hallmark Certified
-                                </p>
-                                <h1 class="title_sld text-display text-white fade-item fade-item-2">
-                                    Fine Irish Jewellery
-                                </h1>
-                                <p class="sub-text_sld h5 text-white fade-item fade-item-3">
-                                    Every piece assayed and hallmarked by the Assay Office of Ireland.
-                                </p>
-                                <div class="fade-item fade-item-4">
-                                    <a href="{{ route('shop.jewellery') }}" class="tf-btn animate-btn fw-semibold">
-                                        Shop Now
-                                        <i class="icon icon-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
