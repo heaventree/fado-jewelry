@@ -1,10 +1,11 @@
-{{-- Ochaka mobile offcanvas menu — id must match btn-mobile-menu href="#mobileMenu" --}}
+{{-- Ochaka mobile offcanvas menu — id="mobileMenu" matches btn-mobile-menu href="#mobileMenu" --}}
+{{-- Ochaka's main.js reads #wrapper-menu-navigation to auto-populate mobile nav from desktop nav --}}
 <div class="offcanvas offcanvas-start canvas-mb" id="mobileMenu">
     <span class="icon-close-popup" data-bs-dismiss="offcanvas">
         <i class="icon-close"></i>
     </span>
     <div class="canvas-header">
-        <div class="fado-wordmark" style="font-size:1.5rem">FADÓ</div>
+        <div class="fado-wordmark">FADÓ</div>
         @auth
             <a href="{{ route('shop.account.index') }}" class="tf-btn type-small style-2">
                 My Account <i class="icon icon-user"></i>
@@ -49,7 +50,6 @@
                     </a>
                     <div class="sub-nav-mobile">
                         <ul class="sub-nav-list">
-                            <li class="nav-mb-item_title">Irish Heritage</li>
                             <li><a href="{{ route('shop.collection', 'claddagh') }}" class="nav-mb-item_link sub">Claddagh</a></li>
                             <li><a href="{{ route('shop.collection', 'corrib-claddagh') }}" class="nav-mb-item_link sub">Corrib Claddagh</a></li>
                             <li><a href="{{ route('shop.collection', 'trinity') }}" class="nav-mb-item_link sub">Trinity</a></li>
@@ -58,17 +58,9 @@
                             <li><a href="{{ route('shop.collection', 'newgrange') }}" class="nav-mb-item_link sub">Newgrange</a></li>
                             <li><a href="{{ route('shop.collection', 'irish-folklore') }}" class="nav-mb-item_link sub">Irish Folklore</a></li>
                             <li><a href="{{ route('shop.collection', 'shamrock') }}" class="nav-mb-item_link sub">Shamrock</a></li>
-                            <li class="nav-mb-item_title">Fine Collections</li>
                             <li><a href="{{ route('shop.collection', 'livia') }}" class="nav-mb-item_link sub">Livia</a></li>
                             <li><a href="{{ route('shop.collection', 'sheelin') }}" class="nav-mb-item_link sub">Sheelin</a></li>
-                            <li class="nav-mb-item_title">The Jewellery Garden</li>
-                            <li><a href="{{ route('shop.collection', 'the-garden-collection') }}" class="nav-mb-item_link sub fw-semibold">The Garden Collection by FADÓ</a></li>
-                            <li><a href="{{ route('shop.collection', 'garden-daisy') }}" class="nav-mb-item_link sub">Daisy</a></li>
-                            <li><a href="{{ route('shop.collection', 'garden-wild-daisy') }}" class="nav-mb-item_link sub">Wild Daisy</a></li>
-                            <li><a href="{{ route('shop.collection', 'garden-bluebell') }}" class="nav-mb-item_link sub">Bluebell</a></li>
-                            <li><a href="{{ route('shop.collection', 'garden-forget-me-not') }}" class="nav-mb-item_link sub">Forget Me Not</a></li>
-                            <li><a href="{{ route('shop.collection', 'garden-butterfly') }}" class="nav-mb-item_link sub">Butterfly</a></li>
-                            <li><a href="{{ route('shop.collection', 'garden-bee') }}" class="nav-mb-item_link sub">Bee</a></li>
+                            <li><a href="{{ route('shop.collection', 'the-garden-collection') }}" class="nav-mb-item_link sub fw-semibold">The Garden Collection</a></li>
                         </ul>
                     </div>
                 </li>
@@ -123,6 +115,15 @@
             </ul>
         </div>
 
+        <div class="payment-wrap">
+            <h5 class="title">Payment:</h5>
+            <ul class="payment-method-list">
+                <li><img src="/images/ochaka/payment/visa.png" alt="Visa"></li>
+                <li><img src="/images/ochaka/payment/master-card.png" alt="Mastercard"></li>
+                <li><img src="/images/ochaka/payment/paypal.png" alt="PayPal"></li>
+            </ul>
+        </div>
+
     </div>
 
     <div class="canvas-footer">
@@ -130,15 +131,15 @@
             $activeCurrencyCode  = session('fado_currency', 'EUR');
             $availableCurrencies = \App\Models\Currency::orderBy('is_default','desc')->orderBy('code')->get();
         @endphp
-        <form action="{{ route('shop.currency.switch') }}" method="POST">
-            @csrf
-            <div class="tf-currencies">
+        <div class="tf-currencies">
+            <form action="{{ route('shop.currency.switch') }}" method="POST">
+                @csrf
                 <select name="currency" onchange="this.form.submit()" class="tf-dropdown-select style-default type-currencies">
                     @foreach($availableCurrencies as $cur)
                         <option value="{{ $cur->code }}" {{ $activeCurrencyCode === $cur->code ? 'selected' : '' }}>{{ $cur->code }}</option>
                     @endforeach
                 </select>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>

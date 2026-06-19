@@ -5,9 +5,12 @@
     $phone  = \App\Models\Setting::get('store_phone');
     $email  = \App\Models\Setting::get('store_email', 'info@fadojewellery.ie');
     $addr   = \App\Models\Setting::get('store_address');
+    $activeCurrencyCode  = session('fado_currency', 'EUR');
+    $availableCurrencies = \App\Models\Currency::orderBy('is_default','desc')->orderBy('code')->get();
 @endphp
 
-<footer class="tf-footer style-color-white fado-footer-bg">
+{{-- Ochaka footer: tf-footer style-color-white bg-black --}}
+<footer class="tf-footer style-color-white bg-black">
     <div class="footer-body">
         <div class="container">
             <div class="row">
@@ -16,12 +19,9 @@
                 <div class="col-xl-4 col-sm-6 mb_30 mb-xl-0">
                     <div class="footer-infor">
                         <a href="{{ route('shop.home') }}" class="logo-site" style="text-decoration:none; margin-bottom:16px; display:inline-block">
-                            <div class="fado-wordmark text-white">FADÓ</div>
+                            <div class="fado-wordmark">FADÓ</div>
                             <div class="text-small-3 text-uppercase" style="letter-spacing:.18em; color:rgba(255,255,255,.65)">Fine Irish Jewellery</div>
                         </a>
-                        <p class="h6" style="color:rgba(255,255,255,.65); max-width:280px; line-height:1.7; margin-bottom:20px">
-                            Handcrafted in the Irish tradition. Timeless pieces inspired by Ireland's heritage, landscape, and spirit.
-                        </p>
                         <ul class="footer-contact mb-0">
                             @if($addr)
                             <li>
@@ -43,7 +43,7 @@
                                 <a href="mailto:{{ $email }}" class="h6 link text-main">{{ $email }}</a>
                             </li>
                         </ul>
-                        <ul class="tf-social-icon_2 mt-3">
+                        <ul class="tf-social-icon_2">
                             @if($fbUrl)
                             <li><a href="{{ $fbUrl }}" target="_blank" rel="noopener" class="link text-white"><i class="icon-fb"></i></a></li>
                             @endif
@@ -109,21 +109,27 @@
                         <p class="footer-heading footer-heading-mobile">Newsletter</p>
                         <div class="tf-collapse-content">
                             <div class="footer-newsletter">
-                                <p class="h6 caption" style="color:rgba(255,255,255,.65)">
+                                <p class="h6 caption">
                                     Be first to hear about new collections, exclusive offers, and FADÓ events.
                                 </p>
                                 <form action="{{ route('shop.newsletter.subscribe') }}" method="POST" class="form-newsletter mt-3">
                                     @csrf
-                                    <div class="d-flex gap-0">
-                                        <input type="email" name="email" class="form-control rounded-0"
-                                               placeholder="Your email address" required
-                                               style="background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); color:#fff; font-size:.875rem">
-                                        <button type="submit" class="tf-btn animate-btn rounded-0" style="white-space:nowrap">Subscribe</button>
+                                    <div class="form-content_fieldset form-get_email">
+                                        <div class="fieldset-input_email">
+                                            <div class="form__label-row">
+                                                <div class="entry__field ip">
+                                                    <input class="input style-stroke-2" type="email" name="email"
+                                                           placeholder="Enter your email" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="fiedset-button_submit">
+                                            <button type="submit" class="tf-btn btn-white animate-btn animate-dark type-small-2">
+                                                Subscribe <i class="icon icon-arrow-right"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </form>
-                                <p class="h6 mt-2" style="color:rgba(255,255,255,.4)">
-                                    By subscribing you agree to our <a href="{{ route('shop.privacy') }}" class="link" style="color:rgba(255,255,255,.5); text-decoration:underline">Privacy Policy</a>.
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -133,12 +139,31 @@
         </div>
     </div>
 
-    {{-- Footer bottom bar --}}
+    {{-- Footer bottom — Ochaka inner-bottom structure --}}
     <div class="footer-bottom">
         <div class="container">
-            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                <p class="mb-0 h6 text-main">© {{ date('Y') }} FADÓ Jewellery. All rights reserved.</p>
-                <p class="mb-0 h6 text-main" style="opacity:.55">Secure payments: Visa · Mastercard · PayPal · Amex</p>
+            <div class="inner-bottom">
+                <ul class="list-hor">
+                    <li><a href="{{ route('shop.about') }}" class="h6 link text-main">About FADÓ</a></li>
+                    <li class="br-line type-vertical"></li>
+                    <li><a href="{{ route('shop.contact') }}" class="h6 link text-main">Contact</a></li>
+                </ul>
+                <div class="list-hor flex-wrap">
+                    <span class="h6 text-main">© {{ date('Y') }} FADÓ Jewellery</span>
+                </div>
+                <div class="list-hor">
+                    <div class="tf-currencies">
+                        <form action="{{ route('shop.currency.switch') }}" method="POST">
+                            @csrf
+                            <select name="currency" onchange="this.form.submit()"
+                                    class="tf-dropdown-select style-default color-white-2 type-currencies">
+                                @foreach($availableCurrencies as $cur)
+                                    <option value="{{ $cur->code }}" {{ $activeCurrencyCode === $cur->code ? 'selected' : '' }}>{{ $cur->code }}</option>
+                                @endforeach
+                            </select>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
