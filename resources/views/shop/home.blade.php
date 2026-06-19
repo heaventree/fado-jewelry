@@ -18,7 +18,7 @@
             <div class="swiper-slide">
                 <div class="slider-wrap">
                     <div class="sld_image">
-                        <img src="{{ Storage::url('banners/BannerTop-one.jpg') }}" data-src="{{ Storage::url('banners/BannerTop-one.jpg') }}" alt="FADÓ Jewellery — Claddagh Collection" class="lazyload">
+                        <img src="{{ Storage::url('banners/Banner 1.png') }}" data-src="{{ Storage::url('banners/Banner 1.png') }}" alt="FADÓ Jewellery — Claddagh Collection" class="lazyload">
                     </div>
                     <div class="sld_content">
                         <div class="container">
@@ -48,7 +48,7 @@
             <div class="swiper-slide">
                 <div class="slider-wrap">
                     <div class="sld_image">
-                        <img src="{{ Storage::url('banners/BannerTop-Two.jpg') }}" data-src="{{ Storage::url('banners/BannerTop-Two.jpg') }}" alt="The Jewellery Garden by FADÓ" class="lazyload">
+                        <img src="{{ Storage::url('banners/Banner 2.png') }}" data-src="{{ Storage::url('banners/Banner 2.png') }}" alt="The Jewellery Garden by FADÓ" class="lazyload">
                     </div>
                     <div class="sld_content">
                         <div class="container">
@@ -78,7 +78,7 @@
             <div class="swiper-slide">
                 <div class="slider-wrap">
                     <div class="sld_image">
-                        <img src="{{ Storage::url('banners/BannerTop-three.jpg') }}" data-src="{{ Storage::url('banners/BannerTop-three.jpg') }}" alt="Handcrafted Irish Gold" class="lazyload">
+                        <img src="{{ Storage::url('banners/Banner 3.png') }}" data-src="{{ Storage::url('banners/Banner 3.png') }}" alt="Handcrafted Irish Gold" class="lazyload">
                     </div>
                     <div class="sld_content">
                         <div class="container">
@@ -95,6 +95,36 @@
                                 <div class="fade-item fade-item-4">
                                     <a href="{{ route('shop.jewellery') }}" class="tf-btn animate-btn fw-semibold">
                                         Shop Gold Jewellery
+                                        <i class="icon icon-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Slide 4 --}}
+            <div class="swiper-slide">
+                <div class="slider-wrap">
+                    <div class="sld_image">
+                        <img src="{{ Storage::url('banners/Banner 4.png') }}" data-src="{{ Storage::url('banners/Banner 4.png') }}" alt="FADÓ Fine Irish Jewellery" class="lazyload">
+                    </div>
+                    <div class="sld_content">
+                        <div class="container">
+                            <div class="content-sld_wrap">
+                                <p class="sub-title_sld-2 font-2 h3 text-white fade-item fade-item-1">
+                                    Hallmark Certified
+                                </p>
+                                <h1 class="title_sld text-display text-white fade-item fade-item-2">
+                                    Fine Irish Jewellery
+                                </h1>
+                                <p class="sub-text_sld h5 text-white fade-item fade-item-3">
+                                    Every piece assayed and hallmarked by the Assay Office of Ireland.
+                                </p>
+                                <div class="fade-item fade-item-4">
+                                    <a href="{{ route('shop.jewellery') }}" class="tf-btn animate-btn fw-semibold">
+                                        Shop Now
                                         <i class="icon icon-arrow-right"></i>
                                     </a>
                                 </div>
