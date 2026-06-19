@@ -452,7 +452,7 @@
                         $img    = $product->primaryImage;
                         $img2   = $product->images->skip(1)->first();
                         $from   = $product->variants->min('price_eur');
-                        $metals = $product->variants->pluck('metal.name')->filter()->unique()->take(3);
+                        $cardMetals = $product->variants->pluck('metal.name')->filter()->unique()->take(3);
                     @endphp
                     <div class="card-product grid wow fadeInUp" data-wow-delay="{{ ($loop->index % 3) * .06 }}s">
                         <div class="card-product_wrapper">
