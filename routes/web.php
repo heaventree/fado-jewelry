@@ -23,16 +23,16 @@ use App\Http\Controllers\Admin\ProductController;
 
 require __DIR__ . '/auth.php';
 
+// ── Homepage — explicit top-level route, must come before Larkon catch-all ────
+Route::get('/', [ShopController::class, 'home'])->name('shop.home');
+
 // Sitemap (public, no auth, outside shop prefix so URL is /sitemap.xml)
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // ── Shop (customer-facing) routes ─────────────────────────────────────────────
 Route::prefix('/')->name('shop.')->group(function () {
 
-    // Homepage
-    Route::get('/', [ShopController::class, 'home'])->name('home');
-
-    // Jewellery browse
+    // Jewellery browse (homepage is registered above as a standalone route)
     Route::get('/jewellery', [ShopController::class, 'jewellery'])->name('jewellery');
     Route::get('/jewellery/{category}', [ShopController::class, 'category'])->name('category');
 
