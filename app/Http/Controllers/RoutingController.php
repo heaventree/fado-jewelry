@@ -26,11 +26,11 @@ class RoutingController extends BaseController
      */
     public function index(Request $request)
     {
-        if (Auth::user()) {
+        if (Auth::check() && Auth::user()->hasRole(['super_admin', 'store_admin', 'staff'])) {
             return redirect('/dashboards/index');
-        } else {
-            return redirect('login');
         }
+
+        return redirect()->route('shop.home');
     }
 
     /**
