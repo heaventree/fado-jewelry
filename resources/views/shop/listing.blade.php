@@ -11,101 +11,25 @@
 
 @section('content')
 
-{{-- ══════════════════════════════════════════════════════════════════════════ --}}
-{{-- § 1  SHEILA FLEET–STYLE BANNER                                            --}}
-{{-- Text left, evocative product image right, deep-green background           --}}
-{{-- ══════════════════════════════════════════════════════════════════════════ --}}
-<div class="fado-collection-hero" style="
-    background: var(--fado-deep-green);
-    position: relative;
-    overflow: hidden;
-    min-height: 320px;
-    display: flex;
-    align-items: center;">
-
-    {{-- Background decorative sweep --}}
-    <div style="position:absolute; right:0; top:0; bottom:0; width:55%; pointer-events:none; overflow:hidden">
-        @if($bannerImage)
-            <img src="{{ Storage::url($bannerImage) }}" alt="{{ $pageTitle }}"
-                 style="width:100%; height:100%; object-fit:cover; object-position:center; opacity:.35">
-        @else
-            <img src="/images/ochaka/slider/slider-22.jpg" alt="{{ $pageTitle }}"
-                 style="width:100%; height:100%; object-fit:cover; object-position:center 30%; opacity:.2">
-        @endif
-        {{-- Gold-tone gradient sweep --}}
-        <div style="position:absolute; inset:0;
-                    background: linear-gradient(to right, var(--fado-deep-green) 0%, transparent 60%);"></div>
-    </div>
-
-    <div class="container position-relative" style="z-index:2; padding-top:52px; padding-bottom:52px">
-        <div class="row">
-            <div class="col-xl-6 col-lg-7">
-
-                {{-- Breadcrumb --}}
-                <nav aria-label="breadcrumb" style="margin-bottom:20px">
-                    <ol class="breadcrumb mb-0" style="background:none; padding:0; gap:4px">
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('shop.home') }}"
-                               style="color:rgba(255,255,255,.55); text-decoration:none; font-size:.75rem">Home</a>
-                        </li>
-                        @foreach($breadcrumbs as $crumb)
-                            @if(!$loop->last)
-                            <li class="breadcrumb-item" style="color:rgba(255,255,255,.35); font-size:.75rem">/</li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ $crumb['url'] }}"
-                                   style="color:rgba(255,255,255,.55); text-decoration:none; font-size:.75rem">{{ $crumb['label'] }}</a>
-                            </li>
-                            @else
-                            <li class="breadcrumb-item" style="color:rgba(255,255,255,.35); font-size:.75rem">/</li>
-                            <li class="breadcrumb-item active" aria-current="page"
-                                style="color:rgba(255,255,255,.9); font-size:.75rem">{{ $crumb['label'] }}</li>
-                            @endif
-                        @endforeach
-                    </ol>
-                </nav>
-
-                {{-- Title block --}}
-                @if($activeCollection)
-                    <p style="font-size:.7rem; letter-spacing:.3em; text-transform:uppercase; color: var(--fado-gold); margin-bottom:12px">
-                        Collection
-                    </p>
-                @elseif($activeCategory)
-                    <p style="font-size:.7rem; letter-spacing:.3em; text-transform:uppercase; color: var(--fado-gold); margin-bottom:12px">
-                        {{ $activeCategory->parent?->name ?? 'Jewellery' }}
-                    </p>
-                @endif
-
-                <h1 style="font-family: Georgia, serif;
-                           font-size: clamp(1.8rem, 4vw, 3rem);
-                           color: #fff;
-                           font-weight: 400;
-                           line-height: 1.2;
-                           margin-bottom: 20px">
-                    {{ $pageTitle }}
-                </h1>
-
-                @if($pageSubtitle)
-                <p style="font-size: 1rem; color: rgba(255,255,255,.72); line-height: 1.75; max-width: 500px; margin-bottom: 0">
-                    {{ $pageSubtitle }}
-                </p>
-                @endif
-
-                {{-- Product count pill --}}
-                <div style="margin-top:24px">
-                    <span style="display:inline-block; background:rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-                                 color:rgba(255,255,255,.8); font-size:.75rem; padding:4px 14px; border-radius:20px">
-                        {{ $products->total() }} {{ Str::plural('piece', $products->total()) }}
-                    </span>
-                </div>
-            </div>
-
-            {{-- Right column — collection sub-nav (collections only) --}}
-            @if($activeCollection && $activeCollection->products->count() === 0)
-            {{-- nothing --}}
-            @endif
+{{-- Page Title — Ochaka s-page-title --}}
+<section class="s-page-title">
+    <div class="container">
+        <div class="content">
+            <h1 class="title-page">{{ $pageTitle }}</h1>
+            <ul class="breadcrumbs-page">
+                <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
+                @foreach($breadcrumbs as $crumb)
+                    <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                    @if(!$loop->last)
+                    <li><a href="{{ $crumb['url'] }}" class="h6 link">{{ $crumb['label'] }}</a></li>
+                    @else
+                    <li><h6 class="current-page fw-normal">{{ $crumb['label'] }}</h6></li>
+                    @endif
+                @endforeach
+            </ul>
         </div>
     </div>
-</div>
+</section>
 
 
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}

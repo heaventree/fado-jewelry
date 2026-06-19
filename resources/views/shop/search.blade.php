@@ -9,41 +9,32 @@
 
 @section('content')
 
-{{-- ── Search bar header ────────────────────────────────────────────────────── --}}
-<div style="background:var(--fado-deep-green); padding:40px 0">
+{{-- Page Title — Ochaka s-page-title with inline search --}}
+<section class="s-page-title">
     <div class="container">
-        <form action="{{ route('shop.search') }}" method="GET">
-            <div style="position:relative; max-width:640px; margin:0 auto">
-                <label for="site-search"
-                       style="display:block; font-size:.7rem; font-weight:700; letter-spacing:.18em;
-                              text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:12px; text-align:center">
-                    Search Jewellery
-                </label>
-                <div style="position:relative">
-                    <input id="site-search"
-                           type="search"
-                           name="q"
-                           value="{{ $query }}"
-                           autofocus
-                           placeholder="Search by name, style, or description…"
-                           style="width:100%; padding:16px 56px 16px 20px; background:#fff;
-                                  border:none; border-radius:3px; font-size:1rem;
-                                  color:var(--fado-deep-green); outline:none; box-shadow:0 2px 12px rgba(0,0,0,.15)">
-                    <button type="submit"
-                            style="position:absolute; right:0; top:0; bottom:0; width:52px;
-                                   background:var(--fado-green-mid); border:none; border-radius:0 3px 3px 0;
-                                   cursor:pointer; color:#fff; font-size:1.125rem; transition:background .2s"
-                            onmouseover="this.style.background='var(--fado-deep-green)'"
-                            onmouseout="this.style.background='var(--fado-green-mid)'">
-                        <i class="icon icon-magnifying-glass"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
+        <div class="content">
+            <h1 class="title-page">Search</h1>
+            <ul class="breadcrumbs-page">
+                <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><h6 class="current-page fw-normal">{{ $query ? 'Results for "' . $query . '"' : 'Search' }}</h6></li>
+            </ul>
+        </div>
+        <div class="form-search mt_20">
+            <form action="{{ route('shop.search') }}" method="GET">
+                <fieldset>
+                    <input type="search" name="q" value="{{ $query }}" autofocus
+                           placeholder="Search by name, style, or description…">
+                </fieldset>
+                <button type="submit" class="tf-btn btn-fill animate-btn">
+                    <i class="icon icon-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
     </div>
-</div>
+</section>
 
-<div style="background:var(--fado-near-white); padding:40px 0 80px; min-height:60vh">
+<div class="flat-spacing" style="min-height:60vh">
     <div class="container">
 
         @if(!$query)
@@ -203,7 +194,7 @@
         @endif
 
     </div>
-</div>
+</div>{{-- /flat-spacing --}}
 
 @endsection
 
