@@ -216,6 +216,12 @@
                                         <ul class="product-action_list">
                                             <li>
                                                 <a href="{{ route('shop.product', $product) }}" class="hover-tooltip tooltip-left box-icon">
+                                                    <span class="icon icon-bag"></span>
+                                                    <span class="tooltip">Shop now</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('shop.product', $product) }}" class="hover-tooltip tooltip-left box-icon">
                                                     <span class="icon icon-view"></span>
                                                     <span class="tooltip">Quick view</span>
                                                 </a>
