@@ -36,6 +36,25 @@ Static HTML/CSS/JS ecommerce theme. Converted to Laravel Blade templates in `res
 
 ---
 
+## CRITICAL RULE — Ochaka theme must be used exactly as-is
+
+The client purchased the Ochaka theme specifically because its design already matches what they want. This is non-negotiable:
+
+**DO NOT redesign, restructure, reinterpret, or improve on Ochaka's layout, spacing, proportions, overlay styles, card designs, or section structure in ANY way.**
+
+The only two things that change from the original Ochaka template:
+1. **Colour palette** — swap Ochaka's original colours for FADO's exact colours (see palette table below), applied in the exact same way Ochaka uses colour (same elements, same opacity, same proportions — literally find-and-replace the hex values, nothing else)
+2. **Content** — real FADO products, collections, copy, and images instead of Ochaka's demo content
+
+Everything else — HTML structure, CSS classes, spacing, layout grid, overlay opacity, card designs, hero slider mechanics, button styles, font sizes — stays **100% identical** to `_ochaka-reference/`.
+
+### How to work correctly
+When building or fixing any section: open the matching file in `_ochaka-reference/` first, copy its exact structure and CSS values, then ONLY change colour hex codes from Ochaka's palette to FADO's palette at the same opacity/usage Ochaka already uses. Do not add overlays Ochaka doesn't have. Do not remove overlays Ochaka does have. Do not change proportions, spacing, or layout "to make it look better" — Ochaka's design is already approved and final.
+
+If a FADO-specific requirement doesn't have an Ochaka equivalent (e.g. metal/gemstone variant selectors), build it in Ochaka's existing visual language (same button styles, same spacing units, same typography) rather than inventing a new style.
+
+---
+
 ## Colour palette — CORRECTED usage guidance
 
 After reviewing the client's colour palette image and The Jewellery Garden logo directly, the colour hierarchy is:
