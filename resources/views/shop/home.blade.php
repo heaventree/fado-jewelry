@@ -15,14 +15,14 @@
         <div class="swiper-wrapper">
 
             {{-- Slide 1 — Claddagh (BannerTop-one.jpg) --}}
+            {{-- Ochaka pattern: image fills slide, sld_content absolute-centred on top, NO colour overlay --}}
             <div class="swiper-slide">
                 <div class="fado-slide fado-hero-slide" style="position:relative; overflow:hidden;">
-                    {{-- Full-bleed real banner image --}}
                     <img src="{{ Storage::url('banners/BannerTop-one.jpg') }}"
                          alt="FADÓ Jewellery — Claddagh Collection"
                          class="fado-hero-bg-img">
-                    {{-- Left-side gradient so white text stays readable --}}
-                    <div class="fado-hero-overlay" style="background: linear-gradient(to right, rgba(4,71,5,.82) 0%, rgba(4,71,5,.55) 45%, rgba(4,71,5,.08) 75%, transparent 100%)"></div>
+                    {{-- Thin scrim on text side only — matches Ochaka has-overlay approach (~0.35 max) --}}
+                    <div class="fado-hero-overlay" style="background: linear-gradient(to right, rgba(0,0,0,.4) 0%, rgba(0,0,0,.15) 38%, transparent 62%)"></div>
                     <div class="container fado-hero-content position-relative" style="z-index:2">
                         <div class="row align-items-center">
                             <div class="col-xl-5 col-lg-6">
@@ -31,11 +31,11 @@
                                     Fine Irish Jewellery
                                 </p>
                                 <h1 style="font-family: Georgia, serif; font-size: clamp(2.4rem, 5vw, 4rem);
-                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px"
+                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px; text-shadow:0 1px 8px rgba(0,0,0,.25)"
                                     class="wow fadeInUp" data-wow-delay=".2s">
                                     The Claddagh<br>Collection
                                 </h1>
-                                <p style="color:rgba(255,255,255,.82); font-size:1.0625rem; line-height:1.75; max-width:420px; margin-bottom:36px"
+                                <p style="color:rgba(255,255,255,.9); font-size:1.0625rem; line-height:1.75; max-width:420px; margin-bottom:36px; text-shadow:0 1px 4px rgba(0,0,0,.2)"
                                    class="wow fadeInUp" data-wow-delay=".3s">
                                     Love, loyalty and friendship — Ireland's most enduring symbol, crafted in sterling silver, gold and platinum.
                                 </p>
@@ -46,10 +46,10 @@
                                     </a>
                                     <a href="{{ route('shop.collections') }}"
                                        style="display:inline-block; padding:13px 32px; text-decoration:none; border-radius:2px;
-                                              border: 1.5px solid rgba(255,255,255,.5); color:#fff; font-size:.875rem; font-weight:500;
+                                              border: 1.5px solid rgba(255,255,255,.6); color:#fff; font-size:.875rem; font-weight:500;
                                               transition: border-color .2s, background .2s"
-                                       onmouseover="this.style.borderColor='#fff'; this.style.background='rgba(255,255,255,.1)'"
-                                       onmouseout="this.style.borderColor='rgba(255,255,255,.5)'; this.style.background='transparent'">
+                                       onmouseover="this.style.borderColor='#fff'; this.style.background='rgba(255,255,255,.12)'"
+                                       onmouseout="this.style.borderColor='rgba(255,255,255,.6)'; this.style.background='transparent'">
                                         All Collections
                                     </a>
                                 </div>
@@ -65,21 +65,21 @@
                     <img src="{{ Storage::url('banners/BannerTop-Two.jpg') }}"
                          alt="The Jewellery Garden by FADÓ"
                          class="fado-hero-bg-img">
-                    {{-- Centre-weighted overlay for centred text --}}
-                    <div class="fado-hero-overlay" style="background: linear-gradient(to bottom, rgba(4,71,5,.15) 0%, rgba(4,71,5,.65) 40%, rgba(4,71,5,.65) 60%, rgba(4,71,5,.15) 100%)"></div>
+                    {{-- Very light uniform scrim — enough for centred white text, image still dominates --}}
+                    <div class="fado-hero-overlay" style="background: rgba(0,0,0,.22)"></div>
                     <div class="container fado-hero-content position-relative" style="z-index:2">
                         <div class="row justify-content-center text-center">
                             <div class="col-xl-7 col-lg-8">
                                 <p style="font-size:.75rem; letter-spacing:.35em; text-transform:uppercase;
-                                          color: var(--fado-mint-light); margin-bottom:16px" class="wow fadeInUp" data-wow-delay=".1s">
+                                          color: rgba(255,255,255,.85); margin-bottom:16px" class="wow fadeInUp" data-wow-delay=".1s">
                                     The Jewellery Garden by FADÓ
                                 </p>
                                 <h1 style="font-family: Georgia, serif; font-size: clamp(2.4rem, 5vw, 4rem);
-                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px"
+                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px; text-shadow:0 1px 8px rgba(0,0,0,.3)"
                                     class="wow fadeInUp" data-wow-delay=".2s">
                                     Nature, Captured<br>in Gold &amp; Silver
                                 </h1>
-                                <p style="color:rgba(255,255,255,.82); font-size:1.0625rem; line-height:1.75; margin-bottom:36px"
+                                <p style="color:rgba(255,255,255,.9); font-size:1.0625rem; line-height:1.75; margin-bottom:36px; text-shadow:0 1px 4px rgba(0,0,0,.2)"
                                    class="wow fadeInUp" data-wow-delay=".3s">
                                     Bluebells, wild daisies, butterflies and bees — Ireland's garden in every piece. Perfect for weddings and engagements.
                                 </p>
@@ -100,8 +100,8 @@
                     <img src="{{ Storage::url('banners/BannerTop-three.jpg') }}"
                          alt="Handcrafted Irish Gold"
                          class="fado-hero-bg-img">
-                    {{-- Right-to-left gradient (text on right for variety) --}}
-                    <div class="fado-hero-overlay" style="background: linear-gradient(to left, rgba(4,71,5,.82) 0%, rgba(4,71,5,.55) 45%, rgba(4,71,5,.08) 75%, transparent 100%)"></div>
+                    {{-- Thin right-side scrim for right-aligned text --}}
+                    <div class="fado-hero-overlay" style="background: linear-gradient(to left, rgba(0,0,0,.4) 0%, rgba(0,0,0,.15) 38%, transparent 62%)"></div>
                     <div class="container fado-hero-content position-relative" style="z-index:2">
                         <div class="row justify-content-end">
                             <div class="col-xl-5 col-lg-6">
@@ -110,11 +110,11 @@
                                     A gift they'll treasure forever
                                 </p>
                                 <h1 style="font-family: Georgia, serif; font-size: clamp(2.4rem, 5vw, 4rem);
-                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px"
+                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px; text-shadow:0 1px 8px rgba(0,0,0,.25)"
                                     class="wow fadeInUp" data-wow-delay=".2s">
                                     Handcrafted<br>Irish Gold
                                 </h1>
-                                <p style="color:rgba(255,255,255,.82); font-size:1.0625rem; line-height:1.75; max-width:400px; margin-bottom:36px"
+                                <p style="color:rgba(255,255,255,.9); font-size:1.0625rem; line-height:1.75; max-width:400px; margin-bottom:36px; text-shadow:0 1px 4px rgba(0,0,0,.2)"
                                    class="wow fadeInUp" data-wow-delay=".3s">
                                     From 9ct to 18ct gold and platinum — every piece crafted in the Irish tradition for those who matter most.
                                 </p>
@@ -125,10 +125,10 @@
                                     </a>
                                     <a href="{{ route('shop.collections') }}"
                                        style="display:inline-block; padding:13px 32px; text-decoration:none; border-radius:2px;
-                                              border: 1.5px solid rgba(255,255,255,.5); color:#fff; font-size:.875rem; font-weight:500;
+                                              border: 1.5px solid rgba(255,255,255,.6); color:#fff; font-size:.875rem; font-weight:500;
                                               transition: border-color .2s, background .2s"
-                                       onmouseover="this.style.borderColor='#fff'; this.style.background='rgba(255,255,255,.1)'"
-                                       onmouseout="this.style.borderColor='rgba(255,255,255,.5)'; this.style.background='transparent'">
+                                       onmouseover="this.style.borderColor='#fff'; this.style.background='rgba(255,255,255,.12)'"
+                                       onmouseout="this.style.borderColor='rgba(255,255,255,.6)'; this.style.background='transparent'">
                                         View Collections
                                     </a>
                                 </div>
@@ -226,16 +226,18 @@
 
         <div class="row g-4">
             {{-- Collection 1 — Claddagh --}}
+            {{-- Ochaka box-image_V02: text bottom-left, NO overlay div — image IS the card --}}
             <div class="col-lg-6 wow fadeInUp" data-wow-delay=".1s">
                 <a href="{{ route('shop.collection', 'claddagh') }}" class="d-block fado-collection-banner text-decoration-none"
                    style="position:relative; border-radius:4px; overflow:hidden; aspect-ratio:4/3">
                     <img src="/images/ochaka/section/box-image-8.jpg" alt="Claddagh Collection"
                          style="width:100%; height:100%; object-fit:cover; transition: transform .5s ease">
-                    <div style="position:absolute; inset:0; background: linear-gradient(to top, rgba(4,71,5,.85) 0%, rgba(4,71,5,.1) 60%); transition: opacity .3s"></div>
+                    {{-- Thin bottom gradient only — just enough to read text, Ochaka uses none but these images may be lighter --}}
+                    <div style="position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.18) 35%, transparent 60%)"></div>
                     <div style="position:absolute; bottom:0; left:0; padding:28px 32px">
-                        <p style="font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color: var(--fado-mint-light); margin-bottom:8px">Irish Heritage</p>
-                        <h3 style="font-family: Georgia, serif; font-size:1.75rem; color:#fff; font-weight:400; margin-bottom:12px">Claddagh Collection</h3>
-                        <span style="font-size:.8125rem; font-weight:600; color: var(--fado-green-light); letter-spacing:.08em; text-transform:uppercase">
+                        <p style="font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.75); margin-bottom:8px">Irish Heritage</p>
+                        <h3 style="font-family: Georgia, serif; font-size:1.75rem; color:#fff; font-weight:400; margin-bottom:12px; text-shadow:0 1px 6px rgba(0,0,0,.3)">Claddagh Collection</h3>
+                        <span style="font-size:.8125rem; font-weight:600; color:#fff; letter-spacing:.08em; text-transform:uppercase">
                             Shop now <i class="icon icon-arrow-right" style="font-size:.75rem"></i>
                         </span>
                     </div>
@@ -248,11 +250,11 @@
                    style="position:relative; border-radius:4px; overflow:hidden; aspect-ratio:4/3">
                     <img src="/images/ochaka/section/box-image-9.jpg" alt="Trinity Collection"
                          style="width:100%; height:100%; object-fit:cover; transition: transform .5s ease">
-                    <div style="position:absolute; inset:0; background: linear-gradient(to top, rgba(4,71,5,.85) 0%, rgba(4,71,5,.1) 60%)"></div>
+                    <div style="position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.18) 35%, transparent 60%)"></div>
                     <div style="position:absolute; bottom:0; left:0; padding:28px 32px">
-                        <p style="font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color: var(--fado-mint-light); margin-bottom:8px">Irish Heritage</p>
-                        <h3 style="font-family: Georgia, serif; font-size:1.75rem; color:#fff; font-weight:400; margin-bottom:12px">Trinity Collection</h3>
-                        <span style="font-size:.8125rem; font-weight:600; color: var(--fado-green-light); letter-spacing:.08em; text-transform:uppercase">
+                        <p style="font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.75); margin-bottom:8px">Irish Heritage</p>
+                        <h3 style="font-family: Georgia, serif; font-size:1.75rem; color:#fff; font-weight:400; margin-bottom:12px; text-shadow:0 1px 6px rgba(0,0,0,.3)">Trinity Collection</h3>
+                        <span style="font-size:.8125rem; font-weight:600; color:#fff; letter-spacing:.08em; text-transform:uppercase">
                             Shop now <i class="icon icon-arrow-right" style="font-size:.75rem"></i>
                         </span>
                     </div>
@@ -260,19 +262,22 @@
             </div>
 
             {{-- Collection 3 — Newgrange (wide) --}}
+            {{-- Left-side scrim only, image visible across the full width --}}
             <div class="col-12 wow fadeInUp" data-wow-delay=".1s">
                 <a href="{{ route('shop.collection', 'newgrange') }}" class="d-block fado-collection-banner text-decoration-none"
                    style="position:relative; border-radius:4px; overflow:hidden; height:280px">
                     <img src="/images/ochaka/slider/slider-22.jpg" alt="Newgrange Collection"
                          style="width:100%; height:100%; object-fit:cover; object-position:center 30%; transition: transform .5s ease">
-                    <div style="position:absolute; inset:0; background: linear-gradient(to right, rgba(4,71,5,.88) 0%, rgba(4,71,5,.3) 60%)"></div>
+                    {{-- Subtle left scrim only — image shows on the right 40% completely unobscured --}}
+                    <div style="position:absolute; inset:0; background: linear-gradient(to right, rgba(0,0,0,.5) 0%, rgba(0,0,0,.2) 40%, transparent 65%)"></div>
                     <div style="position:absolute; top:50%; left:0; transform:translateY(-50%); padding:0 40px">
-                        <p style="font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color: var(--fado-mint-light); margin-bottom:8px">Spiral of Life</p>
-                        <h3 style="font-family: Georgia, serif; font-size:clamp(1.5rem, 3vw, 2.25rem); color:#fff; font-weight:400; margin-bottom:16px">Newgrange Collection</h3>
-                        <span style="display:inline-block; padding:10px 28px; background: var(--fado-green-mid); color:#fff;
-                                     border-radius:2px; font-size:.8125rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase">
+                        <p style="font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.75); margin-bottom:8px">Spiral of Life</p>
+                        <h3 style="font-family: Georgia, serif; font-size:clamp(1.5rem, 3vw, 2.25rem); color:#fff; font-weight:400; margin-bottom:16px; text-shadow:0 1px 6px rgba(0,0,0,.3)">Newgrange Collection</h3>
+                        <a href="{{ route('shop.collection', 'newgrange') }}"
+                           style="display:inline-block; padding:10px 28px; background:#fff; color: var(--fado-deep-green);
+                                  border-radius:2px; font-size:.8125rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; text-decoration:none">
                             Explore the collection
-                        </span>
+                        </a>
                     </div>
                 </a>
             </div>
