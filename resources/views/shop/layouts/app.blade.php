@@ -88,7 +88,7 @@
         <div class="modal-content rounded-0 border-0">
             <div class="modal-body p-4 p-md-5">
                 <div class="text-center mb-4">
-                    <h4 class="fw-semibold" style="color:#044705">Search FADÓ Jewellery</h4>
+                    <h4 class="fw-semibold">Search FADÓ Jewellery</h4>
                     <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('shop.search') }}" method="GET" class="d-flex gap-2">

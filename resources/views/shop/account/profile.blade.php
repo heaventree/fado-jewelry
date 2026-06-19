@@ -1,4 +1,4 @@
-﻿@extends('shop.layouts.app')
+@extends('shop.layouts.app')
 @php use App\Models\Setting; @endphp
 
 @section('title', 'My Profile — ' . Setting::get('store_name', 'FADÓ Jewellery'))
@@ -9,13 +9,13 @@
 <section class="s-page-title">
     <div class="container">
         <div class="content">
-            <h1 class="title-page">My Profile</h1>
+            <h1 class="title-page">Account Settings</h1>
             <ul class="breadcrumbs-page">
                 <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
                 <li class="d-flex"><i class="icon icon-caret-right"></i></li>
                 <li><a href="{{ route('shop.account.index') }}" class="h6 link">My Account</a></li>
                 <li class="d-flex"><i class="icon icon-caret-right"></i></li>
-                <li><h6 class="current-page fw-normal">Profile</h6></li>
+                <li><h6 class="current-page fw-normal">Settings</h6></li>
             </ul>
         </div>
     </div>
@@ -28,145 +28,101 @@
                 @include('shop.account.partials.nav')
             </div>
             <div class="col-xl-9">
+                <div class="my-account-content">
 
-                {{-- ── Profile details form ────────────────────────────────────── --}}
-                <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:28px; margin-bottom:20px">
-                    <h2 style="font-family:Georgia,serif; font-size:1.125rem; font-weight:400;
-                               color:var(--fado-deep-green); margin-bottom:6px; padding-bottom:16px;
-                               border-bottom:1px solid var(--fado-cream)">
-                        Personal Details
-                    </h2>
-
-                    @if(session('profile_updated'))
-                    <div style="background:var(--fado-pale-mint); border:1.5px solid var(--fado-green-mid); border-radius:3px;
-                                padding:12px 18px; margin-bottom:20px; font-size:.875rem; color:var(--fado-deep-green);
-                                display:flex; align-items:center; gap:10px; margin-top:16px">
-                        <i class="icon icon-check-circle" style="color:var(--fado-green-mid)"></i>
-                        Profile updated successfully.
-                    </div>
-                    @endif
-
-                    @if($errors->has('name') || $errors->has('email'))
-                    <div style="background:#fff3f3; border:1px solid #f5c6c6; border-radius:3px;
-                                padding:12px 18px; margin-bottom:20px; margin-top:16px">
-                        <ul style="margin:0; padding-left:20px; color:#dc3545; font-size:.8125rem">
-                            @error('name')<li>{{ $message }}</li>@enderror
-                            @error('email')<li>{{ $message }}</li>@enderror
-                        </ul>
-                    </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('shop.account.profile.update') }}" style="margin-top:20px">
+                    {{-- Profile details --}}
+                    <form class="form-change_pass" method="POST" action="{{ route('shop.account.profile.update') }}">
                         @csrf
                         @method('PATCH')
-                        <div class="row g-3 mb-4">
-                            <div class="col-sm-6">
-                                @include('shop.partials.checkout-field', [
-                                    'name'     => 'name',
-                                    'label'    => 'Full Name',
-                                    'value'    => old('name', $user->name),
-                                    'type'     => 'text',
-                                    'required' => true,
-                                ])
+                        <div class="mb-40">
+                            <h2 class="account-title type-semibold">Personal Details</h2>
+
+                            @if(session('profile_updated'))
+                            <div class="tf-notice-wrap mb-16">
+                                <p class="h6"><i class="icon icon-check-circle me-8"></i> Profile updated successfully.</p>
                             </div>
-                            <div class="col-sm-6">
-                                @include('shop.partials.checkout-field', [
-                                    'name'     => 'email',
-                                    'label'    => 'Email Address',
-                                    'value'    => old('email', $user->email),
-                                    'type'     => 'email',
-                                    'required' => true,
-                                ])
+                            @endif
+
+                            @if($errors->has('name') || $errors->has('email'))
+                            <div class="tf-notice-wrap mb-16" style="border-color:#dc3545">
+                                <ul class="mb-0 ps-16">
+                                    @error('name')<li class="h6 text-danger">{{ $message }}</li>@enderror
+                                    @error('email')<li class="h6 text-danger">{{ $message }}</li>@enderror
+                                </ul>
                             </div>
+                            @endif
+
+                            <div class="form_content">
+                                <div class="cols tf-grid-layout sm-col-2">
+                                    <fieldset>
+                                        <input type="text" name="name" value="{{ old('name', $user->name) }}"
+                                               placeholder="Full Name *" required autocomplete="name">
+                                        @error('name')<p class="h6 text-danger mt-4">{{ $message }}</p>@enderror
+                                    </fieldset>
+                                    <fieldset>
+                                        <input type="email" name="email" value="{{ old('email', $user->email) }}"
+                                               placeholder="Email Address *" required autocomplete="email">
+                                        @error('email')<p class="h6 text-danger mt-4">{{ $message }}</p>@enderror
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="tf-btn animate-btn">
+                                Save Changes
+                            </button>
                         </div>
-                        <button type="submit"
-                                style="padding:12px 28px; background:var(--fado-deep-green); color:#fff;
-                                       border:none; border-radius:2px; font-size:.9rem; font-weight:600;
-                                       cursor:pointer; transition:background .2s"
-                                onmouseover="this.style.background='var(--fado-green-mid)'"
-                                onmouseout="this.style.background='var(--fado-deep-green)'">
-                            Save Changes
-                        </button>
                     </form>
-                </div>
 
-                {{-- ── Change password form ────────────────────────────────────── --}}
-                <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:28px">
-                    <h2 style="font-family:Georgia,serif; font-size:1.125rem; font-weight:400;
-                               color:var(--fado-deep-green); margin-bottom:0; padding-bottom:16px;
-                               border-bottom:1px solid var(--fado-cream)">
-                        Change Password
-                    </h2>
-
-                    @if(session('password_updated'))
-                    <div style="background:var(--fado-pale-mint); border:1.5px solid var(--fado-green-mid); border-radius:3px;
-                                padding:12px 18px; margin-bottom:0; font-size:.875rem; color:var(--fado-deep-green);
-                                display:flex; align-items:center; gap:10px; margin-top:20px">
-                        <i class="icon icon-check-circle" style="color:var(--fado-green-mid)"></i>
-                        Password changed successfully.
-                    </div>
-                    @endif
-
-                    @if($errors->has('current_password') || $errors->has('password'))
-                    <div style="background:#fff3f3; border:1px solid #f5c6c6; border-radius:3px;
-                                padding:12px 18px; margin-top:20px">
-                        <ul style="margin:0; padding-left:20px; color:#dc3545; font-size:.8125rem">
-                            @error('current_password')<li>{{ $message }}</li>@enderror
-                            @error('password')<li>{{ $message }}</li>@enderror
-                        </ul>
-                    </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('shop.account.password.update') }}" style="margin-top:20px">
+                    {{-- Change password --}}
+                    <form class="form-change_pass" method="POST" action="{{ route('shop.account.password.update') }}">
                         @csrf
                         @method('PATCH')
-                        <div class="row g-3 mb-4">
-                            <div class="col-sm-4">
-                                @include('shop.partials.checkout-field', [
-                                    'name'     => 'current_password',
-                                    'label'    => 'Current Password',
-                                    'value'    => '',
-                                    'type'     => 'password',
-                                    'required' => true,
-                                ])
-                            </div>
-                            <div class="col-sm-4">
-                                @include('shop.partials.checkout-field', [
-                                    'name'     => 'password',
-                                    'label'    => 'New Password',
-                                    'value'    => '',
-                                    'type'     => 'password',
-                                    'required' => true,
-                                ])
-                            </div>
-                            <div class="col-sm-4">
-                                @include('shop.partials.checkout-field', [
-                                    'name'     => 'password_confirmation',
-                                    'label'    => 'Confirm New Password',
-                                    'value'    => '',
-                                    'type'     => 'password',
-                                    'required' => true,
-                                ])
-                            </div>
-                        </div>
-                        <p style="font-size:.75rem; color:#888; margin-bottom:16px">
-                            Minimum 8 characters, must include upper &amp; lowercase letters and a number.
-                        </p>
-                        <button type="submit"
-                                style="padding:12px 28px; background:var(--fado-deep-green); color:#fff;
-                                       border:none; border-radius:2px; font-size:.9rem; font-weight:600;
-                                       cursor:pointer; transition:background .2s"
-                                onmouseover="this.style.background='var(--fado-green-mid)'"
-                                onmouseout="this.style.background='var(--fado-deep-green)'">
-                            Update Password
-                        </button>
-                    </form>
-                </div>
+                        <div>
+                            <h2 class="account-title type-semibold">Change Password</h2>
 
+                            @if(session('password_updated'))
+                            <div class="tf-notice-wrap mb-16">
+                                <p class="h6"><i class="icon icon-check-circle me-8"></i> Password changed successfully.</p>
+                            </div>
+                            @endif
+
+                            @if($errors->has('current_password') || $errors->has('password'))
+                            <div class="tf-notice-wrap mb-16" style="border-color:#dc3545">
+                                <ul class="mb-0 ps-16">
+                                    @error('current_password')<li class="h6 text-danger">{{ $message }}</li>@enderror
+                                    @error('password')<li class="h6 text-danger">{{ $message }}</li>@enderror
+                                </ul>
+                            </div>
+                            @endif
+
+                            <div class="form_content site-change">
+                                <fieldset class="password-wrapper">
+                                    <input class="password-field" type="password" name="current_password"
+                                           placeholder="Current password *" required>
+                                    <span class="toggle-pass icon-show-password"></span>
+                                </fieldset>
+                                <fieldset class="password-wrapper">
+                                    <input class="password-field" type="password" name="password"
+                                           placeholder="New password *" required>
+                                    <span class="toggle-pass icon-show-password"></span>
+                                </fieldset>
+                                <fieldset class="password-wrapper">
+                                    <input class="password-field" type="password" name="password_confirmation"
+                                           placeholder="Confirm new password *" required>
+                                    <span class="toggle-pass icon-show-password"></span>
+                                </fieldset>
+                            </div>
+                            <p class="h6 text-main mb-20">Minimum 8 characters, must include upper &amp; lowercase letters and a number.</p>
+                            <button type="submit" class="btn-submit_form tf-btn animate-btn fw-bold">
+                                Update Password
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 @endsection
-

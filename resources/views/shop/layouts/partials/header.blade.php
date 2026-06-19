@@ -64,7 +64,7 @@
 
             {{-- Logo — left on xl, centred on mobile --}}
             <div class="col-xl-3 col-md-4 col-6 d-flex justify-content-center justify-content-xl-start">
-                <a href="{{ route('shop.home') }}" class="logo-site" style="text-decoration:none">
+                <a href="{{ route('shop.home') }}" class="logo-site">
                     <div class="fado-wordmark">FADÓ</div>
                 </a>
             </div>

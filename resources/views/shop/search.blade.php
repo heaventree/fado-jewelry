@@ -9,7 +9,6 @@
 
 @section('content')
 
-{{-- Page Title — Ochaka s-page-title with inline search --}}
 <section class="s-page-title">
     <div class="container">
         <div class="content">
@@ -34,29 +33,18 @@
     </div>
 </section>
 
-<div class="flat-spacing" style="min-height:60vh">
+<section class="flat-spacing">
     <div class="container">
 
         @if(!$query)
-        {{-- ── No query yet — show prompt ──────────────────────────────────── --}}
-        <div style="text-align:center; padding:60px 24px">
-            <i class="icon icon-magnifying-glass"
-               style="font-size:3.5rem; color:var(--fado-warm-grey); display:block; margin-bottom:20px; opacity:.5"></i>
-            <h2 style="font-family:Georgia,serif; font-size:1.5rem; font-weight:400;
-                       color:var(--fado-deep-green); margin-bottom:12px">
-                What are you looking for?
-            </h2>
-            <p style="color:#888; max-width:380px; margin:0 auto 32px; line-height:1.7">
-                Search across our full range of rings, pendants, earrings, and more.
-            </p>
-            <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center">
+        {{-- No query --}}
+        <div class="text-center py-5">
+            <i class="icon icon-magnifying-glass" style="font-size:3.5rem; opacity:.3; display:block; margin-bottom:20px"></i>
+            <h3 class="h3 fw-normal mb-12">What are you looking for?</h3>
+            <p class="h6 text-main mb-32">Search across our full range of rings, pendants, earrings, and more.</p>
+            <div class="d-flex gap-12 flex-wrap justify-content-center">
                 @foreach(['Claddagh', 'Diamond ring', 'Sterling silver', 'Pendant', 'Gold earrings'] as $suggestion)
-                <a href="{{ route('shop.search', ['q' => $suggestion]) }}"
-                   style="padding:8px 16px; background:var(--fado-cream); border-radius:20px;
-                          font-size:.8125rem; color:var(--fado-deep-green); text-decoration:none;
-                          border:1px solid var(--fado-warm-grey); transition:all .15s"
-                   onmouseover="this.style.background='var(--fado-deep-green)'; this.style.color='#fff'; this.style.borderColor='var(--fado-deep-green)'"
-                   onmouseout="this.style.background='var(--fado-cream)'; this.style.color='var(--fado-deep-green)'; this.style.borderColor='var(--fado-warm-grey)'">
+                <a href="{{ route('shop.search', ['q' => $suggestion]) }}" class="tf-btn style-line h6">
                     {{ $suggestion }}
                 </a>
                 @endforeach
@@ -64,129 +52,79 @@
         </div>
 
         @elseif(strlen($query) < 2)
-        {{-- ── Query too short ─────────────────────────────────────────────── --}}
-        <div style="text-align:center; padding:60px 24px">
-            <p style="color:#888">Please enter at least 2 characters to search.</p>
+        {{-- Too short --}}
+        <div class="text-center py-5">
+            <p class="h6 text-main">Please enter at least 2 characters to search.</p>
         </div>
 
         @elseif($products->isEmpty())
-        {{-- ── No results ───────────────────────────────────────────────────── --}}
-        <div style="text-align:center; padding:60px 24px">
-            <i class="icon icon-magnifying-glass"
-               style="font-size:3rem; color:var(--fado-warm-grey); display:block; margin-bottom:16px; opacity:.5"></i>
-            <h2 style="font-family:Georgia,serif; font-size:1.375rem; font-weight:400;
-                       color:var(--fado-deep-green); margin-bottom:10px">
-                No results for "{{ $query }}"
-            </h2>
-            <p style="color:#888; max-width:380px; margin:0 auto 28px; line-height:1.7">
-                Try a different search term, or browse our collections below.
-            </p>
-            <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap">
-                <a href="{{ route('shop.jewellery') }}"
-                   style="padding:12px 24px; background:var(--fado-deep-green); color:#fff;
-                          text-decoration:none; border-radius:2px; font-size:.875rem; font-weight:600">
-                    Browse All Jewellery
-                </a>
-                <a href="{{ route('shop.collections') }}"
-                   style="padding:12px 24px; border:1.5px solid var(--fado-deep-green); color:var(--fado-deep-green);
-                          text-decoration:none; border-radius:2px; font-size:.875rem; font-weight:600">
-                    View Collections
-                </a>
+        {{-- No results --}}
+        <div class="text-center py-5">
+            <i class="icon icon-magnifying-glass" style="font-size:3rem; opacity:.3; display:block; margin-bottom:16px"></i>
+            <h3 class="h3 fw-normal mb-10">No results for "{{ $query }}"</h3>
+            <p class="h6 text-main mb-28">Try a different search term, or browse our collections below.</p>
+            <div class="d-flex gap-12 justify-content-center flex-wrap">
+                <a href="{{ route('shop.jewellery') }}" class="tf-btn animate-btn">Browse All Jewellery</a>
+                <a href="{{ route('shop.collections') }}" class="tf-btn style-line">View Collections</a>
             </div>
         </div>
 
         @else
-        {{-- ── Results ──────────────────────────────────────────────────────── --}}
-
-        {{-- Result count bar --}}
-        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
-                    margin-bottom:28px; padding-bottom:20px; border-bottom:1px solid var(--fado-cream)">
-            <p style="font-size:.9375rem; color:var(--fado-deep-green); margin:0">
+        {{-- Results --}}
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-12 mb-28 pb-20 border-bottom">
+            <p class="h6 text-black">
                 <strong>{{ number_format($total) }}</strong>
                 {{ $total === 1 ? 'result' : 'results' }}
                 for <em>"{{ $query }}"</em>
             </p>
-            <a href="{{ route('shop.jewellery') }}"
-               style="font-size:.8125rem; color:var(--fado-warm-grey); text-decoration:none">
-                ← Browse all jewellery
-            </a>
+            <a href="{{ route('shop.jewellery') }}" class="h6 link">← Browse all jewellery</a>
         </div>
 
-        {{-- Product grid (same style as listing.blade.php) --}}
-        <div class="row g-4">
+        <div class="tf-grid-layout tf-col-4 gap-30 d-grid">
             @foreach($products as $product)
             @php
-                $img     = $product->primaryImage;
-                $from    = $product->variants->min('price_eur');
-                $metals  = $product->variants->pluck('metal.name')->filter()->unique()->take(3)->values();
+                $img    = $product->primaryImage;
+                $from   = $product->variants->min('price_eur');
+                $metals = $product->variants->pluck('metal.name')->filter()->unique()->take(3)->values();
             @endphp
-            <div class="col-6 col-md-4 col-xl-3">
-                <div class="fado-product-card"
-                     style="background:#fff; border:1px solid var(--fado-cream); border-radius:3px;
-                            overflow:hidden; transition:box-shadow .2s; height:100%"
-                     onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.08)'"
-                     onmouseout="this.style.boxShadow='none'">
-
-                    {{-- Image --}}
-                    <div style="position:relative; background:var(--fado-cream); aspect-ratio:3/4; overflow:hidden">
-                        <a href="{{ route('shop.product', $product) }}" style="display:block; height:100%">
-                            @if($img)
-                                <img src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}"
-                                     style="width:100%; height:100%; object-fit:cover; object-position:center top;
-                                            transition:transform .45s ease">
-                            @else
-                                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center">
-                                    <i class="icon icon-gem" style="font-size:2.5rem; color:var(--fado-warm-grey)"></i>
-                                </div>
-                            @endif
-                        </a>
-
-                        {{-- Metal pills --}}
-                        @if($metals->isNotEmpty())
-                        <div style="position:absolute; bottom:0; left:0; right:0; padding:6px 8px;
-                                    background:linear-gradient(transparent, rgba(4,71,5,.5));
-                                    display:flex; gap:4px; flex-wrap:wrap; pointer-events:none">
+            <div class="card-product">
+                <div class="card-product-wrapper">
+                    <a href="{{ route('shop.product', $product) }}" class="product-img">
+                        @if($img)
+                            <img class="lazyload img-product" data-src="{{ Storage::url($img->path) }}"
+                                 src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}">
+                        @else
+                            <img class="img-product" src="/images/demo/product-placeholder.jpg" alt="{{ $product->name }}">
+                        @endif
+                    </a>
+                    @if($metals->isNotEmpty())
+                    <div class="list-product-btn absolute-2">
+                        <div class="d-flex gap-4 flex-wrap">
                             @foreach($metals as $m)
-                            <span style="font-size:.6rem; background:rgba(255,255,255,.18); color:#fff;
-                                         border:1px solid rgba(255,255,255,.3); padding:2px 6px; border-radius:10px">
-                                {{ $m }}
-                            </span>
+                            <span class="h6 text-small bg-white text-main px-8 py-2 rounded">{{ $m }}</span>
                             @endforeach
                         </div>
+                    </div>
+                    @endif
+                </div>
+                <div class="card-product-info">
+                    <a href="{{ route('shop.product', $product) }}" class="title link fw-medium">
+                        {{ $product->name }}
+                    </a>
+                    <span class="price current-price">
+                        @if($from)
+                            From {{ app(\App\Services\CurrencyService::class)->format((float)$from) }}
+                        @else
+                            <span class="h6 fw-normal text-main">Price on enquiry</span>
                         @endif
-                    </div>
-
-                    {{-- Info --}}
-                    <div style="padding:12px 14px 14px">
-                        <a href="{{ route('shop.product', $product) }}"
-                           style="display:block; font-size:.9rem; font-weight:600; color:var(--fado-deep-green);
-                                  text-decoration:none; margin-bottom:6px; line-height:1.35;
-                                  transition:color .2s">
-                            {{ $product->name }}
-                        </a>
-                        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap">
-                            <span style="font-size:.8125rem; font-weight:700; color:var(--fado-deep-green)">
-                                @if($from)
-                                    From {{ app(\App\Services\CurrencyService::class)->format((float)$from) }}
-                                @else
-                                    <span style="font-style:italic; font-weight:400; color:#999; font-size:.75rem">Price on enquiry</span>
-                                @endif
-                            </span>
-                            <a href="{{ route('shop.product', $product) }}"
-                               style="font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
-                                      color:var(--fado-green-mid); text-decoration:none">
-                                View →
-                            </a>
-                        </div>
-                    </div>
+                    </span>
                 </div>
             </div>
             @endforeach
         </div>
 
-        {{-- Pagination --}}
         @if($products->hasPages())
-        <div class="d-flex justify-content-center mt-5">
+        <div class="wg-pagination mt-40">
             {{ $products->links() }}
         </div>
         @endif
@@ -194,13 +132,6 @@
         @endif
 
     </div>
-</div>{{-- /flat-spacing --}}
+</section>
 
 @endsection
-
-@push('css')
-<style>
-.fado-product-card:hover img { transform: scale(1.04); }
-.fado-product-card:hover a[href] { color: var(--fado-green-mid) !important; }
-</style>
-@endpush

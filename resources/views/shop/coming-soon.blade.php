@@ -1,16 +1,32 @@
 @extends('shop.layouts.app')
+@php use App\Models\Setting; @endphp
 
-@section('title', $page . ' — FADÓ Jewellery')
+@section('title', $page . ' — ' . Setting::get('store_name', 'FADÓ Jewellery'))
 
 @section('content')
-<div class="container py-5 text-center">
-    <p style="font-size:.7rem; letter-spacing:.25em; text-transform:uppercase; color: var(--fado-gold); margin-bottom:12px">Coming Soon</p>
-    <h1 style="font-family: Georgia, serif; color: var(--fado-deep-green); font-size: 2rem;">{{ $page }}</h1>
-    <p class="text-muted mt-2" style="font-size:.875rem">
-        This page is being built in Phase 3.
-    </p>
-    <a href="{{ route('shop.home') }}" class="btn-fado-outline mt-3" style="display:inline-block; border-radius:2px; padding:10px 24px; text-decoration:none">
-        ← Back to Home
-    </a>
-</div>
+
+<section class="s-page-title">
+    <div class="container">
+        <div class="content">
+            <h1 class="title-page">{{ $page }}</h1>
+            <ul class="breadcrumbs-page">
+                <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><h6 class="current-page fw-normal">{{ $page }}</h6></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="flat-spacing">
+    <div class="container">
+        <div class="text-center py-5">
+            <p class="h6 text-up letter-space-2 text-main mb-20">Coming Soon</p>
+            <h2 class="h2 fw-normal mb-16">{{ $page }}</h2>
+            <p class="h6 text-main mb-32">This page is being prepared. Check back soon.</p>
+            <a href="{{ route('shop.home') }}" class="tf-btn animate-btn">← Back to Home</a>
+        </div>
+    </div>
+</section>
+
 @endsection
