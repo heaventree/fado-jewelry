@@ -33,7 +33,7 @@
 
 
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
-{{-- § 2  ACTIVE FILTER PILLS (shown when any filter is applied)               --}}
+{{-- Active filter pills                                                        --}}
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
 @php
     $hasFilters = !empty($filters['metals'])   || !empty($filters['gemstones'])
@@ -43,9 +43,9 @@
                || $filters['search'];
 @endphp
 @if($hasFilters)
-<div style="background: var(--fado-cream); border-bottom: 1px solid var(--fado-warm-grey); padding:12px 0">
-    <div class="container d-flex align-items-center gap-2 flex-wrap">
-        <span style="font-size:.75rem; color: var(--fado-warm-grey); font-weight:600; text-transform:uppercase; letter-spacing:.05em">Filters:</span>
+<div class="meta-filter-bar">
+    <div class="container d-flex align-items-center gap-2 flex-wrap py-2">
+        <span class="h6 fw-semibold">Filters:</span>
 
         @foreach($filters['metals'] as $slug)
             @php
@@ -64,11 +64,7 @@
                 ]));
             @endphp
             @if($metal)
-            <a href="{{ $removeUrl }}"
-               style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--fado-warm-grey);
-                      padding:4px 12px; border-radius:20px; font-size:.75rem; color: var(--fado-deep-green); text-decoration:none">
-                {{ $metal->name }} <span style="opacity:.5">&times;</span>
-            </a>
+            <a href="{{ $removeUrl }}" class="filter-tag h6">{{ $metal->name }} <i class="icon icon-close fs-10"></i></a>
             @endif
         @endforeach
 
@@ -89,11 +85,7 @@
                 ]));
             @endphp
             @if($gem)
-            <a href="{{ $removeUrl }}"
-               style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--fado-warm-grey);
-                      padding:4px 12px; border-radius:20px; font-size:.75rem; color: var(--fado-deep-green); text-decoration:none">
-                {{ $gem->name }} <span style="opacity:.5">&times;</span>
-            </a>
+            <a href="{{ $removeUrl }}" class="filter-tag h6">{{ $gem->name }} <i class="icon icon-close fs-10"></i></a>
             @endif
         @endforeach
 
@@ -114,11 +106,7 @@
                 ]));
             @endphp
             @if($col)
-            <a href="{{ $removeUrl }}"
-               style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--fado-warm-grey);
-                      padding:4px 12px; border-radius:20px; font-size:.75rem; color: var(--fado-deep-green); text-decoration:none">
-                {{ $col->name }} <span style="opacity:.5">&times;</span>
-            </a>
+            <a href="{{ $removeUrl }}" class="filter-tag h6">{{ $col->name }} <i class="icon icon-close fs-10"></i></a>
             @endif
         @endforeach
 
@@ -139,11 +127,7 @@
                 ]));
             @endphp
             @if($sm)
-            <a href="{{ $removeUrl }}"
-               style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--fado-warm-grey);
-                      padding:4px 12px; border-radius:20px; font-size:.75rem; color: var(--fado-deep-green); text-decoration:none">
-                Finish: {{ $sm->name }} <span style="opacity:.5">&times;</span>
-            </a>
+            <a href="{{ $removeUrl }}" class="filter-tag h6">Finish: {{ $sm->name }} <i class="icon icon-close fs-10"></i></a>
             @endif
         @endforeach
 
@@ -162,429 +146,381 @@
                     'sort'          => $filters['sort'] !== 'newest' ? $filters['sort'] : null,
                 ]));
             @endphp
-            <a href="{{ $removeUrl }}"
-               style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--fado-warm-grey);
-                      padding:4px 12px; border-radius:20px; font-size:.75rem; color: var(--fado-deep-green); text-decoration:none">
-                Colour: {{ $colour }} <span style="opacity:.5">&times;</span>
-            </a>
+            <a href="{{ $removeUrl }}" class="filter-tag h6">Colour: {{ $colour }} <i class="icon icon-close fs-10"></i></a>
         @endforeach
 
         @if($filters['price_min'] > 0 || $filters['price_max'] > 0)
-        <span style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--fado-warm-grey);
-                     padding:4px 12px; border-radius:20px; font-size:.75rem; color: var(--fado-deep-green)">
-            €{{ $filters['price_min'] ?: '0' }} – €{{ $filters['price_max'] ?: '∞' }}
-        </span>
+        <span class="filter-tag h6">€{{ $filters['price_min'] ?: '0' }} – €{{ $filters['price_max'] ?: '∞' }}</span>
         @endif
 
-        <a href="{{ url()->current() }}"
-           style="margin-left:auto; font-size:.75rem; color: var(--fado-green-mid); text-decoration:underline">
-            Clear all filters
-        </a>
+        <a href="{{ url()->current() }}" class="tf-btn-line ms-auto h6">Clear all filters</a>
     </div>
 </div>
 @endif
 
 
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
-{{-- § 3  MAIN LAYOUT — sidebar filters + product grid                         --}}
+{{-- Main: sidebar + product grid — Ochaka canvas-sidebar + tf-grid-layout     --}}
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
-<div style="background: var(--fado-near-white); padding: 48px 0 80px">
+<div class="flat-spacing">
     <div class="container">
-        <div class="row g-5">
+        <div class="row">
 
-            {{-- ── FILTER SIDEBAR ────────────────────────────────────────── --}}
-            <div class="col-lg-3 d-none d-lg-block">
-                <div class="fado-filter-sidebar" style="position:sticky; top:24px">
-                    <form method="GET" action="{{ url()->current() }}" id="filterForm">
+            {{-- ── FILTER SIDEBAR — Ochaka widget-facet structure ──────────── --}}
+            <div class="col-xl-3 d-none d-xl-block">
+                <div class="canvas-sidebar sidebar-filter left sticky-top" style="top:24px; position:sticky">
+                    <div class="canvas-body">
+                        <form method="GET" action="{{ url()->current() }}" id="filterForm">
 
-                        {{-- Preserve sort & search when filtering --}}
-                        @if($filters['sort'] !== 'newest')
-                            <input type="hidden" name="sort" value="{{ $filters['sort'] }}">
-                        @endif
-                        @if($filters['search'])
-                            <input type="hidden" name="search" value="{{ $filters['search'] }}">
-                        @endif
+                            {{-- Preserve sort & search when filtering --}}
+                            @if($filters['sort'] !== 'newest')
+                                <input type="hidden" name="sort" value="{{ $filters['sort'] }}">
+                            @endif
 
-                        {{-- Search --}}
-                        <div class="fado-filter-section" style="margin-bottom:28px">
-                            <div style="position:relative">
-                                <input type="text" name="search" value="{{ $filters['search'] }}"
-                                       placeholder="Search jewellery…"
-                                       style="width:100%; padding:9px 36px 9px 14px; border:1px solid var(--fado-warm-grey);
-                                              border-radius:3px; font-size:.875rem; background:#fff; color: var(--fado-deep-green);
-                                              outline:none"
-                                       onfocus="this.style.borderColor='var(--fado-green-mid)'"
-                                       onblur="this.style.borderColor='var(--fado-warm-grey)'">
-                                <button type="submit" style="position:absolute; right:10px; top:50%; transform:translateY(-50%);
-                                                             background:none; border:none; cursor:pointer; color:var(--fado-warm-grey)">
-                                    <i class="icon icon-magnifying-glass" style="font-size:.875rem"></i>
-                                </button>
+                            {{-- Search --}}
+                            <div class="widget-facet">
+                                <div class="facet-title">
+                                    <span class="h4 fw-semibold">Search</span>
+                                </div>
+                                <div class="collapse-body">
+                                    <div class="filter-search-field">
+                                        <input type="text" name="search" value="{{ $filters['search'] }}"
+                                               placeholder="Search jewellery…" class="tf-field-input h6">
+                                        <button type="submit" class="btn-search-field">
+                                            <i class="icon icon-magnifying-glass"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        {{-- Category quick-links --}}
-                        @if($topCategories->isNotEmpty())
-                        <div class="fado-filter-section" style="margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--fado-cream)">
-                            <h6 class="fado-filter-heading">Jewellery Type</h6>
-                            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:4px">
-                                <li>
-                                    <a href="{{ route('shop.jewellery') }}"
-                                       style="font-size:.875rem; text-decoration:none; padding:4px 0; display:block;
-                                              color: {{ is_null($activeCategory) && is_null($activeCollection) ? 'var(--fado-green-mid)' : 'var(--fado-deep-green)' }};
-                                              font-weight: {{ is_null($activeCategory) ? '600' : '400' }}">
-                                        All Jewellery
-                                    </a>
-                                </li>
-                                @foreach($topCategories as $cat)
-                                <li>
-                                    <a href="{{ route('shop.category', $cat->slug) }}"
-                                       style="font-size:.875rem; text-decoration:none; padding:4px 0; display:block;
-                                              color: {{ optional($activeCategory)->id === $cat->id ? 'var(--fado-green-mid)' : 'var(--fado-deep-green)' }};
-                                              font-weight: {{ optional($activeCategory)->id === $cat->id ? '600' : '400' }}">
-                                        {{ $cat->name }}
-                                    </a>
-                                    {{-- Children --}}
-                                    @if($cat->children->isNotEmpty() && optional($activeCategory)->id === $cat->id)
-                                    <ul style="list-style:none; padding:0 0 0 14px; margin:2px 0 6px">
-                                        @foreach($cat->children as $child)
-                                        <li>
-                                            <a href="{{ route('shop.category', $child->slug) }}"
-                                               style="font-size:.8125rem; text-decoration:none; padding:3px 0; display:block;
-                                                      color: {{ optional($activeCategory)->id === $child->id ? 'var(--fado-green-mid)' : '#666' }}">
-                                                {{ $child->name }}
+                            {{-- Category quick-links — Ochaka group-category --}}
+                            @if($topCategories->isNotEmpty())
+                            <div class="widget-facet">
+                                <div class="facet-title" data-bs-target="#flt-category" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="flt-category">
+                                    <span class="h4 fw-semibold">Jewellery Type</span>
+                                    <span class="icon icon-caret-down fs-20"></span>
+                                </div>
+                                <div id="flt-category" class="collapse show">
+                                    <ul class="collapse-body filter-group-check group-category">
+                                        <li class="list-item">
+                                            <a href="{{ route('shop.jewellery') }}"
+                                               class="link h6 {{ is_null($activeCategory) && is_null($activeCollection) ? 'active fw-semibold' : '' }}">
+                                                All Jewellery
                                             </a>
+                                        </li>
+                                        @foreach($topCategories as $cat)
+                                        <li class="list-item">
+                                            <a href="{{ route('shop.category', $cat->slug) }}"
+                                               class="link h6 {{ optional($activeCategory)->id === $cat->id ? 'active fw-semibold' : '' }}">
+                                                {{ $cat->name }}
+                                            </a>
+                                            @if($cat->children->isNotEmpty() && optional($activeCategory)->id === $cat->id)
+                                            <ul class="sub-list mt-1 ps-3">
+                                                @foreach($cat->children as $child)
+                                                <li class="list-item">
+                                                    <a href="{{ route('shop.category', $child->slug) }}"
+                                                       class="link h6 {{ optional($activeCategory)->id === $child->id ? 'active fw-semibold' : '' }}">
+                                                        {{ $child->name }}
+                                                    </a>
+                                                </li>
+                                                @endforeach
+                                            </ul>
+                                            @endif
                                         </li>
                                         @endforeach
                                     </ul>
-                                    @endif
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-
-                        {{-- Metal filter --}}
-                        @if($metals->isNotEmpty())
-                        <div class="fado-filter-section" style="margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--fado-cream)">
-                            <h6 class="fado-filter-heading">Metal</h6>
-                            <div style="display:flex; flex-direction:column; gap:8px">
-                                @foreach($metals as $metal)
-                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.875rem; color: var(--fado-deep-green)">
-                                    <input type="checkbox" name="metals[]" value="{{ $metal->slug }}"
-                                           {{ in_array($metal->slug, $filters['metals']) ? 'checked' : '' }}
-                                           onchange="document.getElementById('filterForm').submit()"
-                                           style="accent-color: var(--fado-green-mid); width:15px; height:15px; cursor:pointer">
-                                    {{ $metal->name }}
-                                </label>
-                                @endforeach
+                                </div>
                             </div>
-                        </div>
-                        @endif
+                            @endif
 
-                        {{-- Gemstone filter --}}
-                        @if($gemstones->isNotEmpty())
-                        <div class="fado-filter-section" style="margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--fado-cream)">
-                            <h6 class="fado-filter-heading">Gemstone</h6>
-                            <div style="display:flex; flex-direction:column; gap:8px">
-                                @foreach($gemstones as $gem)
-                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.875rem; color: var(--fado-deep-green)">
-                                    <input type="checkbox" name="gemstones[]" value="{{ $gem->slug }}"
-                                           {{ in_array($gem->slug, $filters['gemstones']) ? 'checked' : '' }}
-                                           onchange="document.getElementById('filterForm').submit()"
-                                           style="accent-color: var(--fado-green-mid); width:15px; height:15px; cursor:pointer">
-                                    {{ $gem->name }}
-                                </label>
-                                @endforeach
+                            {{-- Metal filter —  Ochaka tf-check + label --}}
+                            @if($metals->isNotEmpty())
+                            <div class="widget-facet">
+                                <div class="facet-title" data-bs-target="#flt-metal" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="flt-metal">
+                                    <span class="h4 fw-semibold">Metal</span>
+                                    <span class="icon icon-caret-down fs-20"></span>
+                                </div>
+                                <div id="flt-metal" class="collapse show">
+                                    <ul class="collapse-body filter-group-check current-scrollbar">
+                                        @foreach($metals as $metal)
+                                        <li class="list-item">
+                                            <input type="checkbox" name="metals[]" value="{{ $metal->slug }}"
+                                                   class="tf-check" id="metal-{{ $metal->slug }}"
+                                                   {{ in_array($metal->slug, $filters['metals']) ? 'checked' : '' }}
+                                                   onchange="document.getElementById('filterForm').submit()">
+                                            <label for="metal-{{ $metal->slug }}" class="label">{{ $metal->name }}</label>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        @endif
+                            @endif
 
-                        {{-- Collection filter (hidden when already viewing a specific collection) --}}
-                        @if(is_null($activeCollection) && $allCollections->isNotEmpty())
-                        <div class="fado-filter-section" style="margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--fado-cream)">
-                            <h6 class="fado-filter-heading">Collection</h6>
-                            <div style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto; padding-right:4px">
-                                @foreach($allCollections as $col)
-                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.875rem; color: var(--fado-deep-green)">
-                                    <input type="checkbox" name="collections[]" value="{{ $col->slug }}"
-                                           {{ in_array($col->slug, $filters['collections']) ? 'checked' : '' }}
-                                           onchange="document.getElementById('filterForm').submit()"
-                                           style="accent-color: var(--fado-green-mid); width:15px; height:15px; cursor:pointer">
-                                    {{ $col->name }}
-                                </label>
-                                @endforeach
+                            {{-- Gemstone filter --}}
+                            @if($gemstones->isNotEmpty())
+                            <div class="widget-facet">
+                                <div class="facet-title" data-bs-target="#flt-gem" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="flt-gem">
+                                    <span class="h4 fw-semibold">Gemstone</span>
+                                    <span class="icon icon-caret-down fs-20"></span>
+                                </div>
+                                <div id="flt-gem" class="collapse show">
+                                    <ul class="collapse-body filter-group-check current-scrollbar">
+                                        @foreach($gemstones as $gem)
+                                        <li class="list-item">
+                                            <input type="checkbox" name="gemstones[]" value="{{ $gem->slug }}"
+                                                   class="tf-check" id="gem-{{ $gem->slug }}"
+                                                   {{ in_array($gem->slug, $filters['gemstones']) ? 'checked' : '' }}
+                                                   onchange="document.getElementById('filterForm').submit()">
+                                            <label for="gem-{{ $gem->slug }}" class="label">{{ $gem->name }}</label>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        @endif
+                            @endif
 
-                        {{-- Second metal / finish filter --}}
-                        @if($metals->isNotEmpty())
-                        <div class="fado-filter-section" style="margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--fado-cream)">
-                            <h6 class="fado-filter-heading">Second Metal / Finish</h6>
-                            <div style="display:flex; flex-direction:column; gap:8px">
-                                @foreach($metals as $metal)
-                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.875rem; color: var(--fado-deep-green)">
-                                    <input type="checkbox" name="second_metals[]" value="{{ $metal->slug }}"
-                                           {{ in_array($metal->slug, $filters['second_metals']) ? 'checked' : '' }}
-                                           onchange="document.getElementById('filterForm').submit()"
-                                           style="accent-color: var(--fado-green-mid); width:15px; height:15px; cursor:pointer">
-                                    {{ $metal->name }}
-                                </label>
-                                @endforeach
+                            {{-- Collection filter --}}
+                            @if(is_null($activeCollection) && $allCollections->isNotEmpty())
+                            <div class="widget-facet">
+                                <div class="facet-title" data-bs-target="#flt-col" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="flt-col">
+                                    <span class="h4 fw-semibold">Collection</span>
+                                    <span class="icon icon-caret-down fs-20"></span>
+                                </div>
+                                <div id="flt-col" class="collapse show">
+                                    <ul class="collapse-body filter-group-check current-scrollbar">
+                                        @foreach($allCollections as $col)
+                                        <li class="list-item">
+                                            <input type="checkbox" name="collections[]" value="{{ $col->slug }}"
+                                                   class="tf-check" id="col-{{ $col->slug }}"
+                                                   {{ in_array($col->slug, $filters['collections']) ? 'checked' : '' }}
+                                                   onchange="document.getElementById('filterForm').submit()">
+                                            <label for="col-{{ $col->slug }}" class="label">{{ $col->name }}</label>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        @endif
+                            @endif
 
-                        {{-- Colour filter (only shown when colour data exists in DB) --}}
-                        @if($colours->isNotEmpty())
-                        <div class="fado-filter-section" style="margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--fado-cream)">
-                            <h6 class="fado-filter-heading">Colour</h6>
-                            <div style="display:flex; flex-direction:column; gap:8px">
-                                @foreach($colours as $colour)
-                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.875rem; color: var(--fado-deep-green)">
-                                    <input type="checkbox" name="colours[]" value="{{ $colour }}"
-                                           {{ in_array($colour, $filters['colours']) ? 'checked' : '' }}
-                                           onchange="document.getElementById('filterForm').submit()"
-                                           style="accent-color: var(--fado-green-mid); width:15px; height:15px; cursor:pointer">
-                                    {{ $colour }}
-                                </label>
-                                @endforeach
+                            {{-- Second metal / finish filter --}}
+                            @if($metals->isNotEmpty())
+                            <div class="widget-facet">
+                                <div class="facet-title" data-bs-target="#flt-finish" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="flt-finish">
+                                    <span class="h4 fw-semibold">Second Metal / Finish</span>
+                                    <span class="icon icon-caret-down fs-20"></span>
+                                </div>
+                                <div id="flt-finish" class="collapse">
+                                    <ul class="collapse-body filter-group-check current-scrollbar">
+                                        @foreach($metals as $metal)
+                                        <li class="list-item">
+                                            <input type="checkbox" name="second_metals[]" value="{{ $metal->slug }}"
+                                                   class="tf-check" id="sm-{{ $metal->slug }}"
+                                                   {{ in_array($metal->slug, $filters['second_metals']) ? 'checked' : '' }}
+                                                   onchange="document.getElementById('filterForm').submit()">
+                                            <label for="sm-{{ $metal->slug }}" class="label">{{ $metal->name }}</label>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        @endif
+                            @endif
 
-                        {{-- Price range --}}
-                        <div class="fado-filter-section" style="margin-bottom:28px">
-                            <h6 class="fado-filter-heading">Price Range (EUR)</h6>
-                            <div class="fado-price-range-track" style="position:relative; height:4px; background:var(--fado-cream); border-radius:2px; margin:16px 0 20px">
-                                <div id="priceRangeFill" style="position:absolute; height:100%; background:var(--fado-green-mid); border-radius:2px"></div>
-                                <input type="range" id="priceMin" name="price_min"
-                                       min="0" max="5000" step="25"
-                                       value="{{ $filters['price_min'] ?: 0 }}"
-                                       style="position:absolute; width:100%; height:100%; opacity:0; cursor:pointer; top:0; left:0"
-                                       oninput="updatePriceRange()">
-                                <input type="range" id="priceMax" name="price_max"
-                                       min="0" max="5000" step="25"
-                                       value="{{ $filters['price_max'] ?: 5000 }}"
-                                       style="position:absolute; width:100%; height:100%; opacity:0; cursor:pointer; top:0; left:0"
-                                       oninput="updatePriceRange()">
-                                <div id="priceThumbMin" style="position:absolute; top:50%; transform:translate(-50%,-50%); width:16px; height:16px; background:var(--fado-green-mid); border:2px solid #fff; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,.2); pointer-events:none"></div>
-                                <div id="priceThumbMax" style="position:absolute; top:50%; transform:translate(-50%,-50%); width:16px; height:16px; background:var(--fado-green-mid); border:2px solid #fff; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,.2); pointer-events:none"></div>
+                            {{-- Colour filter --}}
+                            @if($colours->isNotEmpty())
+                            <div class="widget-facet">
+                                <div class="facet-title" data-bs-target="#flt-colour" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="flt-colour">
+                                    <span class="h4 fw-semibold">Colour</span>
+                                    <span class="icon icon-caret-down fs-20"></span>
+                                </div>
+                                <div id="flt-colour" class="collapse">
+                                    <ul class="collapse-body filter-group-check current-scrollbar">
+                                        @foreach($colours as $colour)
+                                        <li class="list-item">
+                                            <input type="checkbox" name="colours[]" value="{{ $colour }}"
+                                                   class="tf-check" id="clr-{{ Str::slug($colour) }}"
+                                                   {{ in_array($colour, $filters['colours']) ? 'checked' : '' }}
+                                                   onchange="document.getElementById('filterForm').submit()">
+                                            <label for="clr-{{ Str::slug($colour) }}" class="label">{{ $colour }}</label>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center">
-                                <span style="font-size:.8125rem; color: var(--fado-deep-green)">
-                                    € <strong id="priceMinLabel">{{ $filters['price_min'] ?: 0 }}</strong>
-                                </span>
-                                <span style="font-size:.8125rem; color: var(--fado-deep-green)">
-                                    € <strong id="priceMaxLabel">{{ $filters['price_max'] ?: 5000 }}</strong>
-                                </span>
-                            </div>
-                            <button type="submit" style="margin-top:12px; width:100%; padding:8px; background: var(--fado-deep-green);
-                                                         color:#fff; border:none; border-radius:2px; font-size:.8125rem;
-                                                         cursor:pointer; transition: background .2s"
-                                    onmouseover="this.style.background='var(--fado-green-mid)'"
-                                    onmouseout="this.style.background='var(--fado-deep-green)'">
-                                Apply price filter
-                            </button>
-                        </div>
+                            @endif
 
-                    </form>
+                            {{-- Price range --}}
+                            <div class="widget-facet">
+                                <div class="facet-title" data-bs-target="#flt-price" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="flt-price">
+                                    <span class="h4 fw-semibold">Price (EUR)</span>
+                                    <span class="icon icon-caret-down fs-20"></span>
+                                </div>
+                                <div id="flt-price" class="collapse show">
+                                    <div class="collapse-body widget-price filter-price">
+                                        <div class="price-val-range" id="price-value-range" data-min="{{ $filters['price_min'] ?: 0 }}" data-max="{{ $filters['price_max'] ?: 5000 }}"></div>
+                                        <div class="box-value-price">
+                                            <span class="h6 text-main">Price:</span>
+                                            <div class="price-box">
+                                                <div class="price-val h6" id="price-min-value">€{{ $filters['price_min'] ?: 0 }}</div>
+                                                <span class="h6">–</span>
+                                                <div class="price-val h6" id="price-max-value">€{{ $filters['price_max'] ?: '5,000+' }}</div>
+                                            </div>
+                                        </div>
+                                        {{-- Hidden inputs for form submit --}}
+                                        <input type="hidden" name="price_min" id="priceMinInput" value="{{ $filters['price_min'] ?: '' }}">
+                                        <input type="hidden" name="price_max" id="priceMaxInput" value="{{ $filters['price_max'] ?: '' }}">
+                                        <div class="mt_12 d-flex gap-2">
+                                            <input type="number" id="priceMinField" placeholder="Min €" min="0"
+                                                   value="{{ $filters['price_min'] ?: '' }}"
+                                                   class="tf-field-input h6" style="width:50%"
+                                                   onchange="document.getElementById('priceMinInput').value=this.value">
+                                            <input type="number" id="priceMaxField" placeholder="Max €" min="0"
+                                                   value="{{ $filters['price_max'] ?: '' }}"
+                                                   class="tf-field-input h6" style="width:50%"
+                                                   onchange="document.getElementById('priceMaxInput').value=this.value">
+                                        </div>
+                                        <button type="submit" class="tf-btn animate-btn type-small mt_12 w-100">
+                                            Apply price filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            {{-- ── PRODUCT GRID ───────────────────────────────────────────── --}}
-            <div class="col-lg-9">
+            {{-- ── PRODUCT GRID COL ─────────────────────────────────────────── --}}
+            <div class="col-xl-9">
 
-                {{-- Toolbar — sort + mobile filter toggle + result count --}}
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;
-                            margin-bottom:28px; flex-wrap:wrap">
+                {{-- Toolbar — Ochaka tf-shop-control --}}
+                <div class="tf-shop-control">
+                    {{-- Mobile filter button --}}
+                    <div class="tf-control-filter d-xl-none">
+                        <button type="button" data-bs-toggle="offcanvas" data-bs-target="#fadoFilterCanvas" class="tf-btn-filter">
+                            <span class="icon icon-filter"></span>
+                            <span class="text">Filter</span>
+                            @if($hasFilters)
+                                @php $filterCount = count($filters['metals']) + count($filters['gemstones']) + count($filters['collections']) + count($filters['second_metals']) + count($filters['colours']) + ($filters['price_min'] > 0 || $filters['price_max'] > 0 ? 1 : 0); @endphp
+                                <span class="count-filter h6">{{ $filterCount }}</span>
+                            @endif
+                        </button>
+                    </div>
 
-                    {{-- Mobile filter toggle --}}
-                    <button type="button" data-bs-toggle="offcanvas" data-bs-target="#fadoFilterCanvas"
-                            class="d-lg-none btn-fado-outline"
-                            style="display:inline-flex; align-items:center; gap:8px; padding:8px 16px;
-                                   border-radius:2px; font-size:.8125rem; text-decoration:none">
-                        <i class="icon icon-funnel"></i> Filters
-                        @if($hasFilters)
-                            @php
-                                $filterCount = count($filters['metals']) + count($filters['gemstones'])
-                                    + count($filters['collections']) + count($filters['second_metals'])
-                                    + count($filters['colours'])
-                                    + ($filters['price_min'] > 0 || $filters['price_max'] > 0 ? 1 : 0);
-                            @endphp
-                            <span style="background:var(--fado-green-mid); color:#fff; width:18px; height:18px;
-                                         border-radius:50%; font-size:.65rem; display:inline-flex; align-items:center; justify-content:center">
-                                {{ $filterCount }}
-                            </span>
-                        @endif
-                    </button>
+                    {{-- Result count --}}
+                    <div class="d-none d-xl-block">
+                        <p class="h6 fw-normal text-secondary">
+                            Showing {{ $products->firstItem() ?? 0 }}–{{ $products->lastItem() ?? 0 }}
+                            of {{ $products->total() }} {{ Str::plural('result', $products->total()) }}
+                        </p>
+                    </div>
 
-                    <p style="font-size:.8125rem; color: var(--fado-warm-grey); margin:0; flex:1">
-                        Showing {{ $products->firstItem() ?? 0 }}–{{ $products->lastItem() ?? 0 }}
-                        of {{ $products->total() }} {{ Str::plural('result', $products->total()) }}
-                    </p>
-
-                    {{-- Sort dropdown --}}
-                    <form method="GET" action="{{ url()->current() }}" id="sortForm" style="margin:0">
-                        @foreach($filters['metals'] as $s)
-                            <input type="hidden" name="metals[]" value="{{ $s }}">
-                        @endforeach
-                        @foreach($filters['gemstones'] as $s)
-                            <input type="hidden" name="gemstones[]" value="{{ $s }}">
-                        @endforeach
-                        @foreach($filters['collections'] as $s)
-                            <input type="hidden" name="collections[]" value="{{ $s }}">
-                        @endforeach
-                        @foreach($filters['second_metals'] as $s)
-                            <input type="hidden" name="second_metals[]" value="{{ $s }}">
-                        @endforeach
-                        @foreach($filters['colours'] as $s)
-                            <input type="hidden" name="colours[]" value="{{ $s }}">
-                        @endforeach
-                        @if($filters['price_min'] > 0)<input type="hidden" name="price_min" value="{{ $filters['price_min'] }}">@endif
-                        @if($filters['price_max'] > 0)<input type="hidden" name="price_max" value="{{ $filters['price_max'] }}">@endif
-                        @if($filters['search'])<input type="hidden" name="search" value="{{ $filters['search'] }}">@endif
-
-                        <select name="sort" onchange="document.getElementById('sortForm').submit()"
-                                style="padding:8px 32px 8px 12px; border:1px solid var(--fado-warm-grey);
-                                       border-radius:3px; font-size:.8125rem; background:#fff;
-                                       color: var(--fado-deep-green); cursor:pointer;
-                                       appearance:none; background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23BCB3AB'/%3E%3C/svg%3E\");
-                                       background-repeat:no-repeat; background-position:right 10px center; outline:none">
-                            <option value="newest"    {{ $filters['sort'] === 'newest'    ? 'selected' : '' }}>Newest first</option>
-                            <option value="price_asc" {{ $filters['sort'] === 'price_asc' ? 'selected' : '' }}>Price: Low to high</option>
-                            <option value="price_desc"{{ $filters['sort'] === 'price_desc'? 'selected' : '' }}>Price: High to low</option>
-                            <option value="name_asc"  {{ $filters['sort'] === 'name_asc'  ? 'selected' : '' }}>Name A–Z</option>
-                        </select>
-                    </form>
+                    {{-- Sort --}}
+                    <div class="tf-control-sorting ms-auto">
+                        <p class="h6 d-none d-lg-block">Sort by:</p>
+                        <form method="GET" action="{{ url()->current() }}" id="sortForm" class="d-inline">
+                            @foreach($filters['metals'] as $s)<input type="hidden" name="metals[]" value="{{ $s }}">@endforeach
+                            @foreach($filters['gemstones'] as $s)<input type="hidden" name="gemstones[]" value="{{ $s }}">@endforeach
+                            @foreach($filters['collections'] as $s)<input type="hidden" name="collections[]" value="{{ $s }}">@endforeach
+                            @foreach($filters['second_metals'] as $s)<input type="hidden" name="second_metals[]" value="{{ $s }}">@endforeach
+                            @foreach($filters['colours'] as $s)<input type="hidden" name="colours[]" value="{{ $s }}">@endforeach
+                            @if($filters['price_min'] > 0)<input type="hidden" name="price_min" value="{{ $filters['price_min'] }}">@endif
+                            @if($filters['price_max'] > 0)<input type="hidden" name="price_max" value="{{ $filters['price_max'] }}">@endif
+                            @if($filters['search'])<input type="hidden" name="search" value="{{ $filters['search'] }}">@endif
+                            <select name="sort" onchange="document.getElementById('sortForm').submit()" class="tf-sort-select h6">
+                                <option value="newest"    {{ $filters['sort'] === 'newest'    ? 'selected' : '' }}>Newest first</option>
+                                <option value="price_asc" {{ $filters['sort'] === 'price_asc' ? 'selected' : '' }}>Price: Low to high</option>
+                                <option value="price_desc"{{ $filters['sort'] === 'price_desc'? 'selected' : '' }}>Price: High to low</option>
+                                <option value="name_asc"  {{ $filters['sort'] === 'name_asc'  ? 'selected' : '' }}>Name A–Z</option>
+                            </select>
+                        </form>
+                    </div>
                 </div>
 
-                {{-- Product grid --}}
+                {{-- Product grid — Ochaka tf-grid-layout --}}
                 @if($products->isEmpty())
-                <div style="text-align:center; padding:80px 24px">
-                    <i class="icon icon-gem" style="font-size:3rem; color: var(--fado-warm-grey); display:block; margin-bottom:20px"></i>
-                    <h3 style="font-family: Georgia, serif; color: var(--fado-deep-green); font-size:1.5rem; font-weight:400; margin-bottom:12px">
-                        No pieces found
-                    </h3>
-                    <p style="color:#888; margin-bottom:24px">Try adjusting your filters or browse all jewellery.</p>
-                    <a href="{{ url()->current() }}" class="btn-fado-outline"
-                       style="display:inline-block; padding:10px 28px; border-radius:2px; text-decoration:none">
-                        Clear filters
-                    </a>
+                <div class="text-center py-5">
+                    <i class="icon icon-gem" style="font-size:3rem; opacity:.3; display:block; margin-bottom:20px"></i>
+                    <h3 class="h4 fw-normal mb-12">No pieces found</h3>
+                    <p class="h6 fw-normal text-secondary mb_24">Try adjusting your filters or browse all jewellery.</p>
+                    <a href="{{ url()->current() }}" class="tf-btn animate-btn">Clear filters</a>
                 </div>
                 @else
-                <div class="row g-4" id="productGrid">
+                <div class="wrapper-shop tf-grid-layout tf-col-3 md-col-2" id="productGrid">
                     @foreach($products as $product)
                     @php
                         $img    = $product->primaryImage;
+                        $img2   = $product->images->skip(1)->first();
                         $from   = $product->variants->min('price_eur');
                         $metals = $product->variants->pluck('metal.name')->filter()->unique()->take(3);
                     @endphp
-                    <div class="col-6 col-xl-4 wow fadeInUp" data-wow-delay="{{ ($loop->index % 3) * .06 }}s">
-                        <a href="{{ route('shop.product', $product) }}" class="fado-product-card d-block text-decoration-none">
-
-                            {{-- Image tile --}}
-                            <div style="background: var(--fado-cream); border-radius:3px; overflow:hidden;
-                                        aspect-ratio:3/4; margin-bottom:14px; position:relative">
+                    <div class="card-product grid wow fadeInUp" data-wow-delay="{{ ($loop->index % 3) * .06 }}s">
+                        <div class="card-product_wrapper">
+                            <a href="{{ route('shop.product', $product) }}" class="product-img">
                                 @if($img)
-                                    <img src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}"
-                                         style="width:100%; height:100%; object-fit:cover; object-position:center top;
-                                                transition: transform .4s ease">
-                                @else
-                                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center">
-                                        <i class="icon icon-gem" style="font-size:3rem; color: var(--fado-warm-grey)"></i>
-                                    </div>
-                                @endif
-
-                                {{-- Wishlist button (appears on hover) --}}
-                                <div class="fado-product-actions"
-                                     style="position:absolute; top:12px; right:12px; display:flex; flex-direction:column; gap:8px; opacity:0; transition:opacity .2s">
-                                    <form method="POST" action="{{ route('shop.wishlist.toggle') }}">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <button type="submit"
-                                                style="background:#fff; border:none; width:36px; height:36px; border-radius:50%;
-                                                       display:flex; align-items:center; justify-content:center;
-                                                       box-shadow:0 2px 8px rgba(0,0,0,.12); cursor:pointer; color:var(--fado-deep-green)"
-                                                title="Save to wishlist">
-                                            <i class="icon icon-heart" style="font-size:.875rem"></i>
-                                        </button>
-                                    </form>
-                                </div>
-
-                                {{-- Metal variants pill strip at bottom of image --}}
-                                @if($metals->isNotEmpty())
-                                <div style="position:absolute; bottom:0; left:0; right:0; padding:8px 10px;
-                                            background:linear-gradient(transparent, rgba(4,71,5,.5));
-                                            display:flex; gap:4px; flex-wrap:wrap">
-                                    @foreach($metals as $metalName)
-                                    <span style="font-size:.65rem; background:rgba(255,255,255,.18); color:#fff;
-                                                 border:1px solid rgba(255,255,255,.3); padding:2px 8px; border-radius:10px;
-                                                 backdrop-filter:blur(4px)">
-                                        {{ $metalName }}
-                                    </span>
-                                    @endforeach
-                                    @if($product->variants->count() > 3)
-                                    <span style="font-size:.65rem; background:rgba(255,255,255,.18); color:#fff;
-                                                 border:1px solid rgba(255,255,255,.3); padding:2px 8px; border-radius:10px">
-                                        +{{ $product->variants->count() - 3 }} more
-                                    </span>
+                                    <img class="lazyload img-product" src="{{ Storage::url($img->path) }}" data-src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}">
+                                    @if($img2)
+                                    <img class="lazyload img-hover" src="{{ Storage::url($img2->path) }}" data-src="{{ Storage::url($img2->path) }}" alt="{{ $product->name }}">
                                     @endif
-                                </div>
+                                @else
+                                    <img class="lazyload img-product" src="/images/ochaka/products/jewelry/product-5.jpg" data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="{{ $product->name }}">
+                                @endif
+                            </a>
+                            <ul class="product-action_list">
+                                <li>
+                                    <a href="{{ route('shop.product', $product) }}" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick view</span>
+                                    </a>
+                                </li>
+                                <li class="wishlist">
+                                    <a href="{{ route('shop.wishlist.toggle', $product->id) }}"
+                                       class="hover-tooltip tooltip-left box-icon"
+                                       onclick="event.preventDefault(); fetch(this.href, {method:'POST', headers:{'X-CSRF-TOKEN':'{{ csrf_token() }}','Accept':'application/json'}}).then(()=>location.reload())">
+                                        <span class="icon icon-heart"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-product_info">
+                            <a href="{{ route('shop.product', $product) }}" class="name-product h4 link">{{ $product->name }}</a>
+                            <div class="price-wrap">
+                                @if($from)
+                                    <span class="price-new h6">From €{{ number_format((float)$from, 2) }}</span>
+                                @else
+                                    <span class="price-new h6 fw-normal" style="font-style:italic">Price on enquiry</span>
                                 @endif
                             </div>
-
-                            {{-- Product name --}}
-                            <p class="fado-product-name"
-                               style="font-size:.9375rem; font-weight:600; color:var(--fado-deep-green);
-                                      margin-bottom:4px; line-height:1.4; transition:color .2s">
-                                {{ $product->name }}
-                            </p>
-
-                            {{-- Price --}}
-                            <p style="font-size:.875rem; color:var(--fado-warm-grey); margin:0">
-                                @if($from)
-                                    From <strong style="color:var(--fado-deep-green)">€{{ number_format((float)$from, 2) }}</strong>
-                                @else
-                                    <span style="font-style:italic">Price on enquiry</span>
-                                @endif
-                            </p>
-                        </a>
+                        </div>
                     </div>
                     @endforeach
                 </div>
 
                 {{-- Pagination --}}
                 @if($products->hasPages())
-                <div style="margin-top:48px; display:flex; justify-content:center">
-                    <nav aria-label="Products pagination">
-                        <ul class="pagination" style="gap:4px; list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; justify-content:center">
+                <div class="d-flex justify-content-center mt_48">
+                    <ul class="tf-pagination-wrap">
+                        @if($products->onFirstPage())
+                        <li><span class="pagination-link disabled h6">‹</span></li>
+                        @else
+                        <li><a href="{{ $products->previousPageUrl() }}" class="pagination-link h6">‹</a></li>
+                        @endif
 
-                            {{-- Prev --}}
-                            @if($products->onFirstPage())
-                            <li><span style="display:flex; align-items:center; padding:8px 14px; border:1px solid var(--fado-cream); border-radius:3px; color:var(--fado-warm-grey); font-size:.875rem; cursor:not-allowed">‹</span></li>
-                            @else
-                            <li><a href="{{ $products->previousPageUrl() }}" style="display:flex; align-items:center; padding:8px 14px; border:1px solid var(--fado-warm-grey); border-radius:3px; color:var(--fado-deep-green); font-size:.875rem; text-decoration:none">‹</a></li>
-                            @endif
+                        @foreach($products->getUrlRange(max(1, $products->currentPage()-2), min($products->lastPage(), $products->currentPage()+2)) as $page => $url)
+                        @if($page === $products->currentPage())
+                        <li><span class="pagination-link active h6">{{ $page }}</span></li>
+                        @else
+                        <li><a href="{{ $url }}" class="pagination-link h6">{{ $page }}</a></li>
+                        @endif
+                        @endforeach
 
-                            {{-- Page numbers --}}
-                            @foreach($products->getUrlRange(max(1, $products->currentPage()-2), min($products->lastPage(), $products->currentPage()+2)) as $page => $url)
-                            @if($page === $products->currentPage())
-                            <li><span style="display:flex; align-items:center; padding:8px 14px; border:1px solid var(--fado-green-mid); border-radius:3px; background:var(--fado-green-mid); color:#fff; font-size:.875rem; font-weight:600">{{ $page }}</span></li>
-                            @else
-                            <li><a href="{{ $url }}" style="display:flex; align-items:center; padding:8px 14px; border:1px solid var(--fado-warm-grey); border-radius:3px; color:var(--fado-deep-green); font-size:.875rem; text-decoration:none">{{ $page }}</a></li>
-                            @endif
-                            @endforeach
-
-                            {{-- Next --}}
-                            @if($products->hasMorePages())
-                            <li><a href="{{ $products->nextPageUrl() }}" style="display:flex; align-items:center; padding:8px 14px; border:1px solid var(--fado-warm-grey); border-radius:3px; color:var(--fado-deep-green); font-size:.875rem; text-decoration:none">›</a></li>
-                            @else
-                            <li><span style="display:flex; align-items:center; padding:8px 14px; border:1px solid var(--fado-cream); border-radius:3px; color:var(--fado-warm-grey); font-size:.875rem; cursor:not-allowed">›</span></li>
-                            @endif
-
-                        </ul>
-                    </nav>
+                        @if($products->hasMorePages())
+                        <li><a href="{{ $products->nextPageUrl() }}" class="pagination-link h6">›</a></li>
+                        @else
+                        <li><span class="pagination-link disabled h6">›</span></li>
+                        @endif
+                    </ul>
                 </div>
                 @endif
 
@@ -593,140 +529,155 @@
 
         </div>{{-- /row --}}
     </div>{{-- /container --}}
-</div>
+</div>{{-- /flat-spacing --}}
 
 
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
-{{-- § 4  MOBILE FILTER OFFCANVAS                                              --}}
+{{-- Mobile Filter Offcanvas — Ochaka canvas-sidebar pattern                   --}}
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
-<div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="fadoFilterCanvas" aria-labelledby="fadoFilterCanvasLabel">
-    <div class="offcanvas-header" style="background:var(--fado-deep-green); padding:20px 24px">
-        <h5 id="fadoFilterCanvasLabel" style="color:#fff; margin:0; font-family:Georgia,serif; font-weight:400">
-            Filter Jewellery
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body" style="padding:24px; overflow-y:auto">
-        <form method="GET" action="{{ url()->current() }}" id="mobileFilterForm">
+<div class="canvas-sidebar sidebar-filter canvas-filter left offcanvas offcanvas-start d-xl-none" tabindex="-1" id="fadoFilterCanvas" aria-labelledby="fadoFilterCanvasLabel">
+    <div class="canvas-wrapper">
+        <div class="canvas-header d-xl-none">
+            <span class="title h3 fw-medium">Filter</span>
+            <span class="icon-close link icon-close-popup fs-24" data-bs-dismiss="offcanvas"></span>
+        </div>
+        <div class="canvas-body offcanvas-body">
+            <form method="GET" action="{{ url()->current() }}" id="mobileFilterForm">
 
-            @if($filters['sort'] !== 'newest')
-                <input type="hidden" name="sort" value="{{ $filters['sort'] }}">
-            @endif
+                @if($filters['sort'] !== 'newest')
+                    <input type="hidden" name="sort" value="{{ $filters['sort'] }}">
+                @endif
 
-            {{-- Metal --}}
-            @if($metals->isNotEmpty())
-            <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--fado-cream)">
-                <h6 class="fado-filter-heading">Metal</h6>
-                <div style="display:flex; flex-direction:column; gap:10px">
-                    @foreach($metals as $metal)
-                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.9rem; color:var(--fado-deep-green)">
-                        <input type="checkbox" name="metals[]" value="{{ $metal->slug }}"
-                               {{ in_array($metal->slug, $filters['metals']) ? 'checked' : '' }}
-                               style="accent-color:var(--fado-green-mid); width:16px; height:16px; cursor:pointer">
-                        {{ $metal->name }}
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            {{-- Gemstone --}}
-            @if($gemstones->isNotEmpty())
-            <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--fado-cream)">
-                <h6 class="fado-filter-heading">Gemstone</h6>
-                <div style="display:flex; flex-direction:column; gap:10px">
-                    @foreach($gemstones as $gem)
-                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.9rem; color:var(--fado-deep-green)">
-                        <input type="checkbox" name="gemstones[]" value="{{ $gem->slug }}"
-                               {{ in_array($gem->slug, $filters['gemstones']) ? 'checked' : '' }}
-                               style="accent-color:var(--fado-green-mid); width:16px; height:16px; cursor:pointer">
-                        {{ $gem->name }}
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            {{-- Collection (hidden when viewing a specific collection) --}}
-            @if(is_null($activeCollection) && $allCollections->isNotEmpty())
-            <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--fado-cream)">
-                <h6 class="fado-filter-heading">Collection</h6>
-                <div style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow-y:auto">
-                    @foreach($allCollections as $col)
-                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.9rem; color:var(--fado-deep-green)">
-                        <input type="checkbox" name="collections[]" value="{{ $col->slug }}"
-                               {{ in_array($col->slug, $filters['collections']) ? 'checked' : '' }}
-                               style="accent-color:var(--fado-green-mid); width:16px; height:16px; cursor:pointer">
-                        {{ $col->name }}
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            {{-- Second metal / finish --}}
-            @if($metals->isNotEmpty())
-            <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--fado-cream)">
-                <h6 class="fado-filter-heading">Second Metal / Finish</h6>
-                <div style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow-y:auto">
-                    @foreach($metals as $metal)
-                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.9rem; color:var(--fado-deep-green)">
-                        <input type="checkbox" name="second_metals[]" value="{{ $metal->slug }}"
-                               {{ in_array($metal->slug, $filters['second_metals']) ? 'checked' : '' }}
-                               style="accent-color:var(--fado-green-mid); width:16px; height:16px; cursor:pointer">
-                        {{ $metal->name }}
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            {{-- Colour (only when colour data exists) --}}
-            @if($colours->isNotEmpty())
-            <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--fado-cream)">
-                <h6 class="fado-filter-heading">Colour</h6>
-                <div style="display:flex; flex-direction:column; gap:10px">
-                    @foreach($colours as $colour)
-                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.9rem; color:var(--fado-deep-green)">
-                        <input type="checkbox" name="colours[]" value="{{ $colour }}"
-                               {{ in_array($colour, $filters['colours']) ? 'checked' : '' }}
-                               style="accent-color:var(--fado-green-mid); width:16px; height:16px; cursor:pointer">
-                        {{ $colour }}
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            {{-- Price --}}
-            <div style="margin-bottom:24px">
-                <h6 class="fado-filter-heading">Price (EUR)</h6>
-                <div class="d-flex gap-3 mt-2">
-                    <div style="flex:1">
-                        <label style="font-size:.75rem; color:var(--fado-warm-grey); display:block; margin-bottom:4px">Min</label>
-                        <input type="number" name="price_min" value="{{ $filters['price_min'] ?: '' }}" min="0" placeholder="0"
-                               style="width:100%; padding:8px 10px; border:1px solid var(--fado-warm-grey); border-radius:3px; font-size:.875rem">
+                {{-- Metal --}}
+                @if($metals->isNotEmpty())
+                <div class="widget-facet">
+                    <div class="facet-title" data-bs-target="#mflt-metal" role="button" data-bs-toggle="collapse" aria-expanded="true">
+                        <span class="h4 fw-semibold">Metal</span>
+                        <span class="icon icon-caret-down fs-20"></span>
                     </div>
-                    <div style="flex:1">
-                        <label style="font-size:.75rem; color:var(--fado-warm-grey); display:block; margin-bottom:4px">Max</label>
-                        <input type="number" name="price_max" value="{{ $filters['price_max'] ?: '' }}" min="0" placeholder="5000"
-                               style="width:100%; padding:8px 10px; border:1px solid var(--fado-warm-grey); border-radius:3px; font-size:.875rem">
+                    <div id="mflt-metal" class="collapse show">
+                        <ul class="collapse-body filter-group-check">
+                            @foreach($metals as $metal)
+                            <li class="list-item">
+                                <input type="checkbox" name="metals[]" value="{{ $metal->slug }}" class="tf-check" id="m-metal-{{ $metal->slug }}"
+                                       {{ in_array($metal->slug, $filters['metals']) ? 'checked' : '' }}>
+                                <label for="m-metal-{{ $metal->slug }}" class="label">{{ $metal->name }}</label>
+                            </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
-            </div>
+                @endif
 
-            <div class="d-flex gap-3">
-                <button type="submit" style="flex:1; padding:12px; background:var(--fado-deep-green); color:#fff;
-                                            border:none; border-radius:2px; font-size:.875rem; font-weight:600; cursor:pointer">
-                    Apply Filters
-                </button>
-                <a href="{{ url()->current() }}" style="flex:1; padding:12px; border:1px solid var(--fado-warm-grey);
-                                                        border-radius:2px; font-size:.875rem; text-align:center;
-                                                        color:var(--fado-deep-green); text-decoration:none">
-                    Clear All
-                </a>
-            </div>
-        </form>
+                {{-- Gemstone --}}
+                @if($gemstones->isNotEmpty())
+                <div class="widget-facet">
+                    <div class="facet-title" data-bs-target="#mflt-gem" role="button" data-bs-toggle="collapse" aria-expanded="true">
+                        <span class="h4 fw-semibold">Gemstone</span>
+                        <span class="icon icon-caret-down fs-20"></span>
+                    </div>
+                    <div id="mflt-gem" class="collapse show">
+                        <ul class="collapse-body filter-group-check">
+                            @foreach($gemstones as $gem)
+                            <li class="list-item">
+                                <input type="checkbox" name="gemstones[]" value="{{ $gem->slug }}" class="tf-check" id="m-gem-{{ $gem->slug }}"
+                                       {{ in_array($gem->slug, $filters['gemstones']) ? 'checked' : '' }}>
+                                <label for="m-gem-{{ $gem->slug }}" class="label">{{ $gem->name }}</label>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Collection --}}
+                @if(is_null($activeCollection) && $allCollections->isNotEmpty())
+                <div class="widget-facet">
+                    <div class="facet-title" data-bs-target="#mflt-col" role="button" data-bs-toggle="collapse" aria-expanded="false">
+                        <span class="h4 fw-semibold">Collection</span>
+                        <span class="icon icon-caret-down fs-20"></span>
+                    </div>
+                    <div id="mflt-col" class="collapse">
+                        <ul class="collapse-body filter-group-check current-scrollbar">
+                            @foreach($allCollections as $col)
+                            <li class="list-item">
+                                <input type="checkbox" name="collections[]" value="{{ $col->slug }}" class="tf-check" id="m-col-{{ $col->slug }}"
+                                       {{ in_array($col->slug, $filters['collections']) ? 'checked' : '' }}>
+                                <label for="m-col-{{ $col->slug }}" class="label">{{ $col->name }}</label>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Second metal --}}
+                @if($metals->isNotEmpty())
+                <div class="widget-facet">
+                    <div class="facet-title" data-bs-target="#mflt-finish" role="button" data-bs-toggle="collapse" aria-expanded="false">
+                        <span class="h4 fw-semibold">Second Metal / Finish</span>
+                        <span class="icon icon-caret-down fs-20"></span>
+                    </div>
+                    <div id="mflt-finish" class="collapse">
+                        <ul class="collapse-body filter-group-check">
+                            @foreach($metals as $metal)
+                            <li class="list-item">
+                                <input type="checkbox" name="second_metals[]" value="{{ $metal->slug }}" class="tf-check" id="m-sm-{{ $metal->slug }}"
+                                       {{ in_array($metal->slug, $filters['second_metals']) ? 'checked' : '' }}>
+                                <label for="m-sm-{{ $metal->slug }}" class="label">{{ $metal->name }}</label>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Colour --}}
+                @if($colours->isNotEmpty())
+                <div class="widget-facet">
+                    <div class="facet-title" data-bs-target="#mflt-colour" role="button" data-bs-toggle="collapse" aria-expanded="false">
+                        <span class="h4 fw-semibold">Colour</span>
+                        <span class="icon icon-caret-down fs-20"></span>
+                    </div>
+                    <div id="mflt-colour" class="collapse">
+                        <ul class="collapse-body filter-group-check">
+                            @foreach($colours as $colour)
+                            <li class="list-item">
+                                <input type="checkbox" name="colours[]" value="{{ $colour }}" class="tf-check" id="m-clr-{{ Str::slug($colour) }}"
+                                       {{ in_array($colour, $filters['colours']) ? 'checked' : '' }}>
+                                <label for="m-clr-{{ Str::slug($colour) }}" class="label">{{ $colour }}</label>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Price --}}
+                <div class="widget-facet">
+                    <div class="facet-title" data-bs-target="#mflt-price" role="button" data-bs-toggle="collapse" aria-expanded="true">
+                        <span class="h4 fw-semibold">Price (EUR)</span>
+                        <span class="icon icon-caret-down fs-20"></span>
+                    </div>
+                    <div id="mflt-price" class="collapse show">
+                        <div class="collapse-body">
+                            <div class="d-flex gap-2">
+                                <input type="number" name="price_min" value="{{ $filters['price_min'] ?: '' }}" min="0" placeholder="Min €"
+                                       class="tf-field-input h6" style="width:50%">
+                                <input type="number" name="price_max" value="{{ $filters['price_max'] ?: '' }}" min="0" placeholder="Max €"
+                                       class="tf-field-input h6" style="width:50%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="canvas-bottom">
+                    <button type="submit" class="tf-btn animate-btn w-100 mb-2">Apply Filters</button>
+                    <a href="{{ url()->current() }}" class="tf-btn btn-reset w-100 text-center">Clear All</a>
+                </div>
+
+            </form>
+        </div>
     </div>
 </div>
 
@@ -734,48 +685,46 @@
 
 @push('css')
 <style>
-.fado-filter-heading {
-    font-size: .7rem;
-    font-weight: 700;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--fado-deep-green);
-    margin-bottom: 14px;
+/* Filter tag pills */
+.filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #bcb3ab;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color .15s;
 }
-.fado-product-card:hover .fado-product-name   { color: var(--fado-green-mid) !important; }
-.fado-product-card:hover img                  { transform: scale(1.04); }
-.fado-product-card:hover .fado-product-actions { opacity: 1 !important; }
+.filter-tag:hover { border-color: #1a1a1a; color: inherit; }
+
+/* Sort select native fallback */
+.tf-sort-select {
+    padding: 6px 28px 6px 10px;
+    border: 1px solid #bcb3ab;
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23BCB3AB'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+
+/* Search field in filter */
+.filter-search-field { position: relative; }
+.tf-field-input { width: 100%; padding: 8px 12px; border: 1px solid #bcb3ab; border-radius: 3px; background: #fff; outline: none; }
+.tf-field-input:focus { border-color: #1a1a1a; }
+.btn-search-field { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #bcb3ab; }
+
+/* Pagination */
+.tf-pagination-wrap { display: flex; gap: 4px; list-style: none; padding: 0; margin: 0; flex-wrap: wrap; justify-content: center; }
+.pagination-link { display: flex; align-items: center; padding: 8px 14px; border: 1px solid #bcb3ab; border-radius: 3px; text-decoration: none; color: inherit; transition: all .15s; }
+.pagination-link.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; font-weight: 600; }
+.pagination-link.disabled { color: #bcb3ab; cursor: not-allowed; border-color: #f0f0f0; }
+.pagination-link:not(.active):not(.disabled):hover { border-color: #1a1a1a; }
 </style>
-@endpush
-
-@push('scripts')
-<script>
-// Dual-handle price range slider (visual only — native inputs stay under it)
-function updatePriceRange() {
-    const min = parseInt(document.getElementById('priceMin').value);
-    const max = parseInt(document.getElementById('priceMax').value);
-    const MAX = 5000;
-
-    // Enforce min < max
-    if (min > max) {
-        document.getElementById('priceMin').value = max;
-        document.getElementById('priceMax').value = min;
-        return updatePriceRange();
-    }
-
-    const minPct = (min / MAX) * 100;
-    const maxPct = (max / MAX) * 100;
-
-    document.getElementById('priceMinLabel').textContent = min;
-    document.getElementById('priceMaxLabel').textContent = max === MAX ? '5,000+' : max;
-    document.getElementById('priceThumbMin').style.left = minPct + '%';
-    document.getElementById('priceThumbMax').style.left = maxPct + '%';
-    document.getElementById('priceRangeFill').style.left  = minPct + '%';
-    document.getElementById('priceRangeFill').style.width = (maxPct - minPct) + '%';
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    if (document.getElementById('priceMin')) updatePriceRange();
-});
-</script>
 @endpush
