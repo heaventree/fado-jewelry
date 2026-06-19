@@ -1,5 +1,5 @@
 <nav class="fado-nav d-none d-xl-block" aria-label="Main navigation">
-    <div class="container position-relative">
+    <div class="container">
         <ul class="nav-ul">
 
             {{-- ── Jewellery ─────────────────────────────────────────────── --}}
