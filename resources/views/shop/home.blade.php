@@ -72,56 +72,37 @@
             data-space-lg="40" data-space-md="32" data-space="12" data-pagination="2" data-pagination-sm="3" data-pagination-md="4"
             data-pagination-lg="5">
             <div class="swiper-wrapper">
+                @php $catImgFallbacks = ['cate-24','cate-25','cate-26','cate-27','cate-28','cate-29','cate-30','cate-31']; @endphp
+                @foreach($topCategories as $i => $cat)
                 <div class="swiper-slide">
-                    <a href="{{ route('shop.category', 'rings') }}" class="widget-collection type-space-2 hover-img">
+                    <a href="{{ route('shop.category', $cat->slug) }}" class="widget-collection type-space-2 hover-img">
                         <div class="collection_image img-style">
-                            <img class="lazyload" src="/images/ochaka/category/cate-24.jpg" data-src="/images/ochaka/category/cate-24.jpg" alt="">
+                            @if($cat->banner_image)
+                                <img class="lazyload" src="{{ Storage::url($cat->banner_image) }}" data-src="{{ Storage::url($cat->banner_image) }}" alt="{{ $cat->name }}">
+                            @else
+                                @php $fb = $catImgFallbacks[$i % count($catImgFallbacks)]; @endphp
+                                <img class="lazyload" src="/images/ochaka/category/{{ $fb }}.jpg" data-src="/images/ochaka/category/{{ $fb }}.jpg" alt="{{ $cat->name }}">
+                            @endif
                         </div>
                         <p class="collection_name h5 link fw-semibold">
-                            Rings
+                            {{ $cat->name }}
                         </p>
                     </a>
                 </div>
+                @endforeach
+                @if($topCategories->isEmpty())
+                {{-- Fallback: no categories yet in DB --}}
+                @foreach([['slug'=>'rings','name'=>'Rings','img'=>'cate-24'],['slug'=>'earrings','name'=>'Earrings','img'=>'cate-25'],['slug'=>'pendants','name'=>'Pendants','img'=>'cate-27'],['slug'=>'crosses','name'=>'Crosses','img'=>'cate-28']] as $ph)
                 <div class="swiper-slide">
-                    <a href="{{ route('shop.category', 'earrings') }}" class="widget-collection type-space-2 hover-img">
+                    <a href="{{ route('shop.category', $ph['slug']) }}" class="widget-collection type-space-2 hover-img">
                         <div class="collection_image img-style">
-                            <img class="lazyload" src="/images/ochaka/category/cate-25.jpg" data-src="/images/ochaka/category/cate-25.jpg" alt="">
+                            <img class="lazyload" src="/images/ochaka/category/{{ $ph['img'] }}.jpg" data-src="/images/ochaka/category/{{ $ph['img'] }}.jpg" alt="{{ $ph['name'] }}">
                         </div>
-                        <p class="collection_name h5 link fw-semibold">
-                            Earrings
-                        </p>
+                        <p class="collection_name h5 link fw-semibold">{{ $ph['name'] }}</p>
                     </a>
                 </div>
-                <div class="swiper-slide">
-                    <a href="{{ route('shop.category', 'bracelets-bangles') }}" class="widget-collection type-space-2 hover-img">
-                        <div class="collection_image img-style">
-                            <img class="lazyload" src="/images/ochaka/category/cate-26.jpg" data-src="/images/ochaka/category/cate-26.jpg" alt="">
-                        </div>
-                        <p class="collection_name h5 link fw-semibold">
-                            Bracelets
-                        </p>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="{{ route('shop.category', 'pendants') }}" class="widget-collection type-space-2 hover-img">
-                        <div class="collection_image img-style">
-                            <img class="lazyload" src="/images/ochaka/category/cate-27.jpg" data-src="/images/ochaka/category/cate-27.jpg" alt="">
-                        </div>
-                        <p class="collection_name h5 link fw-semibold">
-                            Pendants
-                        </p>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="{{ route('shop.category', 'crosses') }}" class="widget-collection type-space-2 hover-img">
-                        <div class="collection_image img-style">
-                            <img class="lazyload" src="/images/ochaka/category/cate-28.jpg" data-src="/images/ochaka/category/cate-28.jpg" alt="">
-                        </div>
-                        <p class="collection_name h5 link fw-semibold">
-                            Crosses
-                        </p>
-                    </a>
-                </div>
+                @endforeach
+                @endif
             </div>
             <div class="sw-dot-default tf-sw-pagination"></div>
         </div>
@@ -136,36 +117,49 @@
 <div class="themesFlat">
     <div class="container">
         <div class="tf-grid-layout lg-col-2">
+            @php
+                $featuredPairs = $featuredCollections->take(2);
+                $boxFallbacks  = [
+                    ['img' => '/images/ochaka/section/box-image-8.jpg', 'sub' => 'Irish Heritage'],
+                    ['img' => '/images/ochaka/section/box-image-9.jpg', 'sub' => 'Irish Heritage'],
+                ];
+            @endphp
+            @foreach($featuredPairs as $i => $col)
             <div class="box-image_V02 type-space-3 hover-img">
-                <a href="{{ route('shop.collection', 'claddagh') }}" class="box-image_image img-style">
-                    <img src="/images/ochaka/section/box-image-8.jpg" data-src="/images/ochaka/section/box-image-8.jpg" alt="" class="lazyload">
+                <a href="{{ route('shop.collection', $col->slug) }}" class="box-image_image img-style">
+                    @if($col->banner_image)
+                        <img src="{{ Storage::url($col->banner_image) }}" data-src="{{ Storage::url($col->banner_image) }}" alt="{{ $col->name }}" class="lazyload">
+                    @else
+                        <img src="{{ $boxFallbacks[$i]['img'] }}" data-src="{{ $boxFallbacks[$i]['img'] }}" alt="{{ $col->name }}" class="lazyload">
+                    @endif
                 </a>
                 <div class="box-image_content wow fadeInUp">
-                    <span class="sub-text h4 text-white mb-8">Irish Heritage</span>
-                    <a href="{{ route('shop.collection', 'claddagh') }}" class="title link text-display-2 fw-medium text-white">
-                        Claddagh Collection
+                    <span class="sub-text h4 text-white mb-8">{{ $boxFallbacks[$i]['sub'] ?? 'Collection' }}</span>
+                    <a href="{{ route('shop.collection', $col->slug) }}" class="title link text-display-2 fw-medium text-white">
+                        {{ $col->name }}
                     </a>
-                    <a href="{{ route('shop.collection', 'claddagh') }}" class="tf-btn btn-white animate-btn animate-dark">
+                    <a href="{{ route('shop.collection', $col->slug) }}" class="tf-btn btn-white animate-btn animate-dark">
                         Shop now
                         <i class="icon icon-arrow-right"></i>
                     </a>
                 </div>
             </div>
+            @endforeach
+            @if($featuredPairs->isEmpty())
+            {{-- Fallback until collections are seeded --}}
+            @foreach([['claddagh','Claddagh Collection','/images/ochaka/section/box-image-8.jpg'],['trinity','Trinity Collection','/images/ochaka/section/box-image-9.jpg']] as [$slug,$name,$img])
             <div class="box-image_V02 type-space-3 hover-img">
-                <a href="{{ route('shop.collection', 'trinity') }}" class="box-image_image img-style">
-                    <img src="/images/ochaka/section/box-image-9.jpg" data-src="/images/ochaka/section/box-image-9.jpg" alt="" class="lazyload">
+                <a href="{{ route('shop.collection', $slug) }}" class="box-image_image img-style">
+                    <img src="{{ $img }}" data-src="{{ $img }}" alt="{{ $name }}" class="lazyload">
                 </a>
                 <div class="box-image_content wow fadeInUp">
                     <span class="sub-text h4 text-white mb-8">Irish Heritage</span>
-                    <a href="{{ route('shop.collection', 'trinity') }}" class="title link text-display-2 fw-medium text-white">
-                        Trinity Collection
-                    </a>
-                    <a href="{{ route('shop.collection', 'trinity') }}" class="tf-btn btn-white animate-btn animate-dark">
-                        Shop now
-                        <i class="icon icon-arrow-right"></i>
-                    </a>
+                    <a href="{{ route('shop.collection', $slug) }}" class="title link text-display-2 fw-medium text-white">{{ $name }}</a>
+                    <a href="{{ route('shop.collection', $slug) }}" class="tf-btn btn-white animate-btn animate-dark">Shop now <i class="icon icon-arrow-right"></i></a>
                 </div>
             </div>
+            @endforeach
+            @endif
         </div>
     </div>
 </div>

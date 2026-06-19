@@ -19,6 +19,7 @@ class ShopController extends Controller
 {
     public function home(): View
     {
+        $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')->get();
         $featuredCollections = Collection::limit((int) Setting::get('featured_collections_count', 6))->get();
         $newArrivals = Product::with(['variants.metal', 'primaryImage'])
             ->where('is_active', true)
@@ -26,7 +27,7 @@ class ShopController extends Controller
             ->limit((int) Setting::get('new_arrivals_count', 8))
             ->get();
 
-        return view('shop.home', compact('featuredCollections', 'newArrivals'));
+        return view('shop.home', compact('topCategories', 'featuredCollections', 'newArrivals'));
     }
 
     public function jewellery(Request $request): View
@@ -138,14 +139,17 @@ class ShopController extends Controller
 
         // Flatten variant data for the JS switcher
         $variantData = $activeVariants->map(fn ($v) => [
-            'id'            => $v->id,
-            'metal_id'      => $v->metal_id,
-            'metal_name'    => $v->metal?->name,
-            'gemstone_id'   => $v->gemstone_id,
-            'gemstone_name' => $v->gemstone?->name,
-            'price_eur'     => (float) $v->price_eur,
-            'stock'         => $v->stock,
-            'sku'           => $v->sku,
+            'id'               => $v->id,
+            'metal_id'         => $v->metal_id,
+            'metal_name'       => $v->metal?->name,
+            'gemstone_id'      => $v->gemstone_id,
+            'gemstone_name'    => $v->gemstone?->name,
+            'second_metal_id'  => $v->second_metal_id,
+            'second_metal_name'=> $v->secondMetal?->name,
+            'colour'           => $v->colour,
+            'price_eur'        => (float) $v->price_eur,
+            'stock'            => $v->stock,
+            'sku'              => $v->sku,
         ])->values();
 
         $defaultVariant = $activeVariants->first();

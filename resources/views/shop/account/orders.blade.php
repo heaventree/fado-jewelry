@@ -6,26 +6,28 @@
 
 @section('content')
 
-<div style="background:var(--fado-deep-green); padding:40px 0 36px">
+<section class="s-page-title">
     <div class="container">
-        <nav style="margin-bottom:8px">
-            <ol class="d-flex gap-2 list-unstyled mb-0" style="font-size:.75rem">
-                <li><a href="{{ route('shop.account.index') }}" style="color:rgba(255,255,255,.6); text-decoration:none">My Account</a></li>
-                <li style="color:rgba(255,255,255,.4)">/</li>
-                <li style="color:rgba(255,255,255,.9); font-weight:600">Orders</li>
-            </ol>
-        </nav>
-        <h1 style="font-family:Georgia,serif; font-size:1.75rem; font-weight:400; color:#fff; margin:0">Order History</h1>
+        <div class="content">
+            <h1 class="title-page">Order History</h1>
+            <ul class="breadcrumbs-page">
+                <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><a href="{{ route('shop.account.index') }}" class="h6 link">My Account</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><h6 class="current-page fw-normal">Orders</h6></li>
+            </ul>
+        </div>
     </div>
-</div>
+</section>
 
-<div style="background:var(--fado-near-white); padding:48px 0 80px; min-height:60vh">
+<section class="flat-spacing">
     <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-3">
+        <div class="row">
+            <div class="col-xl-3 d-none d-xl-block">
                 @include('shop.account.partials.nav')
             </div>
-            <div class="col-lg-9">
+            <div class="col-xl-9">
 
                 @if($orders->isEmpty())
                 <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:64px 24px; text-align:center">
@@ -99,7 +101,7 @@
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @endsection
 

@@ -10,40 +10,36 @@
 
 @section('content')
 
-<div style="background:var(--fado-deep-green); padding:40px 0 36px">
+<section class="s-page-title">
     <div class="container">
-        <nav style="margin-bottom:8px">
-            <ol class="d-flex gap-2 list-unstyled mb-0" style="font-size:.75rem">
-                <li><a href="{{ route('shop.account.index') }}" style="color:rgba(255,255,255,.6); text-decoration:none">My Account</a></li>
-                <li style="color:rgba(255,255,255,.4)">/</li>
-                <li><a href="{{ route('shop.account.orders') }}" style="color:rgba(255,255,255,.6); text-decoration:none">Orders</a></li>
-                <li style="color:rgba(255,255,255,.4)">/</li>
-                <li style="color:rgba(255,255,255,.9); font-weight:600">{{ $order->order_number }}</li>
-            </ol>
-        </nav>
-        <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap">
-            <h1 style="font-family:Georgia,serif; font-size:1.75rem; font-weight:400; color:#fff; margin:0">
-                {{ $order->order_number }}
+        <div class="content">
+            <h1 class="title-page">{{ $order->order_number }}
+                @php
+                    $colours = ['pending'=>'#f59e0b','processing'=>'#3b82f6','shipped'=>'#8b5cf6','delivered'=>'#10b981','cancelled'=>'#ef4444','refunded'=>'#6b7280'];
+                    $colour  = $colours[$order->status] ?? '#6b7280';
+                @endphp
+                <span style="font-size:.8rem; font-weight:700; padding:3px 10px; border-radius:12px; background:{{ $colour }}22; color:{{ $colour }}; border:1px solid {{ $colour }}44; vertical-align:middle; margin-left:10px">{{ $order->status_label }}</span>
             </h1>
-            @php
-                $colours = ['pending'=>'#f59e0b','processing'=>'#3b82f6','shipped'=>'#8b5cf6','delivered'=>'#10b981','cancelled'=>'#ef4444','refunded'=>'#6b7280'];
-                $colour  = $colours[$order->status] ?? '#6b7280';
-            @endphp
-            <span style="display:inline-block; padding:4px 14px; border-radius:20px; font-size:.75rem;
-                         font-weight:700; background:{{ $colour }}30; color:{{ $colour }}; letter-spacing:.03em; border:1px solid {{ $colour }}40">
-                {{ $order->status_label }}
-            </span>
+            <ul class="breadcrumbs-page">
+                <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><a href="{{ route('shop.account.index') }}" class="h6 link">My Account</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><a href="{{ route('shop.account.orders') }}" class="h6 link">Orders</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><h6 class="current-page fw-normal">{{ $order->order_number }}</h6></li>
+            </ul>
         </div>
     </div>
-</div>
+</section>
 
-<div style="background:var(--fado-near-white); padding:48px 0 80px">
+<section class="flat-spacing">
     <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-3">
+        <div class="row">
+            <div class="col-xl-3 d-none d-xl-block">
                 @include('shop.account.partials.nav')
             </div>
-            <div class="col-lg-9">
+            <div class="col-xl-9">
 
                 {{-- Order meta strip --}}
                 <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:20px 24px;
@@ -192,7 +188,7 @@
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @endsection
 
