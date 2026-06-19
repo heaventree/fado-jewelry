@@ -19,6 +19,7 @@ class CollectionsSeeder extends Seeder
             [
                 'name'               => 'Corrib Claddagh',
                 'slug'               => 'corrib-claddagh',
+                'banner_image'       => 'banners/Banner_large_Corrib.jpg',
                 'banner_title'       => 'The Corrib Claddagh Collection',
                 'banner_description' => 'A contemporary take on the classic Claddagh, inspired by the waters of the River Corrib.',
             ],
@@ -31,18 +32,21 @@ class CollectionsSeeder extends Seeder
             [
                 'name'               => 'An Rí',
                 'slug'               => 'an-ri',
+                'banner_image'       => 'banners/banner_Small_An_Ri.jpg',
                 'banner_title'       => 'An Rí — The King Collection',
                 'banner_description' => 'Regal Celtic knotwork inspired by the high kings of Ireland, crafted in gold and silver.',
             ],
             [
                 'name'               => 'Livia',
                 'slug'               => 'livia',
+                'banner_image'       => 'banners/Banner_Meduim_Livia.jpg',
                 'banner_title'       => 'The Livia Collection',
                 'banner_description' => 'Elegant, flowing designs with a modern sensibility — jewellery for every day and every occasion.',
             ],
             [
                 'name'               => 'Sheelin',
                 'slug'               => 'sheelin',
+                'banner_image'       => 'banners/banner_Small_Sheelin.jpg',
                 'banner_title'       => 'The Sheelin Collection',
                 'banner_description' => 'Inspired by the still waters of Lough Sheelin, this collection captures the quiet beauty of the Irish lakeland.',
             ],
