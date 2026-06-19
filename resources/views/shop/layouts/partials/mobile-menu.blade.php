@@ -5,7 +5,7 @@
         <i class="icon-close"></i>
     </span>
     <div class="canvas-header">
-        <div class="fado-wordmark">FADÓ</div>
+        <p class="text-logo-mb">FADÓ</p>
         @auth
             <a href="{{ route('shop.account.index') }}" class="tf-btn type-small style-2">
                 My Account <i class="icon icon-user"></i>
