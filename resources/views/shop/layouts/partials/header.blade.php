@@ -1,106 +1,140 @@
-<header id="fado-header">
+@php
+    $activeCurrencyCode   = session('fado_currency', 'EUR');
+    $availableCurrencies  = \App\Models\Currency::orderBy('is_default','desc')->orderBy('code')->get();
+    $cartCount            = session('cart_count', 0);
+    $wishlistCount        = session('wishlist_count', 0);
+@endphp
 
-    {{-- ── Utility bar (deep green strip) ──────────────────────────────────── --}}
-    <div class="fado-header-utility">
+{{-- ── Transparent header — sits over hero (absolute) ────────────────────── --}}
+<header class="tf-header header-abs-3">
+    <div class="header-top">
         <div class="container">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center gap-3">
-                    <a href="{{ route('shop.contact') }}">
-                        <i class="icon icon-phone" style="font-size:.8rem; margin-right:4px"></i>Contact Us
-                    </a>
-                    <span style="opacity:.35">|</span>
-                    <a href="{{ route('shop.contact') }}#consultation">
-                        <i class="icon icon-calendar-blank" style="font-size:.8rem; margin-right:4px"></i>Book an appointment
+            <div class="row align-items-center">
+
+                {{-- Mobile hamburger (< xl) --}}
+                <div class="col-md-4 col-3 d-xl-none">
+                    <a href="#mobileMenu" data-bs-toggle="offcanvas" class="btn-mobile-menu style-white">
+                        <span></span>
                     </a>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <span style="opacity:.6; font-size:.75rem">{{ \App\Models\Setting::get('shipping_notice', 'Free delivery on orders over €75') }}</span>
-                    {{-- Currency switcher --}}
-                    @php
-                        $activeCurrencyCode = session('fado_currency', 'EUR');
-                        $availableCurrencies = \App\Models\Currency::orderBy('is_default','desc')->orderBy('code')->get();
-                    @endphp
-                    <form action="{{ route('shop.currency.switch') }}" method="POST" class="d-inline">
+
+                {{-- Shipping notice + currency switcher (xl+) --}}
+                <div class="col-xl-4 d-none d-xl-flex align-items-center gap-3">
+                    <span class="text-small-3 text-white" style="opacity:.75">{{ \App\Models\Setting::get('shipping_notice', 'Free delivery on orders over €75') }}</span>
+                    <form action="{{ route('shop.currency.switch') }}" method="POST" class="d-inline mb-0">
                         @csrf
-                        <select name="currency"
-                                onchange="this.form.submit()"
-                                style="background:transparent; border:none; color:rgba(255,255,255,0.85); font-size:.8125rem; cursor:pointer; outline:none">
+                        <select name="currency" onchange="this.form.submit()"
+                                class="tf-dropdown-select style-default color-white type-currencies"
+                                style="background:transparent; border:none; color:rgba(255,255,255,.85); font-size:.8125rem; cursor:pointer; outline:none">
                             @foreach($availableCurrencies as $cur)
-                            <option value="{{ $cur->code }}" {{ $activeCurrencyCode === $cur->code ? 'selected' : '' }}>
-                                {{ $cur->code === 'EUR' ? '€' : ($cur->code === 'USD' ? '$' : '') }} {{ $cur->code }}
-                            </option>
+                                <option value="{{ $cur->code }}" {{ $activeCurrencyCode === $cur->code ? 'selected' : '' }}>{{ $cur->code }}</option>
                             @endforeach
                         </select>
                     </form>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    {{-- ── Main header row (logo + icons) ──────────────────────────────────── --}}
-    <div class="fado-header-main">
-        <div class="container">
-            <div class="d-flex align-items-center justify-content-between">
-
-                {{-- Mobile hamburger --}}
-                <button class="d-xl-none btn p-0 border-0 me-3"
-                        type="button" data-bs-toggle="offcanvas" data-bs-target="#fadoMobileMenu"
-                        aria-controls="fadoMobileMenu" style="color: var(--fado-deep-green); font-size: 1.4rem;">
-                    <i class="icon icon-list"></i>
-                </button>
-
-                {{-- Logo --}}
-                <a href="{{ route('shop.home') }}" class="fado-logo-wordmark text-decoration-none">
-                    <div>FADÓ</div>
-                    <div class="fado-logo-tagline">Fine Irish Jewellery</div>
-                </a>
-
-                {{-- Spacer --}}
-                <div class="flex-grow-1"></div>
-
-                {{-- Header icons (search, wishlist, account, cart) --}}
-                <div class="fado-header-icons d-flex align-items-center gap-1">
-
-                    {{-- Search --}}
-                    <a href="#search" data-bs-toggle="modal" title="Search">
-                        <i class="icon icon-magnifying-glass"></i>
+                {{-- Logo (centre) --}}
+                <div class="col-xl-4 col-md-4 col-6">
+                    <a href="{{ route('shop.home') }}" class="logo-site justify-content-center" style="text-decoration:none">
+                        <div class="fado-wordmark text-white">FADÓ</div>
+                        <div class="logo-bottom">
+                            <span class="text-small-3 text-white text-uppercase" style="letter-spacing:.18em; opacity:.85">Fine Irish Jewellery</span>
+                        </div>
                     </a>
-
-                    {{-- Account --}}
-                    @auth
-                        <a href="{{ route('shop.account.index') }}" title="My Account">
-                            <i class="icon icon-user"></i>
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}" title="Sign in">
-                            <i class="icon icon-user"></i>
-                        </a>
-                    @endauth
-
-                    {{-- Wishlist --}}
-                    <a href="{{ route('shop.wishlist') }}" title="Wishlist" style="position:relative">
-                        <i class="icon icon-heart"></i>
-                        @php $wishlistCount = session('wishlist_count', 0); @endphp
-                        @if($wishlistCount > 0)
-                            <span class="fado-cart-count" style="background:var(--fado-gold)">{{ $wishlistCount }}</span>
-                        @endif
-                    </a>
-
-                    {{-- Cart --}}
-                    <a href="{{ route('shop.cart') }}" title="Shopping bag" style="position:relative">
-                        <i class="icon icon-shopping-cart-simple"></i>
-                        @php $cartCount = session('cart_count', 0); @endphp
-                        @if($cartCount > 0)
-                            <span class="fado-cart-count">{{ $cartCount }}</span>
-                        @endif
-                    </a>
-
                 </div>
+
+                {{-- Nav icons (right) --}}
+                <div class="col-xl-4 col-md-4 col-3">
+                    <ul class="nav-icon-list">
+                        <li class="d-none d-lg-flex">
+                            @auth
+                                <a class="nav-icon-item text-white link" href="{{ route('shop.account.index') }}"><i class="icon icon-user"></i></a>
+                            @else
+                                <a class="nav-icon-item text-white link" href="{{ route('login') }}"><i class="icon icon-user"></i></a>
+                            @endauth
+                        </li>
+                        <li class="d-none d-md-flex">
+                            <a class="nav-icon-item text-white link" href="#search" data-bs-toggle="modal"><i class="icon icon-magnifying-glass"></i></a>
+                        </li>
+                        <li class="d-none d-sm-flex">
+                            <a class="nav-icon-item text-white link" href="{{ route('shop.wishlist') }}" style="position:relative">
+                                <i class="icon icon-heart"></i>
+                                @if($wishlistCount > 0)<span class="count">{{ $wishlistCount }}</span>@endif
+                            </a>
+                        </li>
+                        <li class="shop-cart">
+                            <a class="nav-icon-item text-white link" href="{{ route('shop.cart') }}">
+                                <i class="icon icon-shopping-cart-simple"></i>
+                            </a>
+                            @if($cartCount > 0)<span class="count">{{ $cartCount }}</span>@endif
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>
 
-    {{-- ── Mega-menu navigation bar ─────────────────────────────────────────── --}}
-    @include('shop.layouts.partials.mega-menu')
+    {{-- Desktop nav row (xl+, sits below the logo row) --}}
+    <div class="header-inner d-none d-xl-block">
+        <div class="container">
+            <nav class="box-navigation style-white">
+                @include('shop.layouts.partials.mega-menu')
+            </nav>
+        </div>
+    </div>
+</header>
 
+{{-- ── Fixed sticky header — appears on scroll ────────────────────────────── --}}
+<header class="tf-header header-fixed">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-md-4 col-3 d-xl-none">
+                <a href="#mobileMenu" data-bs-toggle="offcanvas" class="btn-mobile-menu">
+                    <span></span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6 text-center text-xl-start">
+                <a href="{{ route('shop.home') }}" class="logo-site justify-content-center justify-content-xl-start" style="text-decoration:none">
+                    <div class="fado-wordmark">FADÓ</div>
+                </a>
+            </div>
+
+            <div class="col-xl-6 d-none d-xl-block">
+                <nav class="box-navigation">
+                    @include('shop.layouts.partials.mega-menu')
+                </nav>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-3">
+                <ul class="nav-icon-list">
+                    <li class="d-none d-lg-flex">
+                        @auth
+                            <a class="nav-icon-item link" href="{{ route('shop.account.index') }}"><i class="icon icon-user"></i></a>
+                        @else
+                            <a class="nav-icon-item link" href="{{ route('login') }}"><i class="icon icon-user"></i></a>
+                        @endauth
+                    </li>
+                    <li class="d-none d-md-flex">
+                        <a class="nav-icon-item link" href="#search" data-bs-toggle="modal"><i class="icon icon-magnifying-glass"></i></a>
+                    </li>
+                    <li class="d-none d-sm-flex">
+                        <a class="nav-icon-item link" href="{{ route('shop.wishlist') }}" style="position:relative">
+                            <i class="icon icon-heart"></i>
+                            @if($wishlistCount > 0)<span class="count">{{ $wishlistCount }}</span>@endif
+                        </a>
+                    </li>
+                    <li class="shop-cart">
+                        <a class="nav-icon-item link" href="{{ route('shop.cart') }}">
+                            <i class="icon icon-shopping-cart-simple"></i>
+                        </a>
+                        @if($cartCount > 0)<span class="count">{{ $cartCount }}</span>@endif
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
 </header>
