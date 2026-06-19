@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             RingSizeSeeder::class,
             CurrencySeeder::class,
             SettingsSeeder::class,
+            CategoriesSeeder::class,
+            CollectionsSeeder::class,
         ]);
     }
 }
