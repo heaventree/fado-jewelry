@@ -36,7 +36,51 @@ Static HTML/CSS/JS ecommerce theme. Converted to Laravel Blade templates in `res
 
 ---
 
-## Colour palette
+## CRITICAL RULE — Ochaka theme must be used exactly as-is
+
+The client purchased the Ochaka theme specifically because its design already matches what they want. This is non-negotiable:
+
+**DO NOT redesign, restructure, reinterpret, or improve on Ochaka's layout, spacing, proportions, overlay styles, card designs, or section structure in ANY way.**
+
+The only two things that change from the original Ochaka template:
+1. **Colour palette** — swap Ochaka's original colours for FADO's exact colours (see palette table below), applied in the exact same way Ochaka uses colour (same elements, same opacity, same proportions — literally find-and-replace the hex values, nothing else)
+2. **Content** — real FADO products, collections, copy, and images instead of Ochaka's demo content
+
+Everything else — HTML structure, CSS classes, spacing, layout grid, overlay opacity, card designs, hero slider mechanics, button styles, font sizes — stays **100% identical** to `_ochaka-reference/`.
+
+### How to work correctly
+When building or fixing any section: open the matching file in `_ochaka-reference/` first, copy its exact structure and CSS values, then ONLY change colour hex codes from Ochaka's palette to FADO's palette at the same opacity/usage Ochaka already uses. Do not add overlays Ochaka doesn't have. Do not remove overlays Ochaka does have. Do not change proportions, spacing, or layout "to make it look better" — Ochaka's design is already approved and final.
+
+If a FADO-specific requirement doesn't have an Ochaka equivalent (e.g. metal/gemstone variant selectors), build it in Ochaka's existing visual language (same button styles, same spacing units, same typography) rather than inventing a new style.
+
+---
+
+## Colour palette — CORRECTED usage guidance
+
+After reviewing the client's colour palette image and The Jewellery Garden logo directly, the colour hierarchy is:
+
+| Name | Hex | Correct usage |
+|------|-----|----------------|
+| Light mint | #DCF6D5 | Lightest accent / hover backgrounds |
+| Pale mint | #EBFCEF | Lightest section backgrounds |
+| Near white | #FBFBFB | Primary page background |
+| Off white | #F8F9F5 | Primary page background |
+| Soft white | #F5F7F1 | Section backgrounds |
+| Cream | #F0F1E7 | Section backgrounds, product tile backgrounds |
+| Warm grey | #BCB3AB | Borders, dividers |
+| **Brand green light (#81CC60)** | **Buttons, links, larger accent surfaces, badges** |
+| **Brand green mid (#0AAC45)** | **Header utility bar, footer, large coloured surfaces, primary CTA buttons — THIS is the "big surface" green, not deep green** |
+| **Deep green (#044705)** | **SMALL elements only: heading text, logo wordmark, nav text, tiny badges/pills. Never used as a large background fill.** |
+| Gold accent | #766D42 | Sparing accent touches only |
+
+### Critical correction
+Evidence from the client's own materials: in the palette image, #044705 appears only as a small badge/pill with the FADO wordmark — never as a large swatch or surface. In The Jewellery Garden logo, all text uses a mid-tone sage/olive green (matching #0AAC45/#81CC60 range), not the dark #044705. White is completely dominant in the logo.
+
+**Therefore: replace #044705 wherever it is currently used as a large background fill (header bar, footer, hero overlays, section backgrounds) with #0AAC45 instead.** Reserve #044705 strictly for text (headings, logo, nav labels) and small accent badges — never for surfaces larger than a button or small badge.
+
+---
+
+## Colour palette (original reference)
 
 | Name | Hex | Usage |
 |------|-----|-------|
