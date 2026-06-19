@@ -6,39 +6,35 @@
     $paymentMethodLabel = Setting::get('payment_method_label', 'Secure payment by card');
 @endphp
 
-@section('title', 'Checkout — ' . \App\Models\Setting::get('store_name', 'FADÓ Jewellery'))
+@section('title', 'Checkout — ' . Setting::get('store_name', 'FADÓ Jewellery'))
 @section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 
-{{-- ── Page header ──────────────────────────────────────────────────────────── --}}
-<div style="background:var(--fado-cream); border-bottom:1px solid var(--fado-warm-grey); padding:24px 0">
+<section class="s-page-title">
     <div class="container">
-        <nav aria-label="breadcrumb" style="margin-bottom:6px">
-            <ol class="d-flex gap-2 list-unstyled mb-0" style="font-size:.75rem">
-                <li><a href="{{ route('shop.home') }}" style="color:var(--fado-warm-grey); text-decoration:none">Home</a></li>
-                <li style="color:var(--fado-warm-grey)">/</li>
-                <li><a href="{{ route('shop.cart') }}" style="color:var(--fado-warm-grey); text-decoration:none">Your Bag</a></li>
-                <li style="color:var(--fado-warm-grey)">/</li>
-                <li style="color:var(--fado-deep-green); font-weight:600">Checkout</li>
-            </ol>
-        </nav>
-        <h1 style="font-family:Georgia,serif; font-size:1.75rem; font-weight:400; color:var(--fado-deep-green); margin:0">
-            Checkout
-        </h1>
+        <div class="content">
+            <h1 class="title-page">Checkout</h1>
+            <ul class="breadcrumbs-page">
+                <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><a href="{{ route('shop.cart') }}" class="h6 link">Your Bag</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><h6 class="current-page fw-normal">Checkout</h6></li>
+            </ul>
+        </div>
     </div>
-</div>
+</section>
 
-<div style="background:var(--fado-near-white); padding:48px 0 80px">
+<section class="flat-spacing">
     <div class="container">
 
-        {{-- Validation errors --}}
         @if($errors->any())
-        <div style="background:#fff3f3; border:1px solid #f5c6c6; border-radius:3px; padding:16px 20px; margin-bottom:28px">
-            <p style="font-weight:600; color:#dc3545; margin-bottom:8px">Please fix the following:</p>
-            <ul style="margin:0; padding-left:20px; color:#dc3545; font-size:.875rem">
+        <div class="tf-notice-wrap mb-24" style="border-color:#dc3545">
+            <p class="h6 fw-semibold text-danger mb-8">Please fix the following:</p>
+            <ul class="mb-0 ps-16">
                 @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li class="h6 text-danger">{{ $error }}</li>
                 @endforeach
             </ul>
         </div>
@@ -46,301 +42,227 @@
 
         <form method="POST" action="{{ route('shop.checkout.place') }}" id="checkoutForm">
         @csrf
-        <div class="row g-5">
 
-            {{-- ── LEFT — checkout form ───────────────────────────────────── --}}
-            <div class="col-lg-7">
+        <div class="tf-page-checkout">
+            <div class="row">
 
-                {{-- Contact info --}}
-                <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:28px; margin-bottom:20px">
-                    <h2 style="font-family:Georgia,serif; font-size:1.125rem; font-weight:400;
-                               color:var(--fado-deep-green); margin-bottom:20px; padding-bottom:16px;
-                               border-bottom:1px solid var(--fado-cream)">
-                        Contact Information
-                    </h2>
+                {{-- Form side --}}
+                <div class="col-lg-7">
+                    <div class="tf-checkout-cart-main">
 
-                    @guest
-                    <p style="font-size:.875rem; color:#888; margin-bottom:20px">
-                        Already have an account?
-                        <a href="{{ route('login') }}?redirect={{ urlencode(route('shop.checkout')) }}"
-                           style="color:var(--fado-green-mid)">Sign in</a>
-                        to checkout faster.
-                    </p>
-                    @endguest
-
-                    <div class="row g-3">
-                        <div class="col-12">
-                            @include('shop.partials.checkout-field', [
-                                'name'  => 'name',
-                                'label' => 'Full Name',
-                                'value' => old('name', $user?->name),
-                                'type'  => 'text',
-                                'required' => true,
-                            ])
-                        </div>
-                        <div class="col-md-6">
-                            @include('shop.partials.checkout-field', [
-                                'name'  => 'email',
-                                'label' => 'Email Address',
-                                'value' => old('email', $user?->email),
-                                'type'  => 'email',
-                                'required' => true,
-                            ])
-                        </div>
-                        <div class="col-md-6">
-                            @include('shop.partials.checkout-field', [
-                                'name'  => 'phone',
-                                'label' => 'Phone (optional)',
-                                'value' => old('phone'),
-                                'type'  => 'tel',
-                                'required' => false,
-                            ])
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Shipping address --}}
-                <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:28px; margin-bottom:20px">
-                    <h2 style="font-family:Georgia,serif; font-size:1.125rem; font-weight:400;
-                               color:var(--fado-deep-green); margin-bottom:20px; padding-bottom:16px;
-                               border-bottom:1px solid var(--fado-cream)">
-                        Shipping Address
-                    </h2>
-
-                    <div class="row g-3">
-                        <div class="col-12">
-                            @include('shop.partials.checkout-field', [
-                                'name'  => 'line1',
-                                'label' => 'Address Line 1',
-                                'value' => old('line1'),
-                                'type'  => 'text',
-                                'required' => true,
-                            ])
-                        </div>
-                        <div class="col-12">
-                            @include('shop.partials.checkout-field', [
-                                'name'  => 'line2',
-                                'label' => 'Address Line 2 (optional)',
-                                'value' => old('line2'),
-                                'type'  => 'text',
-                                'required' => false,
-                            ])
-                        </div>
-                        <div class="col-md-6">
-                            @include('shop.partials.checkout-field', [
-                                'name'  => 'city',
-                                'label' => 'City / Town',
-                                'value' => old('city'),
-                                'type'  => 'text',
-                                'required' => true,
-                            ])
-                        </div>
-                        <div class="col-md-6">
-                            @include('shop.partials.checkout-field', [
-                                'name'  => 'county',
-                                'label' => 'County / State (optional)',
-                                'value' => old('county'),
-                                'type'  => 'text',
-                                'required' => false,
-                            ])
-                        </div>
-                        <div class="col-md-6">
-                            <label style="display:block; font-size:.7rem; font-weight:700; letter-spacing:.1em;
-                                          text-transform:uppercase; color:var(--fado-deep-green); margin-bottom:6px">
-                                Country <span style="color:#dc3545">*</span>
-                            </label>
-                            <div style="position:relative">
-                                <select name="country"
-                                        style="width:100%; padding:11px 40px 11px 14px;
-                                               border:1px solid {{ $errors->has('country') ? '#dc3545' : 'var(--fado-warm-grey)' }};
-                                               border-radius:3px; font-size:.9375rem; color:var(--fado-deep-green);
-                                               background:#fff; appearance:none; cursor:pointer; outline:none;
-                                               background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23BCB3AB'/%3E%3C/svg%3E\");
-                                               background-repeat:no-repeat; background-position:right 14px center"
-                                        onfocus="this.style.borderColor='var(--fado-green-mid)'"
-                                        onblur="this.style.borderColor='{{ $errors->has('country') ? '#dc3545' : 'var(--fado-warm-grey)' }}'">
-                                    <option value="">Select country…</option>
-                                    <option value="IE" {{ old('country', 'IE') === 'IE' ? 'selected' : '' }}>Ireland</option>
-                                    <option value="GB" {{ old('country') === 'GB' ? 'selected' : '' }}>United Kingdom</option>
-                                    <option value="US" {{ old('country') === 'US' ? 'selected' : '' }}>United States</option>
-                                    <option value="CA" {{ old('country') === 'CA' ? 'selected' : '' }}>Canada</option>
-                                    <option value="AU" {{ old('country') === 'AU' ? 'selected' : '' }}>Australia</option>
-                                    <option value="DE" {{ old('country') === 'DE' ? 'selected' : '' }}>Germany</option>
-                                    <option value="FR" {{ old('country') === 'FR' ? 'selected' : '' }}>France</option>
-                                    <option value="IT" {{ old('country') === 'IT' ? 'selected' : '' }}>Italy</option>
-                                    <option value="ES" {{ old('country') === 'ES' ? 'selected' : '' }}>Spain</option>
-                                    <option value="NL" {{ old('country') === 'NL' ? 'selected' : '' }}>Netherlands</option>
-                                    <option value="BE" {{ old('country') === 'BE' ? 'selected' : '' }}>Belgium</option>
-                                    <option value="AT" {{ old('country') === 'AT' ? 'selected' : '' }}>Austria</option>
-                                    <option value="CH" {{ old('country') === 'CH' ? 'selected' : '' }}>Switzerland</option>
-                                    <option value="SE" {{ old('country') === 'SE' ? 'selected' : '' }}>Sweden</option>
-                                    <option value="NO" {{ old('country') === 'NO' ? 'selected' : '' }}>Norway</option>
-                                    <option value="DK" {{ old('country') === 'DK' ? 'selected' : '' }}>Denmark</option>
-                                    <option value="NZ" {{ old('country') === 'NZ' ? 'selected' : '' }}>New Zealand</option>
-                                </select>
+                        {{-- Contact information --}}
+                        <div class="box-ip-checkout estimate-shipping">
+                            <h2 class="title type-semibold">Contact Information</h2>
+                            @guest
+                            <p class="h6 text-main mb-16">
+                                Already have an account?
+                                <a href="{{ route('login') }}?redirect={{ urlencode(route('shop.checkout')) }}" class="link fw-semibold">Sign in</a>
+                                to checkout faster.
+                            </p>
+                            @endguest
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    @include('shop.partials.checkout-field', [
+                                        'name'     => 'name',
+                                        'label'    => 'Full Name',
+                                        'value'    => old('name', $user?->name),
+                                        'type'     => 'text',
+                                        'required' => true,
+                                    ])
+                                </div>
+                                <div class="col-md-6">
+                                    @include('shop.partials.checkout-field', [
+                                        'name'     => 'email',
+                                        'label'    => 'Email Address',
+                                        'value'    => old('email', $user?->email),
+                                        'type'     => 'email',
+                                        'required' => true,
+                                    ])
+                                </div>
+                                <div class="col-md-6">
+                                    @include('shop.partials.checkout-field', [
+                                        'name'     => 'phone',
+                                        'label'    => 'Phone (optional)',
+                                        'value'    => old('phone'),
+                                        'type'     => 'tel',
+                                        'required' => false,
+                                    ])
+                                </div>
                             </div>
-                            @error('country')
-                            <p style="font-size:.75rem; color:#dc3545; margin-top:4px">{{ $message }}</p>
-                            @enderror
                         </div>
-                        <div class="col-md-6">
-                            @include('shop.partials.checkout-field', [
-                                'name'  => 'postcode',
-                                'label' => 'Eircode / Postcode',
-                                'value' => old('postcode'),
-                                'type'  => 'text',
-                                'required' => true,
-                            ])
+
+                        {{-- Shipping address --}}
+                        <div class="box-ip-checkout box-ip-shipping">
+                            <h2 class="title type-semibold">Shipping Address</h2>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    @include('shop.partials.checkout-field', [
+                                        'name'     => 'line1',
+                                        'label'    => 'Address Line 1',
+                                        'value'    => old('line1'),
+                                        'type'     => 'text',
+                                        'required' => true,
+                                    ])
+                                </div>
+                                <div class="col-12">
+                                    @include('shop.partials.checkout-field', [
+                                        'name'     => 'line2',
+                                        'label'    => 'Address Line 2 (optional)',
+                                        'value'    => old('line2'),
+                                        'type'     => 'text',
+                                        'required' => false,
+                                    ])
+                                </div>
+                                <div class="col-md-6">
+                                    @include('shop.partials.checkout-field', [
+                                        'name'     => 'city',
+                                        'label'    => 'City / Town',
+                                        'value'    => old('city'),
+                                        'type'     => 'text',
+                                        'required' => true,
+                                    ])
+                                </div>
+                                <div class="col-md-6">
+                                    @include('shop.partials.checkout-field', [
+                                        'name'     => 'county',
+                                        'label'    => 'County / State (optional)',
+                                        'value'    => old('county'),
+                                        'type'     => 'text',
+                                        'required' => false,
+                                    ])
+                                </div>
+                                <div class="col-md-6">
+                                    <fieldset class="{{ $errors->has('country') ? 'has-error' : '' }}">
+                                        <select name="country">
+                                            <option value="">Select country *</option>
+                                            @foreach([
+                                                'IE' => 'Ireland', 'GB' => 'United Kingdom', 'US' => 'United States',
+                                                'CA' => 'Canada',  'AU' => 'Australia',       'DE' => 'Germany',
+                                                'FR' => 'France',  'IT' => 'Italy',            'ES' => 'Spain',
+                                                'NL' => 'Netherlands', 'BE' => 'Belgium',      'AT' => 'Austria',
+                                                'CH' => 'Switzerland', 'SE' => 'Sweden',       'NO' => 'Norway',
+                                                'DK' => 'Denmark', 'NZ' => 'New Zealand',
+                                            ] as $code => $label)
+                                            <option value="{{ $code }}" {{ old('country', 'IE') === $code ? 'selected' : '' }}>{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('country')<p class="h6 text-danger mt-4">{{ $message }}</p>@enderror
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                    @include('shop.partials.checkout-field', [
+                                        'name'     => 'postcode',
+                                        'label'    => 'Eircode / Postcode',
+                                        'value'    => old('postcode'),
+                                        'type'     => 'text',
+                                        'required' => true,
+                                    ])
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                {{-- Payment notice --}}
-                <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:28px; margin-bottom:28px">
-                    <h2 style="font-family:Georgia,serif; font-size:1.125rem; font-weight:400;
-                               color:var(--fado-deep-green); margin-bottom:16px; padding-bottom:16px;
-                               border-bottom:1px solid var(--fado-cream)">
-                        Payment
-                    </h2>
-                    <div style="display:flex; align-items:flex-start; gap:12px; background:var(--fado-cream);
-                                padding:16px; border-radius:3px">
-                        <i class="icon icon-shield-check" style="color:var(--fado-green-mid); font-size:1.25rem; flex-shrink:0; margin-top:2px"></i>
-                        <div>
-                            <p style="font-size:.875rem; color:var(--fado-deep-green); font-weight:600; margin-bottom:4px">
-                                Payment
-                            </p>
-                            <p style="font-size:.8125rem; color:#666; margin:0; line-height:1.6">
-                                {{ $paymentMethodLabel }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Place order button (mobile — visible below lg) --}}
-                <div class="d-lg-none">
-                    <button type="submit"
-                            style="width:100%; padding:16px; background:var(--fado-deep-green); color:#fff;
-                                   border:none; border-radius:2px; font-size:1rem; font-weight:600;
-                                   cursor:pointer; letter-spacing:.03em; transition:background .2s"
-                            onmouseover="this.style.background='var(--fado-green-mid)'"
-                            onmouseout="this.style.background='var(--fado-deep-green)'">
-                        Place Order
-                    </button>
-                </div>
-
-            </div>
-
-            {{-- ── RIGHT — order summary ───────────────────────────────────── --}}
-            <div class="col-lg-5">
-                <div style="position:sticky; top:24px">
-                    <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:28px">
-                        <h2 style="font-family:Georgia,serif; font-size:1.125rem; font-weight:400;
-                                   color:var(--fado-deep-green); margin-bottom:20px; padding-bottom:16px;
-                                   border-bottom:1px solid var(--fado-cream)">
-                            Order Summary
-                        </h2>
-
-                        {{-- Items --}}
-                        <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:20px">
-                            @foreach($items as $item)
-                            @php $img = $item['product']->primaryImage; @endphp
-                            <div style="display:flex; gap:12px; align-items:center">
-                                {{-- Mini image --}}
-                                <div style="position:relative; flex-shrink:0">
-                                    <div style="width:52px; height:64px; background:var(--fado-cream); border-radius:2px; overflow:hidden">
-                                        @if($img)
-                                            <img src="{{ Storage::url($img->path) }}" alt="{{ $item['product']->name }}"
-                                                 style="width:100%; height:100%; object-fit:cover; object-position:center top">
-                                        @else
-                                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center">
-                                                <i class="icon icon-gem" style="color:var(--fado-warm-grey)"></i>
-                                            </div>
-                                        @endif
+                        {{-- Payment --}}
+                        <div class="box-ip-checkout box-ip-payment">
+                            <h2 class="title type-semibold">Payment</h2>
+                            <div class="box-ip-payment">
+                                <div class="payment_accordion">
+                                    <div class="payment_check">
+                                        <i class="icon icon-shield-check"></i>
+                                        <div>
+                                            <h6 class="fw-semibold">Secure Payment</h6>
+                                            <p class="h6 fw-normal text-main">{{ $paymentMethodLabel }}</p>
+                                        </div>
                                     </div>
-                                    <span style="position:absolute; top:-6px; right:-6px; background:var(--fado-deep-green);
-                                                 color:#fff; font-size:.6rem; width:18px; height:18px;
-                                                 border-radius:50%; display:flex; align-items:center; justify-content:center;
-                                                 font-weight:700">
-                                        {{ $item['quantity'] }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Place order (mobile) --}}
+                        <div class="d-lg-none mt-16">
+                            <button type="submit" class="tf-btn animate-btn w-100 fw-bold button_submit">
+                                Place Order
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                {{-- Order summary --}}
+                <div class="col-lg-5">
+                    <div class="fl-sidebar-cart sticky-top">
+                        <div class="box-your-order">
+                            <h4 class="fw-semibold">Order Summary</h4>
+
+                            <div class="list-order-product">
+                                @foreach($items as $item)
+                                @php $img = $item['product']->primaryImage; @endphp
+                                <div class="order-item">
+                                    <div class="img-prd">
+                                        @if($img)
+                                            <img class="lazyload" data-src="{{ Storage::url($img->path) }}"
+                                                 src="{{ Storage::url($img->path) }}" alt="{{ $item['product']->name }}">
+                                        @else
+                                            <img src="/images/demo/product-placeholder.jpg" alt="{{ $item['product']->name }}">
+                                        @endif
+                                        <span class="quantity-prd">{{ $item['quantity'] }}</span>
+                                    </div>
+                                    <div class="infor-prd">
+                                        <p class="prd_name">{{ $item['product']->name }}</p>
+                                        <p class="prd_select text-small">
+                                            {{ $item['variant']->metal?->name }}
+                                            @if($item['variant']->gemstone) / {{ $item['variant']->gemstone->name }} @endif
+                                            @if($item['size']) · US {{ number_format((float)$item['size']->us_size,1) }} @endif
+                                        </p>
+                                    </div>
+                                    <div class="price-prd h6">{{ $currency->format($item['line_eur']) }}</div>
+                                </div>
+                                @endforeach
+                            </div>
+
+                            <div class="list-total">
+                                <div class="total-item h6">
+                                    <span>Subtotal</span>
+                                    <span class="fw-semibold text-black">{{ $currency->format($subtotalEur) }}</span>
+                                </div>
+                                <div class="total-item h6">
+                                    <span>Shipping</span>
+                                    <span class="fw-semibold text-main">
+                                        @if($subtotalEur >= $freeShippingThreshold) Free @else After order @endif
                                     </span>
                                 </div>
-                                <div style="flex:1; min-width:0">
-                                    <p style="font-size:.8125rem; font-weight:600; color:var(--fado-deep-green);
-                                              margin-bottom:2px; line-height:1.3">{{ $item['product']->name }}</p>
-                                    <p style="font-size:.75rem; color:#888; margin:0">
-                                        {{ $item['variant']->metal?->name }}
-                                        @if($item['variant']->gemstone) / {{ $item['variant']->gemstone->name }} @endif
-                                        @if($item['size']) · US {{ number_format((float)$item['size']->us_size,1) }} @endif
-                                    </p>
+                                <div class="last-total h5 fw-medium text-black">
+                                    <span>Total</span>
+                                    <div class="text-end">
+                                        <span>{{ $currency->format($subtotalEur) }}</span>
+                                        @if($currency->code !== 'EUR')
+                                        <p class="text-small text-main mb-0">(€{{ number_format($subtotalEur, 2) }} EUR)</p>
+                                        @endif
+                                    </div>
                                 </div>
-                                <span style="flex-shrink:0; font-size:.875rem; font-weight:600; color:var(--fado-deep-green)">
-                                    {{ $currency->format($item['line_eur']) }}
-                                </span>
                             </div>
-                            @endforeach
-                        </div>
 
-                        <hr style="border-color:var(--fado-cream); margin:16px 0">
+                            {{-- Place order (desktop) --}}
+                            <button type="submit" class="tf-btn animate-btn w-100 fw-bold button_submit d-none d-lg-flex mt-24">
+                                Place Order
+                            </button>
 
-                        <div style="display:flex; justify-content:space-between; margin-bottom:8px">
-                            <span style="font-size:.875rem; color:#555">Subtotal</span>
-                            <span style="font-size:.875rem; font-weight:600; color:var(--fado-deep-green)">
-                                {{ $currency->format($subtotalEur) }}
-                            </span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom:16px">
-                            <span style="font-size:.875rem; color:#555">Shipping</span>
-                            <span style="font-size:.875rem; color:var(--fado-green-mid); font-weight:600">
-                                @if($subtotalEur >= $freeShippingThreshold) Free @else Calculated after order @endif
-                            </span>
-                        </div>
+                            <p class="text-small text-main text-center mt-12">
+                                <i class="icon icon-lock-simple"></i>
+                                Secure checkout — your details are protected
+                            </p>
 
-                        <hr style="border-color:var(--fado-cream); margin:16px 0">
-
-                        <div style="display:flex; justify-content:space-between; margin-bottom:28px">
-                            <span style="font-size:1rem; font-weight:700; color:var(--fado-deep-green)">Total</span>
-                            <div style="text-align:right">
-                                <span style="font-size:1.25rem; font-weight:700; color:var(--fado-deep-green)">
-                                    {{ $currency->format($subtotalEur) }}
-                                </span>
-                                @if($currency->code !== 'EUR')
-                                <p style="font-size:.7rem; color:var(--fado-warm-grey); margin:2px 0 0">
-                                    (€{{ number_format($subtotalEur, 2) }} EUR)
-                                </p>
-                                @endif
+                            <div class="mt-16 text-center">
+                                <a href="{{ route('shop.cart') }}" class="tf-btn-line h6">← Return to bag</a>
                             </div>
                         </div>
-
-                        {{-- Place order (desktop) --}}
-                        <button type="submit"
-                                class="d-none d-lg-block"
-                                style="width:100%; padding:16px; background:var(--fado-deep-green); color:#fff;
-                                       border:none; border-radius:2px; font-size:1rem; font-weight:600;
-                                       cursor:pointer; letter-spacing:.03em; transition:background .2s"
-                                onmouseover="this.style.background='var(--fado-green-mid)'"
-                                onmouseout="this.style.background='var(--fado-deep-green)'">
-                            Place Order
-                        </button>
-
-                        <p style="font-size:.75rem; color:#aaa; text-align:center; margin-top:14px; margin-bottom:0">
-                            <i class="icon icon-lock-simple" style="font-size:.7rem"></i>
-                            Secure checkout — your details are protected
-                        </p>
-                    </div>
-
-                    <div style="margin-top:16px; text-align:center">
-                        <a href="{{ route('shop.cart') }}"
-                           style="font-size:.875rem; color:var(--fado-green-mid); text-decoration:none">
-                            ← Return to bag
-                        </a>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
         </form>
 
     </div>
-</div>
+</section>
 
 @endsection

@@ -18,60 +18,55 @@
 
 @section('content')
 
-{{-- ══════════════════════════════════════════════════════════════════════════ --}}
-{{-- BREADCRUMB + FLASH                                                         --}}
-{{-- ══════════════════════════════════════════════════════════════════════════ --}}
-<div style="background:var(--fado-cream); border-bottom:1px solid var(--fado-warm-grey); padding:12px 0">
+<section class="s-page-title">
     <div class="container">
-        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
-            <nav aria-label="breadcrumb">
-                <ol class="d-flex gap-2 list-unstyled mb-0" style="font-size:.75rem">
-                    <li><a href="{{ route('shop.home') }}" style="color:var(--fado-warm-grey); text-decoration:none">Home</a></li>
-                    <li style="color:var(--fado-warm-grey)">/</li>
-                    @if($product->categories->isNotEmpty())
-                        @php $cat = $product->categories->first(); @endphp
-                        @if($cat->parent)
-                            <li><a href="{{ route('shop.category', $cat->parent->slug) }}" style="color:var(--fado-warm-grey); text-decoration:none">{{ $cat->parent->name }}</a></li>
-                            <li style="color:var(--fado-warm-grey)">/</li>
-                        @endif
-                        <li><a href="{{ route('shop.category', $cat->slug) }}" style="color:var(--fado-warm-grey); text-decoration:none">{{ $cat->name }}</a></li>
-                        <li style="color:var(--fado-warm-grey)">/</li>
-                    @else
-                        <li><a href="{{ route('shop.jewellery') }}" style="color:var(--fado-warm-grey); text-decoration:none">Jewellery</a></li>
-                        <li style="color:var(--fado-warm-grey)">/</li>
+        <div class="content">
+            <h1 class="title-page">{{ $product->name }}</h1>
+            <ul class="breadcrumbs-page">
+                <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                @if($product->categories->isNotEmpty())
+                    @php $cat = $product->categories->first(); @endphp
+                    @if($cat->parent)
+                        <li><a href="{{ route('shop.category', $cat->parent->slug) }}" class="h6 link">{{ $cat->parent->name }}</a></li>
+                        <li class="d-flex"><i class="icon icon-caret-right"></i></li>
                     @endif
-                    <li style="color:var(--fado-deep-green); font-weight:600">{{ $product->name }}</li>
-                </ol>
-            </nav>
-
-            @if($product->collections->isNotEmpty())
-            <div class="d-flex gap-2 flex-wrap">
-                @foreach($product->collections as $col)
-                <a href="{{ route('shop.collection', $col->slug) }}"
-                   style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
-                          color:var(--fado-gold); text-decoration:none; font-weight:600">
-                    {{ $col->name }}
-                </a>
-                @endforeach
-            </div>
-            @endif
+                    <li><a href="{{ route('shop.category', $cat->slug) }}" class="h6 link">{{ $cat->name }}</a></li>
+                    <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                @else
+                    <li><a href="{{ route('shop.jewellery') }}" class="h6 link">Jewellery</a></li>
+                    <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                @endif
+                <li><h6 class="current-page fw-normal">{{ $product->name }}</h6></li>
+            </ul>
         </div>
+        @if($product->collections->isNotEmpty())
+        <div class="d-flex gap-8 flex-wrap mt-8">
+            @foreach($product->collections as $col)
+            <a href="{{ route('shop.collection', $col->slug) }}" class="h6 link fw-semibold">
+                {{ $col->name }}
+            </a>
+            @endforeach
+        </div>
+        @endif
+    </div>
+</section>
+
+@if(session('cart_success'))
+<div class="tf-notice-wrap">
+    <div class="container">
+        <p class="h6 text-center fw-semibold">
+            {{ session('cart_success') }}
+            <a href="{{ route('shop.cart') }}" class="link fw-bold ms-12">View bag →</a>
+        </p>
     </div>
 </div>
-
-{{-- Cart success flash --}}
-@if(session('cart_success'))
-<div style="background:var(--fado-green-mid); color:#fff; text-align:center; padding:12px; font-size:.875rem; font-weight:600">
-    {{ session('cart_success') }}
-    <a href="{{ route('shop.cart') }}" style="color:#fff; text-decoration:underline; margin-left:12px">View bag →</a>
-</div>
 @endif
-
 
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
 {{-- MAIN PRODUCT SECTION                                                       --}}
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
-<section style="padding:48px 0 80px; background:var(--fado-near-white)">
+<section class="flat-spacing">
     <div class="container">
         <div class="row g-4 g-xl-5 align-items-start">
 
@@ -183,11 +178,9 @@
             <div class="col-12 col-lg-5">
 
                 {{-- Name --}}
-                <h1 style="font-family:Georgia,serif; font-size:clamp(1.5rem,2.5vw,2rem);
-                           color:var(--fado-deep-green); font-weight:400; line-height:1.25;
-                           margin-bottom:12px">
+                <h2 class="h2 fw-normal mb-12" style="line-height:1.25">
                     {{ $product->name }}
-                </h1>
+                </h2>
 
                 @if($product->short_description)
                 <p style="color:#555; font-size:.9375rem; line-height:1.75; margin-bottom:20px">
@@ -477,10 +470,7 @@
 @if($related->isNotEmpty())
 <section style="padding:56px 0 80px; background:#fff; border-top:1px solid var(--fado-cream)">
     <div class="container">
-        <h2 style="font-family:Georgia,serif; font-size:1.5rem; font-weight:400;
-                   color:var(--fado-deep-green); margin-bottom:32px; text-align:center">
-            You might also like
-        </h2>
+        <h2 class="h2 fw-normal text-center mb-32">You might also like</h2>
         <div class="row g-4">
             @foreach($related as $rel)
             @php

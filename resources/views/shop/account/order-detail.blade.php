@@ -1,4 +1,4 @@
-﻿@extends('shop.layouts.app')
+@extends('shop.layouts.app')
 @php
     use Illuminate\Support\Facades\Storage;
     use App\Models\Setting;
@@ -13,13 +13,7 @@
 <section class="s-page-title">
     <div class="container">
         <div class="content">
-            <h1 class="title-page">{{ $order->order_number }}
-                @php
-                    $colours = ['pending'=>'#f59e0b','processing'=>'#3b82f6','shipped'=>'#8b5cf6','delivered'=>'#10b981','cancelled'=>'#ef4444','refunded'=>'#6b7280'];
-                    $colour  = $colours[$order->status] ?? '#6b7280';
-                @endphp
-                <span style="font-size:.8rem; font-weight:700; padding:3px 10px; border-radius:12px; background:{{ $colour }}22; color:{{ $colour }}; border:1px solid {{ $colour }}44; vertical-align:middle; margin-left:10px">{{ $order->status_label }}</span>
-            </h1>
+            <h1 class="title-page">{{ $order->order_number }}</h1>
             <ul class="breadcrumbs-page">
                 <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
                 <li class="d-flex"><i class="icon icon-caret-right"></i></li>
@@ -40,155 +34,225 @@
                 @include('shop.account.partials.nav')
             </div>
             <div class="col-xl-9">
+                <div class="my-account-content flat-animate-tab">
 
-                {{-- Order meta strip --}}
-                <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:20px 24px;
-                            margin-bottom:20px; display:flex; gap:32px; flex-wrap:wrap">
-                    @foreach([
-                        ['label' => 'Date',     'value' => $order->created_at->format('d M Y')],
-                        ['label' => 'Currency', 'value' => $order->currency_code],
-                        ['label' => 'Items',    'value' => $order->items->count()],
-                        ['label' => 'Total',    'value' => $order->currency_symbol . number_format((float)$order->total, 2)],
-                    ] as $meta)
-                    <div>
-                        <p style="font-size:.65rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
-                                  color:var(--fado-warm-grey); margin-bottom:4px">{{ $meta['label'] }}</p>
-                        <p style="font-size:.9375rem; font-weight:600; color:var(--fado-deep-green); margin:0">
-                            {{ $meta['value'] }}
-                        </p>
-                    </div>
-                    @endforeach
-                </div>
-
-                <div class="row g-4">
-                    {{-- Items list --}}
-                    <div class="col-lg-8">
-                        <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; overflow:hidden; margin-bottom:20px">
-                            <div style="padding:16px 24px; border-bottom:1px solid var(--fado-cream); background:var(--fado-cream)">
-                                <h2 style="font-family:Georgia,serif; font-size:1rem; font-weight:400;
-                                           color:var(--fado-deep-green); margin:0">Items Ordered</h2>
+                    {{-- Order summary header --}}
+                    @php
+                        $sttMap = ['pending'=>'stt-pending','processing'=>'stt-pending','shipped'=>'stt-delivery','delivered'=>'stt-complete','cancelled'=>'stt-cancel','refunded'=>'stt-cancel'];
+                        $stt = $sttMap[$order->status] ?? 'stt-pending';
+                        $firstItem = $order->items->first();
+                        $firstImg  = $firstItem?->product?->primaryImage;
+                    @endphp
+                    <div class="account-order_detail">
+                        <div class="order-detail_image">
+                            @if($firstImg)
+                                <img class="lazyload" src="{{ Storage::url($firstImg->path) }}"
+                                     data-src="{{ Storage::url($firstImg->path) }}" alt="{{ $firstItem?->product?->name }}">
+                            @else
+                                <div class="img-placeholder d-flex align-items-center justify-content-center h-100">
+                                    <i class="icon icon-gem" style="font-size:2rem; opacity:.4"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="order-detail_content tf-grid-layout">
+                            <div class="detail-content_info">
+                                <div class="detail-info_status tb-order_status {{ $stt }}">
+                                    {{ $order->status_label }}
+                                </div>
+                                <div class="detail-info_prd">
+                                    <p class="prd_name h4 text-black">{{ $firstItem?->product?->name ?? 'Order ' . $order->order_number }}</p>
+                                    <div class="price-wrap">
+                                        <span class="price-new h6 text-main fw-semibold">
+                                            {{ $order->currency_symbol }}{{ number_format((float)$order->total, 2) }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="detail-info_item">
+                                    <p class="info-item_label">Order date</p>
+                                    <p class="info-item_value">{{ $order->created_at->format('d M Y, H:i') }}</p>
+                                </div>
+                                <div class="detail-info_item">
+                                    <p class="info-item_label">Items</p>
+                                    <p class="info-item_value">{{ $order->items->count() }} item(s)</p>
+                                </div>
+                                @if($order->shipping_address)
+                                @php $addr = $order->shipping_address; @endphp
+                                <div class="detail-info_item">
+                                    <p class="info-item_label">Address</p>
+                                    <p class="info-item_value">{{ $addr['line1'] ?? '' }}, {{ $addr['city'] ?? '' }}, {{ $addr['country'] ?? '' }}</p>
+                                </div>
+                                @endif
                             </div>
-                            @foreach($order->items as $item)
-                            @php $img = $item->product?->primaryImage; @endphp
-                            <div style="display:flex; gap:16px; align-items:center; padding:18px 24px;
-                                        {{ !$loop->last ? 'border-bottom:1px solid var(--fado-cream)' : '' }}">
-                                <div style="width:64px; height:80px; background:var(--fado-cream); border-radius:2px; overflow:hidden; flex-shrink:0">
-                                    @if($img)
-                                        <img src="{{ Storage::url($img->path) }}" alt="{{ $item->product?->name }}"
-                                             style="width:100%; height:100%; object-fit:cover; object-position:center top">
-                                    @else
-                                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center">
-                                            <i class="icon icon-gem" style="color:var(--fado-warm-grey)"></i>
+                            <span class="br-line d-flex"></span>
+                            <div>
+                                <a href="{{ route('shop.jewellery') }}" class="tf-btn style-line">
+                                    Continue Shopping
+                                    <i class="icon icon-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Order tabs --}}
+                    <div class="account-order_tab">
+                        <ul class="tab-order_detail" role="tablist">
+                            <li class="nav-tab-item" role="presentation">
+                                <a href="#order-items" data-bs-toggle="tab" class="tf-btn-line tf-btn-tab active">
+                                    <span class="h4">Items Ordered</span>
+                                </a>
+                            </li>
+                            <li class="nav-tab-item" role="presentation">
+                                <a href="#order-receiver" data-bs-toggle="tab" class="tf-btn-line tf-btn-tab">
+                                    <span class="h4">Order Info</span>
+                                </a>
+                            </li>
+                            @if($order->shipping_address)
+                            <li class="nav-tab-item" role="presentation">
+                                <a href="#order-shipping" data-bs-toggle="tab" class="tf-btn-line tf-btn-tab">
+                                    <span class="h4">Shipping</span>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+
+                        <div class="tab-content overflow-hidden">
+                            {{-- Items tab --}}
+                            <div class="tab-pane active show" id="order-items" role="tabpanel">
+                                <div class="order-item_detail">
+                                    @foreach($order->items as $item)
+                                    @php $img = $item->product?->primaryImage; @endphp
+                                    <div class="prd-info{{ !$loop->last ? ' mb-16' : '' }}">
+                                        <div class="info_image">
+                                            @if($img)
+                                                <img class="lazyload" src="{{ Storage::url($img->path) }}"
+                                                     data-src="{{ Storage::url($img->path) }}" alt="{{ $item->product?->name }}">
+                                            @else
+                                                <div class="d-flex align-items-center justify-content-center h-100">
+                                                    <i class="icon icon-gem" style="opacity:.4"></i>
+                                                </div>
+                                            @endif
                                         </div>
-                                    @endif
-                                </div>
-                                <div style="flex:1; min-width:0">
-                                    @if($item->product)
-                                    <a href="{{ route('shop.product', $item->product) }}"
-                                       style="font-size:.9375rem; font-weight:600; color:var(--fado-deep-green);
-                                              text-decoration:none; line-height:1.3; display:block; margin-bottom:4px">
-                                        {{ $item->product->name }}
-                                    </a>
-                                    @else
-                                    <p style="font-size:.9375rem; font-weight:600; color:var(--fado-deep-green); margin-bottom:4px">Product removed</p>
-                                    @endif
-                                    <p style="font-size:.8125rem; color:#888; margin-bottom:2px">
-                                        {{ $item->variant?->metal?->name }}
-                                        @if($item->variant?->gemstone) / {{ $item->variant->gemstone->name }} @endif
-                                    </p>
-                                    @if($item->size)
-                                    <p style="font-size:.8125rem; color:#888; margin-bottom:0">
-                                        Ring size: US {{ number_format((float)$item->size->us_size, 1) }}
-                                    </p>
-                                    @endif
-                                    <p style="font-size:.8125rem; color:var(--fado-warm-grey); margin:4px 0 0">
-                                        Qty: {{ $item->quantity }}
-                                    </p>
-                                </div>
-                                <div style="text-align:right; flex-shrink:0">
-                                    <p style="font-size:.9375rem; font-weight:700; color:var(--fado-deep-green); margin-bottom:2px">
-                                        {{ $order->currency_symbol }}{{ number_format($item->line_total, 2) }}
-                                    </p>
-                                    @if($item->quantity > 1)
-                                    <p style="font-size:.75rem; color:var(--fado-warm-grey); margin:0">
-                                        {{ $order->currency_symbol }}{{ number_format((float)$item->unit_price, 2) }} each
-                                    </p>
-                                    @endif
+                                        <div class="info_detail">
+                                            @if($item->product)
+                                            <a href="{{ route('shop.product', $item->product) }}" class="link info-name h4">{{ $item->product->name }}</a>
+                                            @else
+                                            <p class="info-name h4">Product removed</p>
+                                            @endif
+                                            @if($item->variant?->metal)
+                                            <p class="h6 text-main">Metal: <span class="fw-semibold text-black">{{ $item->variant->metal->name }}</span></p>
+                                            @endif
+                                            @if($item->variant?->gemstone)
+                                            <p class="h6 text-main">Stone: <span class="fw-semibold text-black">{{ $item->variant->gemstone->name }}</span></p>
+                                            @endif
+                                            @if($item->size)
+                                            <p class="h6 text-main">Ring Size: <span class="fw-semibold text-black">US {{ number_format((float)$item->size->us_size, 1) }}</span></p>
+                                            @endif
+                                            <p class="info-variant">Qty: <span class="fw-semibold h6 text-black">{{ $item->quantity }}</span></p>
+                                        </div>
+                                    </div>
+                                    @if(!$loop->last)<span class="br-line d-flex my-16"></span>@endif
+                                    @endforeach
+
+                                    <div class="prd-price mt-20">
+                                        <div class="price_total">
+                                            <span>Subtotal:</span>
+                                            <span class="fw-semibold h6 text-black">{{ $order->currency_symbol }}{{ number_format((float)$order->subtotal, 2) }}</span>
+                                        </div>
+                                        <p class="price_dis">
+                                            <span>Shipping:</span>
+                                            <span class="fw-semibold h6 text-black">
+                                                @if($order->subtotal >= $freeShippingThreshold) Free @else To be confirmed @endif
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="prd-order_total">
+                                        <span>Order Total</span>
+                                        <span class="fw-semibold h6 text-black">{{ $order->currency_symbol }}{{ number_format((float)$order->total, 2) }}</span>
+                                    </div>
                                 </div>
                             </div>
-                            @endforeach
 
-                            {{-- Totals footer --}}
-                            <div style="background:var(--fado-cream); padding:16px 24px">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:.875rem">
-                                    <span style="color:#555">Subtotal</span>
-                                    <span style="font-weight:600; color:var(--fado-deep-green)">
-                                        {{ $order->currency_symbol }}{{ number_format((float)$order->subtotal, 2) }}
-                                    </span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:.875rem">
-                                    <span style="color:#555">Shipping</span>
-                                    <span style="font-weight:600; color:var(--fado-green-mid)">
-                                        @if($order->subtotal >= $freeShippingThreshold) Free @else To be confirmed @endif
-                                    </span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; padding-top:10px;
-                                            border-top:1px solid var(--fado-warm-grey); font-size:1rem">
-                                    <span style="font-weight:700; color:var(--fado-deep-green)">Total</span>
-                                    <span style="font-weight:700; color:var(--fado-deep-green)">
-                                        {{ $order->currency_symbol }}{{ number_format((float)$order->total, 2) }}
-                                    </span>
+                            {{-- Order info tab --}}
+                            <div class="tab-pane" id="order-receiver" role="tabpanel">
+                                <div class="order-receiver">
+                                    <div class="recerver_text h6">
+                                        <span class="text">Order Number:</span>
+                                        <span class="text_info">{{ $order->order_number }}</span>
+                                    </div>
+                                    <div class="recerver_text h6">
+                                        <span class="text">Date:</span>
+                                        <span class="text_info">{{ $order->created_at->format('d M Y, H:i') }}</span>
+                                    </div>
+                                    <div class="recerver_text h6">
+                                        <span class="text">Currency:</span>
+                                        <span class="text_info">{{ $order->currency_code }}</span>
+                                    </div>
+                                    <div class="recerver_text h6">
+                                        <span class="text">Total:</span>
+                                        <span class="text_info">{{ $order->currency_symbol }}{{ number_format((float)$order->total, 2) }}</span>
+                                    </div>
+                                    <div class="recerver_text h6">
+                                        <span class="text">Payment Method:</span>
+                                        <span class="text_info">Cash on Delivery</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    {{-- Shipping address --}}
-                    <div class="col-lg-4">
-                        @if($order->shipping_address)
-                        <div style="background:#fff; border:1px solid var(--fado-cream); border-radius:4px; padding:20px 24px; margin-bottom:16px">
-                            <h3 style="font-size:.7rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
-                                       color:var(--fado-warm-grey); margin-bottom:14px">Delivering To</h3>
+                            {{-- Shipping tab --}}
+                            @if($order->shipping_address)
                             @php $addr = $order->shipping_address; @endphp
-                            <p style="font-size:.9rem; color:var(--fado-deep-green); line-height:1.85; margin:0">
-                                <strong>{{ $addr['name'] ?? '' }}</strong><br>
-                                {{ $addr['line1'] ?? '' }}<br>
-                                @if(!empty($addr['line2'])) {{ $addr['line2'] }}<br> @endif
-                                {{ $addr['city'] ?? '' }}@if(!empty($addr['county'])), {{ $addr['county'] }} @endif<br>
-                                {{ $addr['postcode'] ?? '' }}, {{ $addr['country'] ?? '' }}<br>
-                                @if(!empty($addr['phone'])) {{ $addr['phone'] }} @endif
-                            </p>
-                        </div>
-                        @endif
-
-                        {{-- Help card --}}
-                        <div style="background:var(--fado-cream); border-radius:4px; padding:20px 24px">
-                            <h3 style="font-size:.875rem; font-weight:600; color:var(--fado-deep-green); margin-bottom:10px">
-                                Need help with this order?
-                            </h3>
-                            <p style="font-size:.8125rem; color:#666; line-height:1.6; margin-bottom:14px">
-                                Contact our team and quote your order number.
-                            </p>
-                            <a href="{{ route('shop.contact') }}"
-                               style="display:inline-block; padding:9px 20px; background:var(--fado-deep-green);
-                                      color:#fff; text-decoration:none; border-radius:2px; font-size:.8125rem; font-weight:600">
-                                Contact Us
-                            </a>
+                            <div class="tab-pane" id="order-shipping" role="tabpanel">
+                                <div class="order-receiver">
+                                    @if(!empty($addr['name']))
+                                    <div class="recerver_text h6">
+                                        <span class="text">Name:</span>
+                                        <span class="text_info">{{ $addr['name'] }}</span>
+                                    </div>
+                                    @endif
+                                    @if(!empty($addr['line1']))
+                                    <div class="recerver_text h6">
+                                        <span class="text">Address:</span>
+                                        <span class="text_info">{{ $addr['line1'] }}@if(!empty($addr['line2'])), {{ $addr['line2'] }}@endif</span>
+                                    </div>
+                                    @endif
+                                    @if(!empty($addr['city']))
+                                    <div class="recerver_text h6">
+                                        <span class="text">City:</span>
+                                        <span class="text_info">{{ $addr['city'] }}</span>
+                                    </div>
+                                    @endif
+                                    @if(!empty($addr['country']))
+                                    <div class="recerver_text h6">
+                                        <span class="text">Country:</span>
+                                        <span class="text_info">{{ $addr['country'] }}</span>
+                                    </div>
+                                    @endif
+                                    @if(!empty($addr['postcode']))
+                                    <div class="recerver_text h6">
+                                        <span class="text">Postcode:</span>
+                                        <span class="text_info">{{ $addr['postcode'] }}</span>
+                                    </div>
+                                    @endif
+                                </div>
+                                <div class="mt-20">
+                                    <p class="h6 text-main">Need help?
+                                        <a href="{{ route('shop.contact') }}" class="link fw-semibold">Contact us</a>
+                                        and quote your order number.
+                                    </p>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
-                </div>
 
-                <div style="margin-top:4px">
-                    <a href="{{ route('shop.account.orders') }}"
-                       style="font-size:.875rem; color:var(--fado-green-mid); text-decoration:none">
-                        ← Back to orders
-                    </a>
-                </div>
+                    <div class="mt-24">
+                        <a href="{{ route('shop.account.orders') }}" class="tf-btn-line">← Back to orders</a>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 @endsection
-

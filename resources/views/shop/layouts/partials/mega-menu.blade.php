@@ -18,7 +18,7 @@
                                 <li><a href="{{ route('shop.category', 'cufflinks') }}" class="sub-menu_link">Cufflinks</a></li>
                                 <li><a href="{{ route('shop.category', 'brooches') }}" class="sub-menu_link">Brooches</a></li>
                                 <li><a href="{{ route('shop.category', 'tie-tacks') }}" class="sub-menu_link">Tie-tacks</a></li>
-                                <li><a href="{{ route('shop.jewellery') }}" class="sub-menu_link fw-semibold" style="color:var(--fado-green-mid)">View all jewellery →</a></li>
+                                <li><a href="{{ route('shop.jewellery') }}" class="sub-menu_link fw-semibold" class="link fw-semibold">View all jewellery →</a></li>
                             </ul>
                         </div>
                     </div>

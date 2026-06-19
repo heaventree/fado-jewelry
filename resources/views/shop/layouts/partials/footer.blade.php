@@ -18,9 +18,9 @@
                 {{-- ── Brand column ─────────────────────────────────────────── --}}
                 <div class="col-xl-4 col-sm-6 mb_30 mb-xl-0">
                     <div class="footer-infor">
-                        <a href="{{ route('shop.home') }}" class="logo-site" style="text-decoration:none; margin-bottom:16px; display:inline-block">
+                        <a href="{{ route('shop.home') }}" class="logo-site" style="margin-bottom:16px; display:inline-block">
                             <div class="fado-wordmark">FADÓ</div>
-                            <div class="text-small-3 text-uppercase" style="letter-spacing:.18em; color:rgba(255,255,255,.65)">Fine Irish Jewellery</div>
+                            <div class="text-small-3 text-uppercase" style="letter-spacing:.18em">Fine Irish Jewellery</div>
                         </a>
                         <ul class="footer-contact mb-0">
                             @if($addr)
