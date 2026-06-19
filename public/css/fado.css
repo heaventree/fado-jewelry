@@ -1,128 +1,23 @@
 /*
- * FADO Jewellery — colour overrides on top of Ochaka's styles.css
- * Only colour values change. HTML structure, spacing, fonts = 100% Ochaka.
+ * FADO Jewellery — structural additions only
+ * Ochaka colours used exactly as-is from styles.css
+ * No colour overrides here
  */
 
-/* ── CSS variables ──────────────────────────────────────────────────────────── */
-:root {
-    /* FADO palette */
-    --fado-mint-light:  #DCF6D5;
-    --fado-mint-pale:   #EBFCEF;
-    --fado-near-white:  #FBFBFB;
-    --fado-off-white:   #F8F9F5;
-    --fado-soft-white:  #F5F7F1;
-    --fado-cream:       #F0F1E7;
-    --fado-warm-grey:   #BCB3AB;
-    --fado-green-light: #81CC60;
-    --fado-green-mid:   #0AAC45;
-    --fado-deep-green:  #044705;
-    --fado-gold:        #766D42;
-
-    /* Override Ochaka's core colour variables */
-    --primary:          #0AAC45;   /* was Ochaka green #007a41 */
-    --primary-2:        #81CC60;
-    --bg-1:             #FBFBFB;   /* near white page background */
-    --bg-2:             #F5F7F1;   /* soft white section background */
-    --text:             #2c2c2c;
-}
-
-/* ── Base ───────────────────────────────────────────────────────────────────── */
-body { background-color: var(--fado-near-white); }
-
-/* ── FADO logo wordmark ─────────────────────────────────────────────────────── */
+/* ── FADO wordmark (text logo, replaces Ochaka's SVG logo) ─────────────────── */
 .fado-wordmark {
     font-family: "Afacad", sans-serif;
     font-size: 1.9rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     line-height: 1;
-    color: var(--fado-deep-green);
     text-decoration: none;
+    display: inline-block;
 }
+
+/* Transparent header — white wordmark over hero */
 .tf-header.header-abs-3 .fado-wordmark { color: #fff; }
-.tf-header.header-fixed .fado-wordmark  { color: var(--fado-deep-green); }
-
-/* ── Header — override Ochaka's primary with FADO greens ───────────────────── */
-.tf-header.header-abs-3 .header-top { background: transparent; }
-.tf-header.header-fixed              { background: #fff; border-bottom: 1px solid var(--fado-cream); }
-
-/* Nav item link colours */
-.box-navigation.style-white .box-nav-menu > .menu-item > .item-link { color: rgba(255,255,255,.92); }
-.box-navigation.style-white .box-nav-menu > .menu-item > .item-link:hover { color: #fff; }
-.box-navigation          .box-nav-menu > .menu-item > .item-link { color: var(--fado-deep-green); }
-.box-navigation          .box-nav-menu > .menu-item > .item-link:hover { color: var(--fado-green-mid); }
-
-/* Mega-menu panel */
-.sub-menu.mega-menu { border-top: 3px solid var(--fado-green-mid); }
-.menu-heading        { color: var(--fado-gold); border-bottom-color: var(--fado-cream); }
-.sub-menu_link:hover { color: var(--fado-green-mid); }
-
-/* Cart / wishlist count badges */
-.nav-icon-list .shop-cart .count,
-.nav-icon-list .count {
-    background: var(--fado-green-mid);
-}
-
-/* ── Buttons — override Ochaka's --primary ──────────────────────────────────── */
-.tf-btn,
-.tf-btn.animate-btn         { background: var(--fado-green-mid); border-color: var(--fado-green-mid); color: #fff; }
-.tf-btn:hover,
-.tf-btn.animate-btn:hover   { background: var(--fado-deep-green); border-color: var(--fado-deep-green); color: #fff; }
-
-.tf-btn.btn-white           { background: #fff; color: var(--fado-deep-green); border-color: #fff; }
-.tf-btn.btn-white:hover     { background: var(--fado-green-mid); color: #fff; border-color: var(--fado-green-mid); }
-
-.tf-btn.style-2             { background: transparent; color: var(--fado-deep-green); border: 1.5px solid var(--fado-deep-green); }
-.tf-btn.style-2:hover       { background: var(--fado-deep-green); color: #fff; }
-
-/* ── Section title headings ─────────────────────────────────────────────────── */
-.sect-title .s-title  { color: var(--fado-deep-green); }
-.sect-title .s-subtitle { color: var(--fado-warm-grey); }
-
-/* ── Product cards ───────────────────────────────────────────────────────────── */
-.card-product .name-product.link { color: var(--fado-deep-green); }
-.card-product .name-product.link:hover { color: var(--fado-green-mid); }
-.card-product .price-new  { color: var(--fado-deep-green); }
-
-/* ── Widget collection (category circles) ───────────────────────────────────── */
-.widget-collection .collection_name.link { color: var(--fado-deep-green); }
-.widget-collection .collection_name.link:hover { color: var(--fado-green-mid); }
-
-/* ── Box image cards — override text colour on hover ──────────────────────── */
-.box-image_V02 .box-image_content .sub-text { color: rgba(255,255,255,.85); }
-
-/* ── Footer ─────────────────────────────────────────────────────────────────── */
-.fado-footer-bg                  { background-color: var(--fado-deep-green) !important; }
-.tf-footer .footer-heading       { color: var(--fado-gold) !important; }
-.tf-footer .footer-menu-list .link:hover { color: var(--fado-green-light) !important; }
-.tf-footer .text-main            { color: rgba(255,255,255,.65) !important; }
-.tf-footer .footer-contact .icon { color: var(--fado-gold); }
-.tf-footer .tf-social-icon_2 .link { color: rgba(255,255,255,.7) !important; }
-.tf-footer .tf-social-icon_2 .link:hover { color: #fff !important; }
-.tf-footer .footer-bottom        { border-top: 1px solid rgba(255,255,255,.1); }
-
-/* Footer newsletter button */
-.tf-footer .tf-btn.animate-btn   { background: var(--fado-green-mid); color: #fff; border-color: var(--fado-green-mid); }
-.tf-footer .tf-btn.animate-btn:hover { background: var(--fado-green-light); border-color: var(--fado-green-light); }
-
-/* ── Mobile menu canvas ─────────────────────────────────────────────────────── */
-.canvas-mb .canvas-header          { background: var(--fado-deep-green); }
+/* Sticky header — dark wordmark */
+.tf-header.header-fixed .fado-wordmark  { color: var(--text, #1a1a1a); }
+/* Mobile canvas header — white */
 .canvas-mb .canvas-header .fado-wordmark { color: #fff; }
-.canvas-mb .icon-close-popup       { color: rgba(255,255,255,.7); }
-.canvas-mb .nav-mb-item_title      { color: var(--fado-gold); font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; font-weight:700; padding: 10px 20px 4px; }
-.canvas-mb .nav-mb-item_link:hover { color: var(--fado-green-mid); }
-
-/* ── Trust strip section ────────────────────────────────────────────────────── */
-.flat-spacing-2 { padding: 24px 0; }
-
-/* ── Swiper pagination dots — FADO green ────────────────────────────────────── */
-.tf-sw-pagination .swiper-pagination-bullet-active { background: var(--fado-green-mid) !important; }
-.sw-dot-default-2.style-white .swiper-pagination-bullet-active { background: #fff !important; }
-
-/* ── Utility ─────────────────────────────────────────────────────────────────── */
-.text-fado-deep  { color: var(--fado-deep-green)  !important; }
-.text-fado-mid   { color: var(--fado-green-mid)   !important; }
-.text-fado-gold  { color: var(--fado-gold)         !important; }
-.bg-fado-cream   { background-color: var(--fado-cream)       !important; }
-.bg-fado-soft    { background-color: var(--fado-soft-white)  !important; }
-.bg-fado-deep    { background-color: var(--fado-deep-green)  !important; }
