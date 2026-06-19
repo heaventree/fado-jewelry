@@ -1,8 +1,22 @@
 /*
- * FADO Jewellery — structural additions only
- * Ochaka colours used exactly as-is from styles.css
- * No colour overrides here
+ * FADO Jewellery — CSS variables and structural additions
+ * These variables are used only by pages not yet converted to Ochaka classes.
+ * Colours match Ochaka's palette as closely as possible.
  */
+
+:root {
+    --fado-deep-green:   #1a1a1a;
+    --fado-green-mid:    #1a1a1a;
+    --fado-green-light:  #555555;
+    --fado-gold:         #b5934a;
+    --fado-cream:        #f5f0eb;
+    --fado-soft-white:   #f7f7f7;
+    --fado-near-white:   #fafafa;
+    --fado-off-white:    #f8f9f5;
+    --fado-pale-mint:    #f0f5f0;
+    --fado-light-mint:   #e8f0e8;
+    --fado-warm-grey:    #bcb3ab;
+}
 
 /* ── FADO wordmark (text logo, replaces Ochaka's SVG logo) ─────────────────── */
 .fado-wordmark {
