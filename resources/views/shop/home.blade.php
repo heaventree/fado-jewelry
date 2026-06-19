@@ -14,17 +14,16 @@
     <div dir="ltr" class="swiper fado-swiper-hero" id="fadoHeroSwiper">
         <div class="swiper-wrapper">
 
-            {{-- Slide 1 — Claddagh --}}
+            {{-- Slide 1 — Claddagh (BannerTop-one.jpg) --}}
             <div class="swiper-slide">
-                <div class="fado-slide" style="
-                    background: linear-gradient(135deg, var(--fado-deep-green) 0%, #033203 60%, #011801 100%);
-                    min-height: 88vh; display:flex; align-items:center; position:relative; overflow:hidden;">
-                    {{-- Decorative gold circle --}}
-                    <div style="position:absolute; right:-80px; top:50%; transform:translateY(-50%);
-                                width:700px; height:700px; border-radius:50%;
-                                background: radial-gradient(circle, rgba(118,109,66,.18) 0%, transparent 70%);
-                                pointer-events:none"></div>
-                    <div class="container position-relative" style="z-index:2">
+                <div class="fado-slide fado-hero-slide" style="position:relative; overflow:hidden;">
+                    {{-- Full-bleed real banner image --}}
+                    <img src="{{ Storage::url('banners/BannerTop-one.jpg') }}"
+                         alt="FADÓ Jewellery — Claddagh Collection"
+                         class="fado-hero-bg-img">
+                    {{-- Left-side gradient so white text stays readable --}}
+                    <div class="fado-hero-overlay" style="background: linear-gradient(to right, rgba(4,71,5,.82) 0%, rgba(4,71,5,.55) 45%, rgba(4,71,5,.08) 75%, transparent 100%)"></div>
+                    <div class="container fado-hero-content position-relative" style="z-index:2">
                         <div class="row align-items-center">
                             <div class="col-xl-5 col-lg-6">
                                 <p style="font-size:.75rem; letter-spacing:.35em; text-transform:uppercase;
@@ -36,7 +35,7 @@
                                     class="wow fadeInUp" data-wow-delay=".2s">
                                     The Claddagh<br>Collection
                                 </h1>
-                                <p style="color:rgba(255,255,255,.72); font-size:1.0625rem; line-height:1.75; max-width:420px; margin-bottom:36px"
+                                <p style="color:rgba(255,255,255,.82); font-size:1.0625rem; line-height:1.75; max-width:420px; margin-bottom:36px"
                                    class="wow fadeInUp" data-wow-delay=".3s">
                                     Love, loyalty and friendship — Ireland's most enduring symbol, crafted in sterling silver, gold and platinum.
                                 </p>
@@ -47,28 +46,12 @@
                                     </a>
                                     <a href="{{ route('shop.collections') }}"
                                        style="display:inline-block; padding:13px 32px; text-decoration:none; border-radius:2px;
-                                              border: 1.5px solid rgba(255,255,255,.4); color:#fff; font-size:.875rem; font-weight:500;
+                                              border: 1.5px solid rgba(255,255,255,.5); color:#fff; font-size:.875rem; font-weight:500;
                                               transition: border-color .2s, background .2s"
-                                       onmouseover="this.style.borderColor='#fff'; this.style.background='rgba(255,255,255,.08)'"
-                                       onmouseout="this.style.borderColor='rgba(255,255,255,.4)'; this.style.background='transparent'">
+                                       onmouseover="this.style.borderColor='#fff'; this.style.background='rgba(255,255,255,.1)'"
+                                       onmouseout="this.style.borderColor='rgba(255,255,255,.5)'; this.style.background='transparent'">
                                         All Collections
                                     </a>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 d-none d-lg-flex justify-content-end align-items-center">
-                                <div style="position:relative">
-                                    <div style="width:480px; height:520px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
-                                                background: rgba(255,255,255,.04); border: 1px solid rgba(118,109,66,.3);
-                                                display:flex; align-items:center; justify-content:center; overflow:hidden">
-                                        <img src="/images/ochaka/products/jewelry/product-1.jpg"
-                                             alt="Claddagh jewellery"
-                                             style="width:100%; height:100%; object-fit:cover; object-position:center top; opacity:.9">
-                                    </div>
-                                    <div style="position:absolute; bottom:32px; left:-32px; background:#fff;
-                                                border-radius:8px; padding:14px 20px; box-shadow:0 8px 32px rgba(0,0,0,.18)">
-                                        <div style="font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--fado-gold); margin-bottom:4px">From</div>
-                                        <div style="font-size:1.25rem; font-weight:700; color:var(--fado-deep-green)">€ 85</div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -76,33 +59,27 @@
                 </div>
             </div>
 
-            {{-- Slide 2 — Garden Collection (light/cream — airy, nature feel) --}}
+            {{-- Slide 2 — Garden Collection (BannerTop-Two.jpg) --}}
             <div class="swiper-slide">
-                <div class="fado-slide" style="
-                    background: var(--fado-cream);
-                    min-height: 88vh; display:flex; align-items:center; position:relative; overflow:hidden;">
-                    {{-- Soft image wash --}}
-                    <div style="position:absolute; inset:0;
-                                background: url('/images/ochaka/slider/slider-22.jpg') center/cover no-repeat;
-                                opacity: .08; pointer-events:none"></div>
-                    {{-- Decorative botanical circle --}}
-                    <div style="position:absolute; right:-60px; top:50%; transform:translateY(-50%);
-                                width:600px; height:600px; border-radius:50%;
-                                background: radial-gradient(circle, rgba(129,204,96,.12) 0%, transparent 70%);
-                                pointer-events:none"></div>
-                    <div class="container position-relative" style="z-index:2">
+                <div class="fado-slide fado-hero-slide" style="position:relative; overflow:hidden;">
+                    <img src="{{ Storage::url('banners/BannerTop-Two.jpg') }}"
+                         alt="The Jewellery Garden by FADÓ"
+                         class="fado-hero-bg-img">
+                    {{-- Centre-weighted overlay for centred text --}}
+                    <div class="fado-hero-overlay" style="background: linear-gradient(to bottom, rgba(4,71,5,.15) 0%, rgba(4,71,5,.65) 40%, rgba(4,71,5,.65) 60%, rgba(4,71,5,.15) 100%)"></div>
+                    <div class="container fado-hero-content position-relative" style="z-index:2">
                         <div class="row justify-content-center text-center">
                             <div class="col-xl-7 col-lg-8">
                                 <p style="font-size:.75rem; letter-spacing:.35em; text-transform:uppercase;
-                                          color: var(--fado-gold); margin-bottom:16px" class="wow fadeInUp" data-wow-delay=".1s">
+                                          color: var(--fado-mint-light); margin-bottom:16px" class="wow fadeInUp" data-wow-delay=".1s">
                                     The Jewellery Garden by FADÓ
                                 </p>
                                 <h1 style="font-family: Georgia, serif; font-size: clamp(2.4rem, 5vw, 4rem);
-                                           color: var(--fado-deep-green); line-height:1.15; font-weight:400; margin-bottom:20px"
+                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px"
                                     class="wow fadeInUp" data-wow-delay=".2s">
                                     Nature, Captured<br>in Gold &amp; Silver
                                 </h1>
-                                <p style="color:#555; font-size:1.0625rem; line-height:1.75; margin-bottom:36px"
+                                <p style="color:rgba(255,255,255,.82); font-size:1.0625rem; line-height:1.75; margin-bottom:36px"
                                    class="wow fadeInUp" data-wow-delay=".3s">
                                     Bluebells, wild daisies, butterflies and bees — Ireland's garden in every piece. Perfect for weddings and engagements.
                                 </p>
@@ -117,32 +94,27 @@
                 </div>
             </div>
 
-            {{-- Slide 3 — Irish Gold (off-white / split layout) --}}
+            {{-- Slide 3 — Irish Gold (BannerTop-three.jpg) --}}
             <div class="swiper-slide">
-                <div class="fado-slide" style="
-                    background: var(--fado-off-white);
-                    min-height: 88vh; display:flex; align-items:center; position:relative; overflow:hidden;">
-                    {{-- Right-side image panel --}}
-                    <div style="position:absolute; right:0; top:0; bottom:0; width:48%;
-                                background: url('/images/ochaka/slider/slider-23.jpg') center/cover no-repeat;
-                                pointer-events:none"></div>
-                    {{-- Fade from white to transparent over image --}}
-                    <div style="position:absolute; right:0; top:0; bottom:0; width:60%;
-                                background: linear-gradient(to right, var(--fado-off-white) 0%, transparent 50%);
-                                pointer-events:none"></div>
-                    <div class="container position-relative" style="z-index:2">
-                        <div class="row">
+                <div class="fado-slide fado-hero-slide" style="position:relative; overflow:hidden;">
+                    <img src="{{ Storage::url('banners/BannerTop-three.jpg') }}"
+                         alt="Handcrafted Irish Gold"
+                         class="fado-hero-bg-img">
+                    {{-- Right-to-left gradient (text on right for variety) --}}
+                    <div class="fado-hero-overlay" style="background: linear-gradient(to left, rgba(4,71,5,.82) 0%, rgba(4,71,5,.55) 45%, rgba(4,71,5,.08) 75%, transparent 100%)"></div>
+                    <div class="container fado-hero-content position-relative" style="z-index:2">
+                        <div class="row justify-content-end">
                             <div class="col-xl-5 col-lg-6">
                                 <p style="font-size:.75rem; letter-spacing:.35em; text-transform:uppercase;
                                           color: var(--fado-gold); margin-bottom:16px" class="wow fadeInUp" data-wow-delay=".1s">
                                     A gift they'll treasure forever
                                 </p>
                                 <h1 style="font-family: Georgia, serif; font-size: clamp(2.4rem, 5vw, 4rem);
-                                           color: var(--fado-deep-green); line-height:1.15; font-weight:400; margin-bottom:20px"
+                                           color:#fff; line-height:1.15; font-weight:400; margin-bottom:20px"
                                     class="wow fadeInUp" data-wow-delay=".2s">
                                     Handcrafted<br>Irish Gold
                                 </h1>
-                                <p style="color:#555; font-size:1.0625rem; line-height:1.75; max-width:400px; margin-bottom:36px"
+                                <p style="color:rgba(255,255,255,.82); font-size:1.0625rem; line-height:1.75; max-width:400px; margin-bottom:36px"
                                    class="wow fadeInUp" data-wow-delay=".3s">
                                     From 9ct to 18ct gold and platinum — every piece crafted in the Irish tradition for those who matter most.
                                 </p>
@@ -153,10 +125,10 @@
                                     </a>
                                     <a href="{{ route('shop.collections') }}"
                                        style="display:inline-block; padding:13px 32px; text-decoration:none; border-radius:2px;
-                                              border: 1.5px solid var(--fado-deep-green); color: var(--fado-deep-green); font-size:.875rem; font-weight:500;
+                                              border: 1.5px solid rgba(255,255,255,.5); color:#fff; font-size:.875rem; font-weight:500;
                                               transition: border-color .2s, background .2s"
-                                       onmouseover="this.style.background='var(--fado-deep-green)'; this.style.color='#fff'"
-                                       onmouseout="this.style.background='transparent'; this.style.color='var(--fado-deep-green)'">
+                                       onmouseover="this.style.borderColor='#fff'; this.style.background='rgba(255,255,255,.1)'"
+                                       onmouseout="this.style.borderColor='rgba(255,255,255,.5)'; this.style.background='transparent'">
                                         View Collections
                                     </a>
                                 </div>

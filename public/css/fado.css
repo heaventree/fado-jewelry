@@ -194,6 +194,31 @@ body {
     margin-bottom: 6px;
 }
 
+/* Hero slide — real full-bleed image */
+.fado-hero-slide {
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+}
+.fado-hero-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    pointer-events: none;
+}
+.fado-hero-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.fado-hero-content {
+    padding-top: 48px;
+    padding-bottom: 48px;
+}
+
 /* ── Buttons ────────────────────────────────────────────────────────────────── */
 .btn-fado-primary {
     background-color: var(--fado-green-mid);
