@@ -6,28 +6,29 @@
 
 @section('content')
 
-{{-- ── Page header ──────────────────────────────────────────────────────────── --}}
-<div style="background:var(--fado-deep-green); padding:40px 0 36px">
+<section class="s-page-title">
     <div class="container">
-        <p style="font-size:.7rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
-                  color:var(--fado-gold); margin-bottom:8px">My Account</p>
-        <h1 style="font-family:Georgia,serif; font-size:1.75rem; font-weight:400; color:#fff; margin:0">
-            Welcome back, {{ $user->name }}
-        </h1>
+        <div class="content">
+            <h1 class="title-page">My Account</h1>
+            <ul class="breadcrumbs-page">
+                <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
+                <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                <li><h6 class="current-page fw-normal">My account</h6></li>
+            </ul>
+        </div>
     </div>
-</div>
+</section>
 
-<div style="background:var(--fado-near-white); padding:48px 0 80px; min-height:60vh">
+<section class="flat-spacing">
     <div class="container">
-        <div class="row g-4">
+        <div class="row">
 
-            {{-- Sidebar nav --}}
-            <div class="col-lg-3">
+            <div class="col-xl-3 d-none d-xl-block">
                 @include('shop.account.partials.nav')
             </div>
 
-            {{-- Main content --}}
-            <div class="col-lg-9">
+            <div class="col-xl-9">
+                <div class="my-account-content">
 
                 {{-- Quick stats --}}
                 <div class="row g-3 mb-4">
@@ -156,10 +157,11 @@
                     </div>
                 </div>
 
+                </div>{{-- /my-account-content --}}
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @endsection
 
