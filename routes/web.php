@@ -136,9 +136,10 @@ Route::get('users/customer/{customer}', [CustomerController::class, 'show'])->mi
 // Dashboard — intercepts before the Larkon catch-all
 Route::get('dashboards/index', [DashboardController::class, 'index'])->middleware(['auth', 'admin'])->name('dashboard');
 
-// Larkon catch-all — renders Blade views by path segment (unauthenticated views excluded)
-Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
-    Route::get('', [RoutingController::class, 'index'])->name('root');
+// Larkon catch-all — renders Blade views by path segment for admin panel pages.
+// Route::get('') (empty string → URI '/') is intentionally removed; the shop
+// homepage handles '/' explicitly above and must never be caught here.
+Route::group(['prefix' => '/', 'middleware' => ['auth', 'admin']], function () {
     Route::get('{first}/{second}/{third}', [RoutingController::class, 'thirdLevel'])->name('third');
     Route::get('{first}/{second}', [RoutingController::class, 'secondLevel'])->name('second');
     Route::get('{any}', [RoutingController::class, 'root'])->name('any');
