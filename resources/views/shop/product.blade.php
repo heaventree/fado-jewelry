@@ -66,302 +66,187 @@
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
 {{-- MAIN PRODUCT SECTION                                                       --}}
 {{-- ══════════════════════════════════════════════════════════════════════════ --}}
-<section class="flat-spacing">
+<section class="flat-single-product flat-spacing-3 section-image-zoom">
     <div class="container">
-        <div class="row g-4 g-xl-5 align-items-start">
+        <div class="row">
 
-            {{-- ── VERTICAL THUMBNAIL STRIP (desktop only) ─────────────────────── --}}
-            <div class="col-auto d-none d-lg-flex flex-column align-items-center"
-                 style="width:88px; padding-top:0">
-
-                {{-- Scroll up --}}
-                <button id="thumbUp" onclick="scrollThumbs(-1)"
-                        style="background:none; border:1px solid var(--fado-cream); border-radius:2px;
-                               width:72px; height:32px; cursor:pointer; color:var(--fado-deep-green);
-                               display:flex; align-items:center; justify-content:center;
-                               margin-bottom:6px; transition:border-color .2s; flex-shrink:0"
-                        onmouseover="this.style.borderColor='var(--fado-green-mid)'"
-                        onmouseout="this.style.borderColor='var(--fado-cream)'"
-                        disabled>
-                    <i class="icon icon-caret-up" style="font-size:.75rem"></i>
-                </button>
-
-                {{-- Thumb list container (clipped height) --}}
-                <div style="overflow:hidden; height:480px; flex-shrink:0">
-                    <div id="thumbList" style="display:flex; flex-direction:column; gap:8px; transition:transform .3s ease">
-                        @forelse($product->images as $i => $img)
-                        <div class="fado-thumb {{ $i === 0 ? 'active' : '' }}"
-                             onclick="selectImage({{ $i }})"
-                             style="width:72px; height:90px; border-radius:2px; overflow:hidden;
-                                    cursor:pointer; flex-shrink:0; border:2px solid {{ $i === 0 ? 'var(--fado-green-mid)' : 'transparent' }};
-                                    transition:border-color .2s; background:var(--fado-cream)">
-                            <img src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}"
-                                 style="width:100%; height:100%; object-fit:cover; object-position:center top">
+            {{-- ── PRODUCT IMAGES (Ochaka tf-product-media exact) ─────────────── --}}
+            <div class="col-md-6">
+                <div class="tf-product-media-wrap sticky-top">
+                    <div class="product-thumbs-slider">
+                        <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-direction="vertical" data-preview="4.7">
+                            <div class="swiper-wrapper stagger-wrap">
+                                @forelse($product->images as $img)
+                                <div class="swiper-slide stagger-item">
+                                    <div class="item">
+                                        <img class="lazyload" data-src="{{ Storage::url($img->path) }}" src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}">
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="swiper-slide stagger-item">
+                                    <div class="item">
+                                        <img class="lazyload" data-src="/images/ochaka/products/jewelry/product-5.jpg" src="/images/ochaka/products/jewelry/product-5.jpg" alt="{{ $product->name }}">
+                                    </div>
+                                </div>
+                                @endforelse
+                            </div>
                         </div>
-                        @empty
-                        <div style="width:72px; height:90px; border-radius:2px; background:var(--fado-cream);
-                                    display:flex; align-items:center; justify-content:center;
-                                    border:2px solid var(--fado-green-mid)">
-                            <i class="icon icon-gem" style="color:var(--fado-warm-grey)"></i>
+                        <div class="flat-wrap-media-product">
+                            <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
+                                <div class="swiper-wrapper">
+                                    @forelse($product->images as $img)
+                                    <div class="swiper-slide">
+                                        <a href="{{ Storage::url($img->path) }}" target="_blank" class="item">
+                                            <img class="tf-image-zoom lazyload" data-zoom="{{ Storage::url($img->path) }}" data-src="{{ Storage::url($img->path) }}" src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}">
+                                        </a>
+                                    </div>
+                                    @empty
+                                    <div class="swiper-slide">
+                                        <a href="/images/ochaka/products/jewelry/product-5.jpg" target="_blank" class="item">
+                                            <img class="tf-image-zoom lazyload" data-zoom="/images/ochaka/products/jewelry/product-5.jpg" data-src="/images/ochaka/products/jewelry/product-5.jpg" src="/images/ochaka/products/jewelry/product-5.jpg" alt="{{ $product->name }}">
+                                        </a>
+                                    </div>
+                                    @endforelse
+                                </div>
+                            </div>
                         </div>
-                        @endforelse
                     </div>
                 </div>
-
-                {{-- Scroll down --}}
-                <button id="thumbDown" onclick="scrollThumbs(1)"
-                        style="background:none; border:1px solid var(--fado-cream); border-radius:2px;
-                               width:72px; height:32px; cursor:pointer; color:var(--fado-deep-green);
-                               display:flex; align-items:center; justify-content:center;
-                               margin-top:6px; transition:border-color .2s; flex-shrink:0"
-                        onmouseover="this.style.borderColor='var(--fado-green-mid)'"
-                        onmouseout="this.style.borderColor='var(--fado-cream)'"
-                        {{ $product->images->count() <= 4 ? 'disabled' : '' }}>
-                    <i class="icon icon-caret-down" style="font-size:.75rem"></i>
-                </button>
-
             </div>
+            {{-- /Product Images --}}
 
-            {{-- ── HERO IMAGE ──────────────────────────────────────────────────── --}}
-            <div class="col-12 col-lg">
-                <div style="position:relative; background:var(--fado-cream); border-radius:4px;
-                            overflow:hidden; aspect-ratio:3/4; max-height:600px">
-                    @if($product->images->isNotEmpty())
-                    <img id="heroImage" src="{{ Storage::url($product->images->first()->path) }}"
-                         alt="{{ $product->name }}"
-                         style="width:100%; height:100%; object-fit:cover; object-position:center top;
-                                transition:opacity .25s ease">
-                    @else
-                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;
-                                flex-direction:column; gap:16px">
-                        <i class="icon icon-gem" style="font-size:4rem; color:var(--fado-warm-grey)"></i>
-                        <p style="color:var(--fado-warm-grey); font-size:.875rem; margin:0">Image coming soon</p>
-                    </div>
-                    @endif
+            {{-- ── PRODUCT INFO (Ochaka tf-product-info exact) ────────────────── --}}
+            <div class="col-md-6">
+                <div class="tf-product-info-wrap position-relative">
+                    <div class="tf-product-info-list other-image-zoom">
 
-                    {{-- Wishlist overlay button --}}
-                    <div style="position:absolute; top:16px; right:16px">
-                        <button type="button"
-                                id="wishlistOverlayBtn"
-                                onclick="toggleWishlist(this)"
-                                data-product-id="{{ $product->id }}"
-                                data-wishlisted="{{ app(\App\Services\WishlistService::class)->has($product->id) ? 'true' : 'false' }}"
-                                style="background:#fff; border:none; width:42px; height:42px; border-radius:50%;
-                                       display:flex; align-items:center; justify-content:center;
-                                       box-shadow:0 2px 12px rgba(0,0,0,.12); cursor:pointer;
-                                       color:var(--fado-deep-green); transition:color .2s"
-                                title="Save to wishlist">
-                            <i class="icon {{ app(\App\Services\WishlistService::class)->has($product->id) ? 'icon-heart-fill' : 'icon-heart' }}"
-                               style="font-size:1rem; color:{{ app(\App\Services\WishlistService::class)->has($product->id) ? 'var(--fado-green-mid)' : 'inherit' }}"></i>
-                        </button>
-                    </div>
-                </div>
+                        <h2 class="product-info-name">{{ $product->name }}</h2>
 
-                {{-- Mobile thumbnail strip (horizontal scroll) --}}
-                @if($product->images->count() > 1)
-                <div class="d-flex d-lg-none gap-2 mt-3" style="overflow-x:auto; padding-bottom:4px">
-                    @foreach($product->images as $i => $img)
-                    <div class="fado-thumb-mob {{ $i === 0 ? 'active' : '' }}"
-                         onclick="selectImage({{ $i }})"
-                         style="flex-shrink:0; width:64px; height:80px; border-radius:2px; overflow:hidden;
-                                cursor:pointer; border:2px solid {{ $i === 0 ? 'var(--fado-green-mid)' : 'transparent' }};
-                                background:var(--fado-cream); transition:border-color .2s">
-                        <img src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}"
-                             style="width:100%; height:100%; object-fit:cover; object-position:center top">
-                    </div>
-                    @endforeach
-                </div>
-                @endif
-            </div>
-
-            {{-- ── PRODUCT INFO PANEL ──────────────────────────────────────────── --}}
-            <div class="col-12 col-lg-5">
-
-                {{-- Name --}}
-                <h2 class="h2 fw-normal mb-12" style="line-height:1.25">
-                    {{ $product->name }}
-                </h2>
-
-                @if($product->short_description)
-                <p style="color:#555; font-size:.9375rem; line-height:1.75; margin-bottom:20px">
-                    {{ $product->short_description }}
-                </p>
-                @endif
-
-                {{-- Price + stock --}}
-                <div style="display:flex; align-items:baseline; gap:14px; margin-bottom:8px">
-                    <span id="variantPrice"
-                          style="font-size:1.875rem; font-weight:700; color:var(--fado-deep-green); letter-spacing:-.02em">
-                        @if($defaultVariant)
-                            €{{ number_format((float) $defaultVariant->price_eur, 2) }}
-                        @else
-                            Price on enquiry
+                        @if($product->short_description)
+                        <p class="h6 fw-normal" style="color:#555; margin-bottom:16px">{{ $product->short_description }}</p>
                         @endif
-                    </span>
-                    <span id="stockStatus"
-                          style="font-size:.8125rem; font-weight:600;
-                                 color:{{ $defaultVariant && $defaultVariant->stock > 0 ? 'var(--fado-green-mid)' : '#dc3545' }}">
-                        @if($defaultVariant)
-                            @if($defaultVariant->stock > 0)
-                                {{ $defaultVariant->stock < 5 ? 'Only ' . $defaultVariant->stock . ' left' : 'In Stock' }}
-                            @else
-                                Out of Stock
-                            @endif
+
+                        <div class="tf-product-heading">
+                            <div class="product-info-price price-wrap">
+                                <span id="variantPrice" class="price-new h2 fw-4">
+                                    @if($defaultVariant)
+                                        €{{ number_format((float) $defaultVariant->price_eur, 2) }}
+                                    @else
+                                        Price on enquiry
+                                    @endif
+                                </span>
+                                <span id="stockStatus" class="h6 fw-semibold"
+                                      style="margin-left:12px; color:{{ $defaultVariant && $defaultVariant->stock > 0 ? 'var(--fado-green-mid)' : '#dc3545' }}">
+                                    @if($defaultVariant)
+                                        @if($defaultVariant->stock > 0)
+                                            {{ $defaultVariant->stock < 5 ? 'Only ' . $defaultVariant->stock . ' left' : 'In Stock' }}
+                                        @else
+                                            Out of Stock
+                                        @endif
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+
+                        @if($defaultVariant?->sku)
+                        <p class="h6" style="color:var(--fado-warm-grey); margin-bottom:4px">
+                            SKU: <span id="variantSku">{{ $defaultVariant->sku }}</span>
+                        </p>
                         @endif
-                    </span>
+
+                        <form method="POST" action="{{ route('shop.cart.add') }}" id="addToCartForm">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="variant_id" id="selectedVariantId" value="{{ $defaultVariant?->id }}">
+                            <input type="hidden" name="size_id" id="selectedSizeId" value="">
+
+                            <div class="tf-product-variant">
+
+                                {{-- Metal selector --}}
+                                @if($metals->isNotEmpty())
+                                <div class="variant-picker-item variant-metal">
+                                    <div class="variant-picker-label">
+                                        <div class="h4 fw-semibold">
+                                            Metal
+                                            <span class="variant-picker-label-value" id="currentMetalLabel">{{ $defaultVariant?->metal?->name }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="variant-picker-values" id="metalPicker">
+                                        @foreach($metals as $metal)
+                                        <span class="size-btn {{ $defaultVariant?->metal_id === $metal->id ? 'active' : '' }}"
+                                              data-metal-id="{{ $metal->id }}"
+                                              onclick="selectMetal({{ $metal->id }}, this)">{{ $metal->name }}</span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
+
+                                {{-- Gemstone selector (options depend on selected metal) --}}
+                                <div class="variant-picker-item variant-gemstone" id="gemstoneWrap" style="{{ $gemstones->isEmpty() ? 'display:none' : '' }}">
+                                    <div class="variant-picker-label">
+                                        <div class="h4 fw-semibold">
+                                            Gemstone
+                                            <span class="variant-picker-label-value" id="currentGemstoneLabel"></span>
+                                        </div>
+                                    </div>
+                                    <div class="variant-picker-values" id="gemstonePicker"></div>
+                                </div>
+
+                                {{-- Ring size selector --}}
+                                @if($product->sizes->isNotEmpty())
+                                <div class="variant-picker-item variant-size">
+                                    <div class="variant-picker-label">
+                                        <div class="h4 fw-semibold">Ring Size (US)</div>
+                                        <a href="#"
+                                           onclick="document.getElementById('sizeGuideAccordion').open=true; return false;"
+                                           class="size-guide link h6 fw-medium">
+                                            <i class="icon icon-ruler"></i> Size Guide
+                                        </a>
+                                    </div>
+                                    <div class="variant-picker-values">
+                                        @foreach($product->sizes as $size)
+                                        <span class="size-btn {{ $size->stock == 0 ? 'disabled' : '' }}"
+                                              data-size-id="{{ $size->id }}"
+                                              @if($size->stock != 0) onclick="selectSize({{ $size->id }}, this)" @endif>
+                                            US {{ number_format((float)$size->us_size, 1) }}{{ $size->stock == 0 ? ' (Sold Out)' : '' }}
+                                        </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+
+                            <div class="tf-product-total-quantity">
+                                <div class="group-btn">
+                                    <div class="wg-quantity">
+                                        <button type="button" class="btn-quantity btn-decrease" onclick="stepQty(-1)">
+                                            <i class="icon icon-minus"></i>
+                                        </button>
+                                        <input class="quantity-product" type="number" id="qtyInput" name="quantity" value="1" min="1" max="10">
+                                        <button type="button" class="btn-quantity btn-increase" onclick="stepQty(1)">
+                                            <i class="icon icon-plus"></i>
+                                        </button>
+                                    </div>
+                                    <button type="submit" id="addToCartBtn" class="tf-btn animate-btn btn-add-to-cart">
+                                        ADD TO BAG
+                                        <i class="icon icon-shopping-cart-simple"></i>
+                                    </button>
+                                    @php $isWishlisted = app(\App\Services\WishlistService::class)->has($product->id); @endphp
+                                    <button type="button"
+                                            id="wishlistTextBtn"
+                                            class="hover-tooltip tooltip-top box-icon btn-add-wishlist"
+                                            onclick="toggleWishlist(this)"
+                                            data-product-id="{{ $product->id }}"
+                                            data-wishlisted="{{ $isWishlisted ? 'true' : 'false' }}">
+                                        <span class="icon {{ $isWishlisted ? 'icon-heart-fill' : 'icon-heart' }}"></span>
+                                        <span class="tooltip">{{ $isWishlisted ? 'Saved to Wishlist' : 'Add to Wishlist' }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
                 </div>
-
-                @if($defaultVariant?->sku)
-                <p style="font-size:.75rem; color:var(--fado-warm-grey); margin-bottom:20px">
-                    SKU: <span id="variantSku">{{ $defaultVariant->sku }}</span>
-                </p>
-                @endif
-
-                <hr style="border-color:var(--fado-cream); margin:24px 0">
-
-                {{-- ── VARIANT SELECTOR FORM ──────────────────────────────── --}}
-                <form method="POST" action="{{ route('shop.cart.add') }}" id="addToCartForm">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <input type="hidden" name="variant_id" id="selectedVariantId" value="{{ $defaultVariant?->id }}">
-                    <input type="hidden" name="size_id" id="selectedSizeId" value="">
-
-                    {{-- Metal selector --}}
-                    @if($metals->isNotEmpty())
-                    <div style="margin-bottom:20px">
-                        <label style="display:block; font-size:.7rem; font-weight:700; letter-spacing:.1em;
-                                      text-transform:uppercase; color:var(--fado-deep-green); margin-bottom:8px">
-                            Metal
-                        </label>
-                        <div style="position:relative">
-                            <select id="metalSelect" onchange="onMetalChange()"
-                                    style="width:100%; padding:11px 40px 11px 14px;
-                                           border:1px solid var(--fado-warm-grey); border-radius:3px;
-                                           font-size:.9375rem; color:var(--fado-deep-green); background:#fff;
-                                           appearance:none; cursor:pointer; outline:none;
-                                           background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23BCB3AB'/%3E%3C/svg%3E\");
-                                           background-repeat:no-repeat; background-position:right 14px center"
-                                    onfocus="this.style.borderColor='var(--fado-green-mid)'"
-                                    onblur="this.style.borderColor='var(--fado-warm-grey)'">
-                                @foreach($metals as $metal)
-                                <option value="{{ $metal->id }}"
-                                        {{ $defaultVariant?->metal_id === $metal->id ? 'selected' : '' }}>
-                                    {{ $metal->name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    @endif
-
-                    {{-- Gemstone selector --}}
-                    <div id="gemstoneWrap" style="margin-bottom:20px; {{ $gemstones->isEmpty() ? 'display:none' : '' }}">
-                        <label style="display:block; font-size:.7rem; font-weight:700; letter-spacing:.1em;
-                                      text-transform:uppercase; color:var(--fado-deep-green); margin-bottom:8px">
-                            Gemstone
-                        </label>
-                        <div style="position:relative">
-                            <select id="gemstoneSelect" onchange="onGemstoneChange()"
-                                    style="width:100%; padding:11px 40px 11px 14px;
-                                           border:1px solid var(--fado-warm-grey); border-radius:3px;
-                                           font-size:.9375rem; color:var(--fado-deep-green); background:#fff;
-                                           appearance:none; cursor:pointer; outline:none;
-                                           background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23BCB3AB'/%3E%3C/svg%3E\");
-                                           background-repeat:no-repeat; background-position:right 14px center"
-                                    onfocus="this.style.borderColor='var(--fado-green-mid)'"
-                                    onblur="this.style.borderColor='var(--fado-warm-grey)'">
-                                <option value="">No gemstone</option>
-                                @foreach($gemstones as $gem)
-                                <option value="{{ $gem->id }}">{{ $gem->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    {{-- Ring size selector --}}
-                    @if($product->sizes->isNotEmpty())
-                    <div style="margin-bottom:20px">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
-                            <label style="font-size:.7rem; font-weight:700; letter-spacing:.1em;
-                                          text-transform:uppercase; color:var(--fado-deep-green)">
-                                Ring Size (US)
-                            </label>
-                            <a href="#size-guide"
-                               onclick="document.getElementById('sizeGuideAccordion').open=true; return false;"
-                               style="font-size:.75rem; color:var(--fado-green-mid); text-decoration:none">
-                                Size guide
-                            </a>
-                        </div>
-                        <div style="position:relative">
-                            <select id="sizeSelect"
-                                    onchange="document.getElementById('selectedSizeId').value = this.options[this.selectedIndex].dataset.sizeId || ''"
-                                    style="width:100%; padding:11px 40px 11px 14px;
-                                           border:1px solid var(--fado-warm-grey); border-radius:3px;
-                                           font-size:.9375rem; color:var(--fado-deep-green); background:#fff;
-                                           appearance:none; cursor:pointer; outline:none;
-                                           background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23BCB3AB'/%3E%3C/svg%3E\");
-                                           background-repeat:no-repeat; background-position:right 14px center"
-                                    onfocus="this.style.borderColor='var(--fado-green-mid)'"
-                                    onblur="this.style.borderColor='var(--fado-warm-grey)'">
-                                <option value="">Select a size</option>
-                                @foreach($product->sizes as $size)
-                                <option value="{{ $size->us_size }}"
-                                        data-size-id="{{ $size->id }}"
-                                        {{ $size->stock == 0 ? 'disabled' : '' }}>
-                                    US {{ number_format((float)$size->us_size, 1) }}{{ $size->stock == 0 ? ' — Sold Out' : ($size->stock < 3 ? ' — Almost gone' : '') }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    @endif
-
-                    {{-- Quantity + Add to Cart --}}
-                    <div style="display:flex; gap:12px; align-items:stretch; margin-bottom:14px">
-                        {{-- Qty stepper --}}
-                        <div style="display:flex; border:1px solid var(--fado-warm-grey); border-radius:3px; overflow:hidden; flex-shrink:0">
-                            <button type="button" onclick="stepQty(-1)"
-                                    style="width:40px; background:#fff; border:none; cursor:pointer;
-                                           font-size:1.25rem; color:var(--fado-deep-green); line-height:1">−</button>
-                            <input type="number" name="quantity" id="qtyInput" value="1" min="1" max="10"
-                                   style="width:44px; border:none; border-left:1px solid var(--fado-cream);
-                                          border-right:1px solid var(--fado-cream); text-align:center;
-                                          font-size:.9375rem; color:var(--fado-deep-green); outline:none">
-                            <button type="button" onclick="stepQty(1)"
-                                    style="width:40px; background:#fff; border:none; cursor:pointer;
-                                           font-size:1.25rem; color:var(--fado-deep-green); line-height:1">+</button>
-                        </div>
-
-                        {{-- Add to Cart --}}
-                        <button type="submit" id="addToCartBtn"
-                                style="flex:1; padding:12px 20px; background:var(--fado-deep-green); color:#fff;
-                                       border:none; border-radius:3px; font-size:.9375rem; font-weight:600;
-                                       cursor:pointer; letter-spacing:.03em; transition:background .2s"
-                                onmouseover="this.style.background='var(--fado-green-mid)'"
-                                onmouseout="this.style.background='var(--fado-deep-green)'">
-                            Add to Bag
-                        </button>
-                    </div>
-
-                    {{-- Wishlist text button --}}
-                    @php $isWishlisted = app(\App\Services\WishlistService::class)->has($product->id); @endphp
-                    <button type="button"
-                            id="wishlistTextBtn"
-                            onclick="toggleWishlist(this)"
-                            data-product-id="{{ $product->id }}"
-                            data-wishlisted="{{ $isWishlisted ? 'true' : 'false' }}"
-                            style="width:100%; padding:11px; background:transparent;
-                                   border:1px solid {{ $isWishlisted ? 'var(--fado-green-mid)' : 'var(--fado-warm-grey)' }};
-                                   border-radius:3px; font-size:.875rem;
-                                   color:{{ $isWishlisted ? 'var(--fado-green-mid)' : 'var(--fado-deep-green)' }};
-                                   cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
-                                   transition:border-color .2s, color .2s"
-                            onmouseover="this.dataset.wishlisted !== 'true' && (this.style.borderColor='var(--fado-green-mid)')"
-                            onmouseout="this.dataset.wishlisted !== 'true' && (this.style.borderColor='var(--fado-warm-grey)')">
-                        <i class="icon {{ $isWishlisted ? 'icon-heart-fill' : 'icon-heart' }}" style="font-size:.875rem"></i>
-                        {{ $isWishlisted ? 'Saved to Wishlist' : 'Save to Wishlist' }}
-                    </button>
-                </form>
 
                 <hr style="border-color:var(--fado-cream); margin:28px 0">
 
@@ -565,8 +450,6 @@ details[open] .fado-accordion-icon { transform: rotate(180deg); }
 .fado-accordion-body p:last-child { margin-bottom: 0; }
 
 /* ── Thumbnail active state ── */
-.fado-thumb.active { border-color: var(--fado-green-mid) !important; }
-.fado-thumb-mob.active { border-color: var(--fado-green-mid) !important; }
 
 /* ── Related product hover ── */
 .fado-related-card:hover .fado-related-name { color: var(--fado-green-mid) !important; }
@@ -583,54 +466,7 @@ details[open] .fado-accordion-icon { transform: rotate(180deg); }
 @push('scripts')
 <script>
 // ── Image data from PHP ────────────────────────────────────────────────────
-const productImages = @json($imageData);
-const variantData   = @json($variantData);
-
-// ── Thumbnail state ────────────────────────────────────────────────────────
-let activeThumbIndex = 0;
-let thumbOffset      = 0;
-const THUMB_STEP     = 98; // 90px height + 8px gap
-const VISIBLE_THUMBS = 4;
-
-function selectImage(index) {
-    activeThumbIndex = index;
-
-    if (productImages[index]) {
-        const hero = document.getElementById('heroImage');
-        if (hero) {
-            hero.style.opacity = '0';
-            setTimeout(() => {
-                hero.src = productImages[index].url;
-                hero.style.opacity = '1';
-            }, 150);
-        }
-    }
-
-    // Update desktop thumb borders
-    document.querySelectorAll('.fado-thumb').forEach((el, i) => {
-        el.style.borderColor = i === index ? 'var(--fado-green-mid)' : 'transparent';
-        el.classList.toggle('active', i === index);
-    });
-
-    // Update mobile thumb borders
-    document.querySelectorAll('.fado-thumb-mob').forEach((el, i) => {
-        el.style.borderColor = i === index ? 'var(--fado-green-mid)' : 'transparent';
-        el.classList.toggle('active', i === index);
-    });
-}
-
-function scrollThumbs(direction) {
-    const total    = productImages.length;
-    const maxOff   = Math.max(0, (total - VISIBLE_THUMBS) * THUMB_STEP);
-    thumbOffset    = Math.max(0, Math.min(maxOff, thumbOffset + direction * THUMB_STEP));
-    const list     = document.getElementById('thumbList');
-    if (list) list.style.transform = `translateY(-${thumbOffset}px)`;
-
-    const upBtn   = document.getElementById('thumbUp');
-    const downBtn = document.getElementById('thumbDown');
-    if (upBtn)   upBtn.disabled   = thumbOffset === 0;
-    if (downBtn) downBtn.disabled = thumbOffset >= maxOff;
-}
+const variantData = @json($variantData);
 
 // ── Variant switching ──────────────────────────────────────────────────────
 function formatPrice(eur) {
@@ -668,10 +504,11 @@ function applyVariant(variant) {
     const btn = document.getElementById('addToCartBtn');
     if (btn) {
         btn.disabled = variant.stock <= 0;
-        btn.style.background = variant.stock <= 0 ? 'var(--fado-warm-grey)' : 'var(--fado-deep-green)';
-        btn.textContent = variant.stock <= 0 ? 'Out of Stock' : 'Add to Bag';
-        btn.onmouseover = variant.stock > 0 ? () => btn.style.background = 'var(--fado-green-mid)' : null;
-        btn.onmouseout  = variant.stock > 0 ? () => btn.style.background = 'var(--fado-deep-green)' : null;
+        btn.innerHTML = variant.stock <= 0
+            ? 'OUT OF STOCK'
+            : 'ADD TO BAG <i class="icon icon-shopping-cart-simple"></i>';
+        btn.style.opacity = variant.stock <= 0 ? '.5' : '1';
+        btn.style.cursor = variant.stock <= 0 ? 'not-allowed' : 'pointer';
     }
 }
 
@@ -691,39 +528,63 @@ function findBestVariant(metalId, gemstoneId) {
     return variantData.find(v => v.metal_id === metalId) || variantData[0] || null;
 }
 
-function onMetalChange() {
-    const metalId      = parseInt(document.getElementById('metalSelect')?.value) || null;
-    const gemstoneWrap = document.getElementById('gemstoneWrap');
-    const gemstoneEl   = document.getElementById('gemstoneSelect');
+function rebuildGemstonePicker(metalId) {
+    const wrap   = document.getElementById('gemstoneWrap');
+    const picker = document.getElementById('gemstonePicker');
+    const label  = document.getElementById('currentGemstoneLabel');
+    if (!picker) return null;
 
-    // Rebuild gemstone options for selected metal
-    if (gemstoneEl) {
-        const gems = variantData
-            .filter(v => v.metal_id === metalId && v.gemstone_id)
-            .reduce((acc, v) => {
-                if (!acc.find(g => g.id === v.gemstone_id)) {
-                    acc.push({ id: v.gemstone_id, name: v.gemstone_name });
-                }
-                return acc;
-            }, []);
+    const gems = variantData
+        .filter(v => v.metal_id === metalId && v.gemstone_id)
+        .reduce((acc, v) => {
+            if (!acc.find(g => g.id === v.gemstone_id)) {
+                acc.push({ id: v.gemstone_id, name: v.gemstone_name });
+            }
+            return acc;
+        }, []);
 
-        if (gems.length > 0) {
-            gemstoneEl.innerHTML = '<option value="">No gemstone</option>' +
-                gems.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
-            if (gemstoneWrap) gemstoneWrap.style.display = 'block';
-        } else {
-            if (gemstoneWrap) gemstoneWrap.style.display = 'none';
-        }
+    if (gems.length > 0) {
+        picker.innerHTML = gems.map((g, i) =>
+            `<span class="size-btn${i === 0 ? ' active' : ''}" data-gemstone-id="${g.id}" onclick="selectGemstone(${g.id}, this)">${g.name}</span>`
+        ).join('');
+        if (wrap) wrap.style.display = '';
+        if (label) label.textContent = gems[0].name;
+        return gems[0].id;
+    } else {
+        picker.innerHTML = '';
+        if (wrap) wrap.style.display = 'none';
+        if (label) label.textContent = '';
+        return null;
     }
+}
 
-    const gemId = parseInt(gemstoneEl?.value) || null;
+function selectMetal(metalId, el) {
+    document.querySelectorAll('#metalPicker .size-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+
+    const label = document.getElementById('currentMetalLabel');
+    if (label) label.textContent = el.textContent.trim();
+
+    const gemId = rebuildGemstonePicker(metalId);
     applyVariant(findBestVariant(metalId, gemId));
 }
 
-function onGemstoneChange() {
-    const metalId    = parseInt(document.getElementById('metalSelect')?.value) || null;
-    const gemstoneId = parseInt(document.getElementById('gemstoneSelect')?.value) || null;
+function selectGemstone(gemstoneId, el) {
+    document.querySelectorAll('#gemstonePicker .size-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+
+    const label = document.getElementById('currentGemstoneLabel');
+    if (label) label.textContent = el.textContent.trim();
+
+    const activeMetalBtn = document.querySelector('#metalPicker .size-btn.active');
+    const metalId = activeMetalBtn ? parseInt(activeMetalBtn.dataset.metalId) : null;
     applyVariant(findBestVariant(metalId, gemstoneId));
+}
+
+function selectSize(sizeId, el) {
+    document.querySelectorAll('.variant-size .size-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('selectedSizeId').value = sizeId;
 }
 
 // ── Quantity stepper ───────────────────────────────────────────────────────
@@ -766,9 +627,10 @@ function toggleWishlist(triggerBtn) {
         // Text button
         const textBtn = document.getElementById('wishlistTextBtn');
         if (textBtn) {
-            textBtn.style.borderColor = added ? 'var(--fado-green-mid)' : 'var(--fado-warm-grey)';
-            textBtn.style.color       = added ? 'var(--fado-green-mid)' : 'var(--fado-deep-green)';
-            textBtn.innerHTML = `<i class="icon ${added ? 'icon-heart-fill' : 'icon-heart'}" style="font-size:.875rem"></i> ${added ? 'Saved to Wishlist' : 'Save to Wishlist'}`;
+            const icon = textBtn.querySelector('.icon');
+            const tip  = textBtn.querySelector('.tooltip');
+            if (icon) icon.className = 'icon ' + (added ? 'icon-heart-fill' : 'icon-heart');
+            if (tip)  tip.textContent = added ? 'Saved to Wishlist' : 'Add to Wishlist';
             textBtn.dataset.wishlisted = added ? 'true' : 'false';
         }
 
@@ -789,14 +651,12 @@ function toggleWishlist(triggerBtn) {
 
 // ── Init ───────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialise thumb scroll state
-    scrollThumbs(0); // sets button disabled states without moving
-
-    // Apply default variant display (first variant)
+    // Apply default variant display (first variant) and build initial gemstone picker
     if (variantData.length > 0) {
-        const metalId    = parseInt(document.getElementById('metalSelect')?.value) || null;
-        const gemstoneId = parseInt(document.getElementById('gemstoneSelect')?.value) || null;
-        applyVariant(findBestVariant(metalId, gemstoneId));
+        const activeMetalBtn = document.querySelector('#metalPicker .size-btn.active');
+        const metalId = activeMetalBtn ? parseInt(activeMetalBtn.dataset.metalId) : null;
+        const gemId   = rebuildGemstonePicker(metalId);
+        applyVariant(findBestVariant(metalId, gemId));
     }
 });
 </script>

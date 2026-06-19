@@ -112,6 +112,7 @@
 <script src="/js/lazysize.min.js"></script>
 <script src="/js/wow.min.js"></script>
 <script src="/js/main.js"></script>
+<script src="/js/zoom.js"></script>
 
 @stack('scripts')
 
