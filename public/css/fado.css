@@ -21,3 +21,12 @@
 .tf-header.header-fixed .fado-wordmark  { color: var(--text, #1a1a1a); }
 /* Mobile canvas header — white */
 .canvas-mb .canvas-header .fado-wordmark { color: #fff; }
+
+/* ── Hero slider — full viewport height ─────────────────────────────────── */
+/* Ochaka's CSS only defines breakpoint heights that REDUCE from a base.
+   We set the base at ≥1440px so the hero fills the full screen on desktop. */
+@media (min-width: 1440px) {
+    .tf-slideshow .slider-wrap {
+        height: 100vh;
+    }
+}
