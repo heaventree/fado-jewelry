@@ -188,10 +188,12 @@
 
                         <div class="dropdown-divider my-1"></div>
 
-                        <a class="dropdown-item text-danger" href="{{ route('second', [ 'auth' , 'login']) }}">
-                            <i class="bx bx-log-out fs-18 align-middle me-1"></i><span
-                                class="align-middle">Logout</span>
-                        </a>
+                        <form method="POST" action="{{ route('admin.logout') }}" style="margin:0">
+                            @csrf
+                            <button type="submit" class="dropdown-item text-danger" style="background:none; border:none; width:100%; text-align:left; cursor:pointer; padding:.35rem 1rem">
+                                <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
 
