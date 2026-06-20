@@ -487,11 +487,303 @@
 </div>
 {{-- /Box Icon --}}
 
-{{-- NOTE: The following sections from home-jewelry.html were intentionally omitted, per
-     explicit decision, rather than fabricated:
-     - Testimonial (source uses fake customer names/quotes — omitted until real testimonials exist)
-     - Blog (no blog/post system exists in the database yet)
-     - Gallery "Shop Instagram" (no live Instagram integration exists; section would misleadingly
-       imply a real social feed) --}}
+{{-- PLACEHOLDER: Testimonials — using Ochaka demo content (fake customer names/quotes/products), needs real client reviews before launch --}}
+<section class="flat-spacing">
+    <div class="container">
+        <div class="sect-title type-2">
+            <div class="flex-sm-1 wow fadeInUp">
+                <h1 class="s-title mb-8">Customer Reviews</h1>
+                <p class="s-subtitle h6">Up to 50% off Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+            </div>
+            <div class="group-btn-slider wow fadeInUp" data-wow-delay="0.1s">
+                <div class="tf-sw-nav style-2 type-small nav-prev-swiper">
+                    <i class="icon icon-caret-left"></i>
+                </div>
+                <div class="tf-sw-nav style-2 type-small nav-next-swiper">
+                    <i class="icon icon-caret-right"></i>
+                </div>
+            </div>
+        </div>
+        <div dir="ltr" class="swiper tf-swiper" data-preview="2" data-tablet="2" data-mobile-sm="1" data-mobile="1" data-space-lg="48"
+            data-space-md="32" data-space="12" data-pagination="1" data-pagination-sm="1" data-pagination-md="2" data-pagination-lg="2">
+            <div class="swiper-wrapper">
+                <!-- item 1 -->
+                <div class="swiper-slide">
+                    <div class="testimonial-V02 type-space-2 hover-img wow fadeInUp">
+                        <div class="tes_product">
+                            <div class="product-image img-style">
+                                <img class="lazyload" src="/images/ochaka/products/jewelry/product-5.jpg"
+                                    data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="">
+                            </div>
+                            <div class="product-infor">
+                                <h5 class="prd_name fw-normal">
+                                    <a href="#" class="link">
+                                        Silver Diamond Ring
+                                    </a>
+                                </h5>
+                                <h6 class="prd_price">$14,99</h6>
+                            </div>
+                        </div>
+                        <div class="tes_content">
+                            <div class="tes_icon">
+                                <i class="icon icon-block-quote"></i>
+                            </div>
+                            <h4 class="tes_title">Dedicated service</h4>
+                            <p class="tes_text h4">
+                                " The support from ACIS has been outstanding. Anytime we had a question or needed help, their team responded
+                                quickly and professionally. "
+                            </p>
+                            <div class="tes_author">
+                                <p class="author-name h4">Brooklyn Simmons</p>
+                                <i class="author-verified icon-check-circle fs-24"></i>
+                            </div>
+                            <div class="rate_wrap">
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 2 -->
+                <div class="swiper-slide">
+                    <div class="testimonial-V02 type-space-2 hover-img wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="tes_product">
+                            <div class="product-image img-style">
+                                <img class="lazyload" src="/images/ochaka/products/jewelry/product-9.jpg"
+                                    data-src="/images/ochaka/products/jewelry/product-9.jpg" alt="">
+                            </div>
+                            <div class="product-infor">
+                                <h5 class="prd_name fw-normal">
+                                    <a href="#" class="link">
+                                        Eternity Engagement Ring
+                                    </a>
+                                </h5>
+                                <h6 class="prd_price">$19,99</h6>
+                            </div>
+                        </div>
+                        <div class="tes_content">
+                            <div class="tes_icon">
+                                <i class="icon icon-block-quote"></i>
+                            </div>
+                            <h4 class="tes_title">Exceptional Reliability</h4>
+                            <p class="tes_text h4">
+                                "No surprises, just consistent and dependable performance every single time without fail."
+                            </p>
+                            <div class="tes_author">
+                                <p class="author-name h4">Mas Shin</p>
+                                <i class="author-verified icon-check-circle fs-24"></i>
+                            </div>
+                            <div class="rate_wrap">
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 3 -->
+                <div class="swiper-slide">
+                    <div class="testimonial-V02 type-space-2">
+                        <div class="tes_product">
+                            <div class="product-image">
+                                <img class="lazyload" src="/images/ochaka/products/jewelry/product-5.jpg"
+                                    data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="">
+                            </div>
+                            <div class="product-infor">
+                                <h5 class="prd_name fw-normal">
+                                    <a href="#" class="link">
+                                        UrbanCool Work Shirt
+                                    </a>
+                                </h5>
+                                <h6 class="prd_price">$14,99</h6>
+                            </div>
+                        </div>
+                        <div class="tes_content">
+                            <div class="tes_icon">
+                                <i class="icon icon-block-quote"></i>
+                            </div>
+                            <h4 class="tes_title">Best Product Quality</h4>
+                            <p class="tes_text h4">
+                                "The build quality is excellent and everything works smoothly. I can feel the difference compared to other
+                                brands"
+                            </p>
+                            <div class="tes_author">
+                                <p class="author-name h4">Sil Vox</p>
+                                <i class="author-verified icon-check-circle fs-24"></i>
+                            </div>
+                            <div class="rate_wrap">
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                                <i class="icon-star text-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{-- /PLACEHOLDER: Testimonials --}}
+
+{{-- PLACEHOLDER: Blog — using Ochaka demo content (no blog/post system exists in the database yet), needs real posts before launch --}}
+<section class="flat-spacing pt-0">
+    <div class="container">
+        <div class="sect-title text-center wow fadeInUp">
+            <h1 class="s-title mb-8">Our Blog</h1>
+            <p class="s-subtitle h6">Up to 50% off Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </div>
+        <div dir="ltr" class="swiper tf-swiper" data-preview="3" data-tablet="3" data-mobile-sm="2" data-mobile="1" data-space-lg="48"
+            data-space-md="32" data-space="12" data-pagination="1" data-pagination-sm="2" data-pagination-md="3" data-pagination-lg="3">
+            <div class="swiper-wrapper">
+                <!-- item 1 -->
+                <div class="swiper-slide">
+                    <div class="article-blog type-space-2 hover-img4 wow fadeInLeft">
+                        <a href="#" class="entry_image img-style4">
+                            <img src="/images/ochaka/blog/blog-11.jpg" data-src="/images/ochaka/blog/blog-11.jpg" alt="Blog" class="lazyload aspect-ratio-0">
+                        </a>
+                        <div class="entry_tag">
+                            <a href="#" class="name-tag h6 link">March 2, 2025</a>
+                        </div>
+
+                        <div class="blog-content">
+                            <a href="#" class="entry_name link h4">
+                                5 Most Expensive Diamond Rings In The World
+                            </a>
+                            <p class="text h6">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit in malesuada magna faucibus. Pellentesque eget finibus
+                                nunc.
+                            </p>
+                            <a href="#" class="tf-btn-line">
+                                Read more
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 2 -->
+                <div class="swiper-slide">
+                    <div class="article-blog type-space-2 hover-img4 wow fadeInLeft" data-wow-delay="0.1s">
+                        <a href="#" class="entry_image img-style4">
+                            <img src="/images/ochaka/blog/blog-12.jpg" data-src="/images/ochaka/blog/blog-12.jpg" alt="Blog" class="lazyload aspect-ratio-0">
+                        </a>
+                        <div class="entry_tag">
+                            <a href="#" class="name-tag h6 link">March 2, 2025</a>
+                        </div>
+
+                        <div class="blog-content">
+                            <a href="#" class="entry_name link h4">
+                                Natural Diamond Manufacturing
+                            </a>
+                            <p class="text h6">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit in malesuada magna faucibus. Pellentesque eget finibus
+                                nunc.
+                            </p>
+                            <a href="#" class="tf-btn-line">
+                                Read more
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 3 -->
+                <div class="swiper-slide">
+                    <div class="article-blog type-space-2 hover-img4 wow fadeInLeft" data-wow-delay="0.2s">
+                        <a href="#" class="entry_image img-style4">
+                            <img src="/images/ochaka/blog/blog-12.jpg" data-src="/images/ochaka/blog/blog-12.jpg" alt="Blog" class="lazyload aspect-ratio-0">
+                        </a>
+                        <div class="entry_tag">
+                            <a href="#" class="name-tag h6 link">March 2, 2025</a>
+                        </div>
+
+                        <div class="blog-content">
+                            <a href="#" class="entry_name link h4">
+                                Diamond Jewelry For Amazing Wedding
+                            </a>
+                            <p class="text h6">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit in malesuada magna faucibus. Pellentesque eget finibus
+                                nunc.
+                            </p>
+                            <a href="#" class="tf-btn-line">
+                                Read more
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sw-dot-default tf-sw-pagination"></div>
+        </div>
+    </div>
+</section>
+{{-- /PLACEHOLDER: Blog --}}
+
+{{-- PLACEHOLDER: Gallery "Shop Instagram" — using Ochaka demo content (no live Instagram integration exists), needs real feed/images before launch --}}
+<section class="flat-spacing pb-xl-0">
+    <div class="container">
+        <div class="sect-title text-center wow fadeInUp">
+            <h1 class="title mb-8">Shop Instagram</h1>
+            <p class="s-subtitle h6">Up to 50% off Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </div>
+    </div>
+    <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-preview="4" data-tablet="3" data-mobile-sm="2" data-mobile="2" data-space="0"
+        data-pagination="2" data-pagination-sm="2" data-pagination-md="3" data-pagination-lg="4">
+        <div class="swiper-wrapper">
+            <!-- item 1 -->
+            <div class="swiper-slide">
+                <div class="gallery-item style-2 hover-img hover-overlay">
+                    <div class="image img-style">
+                        <img class="lazyload" src="/images/ochaka/gallery/gallery-24.jpg" data-src="/images/ochaka/gallery/gallery-24.jpg" alt="">
+                    </div>
+                    <a href="#" class="box-icon hover-tooltip">
+                        <span class="icon icon-instagram-logo"></span>
+                        <span class="tooltip">View product</span>
+                    </a>
+                </div>
+            </div>
+            <!-- item 2 -->
+            <div class="swiper-slide">
+                <div class="gallery-item style-2 hover-img hover-overlay">
+                    <div class="image img-style">
+                        <img class="lazyload" src="/images/ochaka/gallery/gallery-25.jpg" data-src="/images/ochaka/gallery/gallery-25.jpg" alt="">
+                    </div>
+                    <a href="#" class="box-icon hover-tooltip">
+                        <span class="icon icon-instagram-logo"></span>
+                        <span class="tooltip">View product</span>
+                    </a>
+                </div>
+            </div>
+            <!-- item 3 -->
+            <div class="swiper-slide">
+                <div class="gallery-item style-2 hover-img hover-overlay">
+                    <div class="image img-style">
+                        <img class="lazyload" src="/images/ochaka/gallery/gallery-26.jpg" data-src="/images/ochaka/gallery/gallery-26.jpg" alt="">
+                    </div>
+                    <a href="#" class="box-icon hover-tooltip">
+                        <span class="icon icon-instagram-logo"></span>
+                        <span class="tooltip">View product</span>
+                    </a>
+                </div>
+            </div>
+            <!-- item 4 -->
+            <div class="swiper-slide">
+                <div class="gallery-item style-2 hover-img hover-overlay">
+                    <div class="image img-style">
+                        <img class="lazyload" src="/images/ochaka/gallery/gallery-27.jpg" data-src="/images/ochaka/gallery/gallery-27.jpg" alt="">
+                    </div>
+                    <a href="#" class="box-icon hover-tooltip">
+                        <span class="icon icon-instagram-logo"></span>
+                        <span class="tooltip">View product</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="sw-dot-default tf-sw-pagination"></div>
+    </div>
+</section>
+{{-- /PLACEHOLDER: Gallery "Shop Instagram" --}}
 
 @endsection
