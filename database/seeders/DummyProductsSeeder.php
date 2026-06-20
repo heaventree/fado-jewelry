@@ -45,7 +45,12 @@ class DummyProductsSeeder extends Seeder
         // Ring sizes to attach (US sizes typically used)
         $ringSizeSlugs = ['5-0', '6-0', '7-0', '8-0', '9-0'];
 
-        // Image pool — paths relative to storage public disk
+        // Image pool — paths relative to the storage public disk. These map to
+        // resources copied from the Ochaka "jewelry" demo product set
+        // (public/images/ochaka/products/jewelry/product-*.jpg) into
+        // public/storage/products/demo/, so they resolve correctly via
+        // ProductImage::getUrlAttribute()'s Storage::url() even before
+        // `php artisan storage:link` has been run on a given environment.
         $imgPool = array_map(
             fn($n) => "products/demo/product-{$n}.jpg",
             range(1, 22)
@@ -68,10 +73,11 @@ class DummyProductsSeeder extends Seeder
                 'category'   => 'rings',
                 'name'       => 'Claddagh Ring',
                 'desc'       => 'The classic Irish Claddagh ring — two hands holding a crowned heart. A timeless symbol of love, loyalty and friendship, handcrafted in sterling silver.',
+                'bestseller' => true,
                 'variants'   => [
                     ['metal' => $silver, 'price' => 69.00, 'stock' => 10],
-                    ['metal' => $gold9y, 'price' => 149.00, 'stock' => 5, 'gem' => $cz],
-                    ['metal' => $gold14y, 'price' => 249.00, 'stock' => 3, 'gem' => $diamond],
+                    ['metal' => $gold9y, 'price' => 149.00, 'sale' => 119.00, 'stock' => 5, 'gem' => $cz],
+                    ['metal' => $gold14y, 'price' => 249.00, 'stock' => 3, 'gem' => $diamond, 'second_metal' => $white9],
                 ],
                 'has_sizes' => true,
                 'images'    => 3,
@@ -106,7 +112,7 @@ class DummyProductsSeeder extends Seeder
                 'name'       => 'Corrib Claddagh Ring',
                 'desc'       => 'A contemporary reinterpretation of the traditional Claddagh, inspired by the flowing waters of the River Corrib. Modern lines meet ancient symbolism.',
                 'variants'   => [
-                    ['metal' => $silver, 'price' => 79.00, 'stock' => 8],
+                    ['metal' => $silver, 'price' => 79.00, 'stock' => 8, 'colour' => 'Oxidised Black'],
                     ['metal' => $white9, 'price' => 165.00, 'stock' => 4, 'gem' => $diamond],
                 ],
                 'has_sizes' => true,
@@ -130,10 +136,11 @@ class DummyProductsSeeder extends Seeder
                 'category'   => 'rings',
                 'name'       => 'Trinity Knot Ring',
                 'desc'       => 'The eternal Celtic trinity knot — no beginning, no end. A symbol of the triple goddess and life\'s unending cycle, rendered in fine silver and gold.',
+                'bestseller' => true,
                 'variants'   => [
-                    ['metal' => $silver, 'price' => 59.00, 'stock' => 12],
+                    ['metal' => $silver, 'price' => 59.00, 'sale' => 45.00, 'stock' => 12],
                     ['metal' => $gold9y, 'price' => 139.00, 'stock' => 6],
-                    ['metal' => $twotone, 'price' => 189.00, 'stock' => 3],
+                    ['metal' => $twotone, 'price' => 189.00, 'stock' => 3, 'second_metal' => $white9],
                 ],
                 'has_sizes' => true,
                 'images'    => 3,
@@ -194,7 +201,7 @@ class DummyProductsSeeder extends Seeder
                 'desc'       => 'The Livia ring — graceful, flowing curves for the modern Irish woman. Available in silver, gold and rose gold.',
                 'variants'   => [
                     ['metal' => $silver, 'price' => 75.00, 'stock' => 10],
-                    ['metal' => $rose9, 'price' => 155.00, 'stock' => 6, 'gem' => $amethyst],
+                    ['metal' => $rose9, 'price' => 155.00, 'sale' => 129.00, 'stock' => 6, 'gem' => $amethyst, 'second_metal' => $gold9y],
                     ['metal' => $gold9y, 'price' => 165.00, 'stock' => 4, 'gem' => $sapphire],
                 ],
                 'has_sizes' => true,
@@ -370,10 +377,11 @@ class DummyProductsSeeder extends Seeder
                 'category'   => 'rings',
                 'name'       => 'Wild Daisy Engagement Ring',
                 'desc'       => 'A delicate wild daisy ring from The Jewellery Garden — a perfect choice for nature-inspired engagements. Each petal hand-set in fine silver.',
+                'bestseller' => true,
                 'variants'   => [
                     ['metal' => $silver, 'price' => 99.00, 'stock' => 8],
                     ['metal' => $white9, 'price' => 225.00, 'stock' => 4, 'gem' => $diamond],
-                    ['metal' => $rose9, 'price' => 215.00, 'stock' => 4, 'gem' => $cz],
+                    ['metal' => $rose9, 'price' => 215.00, 'sale' => 179.00, 'stock' => 4, 'gem' => $cz, 'second_metal' => $white9],
                 ],
                 'has_sizes' => true,
                 'images'    => 3,
@@ -395,8 +403,98 @@ class DummyProductsSeeder extends Seeder
                 'name'       => 'Butterfly Earrings',
                 'desc'       => 'Delicate butterfly drop earrings from The Jewellery Garden — whimsical, feminine, perfect for weddings.',
                 'variants'   => [
-                    ['metal' => $silver, 'price' => 65.00, 'stock' => 12],
-                    ['metal' => $rose9, 'price' => 135.00, 'stock' => 6],
+                    ['metal' => $silver, 'price' => 65.00, 'stock' => 12, 'gem' => $cz, 'colour' => 'White'],
+                    ['metal' => $rose9, 'price' => 135.00, 'stock' => 6, 'second_metal' => $gold9y, 'colour' => 'Rose & Yellow'],
+                ],
+                'images' => 2,
+            ],
+            [
+                'collection' => 'the-garden-collection',
+                'category'   => 'bracelets-bangles',
+                'name'       => 'Forget Me Not Bangle',
+                'desc'       => 'A delicate forget-me-not bangle from The Jewellery Garden, hand-finished in sterling silver with blue enamel detail.',
+                'variants'   => [
+                    ['metal' => $silver, 'price' => 89.00, 'stock' => 9, 'colour' => 'Blue Enamel'],
+                    ['metal' => $gold9y, 'price' => 179.00, 'stock' => 4],
+                ],
+                'images' => 2,
+            ],
+            [
+                'collection' => 'the-garden-collection',
+                'category'   => 'pendants',
+                'name'       => 'Honey Bee Pendant',
+                'desc'       => 'A charming honey bee pendant from The Jewellery Garden — nature-inspired and finely detailed in sterling silver.',
+                'variants'   => [
+                    ['metal' => $silver, 'price' => 69.00, 'stock' => 11, 'gem' => $cz],
+                    ['metal' => $gold9y, 'price' => 149.00, 'sale' => 119.00, 'stock' => 5],
+                ],
+                'images' => 2,
+            ],
+
+            // ── ADDITIONAL CATEGORY COVERAGE ─────────────────────────────────
+            [
+                'collection' => 'trinity',
+                'category'   => 'bracelets-bangles',
+                'name'       => 'Trinity Knot Bangle',
+                'desc'       => 'A polished trinity knot bangle — the eternal Celtic knot wrapped around the wrist in fine sterling silver.',
+                'variants'   => [
+                    ['metal' => $silver, 'price' => 95.00, 'stock' => 7],
+                    ['metal' => $gold9y, 'price' => 189.00, 'stock' => 3, 'second_metal' => $white9],
+                ],
+                'images' => 2,
+            ],
+            [
+                'collection' => 'shamrock',
+                'category'   => 'cufflinks',
+                'name'       => 'Shamrock Cufflinks',
+                'desc'       => 'Classic shamrock cufflinks in sterling silver — a refined Irish touch for formal occasions.',
+                'variants'   => [
+                    ['metal' => $silver, 'price' => 75.00, 'stock' => 10],
+                    ['metal' => $gold9y, 'price' => 155.00, 'stock' => 4],
+                ],
+                'images' => 2,
+            ],
+            [
+                'collection' => 'irish-folklore',
+                'category'   => 'brooches',
+                'name'       => 'Celtic Harp Brooch',
+                'desc'       => 'Ireland\'s national symbol rendered as an elegant brooch, hand-finished in sterling silver.',
+                'variants'   => [
+                    ['metal' => $silver, 'price' => 89.00, 'stock' => 6, 'colour' => 'Antique Silver'],
+                    ['metal' => $gold14y, 'price' => 259.00, 'stock' => 2, 'gem' => $emerald],
+                ],
+                'images' => 2,
+            ],
+            [
+                'collection' => 'high-crosses',
+                'category'   => 'tie-tacks',
+                'name'       => 'Celtic Cross Tie-tack',
+                'desc'       => 'A discreet Celtic high cross tie-tack in sterling silver, perfect for weddings and formal wear.',
+                'variants'   => [
+                    ['metal' => $silver, 'price' => 35.00, 'stock' => 18],
+                    ['metal' => $gold9y, 'price' => 79.00, 'stock' => 6],
+                ],
+                'images' => 2,
+            ],
+            [
+                'collection' => 'high-crosses',
+                'category'   => 'crosses',
+                'name'       => 'Ardboe Cross Pendant',
+                'desc'       => 'Inspired by the Ardboe High Cross in County Tyrone, this pendant honours one of Ireland\'s great early Christian monuments.',
+                'variants'   => [
+                    ['metal' => $silver, 'price' => 85.00, 'stock' => 9],
+                    ['metal' => $gold9y, 'price' => 175.00, 'sale' => 149.00, 'stock' => 4, 'gem' => $sapphire],
+                ],
+                'images' => 2,
+            ],
+            [
+                'collection' => 'an-ri',
+                'category'   => 'brooches',
+                'name'       => 'An Rí Celtic Brooch',
+                'desc'       => 'Bold Celtic knotwork brooch from the An Rí collection, fit for Irish royalty.',
+                'variants'   => [
+                    ['metal' => $silver, 'price' => 99.00, 'stock' => 7],
+                    ['metal' => $gold18y, 'price' => 389.00, 'stock' => 1, 'gem' => $diamond],
                 ],
                 'images' => 2,
             ],
@@ -428,6 +526,7 @@ class DummyProductsSeeder extends Seeder
                     'description'       => $data['desc'],
                     'short_description' => null,
                     'is_active'         => true,
+                    'is_bestseller'     => $data['bestseller'] ?? false,
                     'opencart_id'       => null,
                 ]
             );
@@ -453,15 +552,16 @@ class DummyProductsSeeder extends Seeder
                 foreach ($data['variants'] as $v) {
                     if (!$v['metal']) continue;
                     ProductVariant::create([
-                        'product_id'   => $product->id,
-                        'metal_id'     => $v['metal']->id,
-                        'gemstone_id'  => $v['gem']?->id ?? null,
-                        'second_metal_id' => null,
-                        'sku'          => strtoupper(Str::limit($slug, 10, '')) . '-' . strtoupper(Str::limit($v['metal']->slug, 4, '')),
-                        'price_eur'    => $v['price'],
-                        'stock'        => $v['stock'],
-                        'is_active'    => true,
-                        'colour'       => null,
+                        'product_id'      => $product->id,
+                        'metal_id'        => $v['metal']->id,
+                        'gemstone_id'     => $v['gem']?->id ?? null,
+                        'second_metal_id' => $v['second_metal']?->id ?? null,
+                        'sku'             => strtoupper(Str::limit($slug, 10, '')) . '-' . strtoupper(Str::limit($v['metal']->slug, 4, '')),
+                        'price_eur'       => $v['price'],
+                        'sale_price_eur'  => $v['sale'] ?? null,
+                        'stock'           => $v['stock'],
+                        'is_active'       => true,
+                        'colour'          => $v['colour'] ?? null,
                     ]);
                 }
             }
