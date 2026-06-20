@@ -45,26 +45,31 @@ class DummyProductsSeeder extends Seeder
         // Ring sizes to attach (US sizes typically used)
         $ringSizeSlugs = ['5-0', '6-0', '7-0', '8-0', '9-0'];
 
-        // Image pool — paths relative to the storage public disk. These map to
-        // resources copied from the Ochaka "jewelry" demo product set
+        // Image paths — one set of files per product, named "{slug}-{n}.jpg",
+        // physically copied from the Ochaka "jewelry" demo product photos
         // (public/images/ochaka/products/jewelry/product-*.jpg) into
-        // public/storage/products/demo/, so they resolve correctly via
-        // ProductImage::getUrlAttribute()'s Storage::url() even before
-        // `php artisan storage:link` has been run on a given environment.
-        $imgPool = array_map(
-            fn($n) => "products/demo/product-{$n}.jpg",
-            range(1, 22)
-        );
-        $imgIdx = 0;
-        $nextImgs = function (int $count) use ($imgPool, &$imgIdx): array {
+        // public/storage/products/demo/{slug}-{n}.jpg. They're still generic
+        // stock jewellery photography, not real FADO product shots — but the
+        // filenames now actually correspond to the product they're attached
+        // to, and (critically) the files genuinely exist on disk, fixing the
+        // previous round-robin "products/demo/product-N.jpg" pool which
+        // didn't match any real file and rendered as broken images site-wide.
+        $imagesFor = function (string $slug, int $count): array {
             $picks = [];
-            for ($i = 0; $i < $count; $i++) {
-                $picks[] = $imgPool[$imgIdx % count($imgPool)];
-                $imgIdx++;
+            for ($i = 1; $i <= $count; $i++) {
+                $picks[] = "products/demo/{$slug}-{$i}.jpg";
             }
             return $picks;
         };
 
+        // NOTE — TEST/DUMMY DATA ONLY: a subset of variants below set 'second_metal'
+        // and/or 'colour' (e.g. Claddagh Ring's 14ct gold variant, Trinity Knot Ring's
+        // two-tone variant, Corrib Claddagh Ring, Butterfly Earrings, Forget Me Not
+        // Bangle, Celtic Harp Brooch). These values are not real FADO catalogue data —
+        // they exist purely so the product page's Second Metal/Finish and Colour spec-
+        // table rows have at least one real, non-null example to verify against. Every
+        // other variant intentionally still has both fields null, since real second-
+        // metal/colour combinations don't exist yet for the rest of the catalogue.
         $products = [
 
             // ── CLADDAGH ────────────────────────────────────────────────────
@@ -568,7 +573,7 @@ class DummyProductsSeeder extends Seeder
 
             // Add images (skip if already exist)
             if ($product->images->isEmpty()) {
-                $images = $nextImgs($data['images'] ?? 2);
+                $images = $imagesFor($slug, $data['images'] ?? 2);
                 foreach ($images as $i => $path) {
                     ProductImage::create([
                         'product_id' => $product->id,
