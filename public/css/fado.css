@@ -48,12 +48,24 @@
 /* ── Shop listing — sticky, independently-scrollable filter sidebar ───────── */
 /* Ochaka's own CSS has no sticky behavior for .sidebar-filter at desktop
    widths (only a fixed off-canvas treatment below 1200px) — added here since
-   the sidebar's filter list is long enough to outgrow the product grid. */
+   the sidebar's filter list is long enough to outgrow the product grid.
+   The height/overflow constraint goes on .canvas-body, NOT .canvas-sidebar:
+   styles.css already gives .canvas-body `overflow-y: auto` + `overscroll-
+   behavior-y: contain` (built for the mobile off-canvas mode, where
+   .canvas-sidebar is position:fixed top:0/bottom:0 so .canvas-body has a
+   real bounded height). Without that bound on desktop, .canvas-body never
+   overflows, so its own overflow:auto is a no-op — but `overscroll-behavior-y:
+   contain` still traps wheel events there and blocks them from chaining up
+   to an outer scrollable ancestor. Giving .canvas-sidebar its own
+   overflow-y:auto on top of that created two nested scroll containers and
+   killed wheel scrolling entirely. Constraining .canvas-body directly
+   (the element the theme already built to scroll) avoids the conflict. */
 @media (min-width: 1200px) {
     .col-xl-3 .canvas-sidebar.sidebar-filter {
         position: sticky;
         top: 120px;
+    }
+    .col-xl-3 .canvas-sidebar.sidebar-filter .canvas-body {
         max-height: calc(100vh - 140px);
-        overflow-y: auto;
     }
 }
