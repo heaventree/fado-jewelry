@@ -502,6 +502,27 @@ details[open] .fado-accordion-icon { transform: rotate(180deg); }
 #qtyInput::-webkit-inner-spin-button,
 #qtyInput::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 #qtyInput { -moz-appearance: textfield; }
+
+/* ── Description tabs — scoped override ──────────────────────────────────
+   styles.css:15732-15779 sizes .menu-tab-1 .tab-link at 32px/24px nowrap,
+   tuned for the reference theme's short single-word demo labels. Our real
+   labels ("Delivery & Shipping", "Returns & Exchanges") don't fit at that
+   size and overflowed into a horizontal scrollbar. Scoped to this page only
+   (not editing styles.css) so other tab instances elsewhere are unaffected. */
+.flat-single-product .flat-animate-tab .menu-tab-1 {
+    flex-wrap: wrap;
+    overflow: visible;
+}
+.flat-single-product .flat-animate-tab .menu-tab-1 .tab-link {
+    font-size: 18px;
+    padding: 0 16px 14px;
+}
+@media (max-width: 575px) {
+    .flat-single-product .flat-animate-tab .menu-tab-1 .tab-link {
+        font-size: 15px;
+        padding: 0 10px 12px;
+    }
+}
 </style>
 @endpush
 
