@@ -165,6 +165,7 @@ class ShopController extends Controller
             'second_metal_name'=> $v->secondMetal?->name,
             'colour'           => $v->colour,
             'price_eur'        => (float) $v->price_eur,
+            'sale_price_eur'   => $v->sale_price_eur !== null ? (float) $v->sale_price_eur : null,
             'stock'            => $v->stock,
             'sku'              => $v->sku,
         ])->values();

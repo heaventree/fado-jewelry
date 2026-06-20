@@ -45,7 +45,7 @@ class CartController extends Controller
             variantId: (int) $data['variant_id'],
             sizeId:    isset($data['size_id']) ? (int) $data['size_id'] : null,
             quantity:  (int) $data['quantity'],
-            priceEur:  (float) $variant->price_eur,
+            priceEur:  $variant->isOnSale() ? (float) $variant->sale_price_eur : (float) $variant->price_eur,
         );
 
         return back()->with('cart_success', 'Added to your bag!');
