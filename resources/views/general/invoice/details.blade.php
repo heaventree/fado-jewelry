@@ -56,11 +56,11 @@
     {{-- Header --}}
     <div class="row align-items-start mb-4">
         <div class="col-7">
-            <h2 class="fw-bold text-dark mb-1" style="font-size:1.6rem; letter-spacing:.5px">FADÓ</h2>
-            <p class="text-muted fs-13 mb-0">Fine Irish Jewellery</p>
+            <h2 class="fw-bold text-dark mb-1" style="font-size:1.6rem; letter-spacing:.5px">{{ \App\Models\Setting::get('store_name', 'FADÓ') }}</h2>
+            <p class="text-muted fs-13 mb-0">{{ \App\Models\Setting::get('store_tagline', 'Fine Irish Jewellery') }}</p>
             <p class="text-muted fs-12 mt-2 mb-0">
-                info@fadojewellery.ie<br>
-                www.fadojewellery.ie
+                {{ \App\Models\Setting::get('store_email', 'info@fadojewellery.ie') }}<br>
+                {{ \Illuminate\Support\Str::after(url('/'), '://') }}
             </p>
         </div>
         <div class="col-5 text-end">
@@ -176,8 +176,8 @@
     <hr class="my-4">
     <div class="row">
         <div class="col-12 text-center text-muted fs-12">
-            <p class="mb-1">Thank you for your order. If you have any questions, please contact us at info@fadojewellery.ie</p>
-            <p class="mb-0">FADÓ Jewellery — Fine Irish Jewellery &nbsp;·&nbsp; www.fadojewellery.ie</p>
+            <p class="mb-1">Thank you for your order. If you have any questions, please contact us at {{ \App\Models\Setting::get('store_email', 'info@fadojewellery.ie') }}</p>
+            <p class="mb-0">{{ \App\Models\Setting::get('store_name', 'FADÓ Jewellery') }} — {{ \App\Models\Setting::get('store_tagline', 'Fine Irish Jewellery') }} &nbsp;·&nbsp; {{ \Illuminate\Support\Str::after(url('/'), '://') }}</p>
         </div>
     </div>
 

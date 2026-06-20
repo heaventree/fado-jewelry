@@ -14,9 +14,9 @@ class SettingsSeeder extends Seeder
             // ── Store identity ────────────────────────────────────────────
             'store_name'         => 'FADÓ Jewellery',
             'store_tagline'      => 'Fine Irish Jewellery',
-            'contact_email'      => 'info@fadojewellery.ie',
-            'contact_phone'      => '',
-            'contact_address'    => '',
+            'store_email'        => 'info@fadojewellery.ie',
+            'store_phone'        => '',
+            'store_address'      => '',
 
             // ── Emails ───────────────────────────────────────────────────
             'orders_email'           => 'orders@fadojewellery.ie',
@@ -27,7 +27,7 @@ class SettingsSeeder extends Seeder
             // ── SEO ──────────────────────────────────────────────────────
             'meta_title'         => 'FADÓ Jewellery — Fine Irish Jewellery',
             'meta_description'   => 'Handcrafted Irish jewellery. Explore our collections of rings, pendants, earrings and more.',
-            'google_analytics'   => '',
+            'google_analytics_id' => '',
 
             // ── Social ───────────────────────────────────────────────────
             'facebook_url'       => '',

@@ -77,20 +77,20 @@
             <div class="row g-3 mb-3">
                 <div class="col-sm-6">
                     <label class="form-label fw-semibold">General Contact Email <span class="text-danger">*</span></label>
-                    <input type="email" name="contact_email"
-                           value="{{ old('contact_email', $settings['contact_email'] ?? '') }}"
-                           class="form-control @error('contact_email') is-invalid @enderror"
+                    <input type="email" name="store_email"
+                           value="{{ old('store_email', $settings['store_email'] ?? '') }}"
+                           class="form-control @error('store_email') is-invalid @enderror"
                            placeholder="info@fadojewellery.ie" required>
                     <div class="form-text">Shown on the contact page.</div>
-                    @error('contact_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    @error('store_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-sm-6">
                     <label class="form-label fw-semibold">Phone</label>
-                    <input type="text" name="contact_phone"
-                           value="{{ old('contact_phone', $settings['contact_phone'] ?? '') }}"
-                           class="form-control @error('contact_phone') is-invalid @enderror"
+                    <input type="text" name="store_phone"
+                           value="{{ old('store_phone', $settings['store_phone'] ?? '') }}"
+                           class="form-control @error('store_phone') is-invalid @enderror"
                            placeholder="+353 ...">
-                    @error('contact_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    @error('store_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             </div>
             <div class="row g-3 mb-3">
@@ -115,10 +115,10 @@
             </div>
             <div class="mb-0">
                 <label class="form-label fw-semibold">Address</label>
-                <textarea name="contact_address" rows="3"
-                          class="form-control @error('contact_address') is-invalid @enderror"
-                          placeholder="Street, City, County, Eircode">{{ old('contact_address', $settings['contact_address'] ?? '') }}</textarea>
-                @error('contact_address')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <textarea name="store_address" rows="3"
+                          class="form-control @error('store_address') is-invalid @enderror"
+                          placeholder="Street, City, County, Eircode">{{ old('store_address', $settings['store_address'] ?? '') }}</textarea>
+                @error('store_address')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
     </div>
@@ -152,12 +152,12 @@
             </div>
             <div class="mb-0">
                 <label class="form-label fw-semibold">Google Analytics ID</label>
-                <input type="text" name="google_analytics"
-                       value="{{ old('google_analytics', $settings['google_analytics'] ?? '') }}"
-                       class="form-control @error('google_analytics') is-invalid @enderror"
+                <input type="text" name="google_analytics_id"
+                       value="{{ old('google_analytics_id', $settings['google_analytics_id'] ?? '') }}"
+                       class="form-control @error('google_analytics_id') is-invalid @enderror"
                        placeholder="G-XXXXXXXXXX" style="max-width:240px">
                 <div class="form-text">GA4 measurement ID (starts with G-) or Universal Analytics ID (UA-).</div>
-                @error('google_analytics')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                @error('google_analytics_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
     </div>
@@ -500,7 +500,7 @@
                     </tr>
                     <tr class="border-top">
                         <td class="text-muted ps-3 py-2">Contact</td>
-                        <td class="pe-3 py-2">{{ $settings['contact_email'] ?? '—' }}</td>
+                        <td class="pe-3 py-2">{{ $settings['store_email'] ?? '—' }}</td>
                     </tr>
                     <tr class="border-top">
                         <td class="text-muted ps-3 py-2">Orders</td>
@@ -508,7 +508,7 @@
                     </tr>
                     <tr class="border-top">
                         <td class="text-muted ps-3 py-2">GA ID</td>
-                        <td class="pe-3 py-2">{{ $settings['google_analytics'] ?: '—' }}</td>
+                        <td class="pe-3 py-2">{{ $settings['google_analytics_id'] ?: '—' }}</td>
                     </tr>
                     <tr class="border-top">
                         <td class="text-muted ps-3 py-2">Maintenance</td>

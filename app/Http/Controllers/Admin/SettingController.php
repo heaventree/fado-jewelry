@@ -14,11 +14,11 @@ class SettingController extends Controller
         // Store identity
         'store_name', 'store_tagline',
         // Contact
-        'contact_email', 'contact_phone', 'contact_address',
+        'store_email', 'store_phone', 'store_address',
         'orders_email', 'consultation_email',
         'order_email_from_name', 'order_email_from_address',
         // SEO
-        'meta_title', 'meta_description', 'google_analytics',
+        'meta_title', 'meta_description', 'google_analytics_id',
         // Social
         'facebook_url', 'instagram_url', 'twitter_url',
         // Maintenance
@@ -56,9 +56,9 @@ class SettingController extends Controller
             'store_name'         => ['required', 'string', 'max:120'],
             'store_tagline'      => ['nullable', 'string', 'max:200'],
             // Contact
-            'contact_email'      => ['required', 'email', 'max:200'],
-            'contact_phone'      => ['nullable', 'string', 'max:30'],
-            'contact_address'    => ['nullable', 'string', 'max:500'],
+            'store_email'        => ['required', 'email', 'max:200'],
+            'store_phone'        => ['nullable', 'string', 'max:30'],
+            'store_address'      => ['nullable', 'string', 'max:500'],
             'orders_email'       => ['required', 'email', 'max:200'],
             'consultation_email' => ['required', 'email', 'max:200'],
             'order_email_from_name'    => ['nullable', 'string', 'max:100'],
@@ -66,7 +66,7 @@ class SettingController extends Controller
             // SEO
             'meta_title'         => ['nullable', 'string', 'max:120'],
             'meta_description'   => ['nullable', 'string', 'max:300'],
-            'google_analytics'   => ['nullable', 'string', 'max:30', 'regex:/^(G-|UA-)[A-Z0-9\-]+$/i'],
+            'google_analytics_id' => ['nullable', 'string', 'max:30', 'regex:/^(G-|UA-)[A-Z0-9\-]+$/i'],
             // Social
             'facebook_url'       => ['nullable', 'url', 'max:300'],
             'instagram_url'      => ['nullable', 'url', 'max:300'],
@@ -88,6 +88,7 @@ class SettingController extends Controller
             'new_arrivals_count'         => ['nullable', 'integer', 'min:1', 'max:24'],
             'featured_collections_count' => ['nullable', 'integer', 'min:1', 'max:12'],
             'related_products_count'     => ['nullable', 'integer', 'min:1', 'max:12'],
+            'featured_product_id'        => ['nullable', 'integer', 'exists:products,id'],
             'wishlist_enabled'           => ['nullable', 'boolean'],
             'reviews_enabled'            => ['nullable', 'boolean'],
             // Orders
