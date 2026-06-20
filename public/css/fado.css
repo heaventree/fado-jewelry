@@ -87,3 +87,11 @@
     background-color: var(--fado-warm-grey);
     border-radius: 3px;
 }
+
+/* Gap between the category/collection count numbers and the scrollbar — styles.css's
+   .filter-group-check .label / .filter-group-check.group-category a both stretch to
+   width:100% with justify-content:space-between, pushing the count right up against
+   the scrollbar track. */
+.canvas-sidebar.sidebar-filter .widget-facet .collapse-body {
+    padding-right: 8px;
+}
