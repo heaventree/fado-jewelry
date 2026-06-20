@@ -20,7 +20,7 @@
 
 @section('content')
 
-<section class="s-page-title"@if($bannerImage) style="background-image:url('{{ asset($bannerImage) }}'); background-size:cover; background-position:center;"@endif>
+<section class="s-page-title"@if($bannerImage) style="background-image:url('{{ \Illuminate\Support\Facades\Storage::url($bannerImage) }}'); background-size:cover; background-position:center;"@endif>
     <div class="container">
         <div class="content">
             <h1 class="title-page">{{ $pageTitle }}</h1>

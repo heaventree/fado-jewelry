@@ -44,3 +44,16 @@
         height: 100vh;
     }
 }
+
+/* ── Shop listing — sticky, independently-scrollable filter sidebar ───────── */
+/* Ochaka's own CSS has no sticky behavior for .sidebar-filter at desktop
+   widths (only a fixed off-canvas treatment below 1200px) — added here since
+   the sidebar's filter list is long enough to outgrow the product grid. */
+@media (min-width: 1200px) {
+    .col-xl-3 .canvas-sidebar.sidebar-filter {
+        position: sticky;
+        top: 120px;
+        max-height: calc(100vh - 140px);
+        overflow-y: auto;
+    }
+}
