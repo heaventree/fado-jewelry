@@ -69,3 +69,21 @@
         max-height: calc(100vh - 140px);
     }
 }
+
+/* Thin, theme-coloured scrollbar (replaces styles.css's default 5px white-on-white
+   one) — reuses --fado-warm-grey, the existing border/divider colour, instead of
+   a hardcoded grey. */
+.canvas-sidebar.sidebar-filter .canvas-body {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--fado-warm-grey) transparent; /* Firefox - thumb / track */
+}
+.canvas-sidebar.sidebar-filter .canvas-body::-webkit-scrollbar {
+    width: 6px;
+}
+.canvas-sidebar.sidebar-filter .canvas-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+.canvas-sidebar.sidebar-filter .canvas-body::-webkit-scrollbar-thumb {
+    background-color: var(--fado-warm-grey);
+    border-radius: 3px;
+}
