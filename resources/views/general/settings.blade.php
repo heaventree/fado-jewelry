@@ -508,7 +508,7 @@
                     </tr>
                     <tr class="border-top">
                         <td class="text-muted ps-3 py-2">GA ID</td>
-                        <td class="pe-3 py-2">{{ $settings['google_analytics_id'] ?: '—' }}</td>
+                        <td class="pe-3 py-2">{{ $settings['google_analytics_id'] ?? '—' }}</td>
                     </tr>
                     <tr class="border-top">
                         <td class="text-muted ps-3 py-2">Maintenance</td>
