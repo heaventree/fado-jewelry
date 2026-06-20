@@ -21,13 +21,30 @@ class ShopController extends Controller
     {
         $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')->get();
         $featuredCollections = Collection::limit((int) Setting::get('featured_collections_count', 6))->get();
-        $newArrivals = Product::with(['variants.metal', 'primaryImage'])
+        $newArrivals = Product::with(['variants.metal', 'primaryImage', 'images'])
             ->where('is_active', true)
             ->latest()
             ->limit((int) Setting::get('new_arrivals_count', 8))
             ->get();
+        $bestSellers = Product::with(['variants.metal', 'primaryImage', 'images'])
+            ->where('is_active', true)
+            ->where('is_bestseller', true)
+            ->latest()
+            ->limit((int) Setting::get('new_arrivals_count', 8))
+            ->get();
+        $onSale = Product::with(['variants.metal', 'primaryImage', 'images'])
+            ->where('is_active', true)
+            ->whereHas('variants', fn ($q) => $q->whereNotNull('sale_price_eur')->whereColumn('sale_price_eur', '<', 'price_eur'))
+            ->latest()
+            ->limit((int) Setting::get('new_arrivals_count', 8))
+            ->get();
 
-        return view('shop.home', compact('topCategories', 'featuredCollections', 'newArrivals'));
+        $featuredProductId = Setting::get('featured_product_id');
+        $featuredProduct = $featuredProductId
+            ? Product::with(['variants.metal', 'images'])->where('is_active', true)->find($featuredProductId)
+            : null;
+
+        return view('shop.home', compact('topCategories', 'featuredCollections', 'newArrivals', 'bestSellers', 'onSale', 'featuredProduct'));
     }
 
     public function jewellery(Request $request): View

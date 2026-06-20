@@ -348,6 +348,18 @@
                            class="form-control @error('related_products_count') is-invalid @enderror">
                     @error('related_products_count')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
+                <div class="col-sm-3">
+                    <label class="form-label fw-semibold">Homepage featured product</label>
+                    <select name="featured_product_id" class="form-select @error('featured_product_id') is-invalid @enderror">
+                        <option value="">— None —</option>
+                        @foreach(\App\Models\Product::where('is_active', true)->orderBy('name')->get() as $p)
+                        <option value="{{ $p->id }}" {{ (string) old('featured_product_id', $settings['featured_product_id'] ?? '') === (string) $p->id ? 'selected' : '' }}>
+                            {{ $p->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                    @error('featured_product_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
             </div>
             <div class="d-flex gap-4">
                 <div class="form-check form-switch">

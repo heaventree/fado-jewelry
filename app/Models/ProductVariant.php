@@ -15,15 +15,22 @@ class ProductVariant extends Model
         'gemstone_id',
         'sku',
         'price_eur',
+        'sale_price_eur',
         'stock',
         'is_active',
         'colour',
     ];
 
     protected $casts = [
-        'price_eur' => 'decimal:2',
-        'is_active' => 'boolean',
+        'price_eur'      => 'decimal:2',
+        'sale_price_eur' => 'decimal:2',
+        'is_active'      => 'boolean',
     ];
+
+    public function isOnSale(): bool
+    {
+        return $this->sale_price_eur !== null && (float) $this->sale_price_eur < (float) $this->price_eur;
+    }
 
     public function product(): BelongsTo
     {

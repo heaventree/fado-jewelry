@@ -15,10 +15,12 @@ class Product extends Model
         'description',
         'short_description',
         'is_active',
+        'is_bestseller',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'     => 'boolean',
+        'is_bestseller' => 'boolean',
     ];
 
     public function images(): HasMany

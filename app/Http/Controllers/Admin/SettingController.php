@@ -32,6 +32,7 @@ class SettingController extends Controller
         // Display
         'products_per_page', 'new_arrivals_count',
         'featured_collections_count', 'related_products_count',
+        'featured_product_id',
         'wishlist_enabled', 'reviews_enabled',
         // Orders
         'low_stock_threshold',
