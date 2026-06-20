@@ -51,7 +51,9 @@ class ShopController extends Controller
     {
         [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request);
 
-        $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')->get();
+        $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')
+            ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
+            ->get();
 
         return view('shop.listing', [
             'pageTitle'        => 'All Jewellery',
@@ -79,7 +81,9 @@ class ShopController extends Controller
 
         [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request, categoryIds: $categoryIds);
 
-        $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')->get();
+        $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')
+            ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
+            ->get();
 
         $breadcrumbs = [['label' => 'Jewellery', 'url' => route('shop.jewellery')]];
         if ($cat->parent) {
@@ -116,7 +120,9 @@ class ShopController extends Controller
 
         [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request, collectionSlug: $slug);
 
-        $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')->get();
+        $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')
+            ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
+            ->get();
 
         return view('shop.listing', [
             'pageTitle'        => $col->banner_title    ?? $col->name,
