@@ -1,13 +1,12 @@
 @extends('shop.layouts.app')
 @php
-    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
     use App\Models\Setting;
     $storeName   = Setting::get('store_name', 'FADÓ Jewellery');
     $metaDesc    = $product->short_description
                    ?: Str::limit(strip_tags($product->description ?? ''), 155)
                    ?: 'Fine Irish jewellery — ' . $product->name . ' — handcrafted in sterling silver, gold and platinum.';
-    $ogImage     = $product->primaryImage ? Storage::url($product->primaryImage->path) : asset('favicon.ico');
+    $ogImage     = $product->primaryImage ? asset($product->primaryImage->path) : asset('favicon.ico');
 @endphp
 
 @section('title', $product->name . ' — ' . $storeName)
@@ -79,7 +78,7 @@
                                 @forelse($product->images as $img)
                                 <div class="swiper-slide stagger-item">
                                     <div class="item">
-                                        <img class="lazyload" data-src="{{ Storage::url($img->path) }}" src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}">
+                                        <img class="lazyload" data-src="{{ asset($img->path) }}" src="{{ asset($img->path) }}" alt="{{ $product->name }}">
                                     </div>
                                 </div>
                                 @empty
@@ -96,8 +95,8 @@
                                 <div class="swiper-wrapper">
                                     @forelse($product->images as $img)
                                     <div class="swiper-slide">
-                                        <a href="{{ Storage::url($img->path) }}" target="_blank" class="item">
-                                            <img class="tf-image-zoom lazyload" data-zoom="{{ Storage::url($img->path) }}" data-src="{{ Storage::url($img->path) }}" src="{{ Storage::url($img->path) }}" alt="{{ $product->name }}">
+                                        <a href="{{ asset($img->path) }}" target="_blank" class="item">
+                                            <img class="tf-image-zoom lazyload" data-zoom="{{ asset($img->path) }}" data-src="{{ asset($img->path) }}" src="{{ asset($img->path) }}" alt="{{ $product->name }}">
                                         </a>
                                     </div>
                                     @empty
@@ -409,9 +408,9 @@
                 <div class="card-product_wrapper">
                     <a href="{{ route('shop.product', $rel) }}" class="product-img">
                         @if($relImg)
-                            <img class="lazyload img-product" src="{{ Storage::url($relImg->path) }}" data-src="{{ Storage::url($relImg->path) }}" alt="{{ $rel->name }}">
+                            <img class="lazyload img-product" src="{{ asset($relImg->path) }}" data-src="{{ asset($relImg->path) }}" alt="{{ $rel->name }}">
                             @if($relImg2)
-                            <img class="lazyload img-hover" src="{{ Storage::url($relImg2->path) }}" data-src="{{ Storage::url($relImg2->path) }}" alt="{{ $rel->name }}">
+                            <img class="lazyload img-hover" src="{{ asset($relImg2->path) }}" data-src="{{ asset($relImg2->path) }}" alt="{{ $rel->name }}">
                             @endif
                         @else
                             <img class="lazyload img-product" src="/images/ochaka/products/jewelry/product-5.jpg" data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="{{ $rel->name }}">

@@ -320,7 +320,7 @@
                                 @forelse($featuredProduct->images as $img)
                                 <div class="swiper-slide stagger-item">
                                     <div class="item">
-                                        <img class="lazyload" src="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" data-src="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" alt="{{ $featuredProduct->name }}">
+                                        <img class="lazyload" src="{{ asset($img->path) }}" data-src="{{ asset($img->path) }}" alt="{{ $featuredProduct->name }}">
                                     </div>
                                 </div>
                                 @empty
@@ -337,8 +337,8 @@
                                 <div class="swiper-wrapper">
                                     @forelse($featuredProduct->images as $img)
                                     <div class="swiper-slide">
-                                        <a href="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" target="_blank" class="item">
-                                            <img class="tf-image-zoom lazyload" data-zoom="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" data-src="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" src="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" alt="{{ $featuredProduct->name }}">
+                                        <a href="{{ asset($img->path) }}" target="_blank" class="item">
+                                            <img class="tf-image-zoom lazyload" data-zoom="{{ asset($img->path) }}" data-src="{{ asset($img->path) }}" src="{{ asset($img->path) }}" alt="{{ $featuredProduct->name }}">
                                         </a>
                                     </div>
                                     @empty

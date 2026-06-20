@@ -10,9 +10,9 @@
         <div class="card-product_wrapper d-flex">
             <a href="{{ route('shop.product', $product) }}" class="product-img">
                 @if($img)
-                    <img class="lazyload img-product" src="{{ \Illuminate\Support\Facades\Storage::url($img) }}" data-src="{{ \Illuminate\Support\Facades\Storage::url($img) }}" alt="{{ $product->name }}">
+                    <img class="lazyload img-product" src="{{ asset($img) }}" data-src="{{ asset($img) }}" alt="{{ $product->name }}">
                     @if($img2)
-                    <img class="lazyload img-hover" src="{{ \Illuminate\Support\Facades\Storage::url($img2) }}" data-src="{{ \Illuminate\Support\Facades\Storage::url($img2) }}" alt="{{ $product->name }}">
+                    <img class="lazyload img-hover" src="{{ asset($img2) }}" data-src="{{ asset($img2) }}" alt="{{ $product->name }}">
                     @endif
                 @else
                     <img class="lazyload img-product" src="/images/ochaka/products/jewelry/product-5.jpg" data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="{{ $product->name }}">

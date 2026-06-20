@@ -48,16 +48,17 @@ class DummyProductsSeeder extends Seeder
         // Image paths — one set of files per product, named "{slug}-{n}.jpg",
         // physically copied from the Ochaka "jewelry" demo product photos
         // (public/images/ochaka/products/jewelry/product-*.jpg) into
-        // public/storage/products/demo/{slug}-{n}.jpg. They're still generic
-        // stock jewellery photography, not real FADO product shots — but the
-        // filenames now actually correspond to the product they're attached
-        // to, and (critically) the files genuinely exist on disk, fixing the
-        // previous round-robin "products/demo/product-N.jpg" pool which
-        // didn't match any real file and rendered as broken images site-wide.
+        // public/images/products/demo/{slug}-{n}.jpg — a plain public/ path
+        // (git-tracked, same pattern as public/images/ochaka/...), not the
+        // storage disk, since public/storage/ is gitignored and never
+        // deploys. They're still generic stock jewellery photography, not
+        // real FADO product shots — but the filenames now correspond to the
+        // product they're attached to, and the files genuinely exist and
+        // ship with the repo.
         $imagesFor = function (string $slug, int $count): array {
             $picks = [];
             for ($i = 1; $i <= $count; $i++) {
-                $picks[] = "products/demo/{$slug}-{$i}.jpg";
+                $picks[] = "images/products/demo/{$slug}-{$i}.jpg";
             }
             return $picks;
         };
