@@ -34,12 +34,16 @@
     - header-abs-3's logo-bottom tagline text "JEWELRY BOUTIQUE" is replaced with FADÓ's real tagline
       ("Fine Irish Jewellery", per CLAUDE.md) — content only, the decorative SVG diamonds either side are
       kept verbatim.
-    - Known open issue (not fixed here, flagged for the next pass): header-abs-3 relies on
-      `margin-bottom: -164px` to sit on top of a tall hero image — correct on the homepage, but on hero-less
-      inner pages (product, listing, cart, etc.) this will pull the header up over the page content. Ochaka's
-      own inner pages (e.g. product-detail.html:98) use a third, plain `header-fix` class with no special
-      positioning for exactly this reason. This single shared partial does not yet branch on whether the
-      current page has a hero — needs revisiting once inner pages are built.
+    - Fixed: header-abs-3 relies on `margin-bottom: -164px` to sit on top of a tall hero image, and is
+      styled white-on-transparent for that purpose — correct on the homepage, but on hero-less inner pages
+      (product, listing, cart, etc.) it pulled the header up over the page content and rendered white text
+      on a white/light background, making it unreadable. Ochaka's own inner pages (e.g.
+      product-detail.html:98 `<header class="tf-header header-fix bg-off-white">`) use a third, plain,
+      always-visible header variant with dark text/icons and no special positioning, instead of the
+      abs-3 + scroll-triggered fixed pair used on the homepage. This partial now branches on
+      `request()->routeIs('shop.home')`: the homepage keeps the original abs-3/fixed pair; every other
+      page renders the single `header-fix bg-off-white` variant below (same nav/icons markup as
+      header-fixed, but always visible and dark-on-light).
 --}}
 @php
     use App\Models\Category;
@@ -57,6 +61,7 @@
     $wishlistCount = session('wishlist_count', 0);
 @endphp
 
+@if(request()->routeIs('shop.home'))
 {{-- ── Header 1: transparent overlay, visible on load, sits over the hero ── --}}
 <header class="tf-header header-abs-3">
     <div class="header-top">
@@ -189,3 +194,55 @@
         </div>
     </div>
 </header>
+@else
+{{-- ── Header (inner pages): always-visible, dark-on-light variant — Ochaka's header-fix bg-off-white ── --}}
+<header class="tf-header header-fix bg-off-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-4 col-3 d-xl-none">
+                <a href="#mobileMenu" data-bs-toggle="offcanvas" class="btn-mobile-menu">
+                    <span></span>
+                </a>
+            </div>
+            <div class="col-xl-3 col-md-4 col-6 text-center text-xl-start">
+                <a href="{{ route('shop.home') }}" class="logo-site justify-content-center justify-content-xl-start">
+                    <span class="fado-wordmark">{{ Setting::get('store_name', 'FADÓ') }}</span>
+                </a>
+            </div>
+            <div class="col-xl-6 d-none d-xl-block">
+                <nav class="box-navigation">
+                    @include('shop.partials.nav-menu')
+                </nav>
+            </div>
+            <div class="col-xl-3 col-md-4 col-3">
+                <ul class="nav-icon-list">
+                    <li class="d-none d-lg-flex">
+                        @auth
+                            <a class="nav-icon-item link" href="{{ route('shop.account.index') }}"><i class="icon icon-user"></i></a>
+                        @else
+                            <a class="nav-icon-item link" href="{{ route('login') }}"><i class="icon icon-user"></i></a>
+                        @endauth
+                    </li>
+                    <li class="d-none d-md-flex">
+                        <a class="nav-icon-item link" href="#search" data-bs-toggle="modal">
+                            <i class="icon icon-magnifying-glass"></i>
+                        </a>
+                    </li>
+                    <li class="d-none d-sm-flex">
+                        <a class="nav-icon-item link" href="{{ route('shop.wishlist') }}">
+                            <i class="icon icon-heart"></i>
+                            @if($wishlistCount > 0)<span class="count">{{ $wishlistCount }}</span>@endif
+                        </a>
+                    </li>
+                    <li class="shop-cart">
+                        <a class="nav-icon-item link" href="{{ route('shop.cart') }}">
+                            <i class="icon icon-shopping-cart-simple"></i>
+                        </a>
+                        @if($cartCount > 0)<span class="count">{{ $cartCount }}</span>@endif
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+@endif
