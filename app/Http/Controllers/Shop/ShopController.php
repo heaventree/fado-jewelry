@@ -51,6 +51,10 @@ class ShopController extends Controller
     {
         [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request);
 
+        if ($request->ajax()) {
+            return view('shop.partials.listing-results', compact('products', 'filters'));
+        }
+
         $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')
             ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
             ->get();
@@ -80,6 +84,10 @@ class ShopController extends Controller
         $categoryIds = $cat->children->pluck('id')->prepend($cat->id);
 
         [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request, categoryIds: $categoryIds);
+
+        if ($request->ajax()) {
+            return view('shop.partials.listing-results', compact('products', 'filters'));
+        }
 
         $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')
             ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
@@ -119,6 +127,10 @@ class ShopController extends Controller
         $col = Collection::where('slug', $slug)->firstOrFail();
 
         [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request, collectionSlug: $slug);
+
+        if ($request->ajax()) {
+            return view('shop.partials.listing-results', compact('products', 'filters'));
+        }
 
         $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')
             ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
