@@ -220,6 +220,30 @@
                                 @endif
                             </div>
 
+                            {{-- ── SPEC TABLE — real fields only: Metal/Second Metal/Gemstone/Colour from product_variants. No weight or purity column exists in the schema, so they are not shown here. ── --}}
+                            <div id="variantSpecTable" style="margin:0 0 20px; border:1px solid var(--fado-cream); border-radius:8px; overflow:hidden">
+                                <table style="width:100%; font-size:.875rem">
+                                    <tbody>
+                                        <tr style="border-bottom:1px solid var(--fado-cream)">
+                                            <td style="padding:10px 14px; color:var(--fado-warm-grey); font-weight:600; width:45%">Metal</td>
+                                            <td id="specMetal" style="padding:10px 14px">{{ $defaultVariant?->metal?->name ?? '—' }}</td>
+                                        </tr>
+                                        <tr id="specSecondMetalRow" style="border-bottom:1px solid var(--fado-cream); {{ $defaultVariant?->secondMetal ? '' : 'display:none' }}">
+                                            <td style="padding:10px 14px; color:var(--fado-warm-grey); font-weight:600">Second Metal / Finish</td>
+                                            <td id="specSecondMetal" style="padding:10px 14px">{{ $defaultVariant?->secondMetal?->name ?? '—' }}</td>
+                                        </tr>
+                                        <tr id="specGemstoneRow" style="border-bottom:1px solid var(--fado-cream); {{ $defaultVariant?->gemstone ? '' : 'display:none' }}">
+                                            <td style="padding:10px 14px; color:var(--fado-warm-grey); font-weight:600">Gemstone</td>
+                                            <td id="specGemstone" style="padding:10px 14px">{{ $defaultVariant?->gemstone?->name ?? '—' }}</td>
+                                        </tr>
+                                        <tr id="specColourRow" style="{{ $defaultVariant?->colour ? '' : 'display:none' }}">
+                                            <td style="padding:10px 14px; color:var(--fado-warm-grey); font-weight:600">Colour</td>
+                                            <td id="specColour" style="padding:10px 14px">{{ $defaultVariant?->colour ?? '—' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                             <div class="tf-product-total-quantity">
                                 <div class="group-btn">
                                     <div class="wg-quantity">
@@ -254,48 +278,63 @@
 
                 <hr style="border-color:var(--fado-cream); margin:28px 0">
 
-                {{-- ── ACCORDION DETAILS ──────────────────────────────────── --}}
-                <div class="fado-accordion">
-
-                    {{-- Description accordion --}}
-                    @if($product->description)
-                    <details class="fado-accordion-item" open>
-                        <summary class="fado-accordion-trigger">
-                            <span>Description</span>
-                            <i class="icon icon-caret-down fado-accordion-icon"></i>
-                        </summary>
-                        <div class="fado-accordion-body" style="color:#555; line-height:1.8">
-                            {!! $product->description !!}
+                {{-- ── PRODUCT DESCRIPTION TABS ──────────────────────────────────────
+                    Source: resources/theme-reference/product-detail.html:1008-1100
+                    (`flat-animate-tab tab-style-1` / `menu-tab menu-tab-1` / `tab-link` / `tab-content` /
+                    `tab-pane wd-product-descriptions` / `tab-descriptions` / `tab-policy` — classes and
+                    structure copied verbatim). Deviations: the reference's single "Shipping, Return & Refund
+                    Policy" tab is split into two tabs (Delivery & Shipping / Returns & Exchanges) per this
+                    task's explicit 3-tab requirement; the reference's "Customer Reviews" and "FAQs" tabs are
+                    Lorem-ipsum/demo-only content with no real FADO equivalent (no review system is built —
+                    reviews_enabled setting exists but is off — and no FAQ content exists yet), so they are
+                    omitted rather than faked. Tab switching uses Bootstrap's `data-bs-toggle="tab"`, already
+                    loaded site-wide (same plugin used by `data-bs-toggle="modal"`/`"offcanvas"` elsewhere). --}}
+                <div class="flat-animate-tab tab-style-1">
+                    <ul class="menu-tab menu-tab-1" role="tablist">
+                        <li class="nav-tab-item" role="presentation">
+                            <a href="#descriptions" class="tab-link active" data-bs-toggle="tab">Description</a>
+                        </li>
+                        <li class="nav-tab-item" role="presentation">
+                            <a href="#delivery" class="tab-link" data-bs-toggle="tab">Delivery & Shipping</a>
+                        </li>
+                        <li class="nav-tab-item" role="presentation">
+                            <a href="#returns" class="tab-link" data-bs-toggle="tab">Returns & Exchanges</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane wd-product-descriptions active show" id="descriptions" role="tabpanel">
+                            <div class="tab-descriptions">
+                                @if($product->description)
+                                    {!! $product->description !!}
+                                @else
+                                    <p class="h6 desc">No description available yet for this product.</p>
+                                @endif
+                            </div>
                         </div>
-                    </details>
-                    @endif
-
-                    {{-- Delivery --}}
-                    <details class="fado-accordion-item">
-                        <summary class="fado-accordion-trigger">
-                            <span>Delivery & Shipping</span>
-                            <i class="icon icon-caret-down fado-accordion-icon"></i>
-                        </summary>
-                        <div class="fado-accordion-body" style="color:#555; line-height:1.8">
-                            <p>{{ \App\Models\Setting::get('shipping_notice', 'Free delivery on orders over €75') }}. Orders are dispatched within 2–3 working days and typically arrive within 5–7 working days across Ireland and Europe.</p>
-                            <p>Express delivery (1–2 working days) is available at checkout. International shipping to the US and worldwide is also available.</p>
+                        <div class="tab-pane wd-product-descriptions" id="delivery" role="tabpanel">
+                            <div class="tab-policy">
+                                <div class="">
+                                    <h5 class="mb_16 text-black">Delivery & Shipping</h5>
+                                    <p class="h6">{{ \App\Models\Setting::get('shipping_notice', 'Free delivery on orders over €75') }}. Orders are dispatched within 2–3 working days and typically arrive within 5–7 working days across Ireland and Europe.</p>
+                                    <p class="h6">Express delivery (1–2 working days) is available at checkout. International shipping to the US and worldwide is also available.</p>
+                                </div>
+                            </div>
                         </div>
-                    </details>
-
-                    {{-- Returns --}}
-                    <details class="fado-accordion-item">
-                        <summary class="fado-accordion-trigger">
-                            <span>Returns & Exchanges</span>
-                            <i class="icon icon-caret-down fado-accordion-icon"></i>
-                        </summary>
-                        <div class="fado-accordion-body" style="color:#555; line-height:1.8">
-                            <p>We offer a 30-day return policy on all unworn items in their original packaging. For size exchanges, please contact us within 30 days of receiving your order.</p>
-                            <p>Custom or engraved pieces cannot be returned unless faulty.</p>
+                        <div class="tab-pane wd-product-descriptions" id="returns" role="tabpanel">
+                            <div class="tab-policy">
+                                <div class="">
+                                    <h5 class="mb_16 text-black">Returns & Exchanges</h5>
+                                    <p class="h6">We offer a 30-day return policy on all unworn items in their original packaging. For size exchanges, please contact us within 30 days of receiving your order.</p>
+                                    <p class="h6">Custom or engraved pieces cannot be returned unless faulty.</p>
+                                </div>
+                            </div>
                         </div>
-                    </details>
+                    </div>
+                </div>
 
-                    {{-- Ring size guide (shown only if product has sizes) --}}
-                    @if($product->sizes->isNotEmpty())
+                {{-- Ring size guide (shown only if product has sizes) — kept as a contextual reveal, not a tab, since the "Size Guide" link beside the Ring Size selector above opens it directly via element id --}}
+                @if($product->sizes->isNotEmpty())
+                <div class="fado-accordion" style="margin-top:20px">
                     <details class="fado-accordion-item" id="sizeGuideAccordion">
                         <summary class="fado-accordion-trigger">
                             <span>Ring Size Guide</span>
@@ -321,9 +360,8 @@
                             </p>
                         </div>
                     </details>
-                    @endif
-
                 </div>
+                @endif
 
                 {{-- Meta info --}}
                 <div style="margin-top:24px; font-size:.8125rem; color:var(--fado-warm-grey); display:flex; flex-direction:column; gap:4px">
@@ -513,6 +551,37 @@ function applyVariant(variant) {
     // SKU
     const skuEl = document.getElementById('variantSku');
     if (skuEl && variant.sku) skuEl.textContent = variant.sku;
+
+    // Spec table (real fields only — metal/second metal/gemstone/colour)
+    const specMetal = document.getElementById('specMetal');
+    if (specMetal) specMetal.textContent = variant.metal_name || '—';
+
+    const secondRow = document.getElementById('specSecondMetalRow');
+    const secondCell = document.getElementById('specSecondMetal');
+    if (variant.second_metal_name) {
+        if (secondCell) secondCell.textContent = variant.second_metal_name;
+        if (secondRow) secondRow.style.display = '';
+    } else if (secondRow) {
+        secondRow.style.display = 'none';
+    }
+
+    const gemRow = document.getElementById('specGemstoneRow');
+    const gemCell = document.getElementById('specGemstone');
+    if (variant.gemstone_name) {
+        if (gemCell) gemCell.textContent = variant.gemstone_name;
+        if (gemRow) gemRow.style.display = '';
+    } else if (gemRow) {
+        gemRow.style.display = 'none';
+    }
+
+    const colourRow = document.getElementById('specColourRow');
+    const colourCell = document.getElementById('specColour');
+    if (variant.colour) {
+        if (colourCell) colourCell.textContent = variant.colour;
+        if (colourRow) colourRow.style.display = '';
+    } else if (colourRow) {
+        colourRow.style.display = 'none';
+    }
 
     // Hidden variant_id for cart form
     const hiddenEl = document.getElementById('selectedVariantId');
