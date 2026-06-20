@@ -1,36 +1,46 @@
 /*
- * FADO Jewellery — colour variables and the minimum structural additions needed
- * to apply them. Per CLAUDE.md: Ochaka's structure, spacing, and layout are never
- * changed here — this file only swaps colour values and renders the text wordmark
- * standing in for a logo file that hasn't been supplied yet.
+ * FADO Jewellery — CSS variables and structural additions
+ * These variables are used only by pages not yet converted to Ochaka classes.
+ * Colours match Ochaka's palette as closely as possible.
  */
 
 :root {
-    --fado-deep-green:   #044705;   /* text/headings/logo/nav-text/small badges only — never large surfaces */
-    --fado-green-mid:    #0AAC45;   /* header, footer, large coloured surfaces, primary CTA buttons */
-    --fado-green-light:  #81CC60;   /* buttons, links, accent surfaces, badges */
-    --fado-gold:         #766D42;   /* sparing accent touches only */
-    --fado-cream:        #F0F1E7;   /* section backgrounds, product tile backgrounds */
+    --fado-deep-green:   #044705;   /* text/headings/logo only — never backgrounds */
+    --fado-green-mid:    #0AAC45;   /* header, footer, large surfaces, primary buttons */
+    --fado-green-light:  #81CC60;   /* buttons, accents, badges */
+    --fado-gold:         #766D42;   /* sparing accent touches */
+    --fado-cream:        #F0F1E7;   /* product tile backgrounds, section backgrounds */
     --fado-soft-white:   #F5F7F1;   /* section backgrounds */
     --fado-near-white:   #FBFBFB;   /* primary page background */
     --fado-off-white:    #F8F9F5;   /* primary page background option */
-    --fado-pale-mint:    #EBFCEF;   /* lightest section backgrounds */
-    --fado-light-mint:   #DCF6D5;   /* lightest accent / hover backgrounds */
+    --fado-pale-mint:    #EBFCEF;   /* light backgrounds */
+    --fado-light-mint:   #DCF6D5;   /* highlights, hover states */
     --fado-warm-grey:    #BCB3AB;   /* borders, dividers */
 }
 
-/* ── FADO wordmark (text logo, no logo file supplied yet) ──────────────────── */
+/* ── FADO wordmark (text logo, replaces Ochaka's SVG logo) ─────────────────── */
 .fado-wordmark {
-    font-family: var(--font-heading, serif);
-    font-size: 1.6rem;
+    font-family: "Afacad", sans-serif;
+    font-size: 1.9rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.12em;
     line-height: 1;
+    text-decoration: none;
+    display: inline-block;
 }
 
-/* Sticky header (light background) — deep green text, per CLAUDE.md "small elements only" rule */
-.tf-header.header-fixed .fado-wordmark { color: var(--fado-deep-green); }
-
-/* Footer and mobile canvas header (dark/black background) — white wordmark */
-.tf-footer .fado-wordmark,
+/* Transparent header — white wordmark over hero */
+.tf-header.header-abs-3 .fado-wordmark { color: #fff; }
+/* Sticky header — dark wordmark */
+.tf-header.header-fixed .fado-wordmark  { color: var(--text, #1a1a1a); }
+/* Mobile canvas header — white */
 .canvas-mb .canvas-header .fado-wordmark { color: #fff; }
+
+/* ── Hero slider — full viewport height ─────────────────────────────────── */
+/* Ochaka's CSS only defines breakpoint heights that REDUCE from a base.
+   We set the base at ≥1440px so the hero fills the full screen on desktop. */
+@media (min-width: 1440px) {
+    .tf-slideshow .slider-wrap {
+        height: 100vh;
+    }
+}
