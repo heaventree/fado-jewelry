@@ -164,38 +164,36 @@
 
                                 {{-- Metal selector --}}
                                 @if($metals->isNotEmpty())
-                                <div class="variant-picker-item variant-metal">
-                                    <div class="variant-picker-label">
-                                        <div class="h4 fw-semibold">
-                                            Metal
-                                            <span class="variant-picker-label-value" id="currentMetalLabel">{{ $defaultVariant?->metal?->name }}</span>
-                                        </div>
+                                <div class="variant-picker-item variant-metal" style="margin-bottom:20px">
+                                    <div class="variant-picker-label" style="margin-bottom:8px">
+                                        <div class="h4 fw-semibold">Metal</div>
                                     </div>
-                                    <div class="variant-picker-values" id="metalPicker">
-                                        @foreach($metals as $metal)
-                                        <span class="size-btn {{ $defaultVariant?->metal_id === $metal->id ? 'active' : '' }}"
-                                              data-metal-id="{{ $metal->id }}"
-                                              onclick="selectMetal({{ $metal->id }}, this)">{{ $metal->name }}</span>
-                                        @endforeach
+                                    <div class="tf-select select-square">
+                                        <select id="metalSelect" onchange="selectMetal(parseInt(this.value), this)">
+                                            @foreach($metals as $metal)
+                                            <option value="{{ $metal->id }}" {{ $defaultVariant?->metal_id === $metal->id ? 'selected' : '' }}>
+                                                {{ $metal->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 @endif
 
                                 {{-- Gemstone selector (options depend on selected metal) --}}
-                                <div class="variant-picker-item variant-gemstone" id="gemstoneWrap" style="{{ $gemstones->isEmpty() ? 'display:none' : '' }}">
-                                    <div class="variant-picker-label">
-                                        <div class="h4 fw-semibold">
-                                            Gemstone
-                                            <span class="variant-picker-label-value" id="currentGemstoneLabel"></span>
-                                        </div>
+                                <div class="variant-picker-item variant-gemstone" id="gemstoneWrap" style="margin-bottom:20px; {{ $gemstones->isEmpty() ? 'display:none' : '' }}">
+                                    <div class="variant-picker-label" style="margin-bottom:8px">
+                                        <div class="h4 fw-semibold">Gemstone</div>
                                     </div>
-                                    <div class="variant-picker-values" id="gemstonePicker"></div>
+                                    <div class="tf-select select-square">
+                                        <select id="gemstoneSelect" onchange="selectGemstone(parseInt(this.value), this)"></select>
+                                    </div>
                                 </div>
 
                                 {{-- Ring size selector --}}
                                 @if($product->sizes->isNotEmpty())
-                                <div class="variant-picker-item variant-size">
-                                    <div class="variant-picker-label">
+                                <div class="variant-picker-item variant-size" style="margin-bottom:20px">
+                                    <div class="variant-picker-label d-flex justify-content-between align-items-center" style="margin-bottom:8px">
                                         <div class="h4 fw-semibold">Ring Size (US)</div>
                                         <a href="#"
                                            onclick="document.getElementById('sizeGuideAccordion').open=true; return false;"
@@ -203,14 +201,17 @@
                                             <i class="icon icon-ruler"></i> Size Guide
                                         </a>
                                     </div>
-                                    <div class="variant-picker-values">
-                                        @foreach($product->sizes as $size)
-                                        <span class="size-btn {{ $size->stock == 0 ? 'disabled' : '' }}"
-                                              data-size-id="{{ $size->id }}"
-                                              @if($size->stock != 0) onclick="selectSize({{ $size->id }}, this)" @endif>
-                                            US {{ number_format((float)$size->us_size, 1) }}{{ $size->stock == 0 ? ' (Sold Out)' : '' }}
-                                        </span>
-                                        @endforeach
+                                    <div class="tf-select select-square">
+                                        <select id="sizeSelect" onchange="selectSize(this.value ? parseInt(this.options[this.selectedIndex].dataset.sizeId) : null, this)">
+                                            <option value="">Select a size</option>
+                                            @foreach($product->sizes as $size)
+                                            <option value="{{ $size->us_size }}"
+                                                    data-size-id="{{ $size->id }}"
+                                                    {{ $size->stock == 0 ? 'disabled' : '' }}>
+                                                US {{ number_format((float)$size->us_size, 1) }}{{ $size->stock == 0 ? ' — Sold Out' : '' }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 @endif
@@ -260,7 +261,7 @@
                             <span>Description</span>
                             <i class="icon icon-caret-down fado-accordion-icon"></i>
                         </summary>
-                        <div class="fado-accordion-body" style="font-size:.9rem; color:#555; line-height:1.8">
+                        <div class="fado-accordion-body" style="color:#555; line-height:1.8">
                             {!! $product->description !!}
                         </div>
                     </details>
@@ -272,7 +273,7 @@
                             <span>Delivery & Shipping</span>
                             <i class="icon icon-caret-down fado-accordion-icon"></i>
                         </summary>
-                        <div class="fado-accordion-body" style="font-size:.9rem; color:#555; line-height:1.8">
+                        <div class="fado-accordion-body" style="color:#555; line-height:1.8">
                             <p>{{ \App\Models\Setting::get('shipping_notice', 'Free delivery on orders over €75') }}. Orders are dispatched within 2–3 working days and typically arrive within 5–7 working days across Ireland and Europe.</p>
                             <p>Express delivery (1–2 working days) is available at checkout. International shipping to the US and worldwide is also available.</p>
                         </div>
@@ -284,7 +285,7 @@
                             <span>Returns & Exchanges</span>
                             <i class="icon icon-caret-down fado-accordion-icon"></i>
                         </summary>
-                        <div class="fado-accordion-body" style="font-size:.9rem; color:#555; line-height:1.8">
+                        <div class="fado-accordion-body" style="color:#555; line-height:1.8">
                             <p>We offer a 30-day return policy on all unworn items in their original packaging. For size exchanges, please contact us within 30 days of receiving your order.</p>
                             <p>Custom or engraved pieces cannot be returned unless faulty.</p>
                         </div>
@@ -297,7 +298,7 @@
                             <span>Ring Size Guide</span>
                             <i class="icon icon-caret-down fado-accordion-icon"></i>
                         </summary>
-                        <div class="fado-accordion-body" style="font-size:.85rem; color:#555">
+                        <div class="fado-accordion-body" style="color:#555">
                             <p style="margin-bottom:12px">US ring sizes available for this piece:</p>
                             <div style="display:flex; flex-wrap:wrap; gap:6px">
                                 @foreach($product->sizes as $size)
@@ -434,7 +435,7 @@
     padding: 16px 0;
     cursor: pointer;
     list-style: none;
-    font-size: .875rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--fado-deep-green);
     letter-spacing: .02em;
@@ -445,6 +446,7 @@
 details[open] .fado-accordion-icon { transform: rotate(180deg); }
 .fado-accordion-body {
     padding-bottom: 20px;
+    font-size: 1rem !important;
 }
 .fado-accordion-body p { margin-bottom: 10px; }
 .fado-accordion-body p:last-child { margin-bottom: 0; }
@@ -529,10 +531,9 @@ function findBestVariant(metalId, gemstoneId) {
 }
 
 function rebuildGemstonePicker(metalId) {
-    const wrap   = document.getElementById('gemstoneWrap');
-    const picker = document.getElementById('gemstonePicker');
-    const label  = document.getElementById('currentGemstoneLabel');
-    if (!picker) return null;
+    const wrap = document.getElementById('gemstoneWrap');
+    const sel  = document.getElementById('gemstoneSelect');
+    if (!sel) return null;
 
     const gems = variantData
         .filter(v => v.metal_id === metalId && v.gemstone_id)
@@ -544,47 +545,29 @@ function rebuildGemstonePicker(metalId) {
         }, []);
 
     if (gems.length > 0) {
-        picker.innerHTML = gems.map((g, i) =>
-            `<span class="size-btn${i === 0 ? ' active' : ''}" data-gemstone-id="${g.id}" onclick="selectGemstone(${g.id}, this)">${g.name}</span>`
-        ).join('');
+        sel.innerHTML = gems.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
         if (wrap) wrap.style.display = '';
-        if (label) label.textContent = gems[0].name;
         return gems[0].id;
     } else {
-        picker.innerHTML = '';
+        sel.innerHTML = '';
         if (wrap) wrap.style.display = 'none';
-        if (label) label.textContent = '';
         return null;
     }
 }
 
 function selectMetal(metalId, el) {
-    document.querySelectorAll('#metalPicker .size-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
-
-    const label = document.getElementById('currentMetalLabel');
-    if (label) label.textContent = el.textContent.trim();
-
     const gemId = rebuildGemstonePicker(metalId);
     applyVariant(findBestVariant(metalId, gemId));
 }
 
 function selectGemstone(gemstoneId, el) {
-    document.querySelectorAll('#gemstonePicker .size-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
-
-    const label = document.getElementById('currentGemstoneLabel');
-    if (label) label.textContent = el.textContent.trim();
-
-    const activeMetalBtn = document.querySelector('#metalPicker .size-btn.active');
-    const metalId = activeMetalBtn ? parseInt(activeMetalBtn.dataset.metalId) : null;
+    const metalSel = document.getElementById('metalSelect');
+    const metalId  = metalSel ? parseInt(metalSel.value) : null;
     applyVariant(findBestVariant(metalId, gemstoneId));
 }
 
 function selectSize(sizeId, el) {
-    document.querySelectorAll('.variant-size .size-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById('selectedSizeId').value = sizeId;
+    document.getElementById('selectedSizeId').value = sizeId || '';
 }
 
 // ── Quantity stepper ───────────────────────────────────────────────────────
@@ -653,9 +636,9 @@ function toggleWishlist(triggerBtn) {
 document.addEventListener('DOMContentLoaded', function () {
     // Apply default variant display (first variant) and build initial gemstone picker
     if (variantData.length > 0) {
-        const activeMetalBtn = document.querySelector('#metalPicker .size-btn.active');
-        const metalId = activeMetalBtn ? parseInt(activeMetalBtn.dataset.metalId) : null;
-        const gemId   = rebuildGemstonePicker(metalId);
+        const metalSel = document.getElementById('metalSelect');
+        const metalId  = metalSel ? parseInt(metalSel.value) : null;
+        const gemId    = rebuildGemstonePicker(metalId);
         applyVariant(findBestVariant(metalId, gemId));
     }
 });
