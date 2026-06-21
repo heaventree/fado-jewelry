@@ -36,8 +36,13 @@
             <div class="tf-mini-cart-wrap list-file-delete wrap-empty_text">
                 <div class="tf-mini-cart-main">
                     <div class="tf-mini-cart-sroll">
-                        <div class="tf-mini-cart-items @if($cartItems->isEmpty()) list-empty @endif">
-                            @if($cartItems->isEmpty())
+                        <div class="tf-mini-cart-items list-empty">
+                            {{-- "list-empty" stays unconditional — it's the static selector main.js's
+                                 checkListEmpty() (main.js:145) queries for to decide whether to show
+                                 .box-text_empty or .box-empty_clear; it is NOT a "cart is empty" state
+                                 class. Removing it when the cart has items (as a previous pass did)
+                                 made checkListEmpty() think the cart was always empty, which hid the
+                                 subtotal/progress-bar/checkout CTA block below regardless of cart state. --}}
                             <div class="box-text_empty type-shop_cart">
                                 <div class="shop-empty_top">
                                     <span class="icon">
@@ -57,7 +62,6 @@
                                     </a>
                                 </div>
                             </div>
-                            @else
                                 @foreach($cartItems as $item)
                                 <div class="tf-mini-cart-item file-delete">
                                     <div class="tf-mini-cart-image">
@@ -87,11 +91,9 @@
                                     </div>
                                 </div>
                                 @endforeach
-                            @endif
                         </div>
                     </div>
                 </div>
-                @if($cartItems->isNotEmpty())
                 <div class="tf-mini-cart-bottom box-empty_clear">
                     <div class="tf-mini-cart-threshold">
                         <div class="text">
@@ -122,7 +124,6 @@
                         @endif
                     </div>
                 </div>
-                @endif
             </div>
         </div>
     </div>
