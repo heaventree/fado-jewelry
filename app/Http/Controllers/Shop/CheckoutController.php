@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Setting;
 use App\Services\CartService;
 use App\Services\CurrencyService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class CheckoutController extends Controller
@@ -26,12 +28,22 @@ class CheckoutController extends Controller
             return redirect()->route('shop.cart')->with('info', 'Your bag is empty.');
         }
 
-        $items       = $this->cart->items();
-        $subtotalEur = $this->cart->subtotalEur();
-        $currency    = $this->currency->current();
-        $user        = Auth::user();
+        $items          = $this->cart->items();
+        $subtotalEur    = $this->cart->subtotalEur();
+        $currency       = $this->currency->current();
+        $user           = Auth::user();
+        $paymentMethods = $this->paymentMethods();
 
-        return view('shop.checkout', compact('items', 'subtotalEur', 'currency', 'user'));
+        $shippingRates = [
+            'IE'        => (float) Setting::get('shipping_rate_ireland', 5.95),
+            'INTL'      => (float) Setting::get('shipping_rate_international', 12.95),
+            'threshold' => (float) Setting::get('free_shipping_threshold', 75),
+        ];
+        $shippingNotice = Setting::get('shipping_notice');
+
+        return view('shop.checkout', compact(
+            'items', 'subtotalEur', 'currency', 'user', 'paymentMethods', 'shippingRates', 'shippingNotice'
+        ));
     }
 
     public function place(Request $request): RedirectResponse
@@ -40,29 +52,41 @@ class CheckoutController extends Controller
             return redirect()->route('shop.cart')->with('info', 'Your bag is empty.');
         }
 
+        $availableMethods = array_keys($this->paymentMethods(true));
+
         $data = $request->validate([
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'email', 'max:255'],
-            'phone'    => ['nullable', 'string', 'max:30'],
-            'line1'    => ['required', 'string', 'max:255'],
-            'line2'    => ['nullable', 'string', 'max:255'],
-            'city'     => ['required', 'string', 'max:100'],
-            'county'   => ['nullable', 'string', 'max:100'],
-            'country'  => ['required', 'string', 'size:2'],
-            'postcode' => ['required', 'string', 'max:20'],
+            'name'           => ['required', 'string', 'max:255'],
+            'email'          => ['required', 'email', 'max:255'],
+            'phone'          => ['nullable', 'string', 'max:30'],
+            'line1'          => ['required', 'string', 'max:255'],
+            'line2'          => ['nullable', 'string', 'max:255'],
+            'city'           => ['required', 'string', 'max:100'],
+            'county'         => ['nullable', 'string', 'max:100'],
+            'country'        => ['required', 'string', 'size:2'],
+            'postcode'       => ['required', 'string', 'max:20'],
+            'payment_method' => ['required', Rule::in($availableMethods)],
         ]);
 
         $items       = $this->cart->items();
         $subtotalEur = $this->cart->subtotalEur();
         $currency    = $this->currency->current();
 
-        $order = DB::transaction(function () use ($data, $items, $subtotalEur, $currency): Order {
+        $threshold     = (float) Setting::get('free_shipping_threshold', 75);
+        $shippingEur   = $subtotalEur >= $threshold
+            ? 0.0
+            : (strtoupper($data['country']) === 'IE'
+                ? (float) Setting::get('shipping_rate_ireland', 5.95)
+                : (float) Setting::get('shipping_rate_international', 12.95));
+
+        $order = DB::transaction(function () use ($data, $items, $subtotalEur, $shippingEur, $currency): Order {
             $order = Order::create([
                 'user_id'          => Auth::id(),
                 'status'           => 'pending',
                 'subtotal'         => $subtotalEur,
-                'total'            => $subtotalEur, // shipping calculated later
+                'shipping_total'   => $shippingEur,
+                'total'            => $subtotalEur + $shippingEur,
                 'currency_code'    => $currency->code,
+                'payment_method'   => $data['payment_method'],
                 'shipping_address' => [
                     'name'     => $data['name'],
                     'email'    => $data['email'],
@@ -97,6 +121,40 @@ class CheckoutController extends Controller
 
         return redirect()->route('shop.order.confirmation', $order)
             ->with('order_placed', true);
+    }
+
+    /**
+     * Real, backend-defined payment methods only — never hardcoded in the view.
+     * 'cod' ("order on request") is genuinely functional: no payment processing
+     * happens, the admin follows up by phone/payment link, gated by the
+     * `cod_enabled` setting (admin-facing copy: "Enable order-on-request checkout").
+     * 'stripe' has config fields in Settings but NO working charge integration —
+     * no Stripe SDK is installed and no processing code exists anywhere in this
+     * app. It is only ever returned here for display as a disabled/"coming soon"
+     * option when keys are configured, and $selectable (default) excludes it
+     * entirely so it can never be chosen at checkout.
+     */
+    private function paymentMethods(bool $selectable = false): array
+    {
+        $methods = [];
+
+        if (Setting::get('cod_enabled', '1')) {
+            $methods['cod'] = [
+                'label'       => 'Order on request',
+                'description' => Setting::get('payment_method_label') ?: 'Our team will contact you to arrange payment.',
+                'functional'  => true,
+            ];
+        }
+
+        if (! $selectable && Setting::get('stripe_publishable_key')) {
+            $methods['stripe'] = [
+                'label'       => 'Card (Stripe)',
+                'description' => 'Card payments are not yet available — coming soon.',
+                'functional'  => false,
+            ];
+        }
+
+        return $methods;
     }
 
     public function confirmation(Order $order): View|RedirectResponse
