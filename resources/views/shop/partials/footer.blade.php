@@ -29,9 +29,8 @@
             <div class="row">
                 <div class="col-xl-4 col-sm-6 mb_30 mb-xl-0">
                     <div class="footer-infor">
-                        {{-- No FADO logo file supplied yet — text wordmark, see public/css/fado.css .fado-wordmark --}}
                         <a href="{{ route('shop.home') }}" class="logo-site">
-                            <span class="fado-wordmark">{{ \App\Models\Setting::get('store_name', 'FADÓ') }}</span>
+                            <img src="{{ asset('images/logo-white.svg') }}" alt="{{ \App\Models\Setting::get('store_name', 'FADÓ') }}" class="fado-logo">
                         </a>
                         <ul class="footer-contact mb-0">
                             @if($address = \App\Models\Setting::get('store_address'))

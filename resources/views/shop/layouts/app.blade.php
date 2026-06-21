@@ -90,6 +90,8 @@
 
     @include('shop.partials.mobile-menu')
 
+    @include('shop.partials.cart-drawer')
+
     {{-- Search modal — real classes from theme-reference/home-jewelry.html (#search modal), wired to the real search route.
          The "quick links" / "history" / "trending product" blocks present in the Ochaka reference are demo content
          (fake search history, fake trending products) with no backing data model — omitted per the no-fabricated-content rule. --}}

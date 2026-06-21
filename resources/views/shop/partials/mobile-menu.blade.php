@@ -19,7 +19,7 @@
         <i class="icon-close"></i>
     </span>
     <div class="canvas-header">
-        <p class="text-logo-mb">{{ \App\Models\Setting::get('store_name', 'FADÓ') }}</p>
+        <img src="{{ asset('images/logo-white.svg') }}" alt="{{ \App\Models\Setting::get('store_name', 'FADÓ') }}" class="fado-logo">
         @auth
             <a href="{{ route('shop.account.index') }}" class="tf-btn type-small style-2">
                 Account

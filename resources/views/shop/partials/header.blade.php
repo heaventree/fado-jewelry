@@ -87,9 +87,8 @@
                     </div>
                 </div>
                 <div class="col-xl-4 col-md-4 col-6">
-                    {{-- No FADO logo file has been supplied yet — text wordmark, see public/css/fado.css .fado-wordmark --}}
                     <a href="{{ route('shop.home') }}" class="logo-site justify-content-center">
-                        <span class="fado-wordmark">{{ Setting::get('store_name', 'FADÓ') }}</span>
+                        <img src="{{ asset('images/logo-white.svg') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}" class="fado-logo">
                         <div class="logo-bottom">
                             <svg width="14" height="6" viewBox="0 0 14 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M2.5 1L4.5 3L2.5 5L0.5 3L2.5 1Z" fill="white" />
@@ -123,8 +122,8 @@
                                 @if($wishlistCount > 0)<span class="count">{{ $wishlistCount }}</span>@endif
                             </a>
                         </li>
-                        <li class="shop-cart">
-                            <a class="nav-icon-item text-white link" href="{{ route('shop.cart') }}">
+                        <li class="shop-cart" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart">
+                            <a class="nav-icon-item text-white link" href="#shoppingCart" data-bs-toggle="offcanvas">
                                 <i class="icon icon-shopping-cart-simple"></i>
                             </a>
                             @if($cartCount > 0)<span class="count">{{ $cartCount }}</span>@endif
@@ -153,9 +152,8 @@
                 </a>
             </div>
             <div class="col-xl-3 col-md-4 col-6 text-center text-xl-start">
-                {{-- No FADO logo file has been supplied yet — text wordmark, see public/css/fado.css .fado-wordmark --}}
                 <a href="{{ route('shop.home') }}" class="logo-site justify-content-center justify-content-xl-start">
-                    <span class="fado-wordmark">{{ Setting::get('store_name', 'FADÓ') }}</span>
+                    <img src="{{ asset('images/logo.svg') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}" class="fado-logo">
                 </a>
             </div>
             <div class="col-xl-6 d-none d-xl-block">
@@ -183,8 +181,8 @@
                             @if($wishlistCount > 0)<span class="count">{{ $wishlistCount }}</span>@endif
                         </a>
                     </li>
-                    <li class="shop-cart">
-                        <a class="nav-icon-item link" href="{{ route('shop.cart') }}">
+                    <li class="shop-cart" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart">
+                        <a class="nav-icon-item link" href="#shoppingCart" data-bs-toggle="offcanvas">
                             <i class="icon icon-shopping-cart-simple"></i>
                         </a>
                         @if($cartCount > 0)<span class="count">{{ $cartCount }}</span>@endif
@@ -206,7 +204,7 @@
             </div>
             <div class="col-xl-3 col-md-4 col-6 text-center text-xl-start">
                 <a href="{{ route('shop.home') }}" class="logo-site justify-content-center justify-content-xl-start">
-                    <span class="fado-wordmark">{{ Setting::get('store_name', 'FADÓ') }}</span>
+                    <img src="{{ asset('images/logo.svg') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}" class="fado-logo">
                 </a>
             </div>
             <div class="col-xl-6 d-none d-xl-block">
@@ -234,8 +232,8 @@
                             @if($wishlistCount > 0)<span class="count">{{ $wishlistCount }}</span>@endif
                         </a>
                     </li>
-                    <li class="shop-cart">
-                        <a class="nav-icon-item link" href="{{ route('shop.cart') }}">
+                    <li class="shop-cart" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart">
+                        <a class="nav-icon-item link" href="#shoppingCart" data-bs-toggle="offcanvas">
                             <i class="icon icon-shopping-cart-simple"></i>
                         </a>
                         @if($cartCount > 0)<span class="count">{{ $cartCount }}</span>@endif

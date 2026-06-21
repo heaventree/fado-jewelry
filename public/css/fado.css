@@ -18,23 +18,26 @@
     --fado-warm-grey:    #BCB3AB;   /* borders, dividers */
 }
 
-/* ── FADO wordmark (text logo, replaces Ochaka's SVG logo) ─────────────────── */
-.fado-wordmark {
-    font-family: "Afacad", sans-serif;
-    font-size: 1.9rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    line-height: 1;
-    text-decoration: none;
-    display: inline-block;
+/* ── FADO logo (real ship-mark + wordmark SVG, replaces the old text placeholder) ── */
+/* public/images/logo.svg (dark, stroke="currentColor") and logo-white.svg (white,
+   hardcoded #fff) are both a square 800x800 viewBox (icon stacked above the wordmark),
+   not Ochaka's wide horizontal lockup — styles.css's `.logo-site img { aspect-ratio:
+   2.5094339623; }` would squash a square image into a wide box, so that's overridden
+   back to the SVG's own intrinsic ratio here. */
+.logo-site img.fado-logo {
+    aspect-ratio: auto;
+    width: auto;
 }
-
-/* Transparent header — white wordmark over hero */
-.tf-header.header-abs-3 .fado-wordmark { color: #fff; }
-/* Sticky header — dark wordmark */
-.tf-header.header-fixed .fado-wordmark  { color: var(--text, #1a1a1a); }
-/* Mobile canvas header — white */
-.canvas-mb .canvas-header .fado-wordmark { color: #fff; }
+.logo-site img.fado-logo {
+    height: 48px;
+}
+.header-abs-3 .logo-site img.fado-logo {
+    height: 64px;
+}
+.canvas-header .fado-logo {
+    height: 40px;
+    width: auto;
+}
 
 /* ── Hero slider — full viewport height ─────────────────────────────────── */
 /* Ochaka's CSS only defines breakpoint heights that REDUCE from a base.
