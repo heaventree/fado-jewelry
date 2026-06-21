@@ -8,10 +8,12 @@ use App\Models\Collection;
 use App\Models\Consultation;
 use App\Models\Gemstone;
 use App\Models\Metal;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -225,9 +227,35 @@ class ShopController extends Controller
             ->limit((int) Setting::get('related_products_count', 4))
             ->get();
 
+        // "People viewing this" — real, lightweight, TTL-based unique-session counter.
+        // No Redis/websockets: a small [session_id => last_seen_timestamp] map per
+        // product, stored in the default cache store (database/file — whatever's
+        // configured), pruned to the last 10 minutes on every view. Hidden below 2
+        // viewers, since "1 viewer" is just the current visitor and isn't real social
+        // proof (it would always show "1" for every solo visitor, which is misleading).
+        $viewWindowSeconds = 600;
+        $viewersKey = "product_viewers:{$product->id}";
+        $viewers = Cache::get($viewersKey, []);
+        $now = now()->timestamp;
+        $viewers = array_filter($viewers, fn ($ts) => ($now - $ts) < $viewWindowSeconds);
+        $viewers[session()->getId()] = $now;
+        Cache::put($viewersKey, $viewers, $viewWindowSeconds);
+        $viewingCount = count($viewers) >= 2 ? count($viewers) : 0;
+
+        // "People bought this recently" — real completed orders (OrderItem rows) in
+        // the last 48 hours, not a fabricated/random number. There's no persisted
+        // "added to cart" event log (CartService is session-only and never writes
+        // history), so this counts actual distinct orders containing this product —
+        // a stronger, equally real signal. Hidden when zero.
+        $recentBuyersCount = OrderItem::where('product_id', $product->id)
+            ->where('created_at', '>=', now()->subHours(48))
+            ->distinct('order_id')
+            ->count('order_id');
+
         return view('shop.product', compact(
             'product', 'variantData', 'defaultVariant',
-            'metals', 'gemstones', 'imageData', 'related'
+            'metals', 'gemstones', 'imageData', 'related',
+            'viewingCount', 'recentBuyersCount'
         ));
     }
 

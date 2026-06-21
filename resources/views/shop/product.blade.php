@@ -128,14 +128,18 @@
                         <div class="tf-product-heading">
                             <div class="product-info-price price-wrap">
                                 @if($defaultVariant && $defaultVariant->isOnSale())
+                                    @php $pctOff = (int) round((1 - ((float) $defaultVariant->sale_price_eur / (float) $defaultVariant->price_eur)) * 100); @endphp
                                     <span id="variantPrice" class="price-new price-on-sale h2 fw-4">€{{ number_format((float) $defaultVariant->sale_price_eur, 2) }}</span>
                                     <span id="variantPriceOld" class="price-old compare-at-price h6">€{{ number_format((float) $defaultVariant->price_eur, 2) }}</span>
+                                    <span id="variantSaleBadge" class="product-badge_item h6 sale" style="margin-left:8px">{{ $pctOff }}% OFF</span>
                                 @elseif($defaultVariant)
                                     <span id="variantPrice" class="price-new h2 fw-4">€{{ number_format((float) $defaultVariant->price_eur, 2) }}</span>
                                     <span id="variantPriceOld" class="price-old compare-at-price h6" style="display:none"></span>
+                                    <span id="variantSaleBadge" class="product-badge_item h6 sale" style="margin-left:8px; display:none"></span>
                                 @else
                                     <span id="variantPrice" class="price-new h2 fw-4">Price on enquiry</span>
                                     <span id="variantPriceOld" class="price-old compare-at-price h6" style="display:none"></span>
+                                    <span id="variantSaleBadge" class="product-badge_item h6 sale" style="margin-left:8px; display:none"></span>
                                 @endif
                                 <span id="stockStatus" class="h6 fw-semibold"
                                       style="margin-left:12px; color:{{ $defaultVariant && $defaultVariant->stock > 0 ? 'var(--fado-green-mid)' : '#dc3545' }}">
@@ -156,6 +160,20 @@
                         </p>
                         @endif
 
+                        {{-- Real social proof — data sources documented in ShopController::product().
+                             Both hidden entirely when not meaningful (viewingCount/recentBuyersCount
+                             are pre-thresholded server-side: viewing hidden below 2, buyers hidden at 0). --}}
+                        @if($viewingCount > 0)
+                        <p class="h6" style="color:var(--fado-green-mid); margin-bottom:4px">
+                            <i class="icon icon-view"></i> {{ $viewingCount }} {{ Str::plural('person', $viewingCount) }} viewing this right now
+                        </p>
+                        @endif
+                        @if($recentBuyersCount > 0)
+                        <p class="h6" style="color:var(--fado-warm-grey); margin-bottom:4px">
+                            <i class="icon icon-bag"></i> {{ $recentBuyersCount }} {{ Str::plural('person', $recentBuyersCount) }} bought this in the last 48 hours
+                        </p>
+                        @endif
+
                         <form method="POST" action="{{ route('shop.cart.add') }}" id="addToCartForm">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -170,7 +188,7 @@
                                     <div class="variant-picker-label" style="margin-bottom:8px">
                                         <div class="h4 fw-semibold">Metal</div>
                                     </div>
-                                    <div class="tf-select select-square">
+                                    <div class="tf-select">
                                         <select id="metalSelect" onchange="selectMetal(parseInt(this.value), this)">
                                             @foreach($metals as $metal)
                                             <option value="{{ $metal->id }}" {{ $defaultVariant?->metal_id === $metal->id ? 'selected' : '' }}>
@@ -187,7 +205,7 @@
                                     <div class="variant-picker-label" style="margin-bottom:8px">
                                         <div class="h4 fw-semibold">Gemstone</div>
                                     </div>
-                                    <div class="tf-select select-square">
+                                    <div class="tf-select">
                                         <select id="gemstoneSelect" onchange="selectGemstone(parseInt(this.value), this)"></select>
                                     </div>
                                 </div>
@@ -203,7 +221,7 @@
                                             <i class="icon icon-ruler"></i> Size Guide
                                         </a>
                                     </div>
-                                    <div class="tf-select select-square">
+                                    <div class="tf-select">
                                         <select id="sizeSelect" onchange="selectSize(this.value ? parseInt(this.options[this.selectedIndex].dataset.sizeId) : null, this)">
                                             <option value="">Select a size</option>
                                             @foreach($product->sizes as $size)
@@ -552,6 +570,17 @@ function applyVariant(variant) {
             priceOldEl.style.display = '';
         } else {
             priceOldEl.style.display = 'none';
+        }
+    }
+
+    const saleBadgeEl = document.getElementById('variantSaleBadge');
+    if (saleBadgeEl) {
+        if (onSale) {
+            const pctOff = Math.round((1 - (parseFloat(variant.sale_price_eur) / parseFloat(variant.price_eur))) * 100);
+            saleBadgeEl.textContent = pctOff + '% OFF';
+            saleBadgeEl.style.display = '';
+        } else {
+            saleBadgeEl.style.display = 'none';
         }
     }
 

@@ -22,13 +22,16 @@ class Order extends Model
         'user_id',
         'status',
         'subtotal',
+        'shipping_total',
         'total',
         'currency_code',
+        'payment_method',
         'shipping_address',
     ];
 
     protected $casts = [
         'subtotal'         => 'decimal:2',
+        'shipping_total'   => 'decimal:2',
         'total'            => 'decimal:2',
         'shipping_address' => 'array',
     ];
