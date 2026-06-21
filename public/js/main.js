@@ -101,25 +101,25 @@
             var total = 0;
 
             $(".list-file-delete .tf-mini-cart-item").each(function () {
-                var priceText = $(this).find(".tf-mini-card-price").text().replace("$", "").replace(",", "").trim();
+                var priceText = $(this).find(".tf-mini-card-price").text().replace("€", "").replace(",", "").trim();
                 var price = parseFloat(priceText);
                 if (!isNaN(price)) {
                     total += price;
                 }
             });
 
-            var formatted = total.toLocaleString("en-US", { style: "currency", currency: "USD" });
+            var formatted = "€" + total.toFixed(2);
             $(".tf-totals-total-value").text(formatted);
         }
 
         function updatePriceEach() {
             $(".each-prd").each(function () {
-                var priceText = $(this).find(".each-price").text().replace("$", "").replace(",", "").trim();
+                var priceText = $(this).find(".each-price").text().replace("€", "").replace(",", "").trim();
                 var price = parseFloat(priceText);
                 var quantity = parseInt($(this).find(".quantity-product").val(), 10);
                 if (!isNaN(price) && !isNaN(quantity)) {
                     var subtotal = price * quantity;
-                    var formatted = subtotal.toLocaleString("en-US", { style: "currency", currency: "USD" });
+                    var formatted = "€" + subtotal.toFixed(2);
                     $(this).find(".each-subtotal-price").text(formatted);
                 }
             });
@@ -129,16 +129,17 @@
             var total = 0;
 
             $(".each-list-prd .each-prd").each(function () {
-                var priceText = $(this).find(".each-subtotal-price").text().replace("$", "").replace(",", "").trim();
+                // .each-subtotal-price is already a line total (price * quantity, set by
+                // updatePriceEach above) — do NOT multiply by quantity again here.
+                var priceText = $(this).find(".each-subtotal-price").text().replace("€", "").replace(",", "").trim();
                 var price = parseFloat(priceText);
-                var quantity = parseInt($(this).find(".quantity-product").val(), 10);
 
-                if (!isNaN(price) && !isNaN(quantity)) {
-                    total += price * quantity;
+                if (!isNaN(price)) {
+                    total += price;
                 }
             });
 
-            var formatted = total.toLocaleString("en-US", { style: "currency", currency: "USD" });
+            var formatted = "€" + total.toFixed(2);
             $(".each-total-price").text(formatted);
         }
 
