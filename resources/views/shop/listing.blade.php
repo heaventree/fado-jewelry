@@ -54,6 +54,9 @@
                         </div>
                         <form class="canvas-body" method="GET" action="{{ url()->current() }}" id="shop-filter-form">
                             <input type="hidden" name="sort" value="{{ $filters['sort'] }}">
+                            @if(!empty($filters['search']))
+                            <input type="hidden" name="search" value="{{ $filters['search'] }}">
+                            @endif
                             <div class="widget-facet">
                                 <div class="facet-title" data-bs-target="#category" role="button" data-bs-toggle="collapse"
                                     aria-expanded="true" aria-controls="category">

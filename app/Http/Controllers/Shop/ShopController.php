@@ -271,31 +271,51 @@ class ShopController extends Controller
         return view('shop.coming-soon', ['page' => 'Privacy Policy']);
     }
 
+    /**
+     * Reuses the same shop.listing view + shop.partials.listing-results AJAX partial as
+     * jewellery/category/collection — no dedicated search results template, filtered by
+     * the "search" param instead of a category/collection scope. buildProductQuery()'s
+     * existing text search (name LIKE) handles the query; results are overridden to an
+     * empty paginator below 2 characters so a blank/1-char query doesn't show the full
+     * catalogue (matches the previous dedicated search() behaviour).
+     */
     public function search(Request $request): View
     {
-        $query  = trim($request->string('q')->toString());
-        $perPage = (int) Setting::get('products_per_page', 16);
+        $query = trim($request->string('q')->toString());
+        // Mutate the actual GET parameter bag (not merge(), which request->query()/
+        // withQueryString() don't see) so pagination/sort links built from
+        // withQueryString() correctly carry the search term forward.
+        $request->query->set('search', $query);
 
-        $products = collect();
-        $total    = 0;
+        [$products, $metals, $gemstones, $allCollections, $colours, $filters] = $this->buildProductQuery($request);
 
-        if (strlen($query) >= 2) {
-            $builder = Product::query()
-                ->where('is_active', true)
-                ->where(function ($q) use ($query) {
-                    $q->where('name', 'like', '%' . $query . '%')
-                      ->orWhere('description', 'like', '%' . $query . '%')
-                      ->orWhere('short_description', 'like', '%' . $query . '%');
-                })
-                ->with(['primaryImage', 'variants.metal', 'variants.gemstone'])
-                ->orderByRaw("CASE WHEN name LIKE ? THEN 0 ELSE 1 END", ['%' . $query . '%'])
-                ->latest();
-
-            $products = $builder->paginate($perPage)->withQueryString();
-            $total    = $products->total();
+        if (strlen($query) < 2) {
+            $products = new \Illuminate\Pagination\LengthAwarePaginator(collect(), 0, (int) Setting::get('products_per_page', 16));
         }
 
-        return view('shop.search', compact('query', 'products', 'total'));
+        if ($request->ajax()) {
+            return view('shop.partials.listing-results', compact('products', 'filters'));
+        }
+
+        $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')
+            ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
+            ->get();
+
+        return view('shop.listing', [
+            'pageTitle'        => $query !== '' ? 'Search results for "' . $query . '"' : 'Search',
+            'pageSubtitle'     => $products->total() . ' ' . \Illuminate\Support\Str::plural('result', $products->total()) . ' found',
+            'bannerImage'      => null,
+            'products'         => $products,
+            'metals'           => $metals,
+            'gemstones'        => $gemstones,
+            'allCollections'   => $allCollections,
+            'colours'          => $colours,
+            'filters'          => $filters,
+            'topCategories'    => $topCategories,
+            'activeCategory'   => null,
+            'activeCollection' => null,
+            'breadcrumbs'      => [['label' => 'Search']],
+        ]);
     }
 
     public function newsletterSubscribe(Request $request): RedirectResponse

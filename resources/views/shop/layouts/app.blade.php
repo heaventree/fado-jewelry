@@ -92,9 +92,26 @@
 
     @include('shop.partials.cart-drawer')
 
-    {{-- Search modal — real classes from theme-reference/home-jewelry.html (#search modal), wired to the real search route.
-         The "quick links" / "history" / "trending product" blocks present in the Ochaka reference are demo content
-         (fake search history, fake trending products) with no backing data model — omitted per the no-fabricated-content rule. --}}
+    {{--
+        Search modal — source: theme-reference/home-jewelry.html lines 3214-3347 (`#search` modal).
+        - .quick-link-list (3226-3234): real top-level categories, not Ochaka's demo
+          "Graphic tees"/"Plain t-shirts" etc.
+        - .view-history-wrap (3236-3264) omitted — no real session-based recent-search
+          tracking exists anywhere in this app; the reference's "History" is fake
+          per-user search history with no backing data model.
+        - .trend-product-wrap (3265-3343): real bestseller products, the same
+          `is_bestseller` flag/query used for the homepage's best-sellers section, not
+          Ochaka's demo "Queen fashion long sleeve shirt" filler.
+    --}}
+    @php
+        $searchModalCategories = \App\Models\Category::whereNull('parent_id')->orderBy('sort_order')->limit(7)->get();
+        $searchModalTrending = \App\Models\Product::with('primaryImage')
+            ->where('is_active', true)
+            ->where('is_bestseller', true)
+            ->latest()
+            ->limit(4)
+            ->get();
+    @endphp
     <div class="modal modalCentered fade modal-search" id="search">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -106,7 +123,52 @@
                         </fieldset>
                         <button type="submit" class="link"><i class="icon icon-magnifying-glass"></i></button>
                     </form>
+                    @if($searchModalCategories->isNotEmpty())
+                    <ul class="quick-link-list">
+                        @foreach($searchModalCategories as $cat)
+                        <li><a href="{{ route('shop.category', $cat->slug) }}" class="link-item text-main h6 link">{{ $cat->name }}</a></li>
+                        @endforeach
+                    </ul>
+                    @endif
                 </div>
+                @if($searchModalTrending->isNotEmpty())
+                <div class="trend-product-wrap">
+                    <div class="heading">
+                        <h4 class="title flex-grow-1">Bestsellers</h4>
+                        <a href="{{ route('shop.jewellery') }}" class="tf-btn-line has-icon none-line fw-medium fs-18 text-normal">
+                            View All Product
+                            <i class="icon icon-caret-circle-right"></i>
+                        </a>
+                    </div>
+                    <div class="trend-product-inner">
+                        @foreach($searchModalTrending->chunk(2) as $chunk)
+                        <div class="trend-product-list">
+                            @foreach($chunk as $product)
+                            @php $variantForSale = $product->variants->first(fn ($v) => $v->isOnSale()); @endphp
+                            <div class="trend-product-item">
+                                <div class="image">
+                                    <img class="lazyload" src="{{ asset($product->primaryImage?->path ?? 'images/ochaka/products/jewelry/product-5.jpg') }}" data-src="{{ asset($product->primaryImage?->path ?? 'images/ochaka/products/jewelry/product-5.jpg') }}" alt="{{ $product->name }}">
+                                </div>
+                                <div class="content">
+                                    <h6 class="title">
+                                        <a href="{{ route('shop.product', $product) }}" class="link">{{ $product->name }}</a>
+                                    </h6>
+                                    <div class="price-wrap">
+                                        @if($variantForSale)
+                                            <span class="price-old h6 fw-normal">€{{ number_format((float) $variantForSale->price_eur, 2) }}</span>
+                                            <span class="price-new h6">€{{ number_format((float) $variantForSale->sale_price_eur, 2) }}</span>
+                                        @else
+                                            <span class="price-new h6">From €{{ number_format((float) $product->variants->min('price_eur'), 2) }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
