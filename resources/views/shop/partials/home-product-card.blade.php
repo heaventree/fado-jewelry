@@ -4,6 +4,7 @@
     $variantForSale = $product->variants->first(fn ($v) => $v->isOnSale());
     $from = $product->variants->min('price_eur');
     $showSale = $showSale ?? false;
+    $isWishlisted = app(\App\Services\WishlistService::class)->has($product->id);
 @endphp
 <div class="swiper-slide">
     <div class="card-product">
@@ -27,10 +28,10 @@
                 </li>
                 <li class="wishlist">
                     <a href="{{ route('shop.wishlist.toggle') }}"
-                       class="hover-tooltip tooltip-left box-icon"
-                       onclick="event.preventDefault(); fetch(this.href, {method:'POST', headers:{'Content-Type':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}','Accept':'application/json'}, body: JSON.stringify({product_id: {{ $product->id }}})}).then(() => location.reload())">
+                       class="hover-tooltip tooltip-left box-icon @if($isWishlisted) is-wishlisted @endif"
+                       onclick="event.preventDefault(); fadoToggleWishlist(this, {{ $product->id }})">
                         <span class="icon icon-heart"></span>
-                        <span class="tooltip">Add to Wishlist</span>
+                        <span class="tooltip">{{ $isWishlisted ? 'Saved to Wishlist' : 'Add to Wishlist' }}</span>
                     </a>
                 </li>
                 <li>

@@ -116,11 +116,11 @@
                                 <i class="icon icon-magnifying-glass"></i>
                             </a>
                         </li>
-                        <li class="d-none d-sm-flex">
+                        <li class="d-none d-sm-flex shop-wishlist">
                             <a class="nav-icon-item text-white link" href="{{ route('shop.wishlist') }}">
                                 <i class="icon icon-heart"></i>
-                                @if($wishlistCount > 0)<span class="count">{{ $wishlistCount }}</span>@endif
                             </a>
+                            @if($wishlistCount > 0)<span class="count wishlist-count">{{ $wishlistCount }}</span>@endif
                         </li>
                         <li class="shop-cart" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart">
                             <a class="nav-icon-item text-white link" href="#shoppingCart" data-bs-toggle="offcanvas">
@@ -175,11 +175,11 @@
                             <i class="icon icon-magnifying-glass"></i>
                         </a>
                     </li>
-                    <li class="d-none d-sm-flex">
+                    <li class="d-none d-sm-flex shop-wishlist">
                         <a class="nav-icon-item link" href="{{ route('shop.wishlist') }}">
                             <i class="icon icon-heart"></i>
-                            @if($wishlistCount > 0)<span class="count">{{ $wishlistCount }}</span>@endif
                         </a>
+                        @if($wishlistCount > 0)<span class="count wishlist-count">{{ $wishlistCount }}</span>@endif
                     </li>
                     <li class="shop-cart" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart">
                         <a class="nav-icon-item link" href="#shoppingCart" data-bs-toggle="offcanvas">
@@ -226,11 +226,11 @@
                             <i class="icon icon-magnifying-glass"></i>
                         </a>
                     </li>
-                    <li class="d-none d-sm-flex">
+                    <li class="d-none d-sm-flex shop-wishlist">
                         <a class="nav-icon-item link" href="{{ route('shop.wishlist') }}">
                             <i class="icon icon-heart"></i>
-                            @if($wishlistCount > 0)<span class="count">{{ $wishlistCount }}</span>@endif
                         </a>
+                        @if($wishlistCount > 0)<span class="count wishlist-count">{{ $wishlistCount }}</span>@endif
                     </li>
                     <li class="shop-cart" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart">
                         <a class="nav-icon-item link" href="#shoppingCart" data-bs-toggle="offcanvas">

@@ -185,6 +185,33 @@
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/zoom.js') }}"></script>
 
+    {{-- Shared wishlist-toggle helper — used by product cards (home, shop grid, related
+         products) so every "Add to Wishlist" icon updates its filled state and the header
+         badge immediately, without a full page reload. --}}
+    <script>
+        function fadoToggleWishlist(linkEl, productId) {
+            fetch('{{ route('shop.wishlist.toggle') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ product_id: productId }),
+            })
+            .then(r => r.json())
+            .then(data => {
+                linkEl.classList.toggle('is-wishlisted', data.added);
+                const tip = linkEl.querySelector('.tooltip');
+                if (tip) tip.textContent = data.added ? 'Saved to Wishlist' : 'Add to Wishlist';
+                document.querySelectorAll('.wishlist-count').forEach(badge => {
+                    badge.textContent = data.count;
+                });
+            })
+            .catch(() => location.reload());
+        }
+    </script>
+
     @stack('scripts')
 
 </body>

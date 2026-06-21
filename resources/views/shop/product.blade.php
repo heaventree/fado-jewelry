@@ -261,11 +261,9 @@
                                     @php $isWishlisted = app(\App\Services\WishlistService::class)->has($product->id); @endphp
                                     <button type="button"
                                             id="wishlistTextBtn"
-                                            class="hover-tooltip tooltip-top box-icon btn-add-wishlist"
-                                            onclick="toggleWishlist(this)"
-                                            data-product-id="{{ $product->id }}"
-                                            data-wishlisted="{{ $isWishlisted ? 'true' : 'false' }}">
-                                        <span class="icon {{ $isWishlisted ? 'icon-heart-fill' : 'icon-heart' }}"></span>
+                                            class="hover-tooltip tooltip-top box-icon btn-add-wishlist @if($isWishlisted) is-wishlisted @endif"
+                                            onclick="fadoToggleWishlist(this, {{ $product->id }})">
+                                        <span class="icon icon-heart"></span>
                                         <span class="tooltip">{{ $isWishlisted ? 'Saved to Wishlist' : 'Add to Wishlist' }}</span>
                                     </button>
                                 </div>
@@ -403,6 +401,7 @@
                 $relImg  = $rel->primaryImage;
                 $relImg2 = $rel->images->skip(1)->first();
                 $relFrom = $rel->variants->min('price_eur');
+                $relIsWishlisted = app(\App\Services\WishlistService::class)->has($rel->id);
             @endphp
             <div class="card-product grid wow fadeInUp">
                 <div class="card-product_wrapper">
@@ -431,10 +430,10 @@
                         </li>
                         <li class="wishlist">
                             <a href="{{ route('shop.wishlist.toggle') }}"
-                               class="hover-tooltip tooltip-left box-icon"
-                               onclick="event.preventDefault(); fetch(this.href, {method:'POST', headers:{'Content-Type':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}','Accept':'application/json'}, body: JSON.stringify({product_id: {{ $rel->id }}})}).then(() => location.reload())">
+                               class="hover-tooltip tooltip-left box-icon @if($relIsWishlisted) is-wishlisted @endif"
+                               onclick="event.preventDefault(); fadoToggleWishlist(this, {{ $rel->id }})">
                                 <span class="icon icon-heart"></span>
-                                <span class="tooltip">Add to Wishlist</span>
+                                <span class="tooltip">{{ $relIsWishlisted ? 'Saved to Wishlist' : 'Add to Wishlist' }}</span>
                             </a>
                         </li>
                     </ul>
@@ -683,59 +682,7 @@ function stepQty(delta) {
     input.value = val;
 }
 
-// ── Wishlist toggle (AJAX) ─────────────────────────────────────────────────
-function toggleWishlist(triggerBtn) {
-    const productId = triggerBtn.dataset.productId;
-    const variantId = document.getElementById('selectedVariantId')?.value || null;
-
-    fetch('{{ route('shop.wishlist.toggle') }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({ product_id: productId, variant_id: variantId || undefined }),
-    })
-    .then(r => r.json())
-    .then(data => {
-        const added = data.added;
-
-        // Update both buttons
-        [document.getElementById('wishlistOverlayBtn'), document.getElementById('wishlistTextBtn')]
-            .forEach(btn => { if (btn) btn.dataset.wishlisted = added ? 'true' : 'false'; });
-
-        // Overlay icon
-        const overlayIcon = document.querySelector('#wishlistOverlayBtn i');
-        if (overlayIcon) {
-            overlayIcon.className = 'icon ' + (added ? 'icon-heart-fill' : 'icon-heart');
-            overlayIcon.style.color = added ? 'var(--fado-green-mid)' : 'inherit';
-        }
-
-        // Text button
-        const textBtn = document.getElementById('wishlistTextBtn');
-        if (textBtn) {
-            const icon = textBtn.querySelector('.icon');
-            const tip  = textBtn.querySelector('.tooltip');
-            if (icon) icon.className = 'icon ' + (added ? 'icon-heart-fill' : 'icon-heart');
-            if (tip)  tip.textContent = added ? 'Saved to Wishlist' : 'Add to Wishlist';
-            textBtn.dataset.wishlisted = added ? 'true' : 'false';
-        }
-
-        // Header count badge — update without reload
-        const badge = document.querySelector('.fado-header-icons .icon-heart')?.closest('a')?.querySelector('.fado-cart-count');
-        if (data.count > 0) {
-            if (badge) { badge.textContent = data.count; }
-            // If no badge exists yet, a page reload will show it (next navigation)
-        } else if (badge) {
-            badge.remove();
-        }
-    })
-    .catch(() => {
-        // Fallback: navigate to wishlist page
-        window.location.href = '{{ route('shop.wishlist') }}';
-    });
-}
+// Wishlist toggle uses the shared fadoToggleWishlist() helper from shop.layouts.app.
 
 // ── Init ───────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {

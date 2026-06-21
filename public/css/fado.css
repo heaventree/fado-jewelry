@@ -18,6 +18,30 @@
     --fado-warm-grey:    #BCB3AB;   /* borders, dividers */
 }
 
+/* ── Header wishlist count badge ───────────────────────────────────────────── */
+/* styles.css only gives `.nav-icon-list .shop-cart { position: relative; }` — the
+   positioning context the cart's absolutely-positioned `.count` badge needs. The
+   wishlist `<li>` had no equivalent class, so its badge (also moved to be a sibling
+   of the icon link, matching the cart's markup) was positioning itself against
+   whatever ancestor happened to be relatively positioned, landing off in the wrong
+   spot instead of next to the heart icon. */
+.nav-icon-list .shop-wishlist {
+    position: relative;
+    margin-right: 12px;
+}
+
+/* ── Wishlist "filled heart" active state ──────────────────────────────────── */
+/* The icon font (public/icon/icomoon) only defines `icon-heart` — there is no
+   `icon-heart-fill` glyph, so a previous attempt to swap to that class on toggle
+   rendered a blank/invisible icon instead of a "filled" heart. Using a permanent
+   colour-fill on the existing box-icon style (same look as its own :hover state)
+   instead of a nonexistent icon variant. */
+.box-icon.is-wishlisted,
+.btn-add-wishlist.is-wishlisted {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
 /* ── FADO logo (real ship-mark + wordmark SVG, replaces the old text placeholder) ── */
 /* public/images/logo.svg (dark, stroke="currentColor") and logo-white.svg (white,
    hardcoded #fff) are both a square 800x800 viewBox (icon stacked above the wordmark),
