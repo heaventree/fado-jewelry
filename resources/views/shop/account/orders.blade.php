@@ -50,7 +50,7 @@
                                                     <div class="infor-prd">
                                                         <h6>
                                                             <a href="{{ route('shop.account.order', $order) }}" class="prd_name link">
-                                                                {{ $order->items->count() }} item(s)
+                                                                {{ $order->items_count }} item(s)
                                                             </a>
                                                         </h6>
                                                         <p class="prd_select text-small">

@@ -2,10 +2,16 @@
     <div class="account-author">
         <div class="author_avatar">
             <div class="image">
-                <img class="lazyload imgDash" src="/images/avatar/avatar-4.jpg" data-src="/images/avatar/avatar-4.jpg"
+                @php $avatarUrl = $user->avatar ? Storage::url($user->avatar) : '/images/avatar/avatar-4.jpg'; @endphp
+                <img class="lazyload imgDash" src="{{ $avatarUrl }}" data-src="{{ $avatarUrl }}"
                     alt="Avatar">
             </div>
-            <div class="btn-change_img box-icon changeImgDash">
+            <form action="{{ route('shop.account.avatar.upload') }}" method="POST" enctype="multipart/form-data" id="avatar-form">
+                @csrf
+                <input type="file" name="avatar" accept="image/*" style="display: none;" id="fileInputDash"
+                       onchange="document.getElementById('avatar-form').submit();">
+            </form>
+            <div class="btn-change_img box-icon changeImgDash" onclick="document.getElementById('fileInputDash').click();">
                 <i class="icon icon-camera"></i>
             </div>
         </div>

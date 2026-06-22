@@ -10,6 +10,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
@@ -25,6 +26,7 @@ class AccountController extends Controller implements HasMiddleware
         $user = Auth::user();
 
         $recentOrders = Order::where('user_id', $user->id)
+            ->withCount('items')
             ->latest()
             ->limit(5)
             ->get();
@@ -39,6 +41,7 @@ class AccountController extends Controller implements HasMiddleware
         $user = Auth::user();
 
         $orders = Order::where('user_id', $user->id)
+            ->withCount('items')
             ->latest()
             ->paginate(10);
 
@@ -108,6 +111,24 @@ class AccountController extends Controller implements HasMiddleware
             $user->update(['password' => Hash::make($request->password)]);
             return back()->with('password_updated', true);
         }
+
+        return back()->with('profile_updated', true);
+    }
+
+    public function avatarUpload(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ]);
+
+        $user = Auth::user();
+
+        if ($user->avatar) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        $path = $request->file('avatar')->store('avatars', 'public');
+        $user->update(['avatar' => $path]);
 
         return back()->with('profile_updated', true);
     }

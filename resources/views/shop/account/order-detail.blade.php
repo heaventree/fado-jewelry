@@ -135,7 +135,7 @@
                                                 </div>
                                                 <div class="timeline_content">
                                                     <h5 class="step-title fw-semibold">Processing</h5>
-                                                    <h6 class="step-date fw-normal mb-0">Order is being prepared</h6>
+                                                    <h6 class="step-date fw-normal mb-0">{{ $order->updated_at->format('F j, Y - H:i') }}</h6>
                                                 </div>
                                             </div>
                                             @endif
@@ -148,7 +148,7 @@
                                                 </div>
                                                 <div class="timeline_content">
                                                     <h5 class="step-title fw-semibold">Shipped</h5>
-                                                    <h6 class="step-date fw-normal mb-0">Your order is on its way</h6>
+                                                    <h6 class="step-date fw-normal mb-0">{{ $order->updated_at->format('F j, Y - H:i') }}</h6>
                                                 </div>
                                             </div>
                                             @endif
@@ -161,7 +161,7 @@
                                                 </div>
                                                 <div class="timeline_content">
                                                     <h5 class="step-title fw-semibold">Delivered</h5>
-                                                    <h6 class="step-date fw-normal mb-0">Order complete</h6>
+                                                    <h6 class="step-date fw-normal mb-0">{{ $order->updated_at->format('F j, Y - H:i') }}</h6>
                                                 </div>
                                             </div>
                                             @endif
@@ -178,7 +178,7 @@
                                                 </div>
                                                 @endif
                                                 <div class="info_detail">
-                                                    <a href="#" class="link info-name h4">{{ $item->product_name }}</a>
+                                                    <a href="#" class="link info-name h4">{{ $item->product->name ?? 'Product' }}</a>
                                                     <p class="info-price">Price: <span class="fw-semibold h6 text-black">€{{ number_format($item->unit_price, 2) }}</span></p>
                                                     <p class="info-variant">Qty: <span class="fw-semibold h6 text-black">{{ $item->quantity }}</span></p>
                                                     @if($item->variant && $item->variant->metal)
@@ -217,6 +217,14 @@
                                             <div class="recerver_text h6">
                                                 <span class="text">Total:</span>
                                                 <span class="text_info">€{{ number_format($order->total, 2) }}</span>
+                                            </div>
+                                            <div class="recerver_text h6">
+                                                <span class="text">Subtotal:</span>
+                                                <span class="text_info">€{{ number_format($order->subtotal, 2) }}</span>
+                                            </div>
+                                            <div class="recerver_text h6">
+                                                <span class="text">Shipping:</span>
+                                                <span class="text_info">{{ $order->shipping_total > 0 ? '€' . number_format($order->shipping_total, 2) : 'Free' }}</span>
                                             </div>
                                             <div class="recerver_text h6">
                                                 <span class="text">Status:</span>
