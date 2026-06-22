@@ -1253,33 +1253,6 @@
             e.preventDefault();
         });
     };
-    /* No Action Link
-    -------------------------------------------------------------------------*/
-    var notifyForm = () => {
-        $("#btnLogin").on("click", function (e) {
-            e.preventDefault();
-
-            const form = $(this).closest("form");
-            let firstEmptyInput = null;
-            let isValid = true;
-
-            form.find("input").each(function () {
-                if ($(this).val().trim() === "") {
-                    firstEmptyInput = $(this);
-                    isValid = false;
-                    return false;
-                }
-            });
-
-            if (isValid) {
-                window.location.href = "/account";
-            } else {
-                alert("Please fill in all required fields!");
-                firstEmptyInput.focus();
-            }
-        });
-    };
-
     /* Select Category
     -------------------------------------------------------------------------*/
     var customSelect = function () {
@@ -1433,7 +1406,7 @@
         showPassword();
         changeImageDash();
         preventDefault();
-        notifyForm();
+
         customSelect();
         hoverPin();
         RTL();
