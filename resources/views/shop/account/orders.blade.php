@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-xl-9">
                         <div class="my-account-content">
-                            <h2 class="account-title type-semibold">My Orders</h2>
+                            <h2 class="account-title type-semibold">My Order</h2>
                             <div class="overflow-auto">
                                 <table class="table-my_order">
                                     <thead>

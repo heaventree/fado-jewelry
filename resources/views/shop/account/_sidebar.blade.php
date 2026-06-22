@@ -2,8 +2,11 @@
     <div class="account-author">
         <div class="author_avatar">
             <div class="image">
-                <img class="lazyload" src="/images/avatar/avatar-4.jpg" data-src="/images/avatar/avatar-4.jpg"
+                <img class="lazyload imgDash" src="/images/avatar/avatar-4.jpg" data-src="/images/avatar/avatar-4.jpg"
                     alt="Avatar">
+            </div>
+            <div class="btn-change_img box-icon changeImgDash">
+                <i class="icon icon-camera"></i>
             </div>
         </div>
         <h4 class="author_name">{{ $user->name }}</h4>
@@ -27,12 +30,12 @@
             @if($activeNav === 'orders')
                 <p class="my-account-nav_item h5 active">
                     <i class="icon icon-box-arrow-down"></i>
-                    Orders
+                    Oders
                 </p>
             @else
                 <a href="{{ route('account.orders') }}" class="my-account-nav_item h5">
                     <i class="icon icon-box-arrow-down"></i>
-                    Orders
+                    Oders
                 </a>
             @endif
         </li>

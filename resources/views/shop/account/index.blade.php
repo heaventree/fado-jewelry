@@ -22,6 +22,7 @@
         <!-- /Page Title -->
         <!-- Account -->
         <section class="flat-spacing">
+            <input class="fileInputDash" type="file" accept="image/*" style="display: none;">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-3 d-none d-xl-block">
@@ -119,14 +120,9 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                @if($orderCount > 5)
-                                <div class="wd-full mt-4">
-                                    <a href="{{ route('account.orders') }}" class="tf-btn style-line">
-                                        View all orders
-                                        <i class="icon icon-arrow-right"></i>
-                                    </a>
+                                <div class="wd-full wg-pagination">
+                                    <a href="{{ route('account.orders') }}" class="pagination-item h6 direct"><i class="icon icon-caret-right"></i></a>
                                 </div>
-                                @endif
                             </div>
                         </div>
                     </div>
