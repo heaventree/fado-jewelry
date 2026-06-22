@@ -63,9 +63,9 @@ Route::prefix('/')->name('shop.')->group(function () {
     Route::get('/account',                         [AccountController::class, 'index'])->name('account.index');
     Route::get('/account/orders',                  [AccountController::class, 'orders'])->name('account.orders');
     Route::get('/account/orders/{order}',          [AccountController::class, 'orderShow'])->name('account.order');
+    Route::get('/account/addresses',               [AccountController::class, 'addresses'])->name('account.addresses');
     Route::get('/account/profile',                 [AccountController::class, 'profile'])->name('account.profile');
     Route::patch('/account/profile',               [AccountController::class, 'profileUpdate'])->name('account.profile.update');
-    Route::patch('/account/profile/password',      [AccountController::class, 'passwordUpdate'])->name('account.password.update');
 
     // Search
     Route::get('/search', [ShopController::class, 'search'])->name('search');

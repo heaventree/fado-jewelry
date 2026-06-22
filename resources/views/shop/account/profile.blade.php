@@ -42,40 +42,43 @@
                                 @endforeach
                             </div>
                             @endif
+                            @php
+                                $nameParts = explode(' ', $user->name, 2);
+                                $firstName = $nameParts[0] ?? '';
+                                $lastName  = $nameParts[1] ?? '';
+                            @endphp
                             <form class="form-change_pass" method="POST" action="{{ route('shop.account.profile.update') }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="">
                                     <h2 class="account-title type-semibold">Account Setting</h2>
                                     <div class="form_content">
-                                        <fieldset>
-                                            <input type="text" name="name" value="{{ old('name', $user->name) }}" placeholder="Full name *" required>
-                                        </fieldset>
+                                        <div class="cols tf-grid-layout sm-col-2">
+                                            <fieldset>
+                                                <input type="text" name="first_name" value="{{ old('first_name', $firstName) }}" placeholder="First name *" required>
+                                            </fieldset>
+                                            <fieldset>
+                                                <input type="text" name="last_name" value="{{ old('last_name', $lastName) }}" placeholder="Last name *" required>
+                                            </fieldset>
+                                        </div>
                                         <fieldset>
                                             <input type="email" name="email" value="{{ old('email', $user->email) }}" placeholder="Email *" required>
                                         </fieldset>
                                     </div>
-                                    <button type="submit" class="btn-submit_form tf-btn animate-btn w-100 fw-bold">
-                                        Save changes
-                                    </button>
                                 </div>
-                            </form>
-                            <form class="form-change_pass" method="POST" action="{{ route('shop.account.password.update') }}">
-                                @csrf
-                                @method('PATCH')
                                 <div class="">
                                     <h2 class="account-title type-semibold">Change Password</h2>
                                     <div class="form_content site-change">
                                         <fieldset class="password-wrapper">
-                                            <input class="password-field" type="password" name="current_password" placeholder="Current password *" required>
+                                            <input class="password-field" type="password" name="current_password" placeholder="Current password *">
                                             <span class="toggle-pass icon-show-password"></span>
                                         </fieldset>
                                         <fieldset class="password-wrapper">
-                                            <input class="password-field" type="password" name="password" placeholder="New password *" required>
+                                            <input class="password-field" type="password" name="password" placeholder="New password *">
                                             <span class="toggle-pass icon-show-password"></span>
                                         </fieldset>
                                         <fieldset class="password-wrapper">
-                                            <input class="password-field" type="password" name="password_confirmation" placeholder="Confirm password *" required>
+                                            <input class="password-field" type="password" name="password_confirmation" placeholder="Confirm password *">
                                             <span class="toggle-pass icon-show-password"></span>
                                         </fieldset>
                                     </div>
@@ -83,6 +86,7 @@
                                         Save change
                                     </button>
                                 </div>
+
                             </form>
                         </div>
                     </div>

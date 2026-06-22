@@ -40,6 +40,19 @@
             @endif
         </li>
         <li>
+            @if($activeNav === 'addresses')
+                <p class="my-account-nav_item h5 active">
+                    <i class="icon icon-address-book"></i>
+                    My address
+                </p>
+            @else
+                <a href="{{ route('shop.account.addresses') }}" class="my-account-nav_item h5">
+                    <i class="icon icon-address-book"></i>
+                    My address
+                </a>
+            @endif
+        </li>
+        <li>
             @if($activeNav === 'settings')
                 <p class="my-account-nav_item h5 active">
                     <i class="icon icon-setting"></i>

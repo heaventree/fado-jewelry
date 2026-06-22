@@ -61,6 +61,12 @@ class AccountController extends Controller implements HasMiddleware
         return view('shop.account.order-detail', compact('user', 'order'));
     }
 
+    public function addresses(): View
+    {
+        $user = Auth::user();
+        return view('shop.account.addresses', compact('user'));
+    }
+
     public function profile(): View
     {
         $user = Auth::user();
@@ -71,12 +77,28 @@ class AccountController extends Controller implements HasMiddleware
     {
         $user = Auth::user();
 
-        $data = $request->validate([
-            'name'  => ['required', 'string', 'max:120'],
-            'email' => ['required', 'email', 'max:200', 'unique:users,email,' . $user->id],
+        $rules = [
+            'first_name' => ['required', 'string', 'max:60'],
+            'last_name'  => ['required', 'string', 'max:60'],
+            'email'      => ['required', 'email', 'max:200', 'unique:users,email,' . $user->id],
+        ];
+
+        if ($request->filled('current_password')) {
+            $rules['current_password'] = ['required', 'current_password'];
+            $rules['password']         = ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()];
+        }
+
+        $request->validate($rules);
+
+        $user->update([
+            'name'  => trim($request->first_name . ' ' . $request->last_name),
+            'email' => $request->email,
         ]);
 
-        $user->update($data);
+        if ($request->filled('current_password')) {
+            $user->update(['password' => Hash::make($request->password)]);
+            return back()->with('password_updated', true);
+        }
 
         return back()->with('profile_updated', true);
     }
