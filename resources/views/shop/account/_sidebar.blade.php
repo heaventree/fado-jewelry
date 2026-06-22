@@ -30,12 +30,12 @@
             @if($activeNav === 'orders')
                 <p class="my-account-nav_item h5 active">
                     <i class="icon icon-box-arrow-down"></i>
-                    Oders
+                    Orders
                 </p>
             @else
                 <a href="{{ route('shop.account.orders') }}" class="my-account-nav_item h5">
                     <i class="icon icon-box-arrow-down"></i>
-                    Oders
+                    Orders
                 </a>
             @endif
         </li>

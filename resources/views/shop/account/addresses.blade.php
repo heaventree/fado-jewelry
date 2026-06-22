@@ -32,13 +32,12 @@
                             <h2 class="account-title type-semibold">My Address</h2>
                             <div class="account-my_address">
                                 @forelse($addresses as $addr)
-                                <div class="account-address-item">
+                                <div class="account-address-item file-delete">
                                     <div class="address-item_content">
                                         <h4 class="address-title">{{ $loop->first ? 'Default' : 'Address' }}</h4>
                                         <div class="address-info">
                                             <h5 class="fw-semibold">{{ $addr['name'] ?? '' }}</h5>
-                                            <p class="h6">{{ $addr['line1'] ?? '' }}@if(!empty($addr['line2'])), {{ $addr['line2'] }}@endif</p>
-                                            <p class="h6">{{ $addr['city'] ?? '' }}@if(!empty($addr['county'])), {{ $addr['county'] }}@endif {{ $addr['postcode'] ?? '' }}, {{ $addr['country'] ?? '' }}</p>
+                                            <p class="h6">{{ $addr['line1'] ?? '' }}@if(!empty($addr['line2'])), {{ $addr['line2'] }}@endif, {{ $addr['city'] ?? '' }}@if(!empty($addr['county'])), {{ $addr['county'] }}@endif {{ $addr['postcode'] ?? '' }}, {{ $addr['country'] ?? '' }}</p>
                                         </div>
                                         @if(!empty($addr['phone']))
                                         <div class="address-info">
@@ -46,6 +45,20 @@
                                             <p class="h6">{{ $addr['phone'] }}</p>
                                         </div>
                                         @endif
+                                        @if(!empty($addr['email']))
+                                        <div class="address-info">
+                                            <h5 class="fw-semibold">Email</h5>
+                                            <p class="h6">{{ $addr['email'] }}</p>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="address-item_action">
+                                        <a href="#" class="tf-btn animate-btn">
+                                            Edit
+                                        </a>
+                                        <a href="#" class="tf-btn style-line remove">
+                                            Delete
+                                        </a>
                                     </div>
                                 </div>
                                 @empty

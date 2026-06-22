@@ -81,22 +81,93 @@
                             <div class="account-order_tab">
                                 <ul class="tab-order_detail" role="tablist">
                                     <li class="nav-tab-item" role="presentation">
-                                        <a href="#item-detail" data-bs-toggle="tab" class="tf-btn-line tf-btn-tab active">
+                                        <a href="#order-history" data-bs-toggle="tab" class="tf-btn-line tf-btn-tab active">
+                                            <span class="h4">
+                                                Order history
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-tab-item" role="presentation">
+                                        <a href="#item-detail" data-bs-toggle="tab" class="tf-btn-line tf-btn-tab">
                                             <span class="h4">
                                                 Item details
                                             </span>
                                         </a>
                                     </li>
                                     <li class="nav-tab-item" role="presentation">
+                                        <a href="#courier" data-bs-toggle="tab" class="tf-btn-line tf-btn-tab">
+                                            <span class="h4">
+                                                Courier
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-tab-item" role="presentation">
                                         <a href="#receiver" data-bs-toggle="tab" class="tf-btn-line tf-btn-tab">
                                             <span class="h4">
-                                                Order info
+                                                Receiver
                                             </span>
                                         </a>
                                     </li>
                                 </ul>
                                 <div class="tab-content overflow-hidden">
-                                    <div class="tab-pane active show" id="item-detail" role="tabpanel">
+                                    <div class="tab-pane active show" id="order-history" role="tabpanel">
+                                        <div class="order-timeline">
+                                            <div class="timeline-step completed">
+                                                <div class="timeline_icon">
+                                                    <span class="icon">
+                                                        <i class="icon-check-1"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="timeline_content">
+                                                    <h5 class="step-title fw-semibold">Order placed</h5>
+                                                    <h6 class="step-date fw-normal">{{ $order->created_at->format('F j, Y - H:i') }}</h6>
+                                                    <p class="step-detail h6">
+                                                        <span class="fw-semibold text-black">Status:</span> {{ ucfirst($order->status) }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            @if(in_array($order->status, ['processing', 'shipped', 'completed']))
+                                            <div class="timeline-step completed">
+                                                <div class="timeline_icon">
+                                                    <span class="icon">
+                                                        <i class="icon-truck"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="timeline_content">
+                                                    <h5 class="step-title fw-semibold">Processing</h5>
+                                                    <h6 class="step-date fw-normal mb-0">Order is being prepared</h6>
+                                                </div>
+                                            </div>
+                                            @endif
+                                            @if(in_array($order->status, ['shipped', 'completed']))
+                                            <div class="timeline-step completed">
+                                                <div class="timeline_icon">
+                                                    <span class="icon">
+                                                        <i class="icon-check-1"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="timeline_content">
+                                                    <h5 class="step-title fw-semibold">Shipped</h5>
+                                                    <h6 class="step-date fw-normal mb-0">Your order is on its way</h6>
+                                                </div>
+                                            </div>
+                                            @endif
+                                            @if($order->status === 'completed')
+                                            <div class="timeline-step completed">
+                                                <div class="timeline_icon">
+                                                    <span class="icon">
+                                                        <i class="icon-check-1"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="timeline_content">
+                                                    <h5 class="step-title fw-semibold">Delivered</h5>
+                                                    <h6 class="step-date fw-normal mb-0">Order complete</h6>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="item-detail" role="tabpanel">
                                         @foreach($order->items as $item)
                                         <div class="order-item_detail">
                                             <div class="prd-info">
@@ -127,6 +198,11 @@
                                             <span>Order total</span>
                                             <span class="fw-semibold h6 text-black">€{{ number_format($order->total, 2) }}</span>
                                         </div>
+                                    </div>
+                                    <div class="tab-pane" id="courier" role="tabpanel">
+                                        <p class="h6 text-courier h6">
+                                            Shipping and courier details will be updated here once your order has been dispatched. You will receive an email notification with tracking information when available.
+                                        </p>
                                     </div>
                                     <div class="tab-pane" id="receiver" role="tabpanel">
                                         <div class="order-receiver">
