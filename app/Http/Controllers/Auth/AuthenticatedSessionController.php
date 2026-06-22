@@ -21,7 +21,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        return redirect()->intended(route('shop.account.index'));
+        return redirect()->intended('/');
     }
 
     public function destroy(Request $request): RedirectResponse
