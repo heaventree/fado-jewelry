@@ -57,16 +57,15 @@
                                             <p class="info-item_label">Order date</p>
                                             <p class="info-item_value">{{ $order->created_at->format('F j, Y - H:i') }}</p>
                                         </div>
-                                        @if($order->shipping_name)
+                                        @if($order->shipping_address)
+                                        @php $addr = $order->shipping_address; @endphp
                                         <div class="detail-info_item">
                                             <p class="info-item_label">Ship to</p>
-                                            <p class="info-item_value">{{ $order->shipping_name }}</p>
+                                            <p class="info-item_value">{{ $addr['name'] ?? '' }}</p>
                                         </div>
-                                        @endif
-                                        @if($order->shipping_address)
                                         <div class="detail-info_item">
                                             <p class="info-item_label">Address</p>
-                                            <p class="info-item_value">{{ $order->shipping_address }}, {{ $order->shipping_city }} {{ $order->shipping_postcode }}, {{ $order->shipping_country }}</p>
+                                            <p class="info-item_value">{{ $addr['line1'] ?? '' }}@if(!empty($addr['line2'])), {{ $addr['line2'] }}@endif, {{ $addr['city'] ?? '' }} {{ $addr['postcode'] ?? '' }}, {{ $addr['country'] ?? '' }}</p>
                                         </div>
                                         @endif
                                     </div>
