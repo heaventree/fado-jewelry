@@ -1272,7 +1272,7 @@
             });
 
             if (isValid) {
-                window.location.href = "account-page.html";
+                window.location.href = "/account";
             } else {
                 alert("Please fill in all required fields!");
                 firstEmptyInput.focus();
