@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -67,16 +68,72 @@ class AccountController extends Controller implements HasMiddleware
     public function addresses(): View
     {
         $user = Auth::user();
-
-        $addresses = Order::where('user_id', $user->id)
-            ->whereNotNull('shipping_address')
-            ->latest()
-            ->get()
-            ->pluck('shipping_address')
-            ->unique(fn ($a) => ($a['line1'] ?? '') . ($a['city'] ?? '') . ($a['postcode'] ?? ''))
-            ->values();
+        $addresses = $user->addresses()->latest()->get();
 
         return view('shop.account.addresses', compact('user', 'addresses'));
+    }
+
+    public function addressStore(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+
+        $data = $request->validate([
+            'label'    => ['required', 'string', 'max:60'],
+            'name'     => ['required', 'string', 'max:120'],
+            'line1'    => ['required', 'string', 'max:200'],
+            'line2'    => ['nullable', 'string', 'max:200'],
+            'city'     => ['required', 'string', 'max:100'],
+            'county'   => ['nullable', 'string', 'max:100'],
+            'postcode' => ['required', 'string', 'max:20'],
+            'country'  => ['required', 'string', 'size:2'],
+            'phone'    => ['nullable', 'string', 'max:30'],
+        ]);
+
+        if ($request->boolean('is_default')) {
+            $user->addresses()->update(['is_default' => false]);
+            $data['is_default'] = true;
+        }
+
+        $user->addresses()->create($data);
+
+        return back()->with('address_saved', 'Address added successfully.');
+    }
+
+    public function addressUpdate(Request $request, Address $address): RedirectResponse
+    {
+        $user = Auth::user();
+        abort_unless($address->user_id === $user->id, 403);
+
+        $data = $request->validate([
+            'label'    => ['required', 'string', 'max:60'],
+            'name'     => ['required', 'string', 'max:120'],
+            'line1'    => ['required', 'string', 'max:200'],
+            'line2'    => ['nullable', 'string', 'max:200'],
+            'city'     => ['required', 'string', 'max:100'],
+            'county'   => ['nullable', 'string', 'max:100'],
+            'postcode' => ['required', 'string', 'max:20'],
+            'country'  => ['required', 'string', 'size:2'],
+            'phone'    => ['nullable', 'string', 'max:30'],
+        ]);
+
+        if ($request->boolean('is_default')) {
+            $user->addresses()->where('id', '!=', $address->id)->update(['is_default' => false]);
+            $data['is_default'] = true;
+        }
+
+        $address->update($data);
+
+        return back()->with('address_saved', 'Address updated successfully.');
+    }
+
+    public function addressDestroy(Address $address): RedirectResponse
+    {
+        $user = Auth::user();
+        abort_unless($address->user_id === $user->id, 403);
+
+        $address->delete();
+
+        return back()->with('address_saved', 'Address deleted.');
     }
 
     public function profile(): View

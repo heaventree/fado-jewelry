@@ -64,6 +64,9 @@ Route::prefix('/')->name('shop.')->group(function () {
     Route::get('/account/orders',                  [AccountController::class, 'orders'])->name('account.orders');
     Route::get('/account/orders/{order}',          [AccountController::class, 'orderShow'])->name('account.order');
     Route::get('/account/addresses',               [AccountController::class, 'addresses'])->name('account.addresses');
+    Route::post('/account/addresses',              [AccountController::class, 'addressStore'])->name('account.addresses.store');
+    Route::patch('/account/addresses/{address}',   [AccountController::class, 'addressUpdate'])->name('account.addresses.update');
+    Route::delete('/account/addresses/{address}',  [AccountController::class, 'addressDestroy'])->name('account.addresses.destroy');
     Route::get('/account/profile',                 [AccountController::class, 'profile'])->name('account.profile');
     Route::patch('/account/profile',               [AccountController::class, 'profileUpdate'])->name('account.profile.update');
     Route::post('/account/avatar',                 [AccountController::class, 'avatarUpload'])->name('account.avatar.upload');
