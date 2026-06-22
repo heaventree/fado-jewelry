@@ -42,7 +42,7 @@
                                 @endforeach
                             </div>
                             @endif
-                            <form class="form-change_pass" method="POST" action="{{ route('account.profile.update') }}">
+                            <form class="form-change_pass" method="POST" action="{{ route('shop.account.profile.update') }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="">
@@ -60,7 +60,7 @@
                                     </button>
                                 </div>
                             </form>
-                            <form class="form-change_pass" method="POST" action="{{ route('account.password.update') }}">
+                            <form class="form-change_pass" method="POST" action="{{ route('shop.account.password.update') }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="">

@@ -49,7 +49,7 @@
                                                 <div class="tb-order_product">
                                                     <div class="infor-prd">
                                                         <h6>
-                                                            <a href="{{ route('account.order', $order) }}" class="prd_name link">
+                                                            <a href="{{ route('shop.account.order', $order) }}" class="prd_name link">
                                                                 {{ $order->items->count() }} item(s)
                                                             </a>
                                                         </h6>
@@ -66,7 +66,7 @@
                                                 </div>
                                             </td>
                                             <td class="tb-order_action">
-                                                <a href="{{ route('account.order', $order) }}" class="link fw-semibold">
+                                                <a href="{{ route('shop.account.order', $order) }}" class="link fw-semibold">
                                                     View
                                                 </a>
                                             </td>

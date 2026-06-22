@@ -12,7 +12,7 @@
                     <ul class="breadcrumbs-page">
                         <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
                         <li class="d-flex"><i class="icon icon-caret-right"></i></li>
-                        <li><a href="{{ route('account.orders') }}" class="h6 link">Orders</a></li>
+                        <li><a href="{{ route('shop.account.orders') }}" class="h6 link">Orders</a></li>
                         <li class="d-flex"><i class="icon icon-caret-right"></i></li>
                         <li>
                             <h6 class="current-page fw-normal">#{{ $order->id }}</h6>
@@ -72,7 +72,7 @@
                                     </div>
                                     <span class="br-line d-flex"></span>
                                     <div>
-                                        <a href="{{ route('account.orders') }}" class="tf-btn style-line">
+                                        <a href="{{ route('shop.account.orders') }}" class="tf-btn style-line">
                                             Back to orders
                                             <i class="icon icon-arrow-right"></i>
                                         </a>

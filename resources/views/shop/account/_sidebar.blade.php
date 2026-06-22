@@ -20,7 +20,7 @@
                     Dashboard
                 </p>
             @else
-                <a href="{{ route('account.index') }}" class="my-account-nav_item h5">
+                <a href="{{ route('shop.account.index') }}" class="my-account-nav_item h5">
                     <i class="icon icon-circle-four"></i>
                     Dashboard
                 </a>
@@ -33,7 +33,7 @@
                     Oders
                 </p>
             @else
-                <a href="{{ route('account.orders') }}" class="my-account-nav_item h5">
+                <a href="{{ route('shop.account.orders') }}" class="my-account-nav_item h5">
                     <i class="icon icon-box-arrow-down"></i>
                     Oders
                 </a>
@@ -46,7 +46,7 @@
                     Setting
                 </p>
             @else
-                <a href="{{ route('account.profile') }}" class="my-account-nav_item h5">
+                <a href="{{ route('shop.account.profile') }}" class="my-account-nav_item h5">
                     <i class="icon icon-setting"></i>
                     Setting
                 </a>

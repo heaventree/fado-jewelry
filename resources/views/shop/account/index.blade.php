@@ -95,7 +95,7 @@
                                                     <div class="tb-order_product">
                                                         <div class="infor-prd">
                                                             <h6>
-                                                                <a href="{{ route('account.order', $order) }}" class="prd_name link">
+                                                                <a href="{{ route('shop.account.order', $order) }}" class="prd_name link">
                                                                     {{ $order->items->count() }} item(s)
                                                                 </a>
                                                             </h6>
@@ -121,7 +121,7 @@
                                     </table>
                                 </div>
                                 <div class="wd-full wg-pagination">
-                                    <a href="{{ route('account.orders') }}" class="pagination-item h6 direct"><i class="icon icon-caret-right"></i></a>
+                                    <a href="{{ route('shop.account.orders') }}" class="pagination-item h6 direct"><i class="icon icon-caret-right"></i></a>
                                 </div>
                             </div>
                         </div>
