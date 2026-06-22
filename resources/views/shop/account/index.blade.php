@@ -22,7 +22,6 @@
         <!-- /Page Title -->
         <!-- Account -->
         <section class="flat-spacing">
-            <input class="fileInputDash" type="file" accept="image/*" style="display: none;">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-3 d-none d-xl-block">

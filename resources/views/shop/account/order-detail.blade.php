@@ -126,7 +126,7 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                            @if(in_array($order->status, ['processing', 'shipped', 'completed']))
+                                            @if(in_array($order->status, ['processing', 'shipped', 'delivered', 'completed']))
                                             <div class="timeline-step completed">
                                                 <div class="timeline_icon">
                                                     <span class="icon">
@@ -139,7 +139,7 @@
                                                 </div>
                                             </div>
                                             @endif
-                                            @if(in_array($order->status, ['shipped', 'completed']))
+                                            @if(in_array($order->status, ['shipped', 'delivered', 'completed']))
                                             <div class="timeline-step completed">
                                                 <div class="timeline_icon">
                                                     <span class="icon">
@@ -152,7 +152,7 @@
                                                 </div>
                                             </div>
                                             @endif
-                                            @if($order->status === 'completed')
+                                            @if(in_array($order->status, ['delivered', 'completed']))
                                             <div class="timeline-step completed">
                                                 <div class="timeline_icon">
                                                     <span class="icon">
@@ -178,7 +178,7 @@
                                                 </div>
                                                 @endif
                                                 <div class="info_detail">
-                                                    <a href="#" class="link info-name h4">{{ $item->product->name ?? 'Product' }}</a>
+                                                    <a href="{{ $item->product ? route('shop.product', $item->product) : '#' }}" class="link info-name h4">{{ $item->product->name ?? 'Product' }}</a>
                                                     <p class="info-price">Price: <span class="fw-semibold h6 text-black">€{{ number_format($item->unit_price, 2) }}</span></p>
                                                     <p class="info-variant">Qty: <span class="fw-semibold h6 text-black">{{ $item->quantity }}</span></p>
                                                     @if($item->variant && $item->variant->metal)
