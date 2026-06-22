@@ -1,84 +1,72 @@
-@extends('layouts.auth', ['title' => 'Register'])
+@extends('shop.layouts.app')
+
+@section('title', 'Register — FADÓ Jewellery')
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
-    <div class="d-flex flex-column h-100 p-3">
-        <div class="d-flex flex-column flex-grow-1">
-            <div class="row h-100">
-                <div class="col-xxl-7">
-                    <div class="row justify-content-center h-100">
-                        <div class="col-lg-6 py-lg-5">
-                            <div class="d-flex flex-column h-100 justify-content-center">
-                                <div class="auth-logo mb-4">
-                                    <a href="{{ route('second', [ 'dashboards' , 'index']) }}" class="logo-dark">
-                                        <img src="/images/logo-dark.png" height="24" alt="logo dark">
-                                    </a>
-
-                                    <a href="{{ route('second', [ 'dashboards' , 'index']) }}" class="logo-light">
-                                        <img src="/images/logo-light.png" height="24" alt="logo light">
-                                    </a>
-                                </div>
-
-                                <h2 class="fw-bold fs-24">Sign Up</h2>
-
-                                <p class="text-muted mt-1 mb-4">New to our platform? Sign up now! It only takes a
-                                    minute</p>
-
-                                <div>
-                                    <form class="authentication-form">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="example-name">Name</label>
-                                            <input type="text" id="example-name" name="example-name"
-                                                   class="form-control" placeholder="Enter your name">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="example-email">Email</label>
-                                            <input type="email" id="example-email" name="example-email"
-                                                   class="form-control bg-" placeholder="Enter your email">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="example-password">Password</label>
-                                            <input type="text" id="example-password" class="form-control"
-                                                   placeholder="Enter your password">
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="checkbox-signin">
-                                                <label class="form-check-label" for="checkbox-signin">I accept Terms and
-                                                    Condition</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-1 text-center d-grid">
-                                            <button class="btn btn-soft-primary" type="submit">Sign Up</button>
-                                        </div>
-                                    </form>
-
-                                    <p class="mt-3 fw-semibold no-span">OR sign with</p>
-
-                                    <div class="d-grid gap-2">
-                                        <a href="javascript:void(0);" class="btn btn-soft-dark"><i
-                                                class="bx bxl-google fs-20 me-1"></i> Sign Up with Google</a>
-                                        <a href="javascript:void(0);" class="btn btn-soft-primary"><i
-                                                class="bx bxl-facebook fs-20 me-1"></i> Sign Up with Facebook</a>
-                                    </div>
-                                </div>
-
-                                <p class="mt-auto text-danger text-center">I already have an account <a
-                                        href="{{ route('second', [ 'auth' , 'login']) }}" class="text-dark fw-bold ms-1">Login</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xxl-5 d-none d-xxl-flex">
-                    <div class="card h-100 mb-0 overflow-hidden">
-                        <div class="d-flex flex-column h-100">
-                            <img src="/images/small/img-10.jpg" alt="" class="w-100 h-100">
-                        </div>
-                    </div> <!-- end card -->
+        <!-- Page Title -->
+        <section class="s-page-title">
+            <div class="container">
+                <div class="content">
+                    <h1 class="title-page">Register</h1>
+                    <ul class="breadcrumbs-page">
+                        <li><a href="{{ route('shop.home') }}" class="h6 link">Home</a></li>
+                        <li class="d-flex"><i class="icon icon-caret-right"></i></li>
+                        <li>
+                            <h6 class="current-page fw-normal">Register</h6>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </div>
-
+        </section>
+        <!-- /Page Title -->
+        <!-- Login -->
+        <section class="flat-spacing">
+            <div class="container">
+                <div class="s-log">
+                    <div class="col-left">
+                        <h1 class="heading">Register</h1>
+                        <form class="form-login" method="POST" action="{{ route('register') }}">
+                            @csrf
+                            @if ($errors->any())
+                                <div class="mb-16">
+                                    @foreach ($errors->all() as $error)
+                                        <p class="h6 text-danger">{{ $error }}</p>
+                                    @endforeach
+                                </div>
+                            @endif
+                            <div class="list-ver">
+                                <fieldset>
+                                    <input type="text" name="name" value="{{ old('name') }}" placeholder="Your full name *" required>
+                                </fieldset>
+                                <fieldset>
+                                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter your email address *" required>
+                                </fieldset>
+                                <fieldset class="password-wrapper">
+                                    <input class="password-field" type="password" name="password" placeholder="Password *" required>
+                                    <span class="toggle-pass icon-show-password"></span>
+                                </fieldset>
+                                <fieldset class="password-wrapper">
+                                    <input class="password-field" type="password" name="password_confirmation" placeholder="Confirm password *" required>
+                                    <span class="toggle-pass icon-show-password"></span>
+                                </fieldset>
+                            </div>
+                            <button type="submit" class="tf-btn animate-btn w-100">
+                                Register
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-right">
+                        <h1 class="heading">Have An Account</h1>
+                        <p class="h6 text-sub">
+                            Welcome back, log in to your account to enhance your shopping experience, receive coupons, and the best discount codes.
+                        </p>
+                        <a href="{{ route('login') }}" class="btn_log tf-btn animate-btn">
+                            Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /Login -->
 @endsection
