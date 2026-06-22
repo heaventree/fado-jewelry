@@ -35,7 +35,7 @@
                                 @php $firstItem = $order->items->first(); @endphp
                                 @if($firstItem && $firstItem->product && $firstItem->product->primaryImage)
                                 <div class="order-detail_image">
-                                    <img class="lazyload" src="{{ Storage::url($firstItem->product->primaryImage->path) }}" data-src="{{ Storage::url($firstItem->product->primaryImage->path) }}" alt="">
+                                    <img class="lazyload" src="{{ asset($firstItem->product->primaryImage->path) }}" data-src="{{ asset($firstItem->product->primaryImage->path) }}" alt="">
                                 </div>
                                 @endif
                                 <div class="order-detail_content tf-grid-layout">
@@ -173,8 +173,8 @@
                                             <div class="prd-info">
                                                 @if($item->product && $item->product->primaryImage)
                                                 <div class="info_image">
-                                                    <img class="lazyload" src="{{ Storage::url($item->product->primaryImage->path) }}"
-                                                        data-src="{{ Storage::url($item->product->primaryImage->path) }}" alt="Product">
+                                                    <img class="lazyload" src="{{ asset($item->product->primaryImage->path) }}"
+                                                        data-src="{{ asset($item->product->primaryImage->path) }}" alt="Product">
                                                 </div>
                                                 @endif
                                                 <div class="info_detail">
