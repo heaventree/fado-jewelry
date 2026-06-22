@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Setting;
@@ -32,6 +33,7 @@ class CheckoutController extends Controller
         $subtotalEur    = $this->cart->subtotalEur();
         $currency       = $this->currency->current();
         $user           = Auth::user();
+        $savedAddresses = $user ? $user->addresses()->orderByDesc('is_default')->get() : collect();
         $paymentMethods = $this->paymentMethods();
 
         $shippingRates = [
@@ -42,7 +44,7 @@ class CheckoutController extends Controller
         $shippingNotice = Setting::get('shipping_notice');
 
         return view('shop.checkout', compact(
-            'items', 'subtotalEur', 'currency', 'user', 'paymentMethods', 'shippingRates', 'shippingNotice'
+            'items', 'subtotalEur', 'currency', 'user', 'savedAddresses', 'paymentMethods', 'shippingRates', 'shippingNotice'
         ));
     }
 
@@ -113,6 +115,29 @@ class CheckoutController extends Controller
 
             return $order;
         });
+
+        if ($request->boolean('save_address') && Auth::check()) {
+            $user = Auth::user();
+            $exists = $user->addresses()
+                ->where('line1', $data['line1'])
+                ->where('city', $data['city'])
+                ->where('postcode', $data['postcode'])
+                ->exists();
+
+            if (! $exists) {
+                $user->addresses()->create([
+                    'label'    => 'Shipping',
+                    'name'     => $data['name'],
+                    'line1'    => $data['line1'],
+                    'line2'    => $data['line2'] ?? null,
+                    'city'     => $data['city'],
+                    'county'   => $data['county'] ?? null,
+                    'postcode' => $data['postcode'],
+                    'country'  => strtoupper($data['country']),
+                    'phone'    => $data['phone'] ?? null,
+                ]);
+            }
+        }
 
         $this->cart->clear();
 

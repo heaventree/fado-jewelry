@@ -66,16 +66,40 @@
                         @csrf
                         <div class="box-ip-checkout estimate-shipping">
                             <h2 class="title type-semibold">Information</h2>
+                            @if($savedAddresses->isNotEmpty())
+                            <div class="form_content mb-3">
+                                <fieldset>
+                                    <div class="tf-select">
+                                        <select class="w-100" id="address-picker" onchange="fillAddress(this)">
+                                            <option value="">— Select a saved address —</option>
+                                            @foreach($savedAddresses as $sa)
+                                            <option value="{{ $sa->id }}"
+                                                data-name="{{ $sa->name }}"
+                                                data-line1="{{ $sa->line1 }}"
+                                                data-line2="{{ $sa->line2 }}"
+                                                data-city="{{ $sa->city }}"
+                                                data-county="{{ $sa->county }}"
+                                                data-postcode="{{ $sa->postcode }}"
+                                                data-country="{{ $sa->country }}"
+                                                data-phone="{{ $sa->phone }}">
+                                                {{ $sa->label }}: {{ $sa->line1 }}, {{ $sa->city }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            @endif
                             <div class="form_content">
                                 <fieldset>
-                                    <input type="text" name="name" value="{{ old('name', $user?->name) }}" placeholder="Full name" required>
+                                    <input type="text" name="name" id="chk-name" value="{{ old('name', $user?->name) }}" placeholder="Full name" required>
                                 </fieldset>
                                 <div class="cols tf-grid-layout sm-col-2">
                                     <fieldset>
                                         <input type="email" name="email" value="{{ old('email', $user?->email) }}" placeholder="Email address" required>
                                     </fieldset>
                                     <fieldset>
-                                        <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Phone number">
+                                        <input type="text" name="phone" id="chk-phone" value="{{ old('phone') }}" placeholder="Phone number">
                                     </fieldset>
                                 </div>
                                 <fieldset>
@@ -98,23 +122,29 @@
                                 </fieldset>
                                 <div class="cols tf-grid-layout sm-col-2">
                                     <fieldset>
-                                        <input type="text" name="city" value="{{ old('city') }}" placeholder="Town/City" required>
+                                        <input type="text" name="city" id="chk-city" value="{{ old('city') }}" placeholder="Town/City" required>
                                     </fieldset>
                                     <fieldset>
-                                        <input type="text" name="line1" value="{{ old('line1') }}" placeholder="Street address" required>
+                                        <input type="text" name="line1" id="chk-line1" value="{{ old('line1') }}" placeholder="Street address" required>
                                     </fieldset>
                                 </div>
                                 <div class="cols tf-grid-layout sm-col-2">
                                     <fieldset>
-                                        <input type="text" name="line2" value="{{ old('line2') }}" placeholder="Apartment, suite, etc. (optional)">
+                                        <input type="text" name="line2" id="chk-line2" value="{{ old('line2') }}" placeholder="Apartment, suite, etc. (optional)">
                                     </fieldset>
                                     <fieldset>
-                                        <input type="text" name="county" value="{{ old('county') }}" placeholder="County/State">
+                                        <input type="text" name="county" id="chk-county" value="{{ old('county') }}" placeholder="County/State">
                                     </fieldset>
                                 </div>
                                 <fieldset>
-                                    <input type="text" name="postcode" value="{{ old('postcode') }}" placeholder="Postal code" required>
+                                    <input type="text" name="postcode" id="chk-postcode" value="{{ old('postcode') }}" placeholder="Postal code" required>
                                 </fieldset>
+                                @auth
+                                <div class="checkbox-wrap mt-3">
+                                    <input type="checkbox" name="save_address" value="1" class="tf-check" id="save-address" checked>
+                                    <label for="save-address" class="h6">Save this address to my account</label>
+                                </div>
+                                @endauth
                             </div>
                         </div>
                         <div class="box-ip-payment">
@@ -218,6 +248,20 @@
 
 @push('scripts')
 <script>
+function fillAddress(sel) {
+    var opt = sel.options[sel.selectedIndex];
+    if (!opt.value) return;
+    var fields = {name:'chk-name',line1:'chk-line1',line2:'chk-line2',city:'chk-city',county:'chk-county',postcode:'chk-postcode',phone:'chk-phone'};
+    for (var k in fields) {
+        var el = document.getElementById(fields[k]);
+        if (el) el.value = opt.dataset[k] || '';
+    }
+    var country = opt.dataset.country;
+    if (country) {
+        var cs = document.getElementById('checkout-country');
+        if (cs) { cs.value = country; cs.dispatchEvent(new Event('change')); }
+    }
+}
 (function () {
     var countrySelect = document.getElementById('checkout-country');
     if (!countrySelect) return;
