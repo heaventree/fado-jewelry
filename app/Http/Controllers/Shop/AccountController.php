@@ -64,7 +64,16 @@ class AccountController extends Controller implements HasMiddleware
     public function addresses(): View
     {
         $user = Auth::user();
-        return view('shop.account.addresses', compact('user'));
+
+        $addresses = Order::where('user_id', $user->id)
+            ->whereNotNull('shipping_address')
+            ->latest()
+            ->get()
+            ->pluck('shipping_address')
+            ->unique(fn ($a) => ($a['line1'] ?? '') . ($a['city'] ?? '') . ($a['postcode'] ?? ''))
+            ->values();
+
+        return view('shop.account.addresses', compact('user', 'addresses'));
     }
 
     public function profile(): View

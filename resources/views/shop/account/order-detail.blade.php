@@ -108,7 +108,7 @@
                                                 @endif
                                                 <div class="info_detail">
                                                     <a href="#" class="link info-name h4">{{ $item->product_name }}</a>
-                                                    <p class="info-price">Price: <span class="fw-semibold h6 text-black">€{{ number_format($item->price, 2) }}</span></p>
+                                                    <p class="info-price">Price: <span class="fw-semibold h6 text-black">€{{ number_format($item->unit_price, 2) }}</span></p>
                                                     <p class="info-variant">Qty: <span class="fw-semibold h6 text-black">{{ $item->quantity }}</span></p>
                                                     @if($item->variant && $item->variant->metal)
                                                     <p class="info-variant">Metal: <span class="fw-semibold h6 text-black">{{ $item->variant->metal->name }}</span></p>
@@ -118,7 +118,7 @@
                                             <div class="prd-price">
                                                 <div class="price_total">
                                                     <span>Subtotal:</span>
-                                                    <span class="fw-semibold h6 text-black">€{{ number_format($item->price * $item->quantity, 2) }}</span>
+                                                    <span class="fw-semibold h6 text-black">€{{ number_format($item->unit_price * $item->quantity, 2) }}</span>
                                                 </div>
                                             </div>
                                         </div>
