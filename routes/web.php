@@ -70,6 +70,7 @@ Route::prefix('/')->name('shop.')->group(function () {
     Route::get('/account/profile',                 [AccountController::class, 'profile'])->name('account.profile');
     Route::patch('/account/profile',               [AccountController::class, 'profileUpdate'])->name('account.profile.update');
     Route::post('/account/avatar',                 [AccountController::class, 'avatarUpload'])->name('account.avatar.upload');
+    Route::delete('/account/avatar',               [AccountController::class, 'avatarDelete'])->name('account.avatar.delete');
 
     // Search
     Route::get('/search', [ShopController::class, 'search'])->name('search');

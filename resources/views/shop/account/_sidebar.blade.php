@@ -1,22 +1,29 @@
+@php $avatarUrl = $user->avatar ? Storage::url($user->avatar) : '/images/avatar/avatar-4.jpg'; @endphp
+<input class="fileInputDash" type="file" accept="image/*" style="display: none;"
+       form="avatar-form" name="avatar"
+       onchange="document.getElementById('avatar-form').submit();">
+<form id="avatar-form" action="{{ route('shop.account.avatar.upload') }}" method="POST" enctype="multipart/form-data" class="d-none">@csrf</form>
 <div class="sidebar-account sidebar-content-wrap sticky-top">
     <div class="account-author">
         <div class="author_avatar">
             <div class="image">
-                @php $avatarUrl = $user->avatar ? Storage::url($user->avatar) : '/images/avatar/avatar-4.jpg'; @endphp
                 <img class="lazyload imgDash" src="{{ $avatarUrl }}" data-src="{{ $avatarUrl }}"
                     alt="Avatar">
             </div>
-            <form action="{{ route('shop.account.avatar.upload') }}" method="POST" enctype="multipart/form-data" id="avatar-form">
-                @csrf
-                <input type="file" name="avatar" accept="image/*" style="display: none;" id="fileInputDash"
-                       onchange="document.getElementById('avatar-form').submit();">
-            </form>
-            <div class="btn-change_img box-icon changeImgDash" onclick="document.getElementById('fileInputDash').click();">
+            <div class="btn-change_img box-icon changeImgDash" onclick="document.querySelector('.fileInputDash').click();">
                 <i class="icon icon-camera"></i>
             </div>
         </div>
         <h4 class="author_name">{{ $user->name }}</h4>
         <p class="author_email h6">{{ $user->email }}</p>
+        @if($user->avatar)
+        <form action="{{ route('shop.account.avatar.delete') }}" method="POST" class="mt-2"
+              onsubmit="return confirm('Remove your avatar?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="h6 link text-danger">Remove avatar</button>
+        </form>
+        @endif
     </div>
     <ul class="my-account-nav">
         <li>

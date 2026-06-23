@@ -190,6 +190,18 @@ class AccountController extends Controller implements HasMiddleware
         return back()->with('profile_updated', true);
     }
 
+    public function avatarDelete(): RedirectResponse
+    {
+        $user = Auth::user();
+
+        if ($user->avatar) {
+            Storage::disk('public')->delete($user->avatar);
+            $user->update(['avatar' => null]);
+        }
+
+        return back()->with('profile_updated', true);
+    }
+
     public function passwordUpdate(Request $request): RedirectResponse
     {
         $user = Auth::user();
