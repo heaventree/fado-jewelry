@@ -48,17 +48,15 @@
    not Ochaka's wide horizontal lockup — styles.css's `.logo-site img { aspect-ratio:
    2.5094339623; }` would squash a square image into a wide box, so that's overridden
    back to the SVG's own intrinsic ratio here. */
-.logo-site img.fado-logo {
+.logo-site img {
     aspect-ratio: auto;
     width: auto;
-}
-.logo-site img.fado-logo {
     height: 48px;
 }
-.header-abs-3 .logo-site img.fado-logo {
+.header-abs-3 .logo-site img {
     height: 64px;
 }
-.canvas-header .fado-logo {
+.canvas-header .logo-site img {
     height: 40px;
     width: auto;
 }

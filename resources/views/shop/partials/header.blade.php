@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-xl-4 col-md-4 col-6">
                     <a href="{{ route('shop.home') }}" class="logo-site justify-content-center">
-                        <img src="{{ asset('images/logo-white.svg') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}" class="fado-logo">
+                        <img src="{{ asset('images/logo-white.svg') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}">
                         <div class="logo-bottom">
                             <svg width="14" height="6" viewBox="0 0 14 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M2.5 1L4.5 3L2.5 5L0.5 3L2.5 1Z" fill="white" />
@@ -153,7 +153,7 @@
             </div>
             <div class="col-xl-3 col-md-4 col-6 text-center text-xl-start">
                 <a href="{{ route('shop.home') }}" class="logo-site justify-content-center justify-content-xl-start">
-                    <img src="{{ asset('images/logo.svg') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}" class="fado-logo">
+                    <img src="{{ asset('images/logo.svg') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}">
                 </a>
             </div>
             <div class="col-xl-6 d-none d-xl-block">
@@ -204,7 +204,7 @@
             </div>
             <div class="col-xl-3 col-md-4 col-6 text-center text-xl-start">
                 <a href="{{ route('shop.home') }}" class="logo-site justify-content-center justify-content-xl-start">
-                    <img src="{{ asset('images/logo.svg') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}" class="fado-logo">
+                    <img src="{{ asset('images/logo.svg') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}">
                 </a>
             </div>
             <div class="col-xl-6 d-none d-xl-block">
