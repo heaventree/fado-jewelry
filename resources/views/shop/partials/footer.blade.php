@@ -91,6 +91,7 @@
                                 <li><a href="{{ route('shop.about') }}" class="link h6">About Us</a></li>
                                 <li><a href="{{ route('shop.contact') }}" class="link h6">Contact</a></li>
                                 <li><a href="{{ route('shop.contact') }}#consultation" class="link h6">Book a Consultation</a></li>
+                                <li><a href="{{ route('shop.faq') }}" class="link h6">Help & FAQs</a></li>
                                 <li><a href="{{ route('shop.privacy') }}" class="link h6">Privacy Policy</a></li>
                             </ul>
                         </div>

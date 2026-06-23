@@ -8,8 +8,7 @@
     $fbUrl      = \App\Models\Setting::get('facebook_url');
     $igUrl      = \App\Models\Setting::get('instagram_url');
     $twUrl      = \App\Models\Setting::get('twitter_url');
-    $consultationEnabled = \App\Models\Setting::get('consultation_enabled', '1');
-    $consultationIntro   = \App\Models\Setting::get('consultation_intro_text', 'We would love to hear from you. Whether you have a question about a piece, need help choosing the perfect gift, or want to book a consultation — our team is here to help.');
+    $consultationIntro = \App\Models\Setting::get('consultation_intro_text', 'Whether you have a question about a piece, need help choosing the perfect gift, or want to book a consultation — our team is here to help.');
 @endphp
 
 @section('title', 'Contact Us — ' . $storeName)
@@ -34,11 +33,20 @@
         <!-- /Page Title -->
         <!-- Contact Us -->
         <section class="s-contact-us flat-spacing">
+            <!-- Map -->
+            <div class="wg-map d-flex">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2382.0!2d-6.2603!3d53.3498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTPCsDIwJzU5LjMiTiA2wrAxNSczNi4xIlc!5e0!3m2!1sen!2sie!4v1"
+                    width="100%" height="461" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <!-- /Map -->
+
             <div class="container">
                 <div class="row">
                     <div class="col-xxl-5 offset-xxl-1 col-lg-6">
                         <div class="left-col mb-lg-0">
-                            <h3 class="title fw-normal">Get In Touch</h3>
+                            <h3 class="title fw-normal">Visit Our Store</h3>
                             <ul class="store-info-list">
                                 @if($storeAddr)
                                 <li>
@@ -83,8 +91,8 @@
                         </div>
                     </div>
                     <div class="col-xl-5 col-lg-6">
-                        <div class="right-col">
-                            <h3 class="title fw-normal">{{ $consultationEnabled ? 'Book a Consultation' : 'Send a Message' }}</h3>
+                        <div class="right-col" id="consultation">
+                            <h3 class="title fw-normal">Get In Touch</h3>
                             <p class="sub-title text-main-4">
                                 {{ $consultationIntro }}
                             </p>
@@ -115,13 +123,8 @@
                                     <fieldset>
                                         <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Phone (optional)">
                                     </fieldset>
-                                    <fieldset>
-                                        <select name="preferred_contact" class="w-100">
-                                            <option value="email" {{ old('preferred_contact') === 'phone' ? '' : 'selected' }}>Prefer email reply</option>
-                                            <option value="phone" {{ old('preferred_contact') === 'phone' ? 'selected' : '' }}>Prefer phone call</option>
-                                        </select>
-                                    </fieldset>
-                                    <textarea name="message" placeholder="Your message *" style="height: 229px;" required>{{ old('message') }}</textarea>
+                                    <input type="hidden" name="preferred_contact" value="email">
+                                    <textarea name="message" placeholder="Message" style="height: 229px;" required>{{ old('message') }}</textarea>
                                 </div>
                                 <div class="form_message text-center"></div>
                                 <button type="submit" class="tf-btn btn-fill animate-btn w-100">

@@ -265,6 +265,11 @@ class ShopController extends Controller
         return view('shop.coming-soon', ['page' => 'Wishlist']);
     }
 
+    public function faq(): View
+    {
+        return view('shop.faq');
+    }
+
     public function about(): View
     {
         return view('shop.about');

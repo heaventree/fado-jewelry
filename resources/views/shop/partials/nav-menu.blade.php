@@ -127,4 +127,9 @@
         <a href="{{ route('shop.about') }}" class="item-link">About Us</a>
     </li>
 
+    {{-- Contact — plain link --}}
+    <li class="menu-item">
+        <a href="{{ route('shop.contact') }}" class="item-link">Contact</a>
+    </li>
+
 </ul>

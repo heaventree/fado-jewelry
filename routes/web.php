@@ -75,6 +75,7 @@ Route::prefix('/')->name('shop.')->group(function () {
     Route::get('/search', [ShopController::class, 'search'])->name('search');
 
     // Static pages
+    Route::get('/faq', [ShopController::class, 'faq'])->name('faq');
     Route::get('/about', [ShopController::class, 'about'])->name('about');
     Route::get('/contact', [ShopController::class, 'contact'])->name('contact');
     Route::post('/contact', [ShopController::class, 'contactStore'])->name('contact.store')->middleware('throttle:contact');
