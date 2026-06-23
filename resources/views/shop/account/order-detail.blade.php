@@ -231,9 +231,12 @@
                                                 <span class="text_info">{{ ucfirst($order->status) }}</span>
                                             </div>
                                             @if($order->payment_method)
+                                            @php
+                                                $paymentLabels = ['cod' => 'Cash on Delivery', 'stripe' => 'Credit Card', 'bank_transfer' => 'Bank Transfer', 'paypal' => 'PayPal'];
+                                            @endphp
                                             <div class="recerver_text h6">
                                                 <span class="text">Payment Method:</span>
-                                                <span class="text_info">{{ $order->payment_method }}</span>
+                                                <span class="text_info">{{ $paymentLabels[$order->payment_method] ?? ucfirst(str_replace('_', ' ', $order->payment_method)) }}</span>
                                             </div>
                                             @endif
                                         </div>

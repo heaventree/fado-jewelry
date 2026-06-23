@@ -47,9 +47,12 @@
                                         <p class="info-item_value">{{ ucfirst($order->status) }}</p>
                                     </div>
                                     @if($order->payment_method)
+                                    @php
+                                        $paymentLabels = ['cod' => 'Cash on Delivery', 'stripe' => 'Credit Card', 'bank_transfer' => 'Bank Transfer', 'paypal' => 'PayPal'];
+                                    @endphp
                                     <div class="detail-info_item">
                                         <p class="info-item_label">Payment</p>
-                                        <p class="info-item_value">{{ ucfirst(str_replace('_', ' ', $order->payment_method)) }}</p>
+                                        <p class="info-item_value">{{ $paymentLabels[$order->payment_method] ?? ucfirst(str_replace('_', ' ', $order->payment_method)) }}</p>
                                     </div>
                                     @endif
                                     @if($order->shipping_address)
@@ -104,7 +107,7 @@
                                 <span>&euro;{{ number_format($order->total, 2) }}</span>
                             </div>
                         </div>
-                        <div class="order-timeline mb-4">
+                        <div class="order-timeline mb-5">
                             <div class="timeline-step completed">
                                 <div class="timeline_icon"><span class="icon"><i class="icon-check-1"></i></span></div>
                                 <div class="timeline_content">

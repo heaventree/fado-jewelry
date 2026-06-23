@@ -49,16 +49,17 @@
    2.5094339623; }` would squash a square image into a wide box, so that's overridden
    back to the SVG's own intrinsic ratio here. */
 .logo-site img {
-    aspect-ratio: auto;
-    width: auto;
-    height: 48px;
+    aspect-ratio: auto !important;
+    width: auto !important;
+    height: 48px !important;
+    max-height: none !important;
 }
 .header-abs-3 .logo-site img {
-    height: 64px;
+    height: 64px !important;
 }
 .canvas-header .logo-site img {
-    height: 40px;
-    width: auto;
+    height: 40px !important;
+    width: auto !important;
 }
 
 /* ── Hero slider — full viewport height ─────────────────────────────────── */
