@@ -50,16 +50,17 @@
    back to the SVG's own intrinsic ratio here. */
 .logo-site img {
     aspect-ratio: auto !important;
-    width: auto !important;
-    height: 80px !important;
+    width: 80px !important;
+    height: auto !important;
     max-height: none !important;
 }
 .header-abs-3 .logo-site img {
-    height: 110px !important;
+    width: 100px !important;
+    height: auto !important;
 }
 .canvas-header .logo-site img {
-    height: 60px !important;
-    width: auto !important;
+    width: 60px !important;
+    height: auto !important;
 }
 
 /* ── Hero slider — full viewport height ─────────────────────────────────── */
