@@ -54,6 +54,9 @@
     height: auto !important;
     max-height: none !important;
 }
+/* Logo swap: .logo-default = white logo, .logo-sticky = dark logo.
+   Homepage (header-abs-2): show white logo, swap to dark on sticky.
+   Inner pages (bg-off-white): show dark logo always. */
 .logo-site .logo-sticky {
     display: none;
 }
@@ -62,6 +65,22 @@
 }
 .header-sticky .logo-site .logo-sticky {
     display: block;
+}
+.bg-off-white .logo-site .logo-default {
+    display: none;
+}
+.bg-off-white .logo-site .logo-sticky {
+    display: block;
+}
+/* Homepage overlay header — white nav text + icons over dark hero */
+.header-abs-2 .item-link,
+.header-abs-2 .nav-icon-item {
+    color: #fff !important;
+}
+.header-abs-2 .btn-mobile-menu span,
+.header-abs-2 .btn-mobile-menu span::before,
+.header-abs-2 .btn-mobile-menu span::after {
+    background-color: #fff;
 }
 .canvas-header .logo-site img {
     width: 60px !important;
