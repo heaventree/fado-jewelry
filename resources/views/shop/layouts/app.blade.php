@@ -52,7 +52,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
 
     {{-- FADO colour overrides (palette swap only — see CLAUDE.md) --}}
-    <link rel="stylesheet" href="{{ asset('css/fado.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fado.css') }}?v={{ filemtime(public_path('css/fado.css')) }}">
 
     {{-- Favicon: no FADO favicon asset has been supplied yet, so the existing public/favicon.ico is used
          rather than referencing Ochaka's own demo favicon.svg. --}}
