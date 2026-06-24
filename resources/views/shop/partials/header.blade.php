@@ -1,49 +1,14 @@
 {{--
-    Source: resources/theme-reference/home-jewelry.html — this page renders TWO header elements:
-      1. `<header class="tf-header header-abs-3">` (lines 52-458) — a transparent overlay header that
-         sits over the hero on initial page load (negative margin-bottom pulls it on top of the slider).
-      2. `<header class="tf-header header-fixed">` (lines 459-835) — visually identical nav/content, but
-         CSS (public/css/styles.css:2759 `.tf-header.header-fixed`) hides it via
-         opacity:0/visibility:hidden/translateY(-120%)/pointer-events:none until JS adds `.is-fixed`
-         (public/js/main.js:393 `headerFixed()`, toggled past a 200px scroll threshold).
-    A previous pass replaced both with header-fixed alone, which is invisible until the user scrolls
-    200px — that's why the header disappeared entirely on load. Both variants are restored here, exactly
-    matching Ochaka's own dual-header pattern, so there's always a visible header.
+    Source: _ochaka-reference/home-decor.html — top bar (lines 50-93) + header (lines 96-470).
 
-    The shared `<ul class="box-nav-menu">` nav content (Jewellery / Collections / About Us, built from
-    real DB categories/collections) lives in shop.partials.nav-menu and is @include'd into both headers,
-    since the reference repeats the identical menu markup in each header block (lines 123-455 vs 474-809).
+    Layout: logo left (col-xl-3), nav center (col-xl-6), icons right (col-xl-3) — single row.
+    Homepage adds header-abs-2 to overlap the hero slider via negative margin.
+    Inner pages use bg-off-white for a solid light background.
 
     Deviations from the reference (documented):
-    - The "Home" mega-menu (ThemeForest demo-switcher links: "Home Fashion 1/2/3...") is ThemeForest
-      sales-page filler with no equivalent in a real storefront — replaced with real "Jewellery" and
-      "Collections" mega-menus built from the same `sub-menu mega-menu` / `mega-menu-item` / `sub-menu_list`
-      markup (verified at home-jewelry.html lines 217-309, the "Shop" mega-menu).
-    - The generic "Shop" / "Product" / "Blog" demo dropdowns are removed (their targets — demo shop layout
-      variations, a blog — are out of scope per CLAUDE.md). "Page" (plain `sub-menu` / `sub-menu_list`,
-      lines 782-797) is reused verbatim in style for "About Us".
-    - The `mn-none` modifier present on header-fixed's `<li class="menu-item mn-none">` in the reference is
-      dropped: that class only exists in this multi-home demo file to stop one of its two header navs being
-      duplicated into the mobile menu (public/js/main.js:970 strips `.mn-none` when building
-      `#wrapper-menu-navigation`). With one real nav shared by both headers, keeping it would silently empty
-      the mobile nav, so the modifier is omitted.
-    - The col-6 promotional image column inside the mega-menu (`<ul class="list-hor"><li class="wg-cls hover-img">`)
-      is omitted — no curated nav promo imagery has been agreed with the client yet.
-    - The language selector (`tf-languages`) is omitted everywhere — no i18n is built; including it would be
-      a fabricated feature. The currency selector (`tf-currencies`) is real and kept, wired to the Currency model.
-    - header-abs-3's logo-bottom tagline text "JEWELRY BOUTIQUE" is replaced with FADÓ's real tagline
-      ("Fine Irish Jewellery", per CLAUDE.md) — content only, the decorative SVG diamonds either side are
-      kept verbatim.
-    - Fixed: header-abs-3 relies on `margin-bottom: -164px` to sit on top of a tall hero image, and is
-      styled white-on-transparent for that purpose — correct on the homepage, but on hero-less inner pages
-      (product, listing, cart, etc.) it pulled the header up over the page content and rendered white text
-      on a white/light background, making it unreadable. Ochaka's own inner pages (e.g.
-      product-detail.html:98 `<header class="tf-header header-fix bg-off-white">`) use a third, plain,
-      always-visible header variant with dark text/icons and no special positioning, instead of the
-      abs-3 + scroll-triggered fixed pair used on the homepage. This partial now branches on
-      `request()->routeIs('shop.home')`: the homepage keeps the original abs-3/fixed pair; every other
-      page renders the single `header-fix bg-off-white` variant below (same nav/icons markup as
-      header-fixed, but always visible and dark-on-light).
+    - Top bar demo text/links replaced with real store info + FADO links (FAQ, Contact).
+    - TikTok icon and language select omitted (no tiktok_url setting, no i18n).
+    - HOME/SHOP demo mega-menus replaced with real Jewellery/Collections from DB.
 --}}
 @php
     use App\Models\Category;
@@ -61,89 +26,43 @@
     $wishlistCount = session('wishlist_count', 0);
 @endphp
 
-@if(request()->routeIs('shop.home'))
-{{-- ── Header 1: transparent overlay, visible on load, sits over the hero ── --}}
-<header class="tf-header header-abs-3">
-    <div class="header-top">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-4 col-3 d-xl-none">
-                    <a href="#mobileMenu" data-bs-toggle="offcanvas" class="btn-mobile-menu style-white">
-                        <span></span>
-                    </a>
+{{-- ── Top Bar ── --}}
+<div class="tf-topbar bg-black">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-7 col-lg-8">
+                <div class="topbar-left">
+                    <h6 class="text-up text-white fw-normal text-line-clamp-1">{{ Setting::get('store_tagline', 'Fine Irish Jewellery — Handcrafted with passion') }}</h6>
                 </div>
-                <div class="col-xl-4 d-none d-xl-block">
-                    <div class="list-hor">
-                        <div class="tf-currencies d-none d-xl-block">
-                            <form action="{{ route('shop.currency.switch') }}" method="POST" class="mb-0">
-                                @csrf
-                                <select name="currency" onchange="this.form.submit()" class="tf-dropdown-select style-default color-white type-currencies">
-                                    @foreach($availableCurrencies as $cur)
-                                        <option value="{{ $cur->code }}" {{ $activeCurrencyCode === $cur->code ? 'selected' : '' }}>{{ $cur->code }}</option>
-                                    @endforeach
-                                </select>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-4 col-6">
-                    <a href="{{ route('shop.home') }}" class="logo-site justify-content-center">
-                        <img src="{{ asset('images/white-fado-logo.png') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}">
-                        <div class="logo-bottom">
-                            <svg width="14" height="6" viewBox="0 0 14 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2.5 1L4.5 3L2.5 5L0.5 3L2.5 1Z" fill="white" />
-                                <path d="M10.5 0L13.5 3L10.5 6L7.5 3L10.5 0Z" fill="white" />
-                            </svg>
-                            <span class="text-small-3 text-white text-uppercase">Fine Irish Jewellery</span>
-                            <svg width="14" height="6" viewBox="0 0 14 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.5 0L6.5 3L3.5 6L0.5 3L3.5 0Z" fill="white" />
-                                <path d="M11.5 1L13.5 3L11.5 5L9.5 3L11.5 1Z" fill="white" />
-                            </svg>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xl-4 col-md-4 col-3">
-                    <ul class="nav-icon-list">
-                        <li class="d-none d-lg-flex">
-                            @auth
-                                <a class="nav-icon-item text-white link" href="{{ route('shop.account.index') }}"><i class="icon icon-user"></i></a>
-                            @else
-                                <a class="nav-icon-item text-white link" href="{{ route('login') }}"><i class="icon icon-user"></i></a>
-                            @endauth
-                        </li>
-                        <li class="d-none d-md-flex">
-                            <a class="nav-icon-item text-white link" href="#search" data-bs-toggle="modal">
-                                <i class="icon icon-magnifying-glass"></i>
-                            </a>
-                        </li>
-                        <li class="d-none d-sm-flex shop-wishlist">
-                            <a class="nav-icon-item text-white link" href="{{ route('shop.wishlist') }}">
-                                <i class="icon icon-heart"></i>
-                            </a>
-                            @if($wishlistCount > 0)<span class="count wishlist-count">{{ $wishlistCount }}</span>@endif
-                        </li>
-                        <li class="shop-cart" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart">
-                            <a class="nav-icon-item text-white link" href="#shoppingCart" data-bs-toggle="offcanvas">
-                                <i class="icon icon-shopping-cart-simple"></i>
-                            </a>
-                            @if($cartCount > 0)<span class="count">{{ $cartCount }}</span>@endif
-                        </li>
-                    </ul>
-                </div>
+            </div>
+            <div class="col-xl-5 col-lg-4 d-none d-lg-block">
+                <ul class="topbar-right topbar-option-list">
+                    <li class="h6">
+                        <a href="{{ route('shop.faq') }}" class="text-white link">Help & FAQs</a>
+                    </li>
+                    <li class="br-line"></li>
+                    <li class="h6">
+                        <a href="{{ route('shop.contact') }}" class="text-white link">Contact</a>
+                    </li>
+                    <li class="br-line d-none d-xl-inline-flex"></li>
+                    <li class="tf-currencies d-none d-xl-block">
+                        <form action="{{ route('shop.currency.switch') }}" method="POST" class="mb-0">
+                            @csrf
+                            <select name="currency" onchange="this.form.submit()" class="tf-dropdown-select style-default color-white type-currencies">
+                                @foreach($availableCurrencies as $cur)
+                                    <option value="{{ $cur->code }}" {{ $activeCurrencyCode === $cur->code ? 'selected' : '' }}>{{ $cur->code }}</option>
+                                @endforeach
+                            </select>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-    <div class="header-inner d-none d-xl-block">
-        <div class="container">
-            <nav class="box-navigation style-white">
-                @include('shop.partials.nav-menu')
-            </nav>
-        </div>
-    </div>
-</header>
+</div>
 
-{{-- ── Header 2: sticky variant, hidden until scroll (CSS + main.js headerFixed()) ── --}}
-<header class="tf-header header-fixed">
+{{-- ── Header ── --}}
+<header class="tf-header header-fix{{ request()->routeIs('shop.home') ? ' header-abs-2' : ' bg-off-white' }}">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-4 col-3 d-xl-none">
@@ -192,55 +111,3 @@
         </div>
     </div>
 </header>
-@else
-{{-- ── Header (inner pages): always-visible, dark-on-light variant — Ochaka's header-fix bg-off-white ── --}}
-<header class="tf-header header-fix bg-off-white">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-4 col-3 d-xl-none">
-                <a href="#mobileMenu" data-bs-toggle="offcanvas" class="btn-mobile-menu">
-                    <span></span>
-                </a>
-            </div>
-            <div class="col-xl-3 col-md-4 col-6 text-center text-xl-start">
-                <a href="{{ route('shop.home') }}" class="logo-site justify-content-center justify-content-xl-start">
-                    <img src="{{ asset('images/white-fado-logo-black.png') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}">
-                </a>
-            </div>
-            <div class="col-xl-6 d-none d-xl-block">
-                <nav class="box-navigation">
-                    @include('shop.partials.nav-menu')
-                </nav>
-            </div>
-            <div class="col-xl-3 col-md-4 col-3">
-                <ul class="nav-icon-list">
-                    <li class="d-none d-lg-flex">
-                        @auth
-                            <a class="nav-icon-item link" href="{{ route('shop.account.index') }}"><i class="icon icon-user"></i></a>
-                        @else
-                            <a class="nav-icon-item link" href="{{ route('login') }}"><i class="icon icon-user"></i></a>
-                        @endauth
-                    </li>
-                    <li class="d-none d-md-flex">
-                        <a class="nav-icon-item link" href="#search" data-bs-toggle="modal">
-                            <i class="icon icon-magnifying-glass"></i>
-                        </a>
-                    </li>
-                    <li class="d-none d-sm-flex shop-wishlist">
-                        <a class="nav-icon-item link" href="{{ route('shop.wishlist') }}">
-                            <i class="icon icon-heart"></i>
-                        </a>
-                        @if($wishlistCount > 0)<span class="count wishlist-count">{{ $wishlistCount }}</span>@endif
-                    </li>
-                    <li class="shop-cart" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart">
-                        <a class="nav-icon-item link" href="#shoppingCart" data-bs-toggle="offcanvas">
-                            <i class="icon icon-shopping-cart-simple"></i>
-                        </a>
-                        @if($cartCount > 0)<span class="count">{{ $cartCount }}</span>@endif
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</header>
-@endif
