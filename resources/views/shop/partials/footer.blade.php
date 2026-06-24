@@ -30,7 +30,7 @@
                 <div class="col-xl-4 col-sm-6 mb_30 mb-xl-0">
                     <div class="footer-infor">
                         <a href="{{ route('shop.home') }}" class="logo-site">
-                            <img src="{{ asset('images/logo-white.svg') }}" alt="{{ \App\Models\Setting::get('store_name', 'FADÓ') }}" class="fado-logo">
+                            <img src="{{ asset('images/logo-white.svg') }}" alt="{{ \App\Models\Setting::get('store_name', 'FADÓ') }}">
                         </a>
                         <ul class="footer-contact mb-0">
                             @if($address = \App\Models\Setting::get('store_address'))
