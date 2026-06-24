@@ -72,7 +72,8 @@
             </div>
             <div class="col-xl-3 col-md-4 col-6 text-center text-xl-start">
                 <a href="{{ route('shop.home') }}" class="logo-site justify-content-center justify-content-xl-start">
-                    <img src="{{ asset('images/white-fado-logo-black.png') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}">
+                    <img class="logo-default" src="{{ asset('images/white-fado-logo.png') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}">
+                    <img class="logo-sticky" src="{{ asset('images/white-fado-logo-black.png') }}" alt="{{ Setting::get('store_name', 'FADÓ') }}">
                 </a>
             </div>
             <div class="col-xl-6 d-none d-xl-block">

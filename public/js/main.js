@@ -370,14 +370,9 @@
                 navbarHeight = $(".header-fix").outerHeight();
 
                 if (st > navbarHeight) {
-                    if (st > lastScrollTop + delta) {
-                        $(".header-fix").css("top", `-${navbarHeight}px`);
-                        $(".sticky-top").css("top", "15px");
-                    } else if (st < lastScrollTop - delta) {
-                        $(".header-fix").css("top", "0");
-                        $(".header-fix").addClass("header-sticky");
-                        $(".sticky-top").css("top", `${15 + navbarHeight}px`);
-                    }
+                    $(".header-fix").css("top", "0");
+                    $(".header-fix").addClass("header-sticky");
+                    $(".sticky-top").css("top", `${15 + navbarHeight}px`);
                 } else {
                     $(".header-fix").css("top", "unset");
                     $(".header-fix").removeClass("header-sticky");

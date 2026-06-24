@@ -54,6 +54,15 @@
     height: auto !important;
     max-height: none !important;
 }
+.logo-site .logo-sticky {
+    display: none;
+}
+.header-sticky .logo-site .logo-default {
+    display: none;
+}
+.header-sticky .logo-site .logo-sticky {
+    display: block;
+}
 .canvas-header .logo-site img {
     width: 60px !important;
     height: auto !important;
