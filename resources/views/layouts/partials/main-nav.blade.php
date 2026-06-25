@@ -59,6 +59,31 @@
                 </div>
             </li>
 
+            {{-- Attributes: directly below Products --}}
+            <li class="nav-item">
+                <a class="nav-link menu-arrow" href="#sidebarAttributes" data-bs-toggle="collapse" role="button"
+                   aria-expanded="false" aria-controls="sidebarAttributes">
+                    <span class="nav-icon"><iconify-icon icon="solar:medal-ribbons-star-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Attributes </span>
+                </a>
+                <div class="collapse" id="sidebarAttributes">
+                    <ul class="nav sub-navbar-nav">
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.metals.index') }}">Metals</a>
+                        </li>
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.gemstones.index') }}">Gemstones</a>
+                        </li>
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.ring-sizes.index') }}">Ring Sizes</a>
+                        </li>
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.colours.index') }}">Colours</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
             {{-- Category: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarCategory" data-bs-toggle="collapse" role="button"
@@ -291,32 +316,6 @@
                 </a>
             </li>
 
-            <li class="menu-title mt-2">Attributes</li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.metals.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:medal-ribbons-star-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Metals </span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.gemstones.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:diamond-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Gemstones </span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.ring-sizes.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:ring-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Ring Sizes </span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.colours.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:pallete-2-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Colours </span>
-                </a>
-            </li>
 
             @endif {{-- end $isAdminPlus --}}
 
