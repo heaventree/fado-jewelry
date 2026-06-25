@@ -94,16 +94,16 @@ Route::prefix('/')->name('shop.')->group(function () {
     Route::get('/privacy', [ShopController::class, 'privacy'])->name('privacy');
     Route::get('/terms', [ShopController::class, 'terms'])->name('terms');
 
-    // Blog
-    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-    Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
-
     // Newsletter subscribe (POST)
     Route::post('/newsletter', [ShopController::class, 'newsletterSubscribe'])->name('newsletter.subscribe');
 
     // Currency switcher (POST)
     Route::post('/currency', [ShopController::class, 'switchCurrency'])->name('currency.switch');
 });
+
+// ── Blog (public, outside shop.* name prefix so routes are blog.index / blog.show)
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // ── Admin routes — real controllers, must come before the Larkon catch-all ───
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
