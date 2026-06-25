@@ -226,7 +226,8 @@
                             <div class="sidebar-item">
                                 <div class="sb-banner hover-img">
                                     <a href="{{ route('shop.jewellery') }}" class="image img-style">
-                                        <img src="/images/ochaka/blog/side-banner.jpg" data-src="/images/ochaka/blog/side-banner.jpg" alt="Banner">
+                                        @php $faqBanner = \App\Models\Setting::get('faq_banner_image', '/images/ochaka/blog/side-banner.jpg'); @endphp
+                                        <img src="{{ $faqBanner }}" data-src="{{ $faqBanner }}" alt="Banner">
                                     </a>
                                     <div class="content">
                                         <h5 class="sub-title text-primary">Browse our range</h5>

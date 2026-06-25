@@ -30,30 +30,19 @@
                         @if(($page ?? '') === 'Privacy Policy')
                         <h2 class="account-title type-semibold mb-4">Privacy Policy</h2>
                         <div class="h6 text-main">
-                            <p class="mb-3"><strong>{{ $storeName }}</strong> is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you visit our website or make a purchase.</p>
-
-                            <h5 class="fw-semibold mt-4 mb-2">Information We Collect</h5>
-                            <p class="mb-3">When you place an order or create an account, we collect your name, email address, shipping address, phone number, and payment details. We also collect browsing data (pages visited, products viewed) via cookies to improve your experience.</p>
-
-                            <h5 class="fw-semibold mt-4 mb-2">How We Use Your Information</h5>
-                            <p class="mb-3">We use your information to process orders, deliver products, send order confirmations, respond to enquiries, and (with your consent) send marketing communications about new collections and offers. We never sell your data to third parties.</p>
-
-                            <h5 class="fw-semibold mt-4 mb-2">Cookies</h5>
-                            <p class="mb-3">Our website uses cookies for essential functions (shopping cart, login sessions) and analytics (Google Analytics). You can disable non-essential cookies in your browser settings.</p>
-
-                            <h5 class="fw-semibold mt-4 mb-2">Data Retention</h5>
-                            <p class="mb-3">We retain order data for 7 years as required by Irish revenue and consumer protection law. Account data is kept until you request deletion.</p>
-
-                            <h5 class="fw-semibold mt-4 mb-2">Your Rights</h5>
-                            <p class="mb-3">Under GDPR, you have the right to access, correct, delete, or export your personal data. To exercise these rights, contact us at <a href="mailto:{{ \App\Models\Setting::get('store_email', 'info@fadojewellery.ie') }}" class="link fw-semibold">{{ \App\Models\Setting::get('store_email', 'info@fadojewellery.ie') }}</a>.</p>
-
-                            <h5 class="fw-semibold mt-4 mb-2">Security</h5>
-                            <p class="mb-3">All transactions are encrypted via SSL. Payment processing is handled by our payment provider — we never store your full card details on our servers.</p>
-
-                            <h5 class="fw-semibold mt-4 mb-2">Contact</h5>
-                            <p class="mb-3">If you have questions about this privacy policy, contact us at <a href="mailto:{{ \App\Models\Setting::get('store_email', 'info@fadojewellery.ie') }}" class="link fw-semibold">{{ \App\Models\Setting::get('store_email', 'info@fadojewellery.ie') }}</a>.</p>
-
-                            <p class="mt-4 text-small">Last updated: {{ now()->format('F Y') }}</p>
+                            {!! \App\Models\Setting::get('privacy_policy', '<p class="mb-3"><strong>' . e($storeName) . '</strong> is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you visit our website or make a purchase.</p>
+<h5 class="fw-semibold mt-4 mb-2">Information We Collect</h5>
+<p class="mb-3">When you place an order or create an account, we collect your name, email address, shipping address, phone number, and payment details. We also collect browsing data via cookies to improve your experience.</p>
+<h5 class="fw-semibold mt-4 mb-2">How We Use Your Information</h5>
+<p class="mb-3">We use your information to process orders, deliver products, send order confirmations, respond to enquiries, and (with your consent) send marketing communications. We never sell your data to third parties.</p>
+<h5 class="fw-semibold mt-4 mb-2">Cookies</h5>
+<p class="mb-3">Our website uses cookies for essential functions (shopping cart, login sessions) and analytics. You can disable non-essential cookies in your browser settings.</p>
+<h5 class="fw-semibold mt-4 mb-2">Data Retention</h5>
+<p class="mb-3">We retain order data for 7 years as required by Irish law. Account data is kept until you request deletion.</p>
+<h5 class="fw-semibold mt-4 mb-2">Your Rights</h5>
+<p class="mb-3">Under GDPR, you have the right to access, correct, delete, or export your personal data. Contact us to exercise these rights.</p>
+<h5 class="fw-semibold mt-4 mb-2">Security</h5>
+<p class="mb-3">All transactions are encrypted via SSL. We never store your full card details on our servers.</p>') !!}
                         </div>
                         @else
                         <div class="text-center">

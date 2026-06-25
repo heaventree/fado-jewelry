@@ -14,15 +14,14 @@
         <!-- Page Title -->
         <section class="page-title-image">
             <div class="page_image overflow-hidden">
-                <img class="lazyload ani-zoom" src="/images/ochaka/section/about-us.jpg" data-src="/images/ochaka/section/about-us.jpg" alt="About {{ $storeName }}">
+                @php $aboutHero = \App\Models\Setting::get('about_hero_image', '/images/ochaka/section/about-us.jpg'); @endphp
+                <img class="lazyload ani-zoom" src="{{ $aboutHero }}" data-src="{{ $aboutHero }}" alt="About {{ $storeName }}">
             </div>
             <div class="page_content">
                 <div class="container">
                     <div class="content">
                         <h1 class="heading fw-bold">
-                            HANDCRAFTED IRISH <br class="d-none d-sm-block">
-                            JEWELLERY WITH <br class="d-none d-sm-block">
-                            HERITAGE & HEART
+                            {{ \App\Models\Setting::get('about_heading', 'HANDCRAFTED IRISH JEWELLERY WITH HERITAGE & HEART') }}
                         </h1>
                         <a href="{{ route('shop.jewellery') }}" class="tf-btn animate-btn">
                             Our shop
@@ -40,9 +39,7 @@
                 <div class="box-intro">
                     <h4 class="slogan fw-normal">FINE IRISH JEWELLERY</h4>
                     <p class="intro-text">
-                        {{ $storeName }} is a proudly Irish jewellery brand, drawing inspiration from Ireland's rich heritage of Celtic artistry,
-                        ancient symbolism and natural beauty. Every piece is designed and crafted with care — from classic Claddagh rings and
-                        Trinity knot pendants to contemporary collections inspired by Ireland's wildflower meadows and rolling landscapes.
+                        {!! nl2br(e(\App\Models\Setting::get('about_story', $storeName . ' is a proudly Irish jewellery brand, drawing inspiration from Ireland\'s rich heritage of Celtic artistry, ancient symbolism and natural beauty. Every piece is designed and crafted with care — from classic Claddagh rings and Trinity knot pendants to contemporary collections inspired by Ireland\'s wildflower meadows and rolling landscapes.'))) !!}
                     </p>
                 </div>
             </div>
@@ -52,8 +49,13 @@
         <section class="s-about">
             <div class="container">
                 <div class="tf-grid-layout tf-col-2 md-col-3 xl-col-4">
+                    @php
+                        $aboutGal1 = \App\Models\Setting::get('about_gallery_1', '/images/ochaka/section/gallery-modal-2.jpg');
+                        $aboutGal2 = \App\Models\Setting::get('about_gallery_2', '/images/ochaka/section/gallery-modal-1.jpg');
+                        $aboutGal3 = \App\Models\Setting::get('about_gallery_3', '/images/ochaka/section/gallery-modal-3.jpg');
+                    @endphp
                     <div class="item_2 image d-none d-md-block">
-                        <img class="lazyload" src="/images/ochaka/section/gallery-modal-2.jpg" data-src="/images/ochaka/section/gallery-modal-2.jpg" alt="Craftsmanship">
+                        <img class="lazyload" src="{{ $aboutGal1 }}" data-src="{{ $aboutGal1 }}" alt="Craftsmanship">
                     </div>
                     <div class="wd-2-cols">
                         <div class="content-blog text-md-start">
@@ -68,16 +70,17 @@
                         </div>
                     </div>
                     <div class="item_1 image">
-                        <img class="lazyload" src="/images/ochaka/section/gallery-modal-1.jpg" data-src="/images/ochaka/section/gallery-modal-1.jpg" alt="Heritage">
+                        <img class="lazyload" src="{{ $aboutGal2 }}" data-src="{{ $aboutGal2 }}" alt="Heritage">
                     </div>
                     <div class="d-md-none d-xl-block">
-                        <img class="lazyload d-md-none" src="/images/ochaka/section/gallery-modal-2.jpg" data-src="/images/ochaka/section/gallery-modal-2.jpg" alt="Detail">
+                        <img class="lazyload d-md-none" src="{{ $aboutGal1 }}" data-src="{{ $aboutGal1 }}" alt="Detail">
                     </div>
                     <div class="item_3 image">
-                        <img class="lazyload" src="/images/ochaka/section/gallery-modal-3.jpg" data-src="/images/ochaka/section/gallery-modal-3.jpg" alt="Workshop">
+                        <img class="lazyload" src="{{ $aboutGal3 }}" data-src="{{ $aboutGal3 }}" alt="Workshop">
                     </div>
                     <div class="item_4 image">
-                        <img class="lazyload" src="/images/ochaka/section/gallery-modal-4.jpg" data-src="/images/ochaka/section/gallery-modal-4.jpg" alt="Finished piece">
+                        @php $aboutGal4 = \App\Models\Setting::get('about_gallery_4', '/images/ochaka/section/gallery-modal-4.jpg'); @endphp
+                        <img class="lazyload" src="{{ $aboutGal4 }}" data-src="{{ $aboutGal4 }}" alt="Finished piece">
                     </div>
                 </div>
             </div>
@@ -111,8 +114,8 @@
                                         <i class="icon icon-heart fs-40"></i>
                                     </span>
                                     <div class="content">
-                                        <h3 class="caption fw-normal">Handcrafted with care</h3>
-                                        <p class="sub-text">Every piece made by skilled Irish artisans</p>
+                                        <h3 class="caption fw-normal">{{ \App\Models\Setting::get('craft_value_1_title', 'Handcrafted with care') }}</h3>
+                                        <p class="sub-text">{{ \App\Models\Setting::get('craft_value_1_text', 'Every piece made by skilled Irish artisans') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -127,8 +130,8 @@
                                         <i class="icon icon-check-circle fs-40"></i>
                                     </span>
                                     <div class="content">
-                                        <h3 class="caption fw-normal">Dublin hallmarked</h3>
-                                        <p class="sub-text">Guaranteed quality since 1637</p>
+                                        <h3 class="caption fw-normal">{{ \App\Models\Setting::get('craft_value_2_title', 'Dublin hallmarked') }}</h3>
+                                        <p class="sub-text">{{ \App\Models\Setting::get('craft_value_2_text', 'Guaranteed quality since 1637') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -143,8 +146,8 @@
                                         <i class="icon icon-package fs-40"></i>
                                     </span>
                                     <div class="content">
-                                        <h3 class="caption fw-normal">Gift-ready packaging</h3>
-                                        <p class="sub-text">Presented in our signature green box</p>
+                                        <h3 class="caption fw-normal">{{ \App\Models\Setting::get('craft_value_3_title', 'Gift-ready packaging') }}</h3>
+                                        <p class="sub-text">{{ \App\Models\Setting::get('craft_value_3_text', 'Presented in our signature green box') }}</p>
                                     </div>
                                 </div>
                             </div>
