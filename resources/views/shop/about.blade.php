@@ -14,8 +14,12 @@
         <!-- Page Title -->
         <section class="page-title-image">
             <div class="page_image overflow-hidden">
-                @php $aboutHero = \App\Models\Setting::get('about_hero_image', '/images/ochaka/section/about-us.jpg'); @endphp
-                <img class="lazyload ani-zoom" src="{{ $aboutHero }}" data-src="{{ $aboutHero }}" alt="About {{ $storeName }}">
+                @php $aboutHeroRaw = \App\Models\Setting::get('about_hero_image'); @endphp
+                @if($aboutHeroRaw)
+                <img class="lazyload ani-zoom" src="{{ asset('storage/' . $aboutHeroRaw) }}" data-src="{{ asset('storage/' . $aboutHeroRaw) }}" alt="About {{ $storeName }}">
+                @else
+                <img class="lazyload ani-zoom" src="/images/ochaka/section/about-us.jpg" data-src="/images/ochaka/section/about-us.jpg" alt="About {{ $storeName }}">
+                @endif
             </div>
             <div class="page_content">
                 <div class="container">
@@ -50,9 +54,10 @@
             <div class="container">
                 <div class="tf-grid-layout tf-col-2 md-col-3 xl-col-4">
                     @php
-                        $aboutGal1 = \App\Models\Setting::get('about_gallery_1', '/images/ochaka/section/gallery-modal-2.jpg');
-                        $aboutGal2 = \App\Models\Setting::get('about_gallery_2', '/images/ochaka/section/gallery-modal-1.jpg');
-                        $aboutGal3 = \App\Models\Setting::get('about_gallery_3', '/images/ochaka/section/gallery-modal-3.jpg');
+                        $galDefaults = ['/images/ochaka/section/gallery-modal-2.jpg', '/images/ochaka/section/gallery-modal-1.jpg', '/images/ochaka/section/gallery-modal-3.jpg'];
+                        $aboutGal1 = ($v = \App\Models\Setting::get('about_gallery_1')) ? asset('storage/' . $v) : $galDefaults[0];
+                        $aboutGal2 = ($v = \App\Models\Setting::get('about_gallery_2')) ? asset('storage/' . $v) : $galDefaults[1];
+                        $aboutGal3 = ($v = \App\Models\Setting::get('about_gallery_3')) ? asset('storage/' . $v) : $galDefaults[2];
                     @endphp
                     <div class="item_2 image d-none d-md-block">
                         <img class="lazyload" src="{{ $aboutGal1 }}" data-src="{{ $aboutGal1 }}" alt="Craftsmanship">
@@ -79,7 +84,7 @@
                         <img class="lazyload" src="{{ $aboutGal3 }}" data-src="{{ $aboutGal3 }}" alt="Workshop">
                     </div>
                     <div class="item_4 image">
-                        @php $aboutGal4 = \App\Models\Setting::get('about_gallery_4', '/images/ochaka/section/gallery-modal-4.jpg'); @endphp
+                        @php $aboutGal4 = ($v = \App\Models\Setting::get('about_gallery_4')) ? asset('storage/' . $v) : '/images/ochaka/section/gallery-modal-4.jpg'; @endphp
                         <img class="lazyload" src="{{ $aboutGal4 }}" data-src="{{ $aboutGal4 }}" alt="Finished piece">
                     </div>
                 </div>

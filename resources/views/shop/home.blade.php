@@ -217,8 +217,12 @@
             </a>
         </div>
         <div class="banner_img">
-            @php $saleBannerImg = \App\Models\Setting::get('sale_banner_image', '/images/ochaka/banner/banner-cd-V01.jpg'); @endphp
-            <img class="lazyload" src="{{ $saleBannerImg }}" data-src="{{ $saleBannerImg }}" alt="On sale">
+            @php $saleBannerRaw = \App\Models\Setting::get('sale_banner_image'); @endphp
+            @if($saleBannerRaw)
+            <img class="lazyload" src="{{ asset('storage/' . $saleBannerRaw) }}" data-src="{{ asset('storage/' . $saleBannerRaw) }}" alt="On sale">
+            @else
+            <img class="lazyload" src="/images/ochaka/banner/banner-cd-V01.jpg" data-src="/images/ochaka/banner/banner-cd-V01.jpg" alt="On sale">
+            @endif
         </div>
     </div>
 </section>

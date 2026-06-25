@@ -57,20 +57,14 @@
                                 <h4 class="sb-title">Frequently asked questions</h4>
                             </div>
                             <div class="sidebar-item">
-                                <h4 class="sb-title">Category</h4>
-                                <ul class="sb-category">
-                                    <li><a href="#myAccount" class="h6 link">My account</a></li>
-                                    <li><a href="#ordersPurchases" class="h6 link">Orders &amp; purchases</a></li>
-                                    <li><a href="#shippingTracking" class="h6 link">Shipping &amp; Delivery</a></li>
-                                    <li><a href="#returnsRefunds" class="h6 link">Returns &amp; Refunds</a></li>
-                                    <li><a href="#otherTopic" class="h6 link">Other questions</a></li>
-                                </ul>
-                            </div>
-                            <div class="sidebar-item">
                                 <div class="sb-banner hover-img">
                                     <a href="{{ route('shop.jewellery') }}" class="image img-style">
-                                        @php $faqBanner = \App\Models\Setting::get('faq_banner_image', '/images/ochaka/blog/side-banner.jpg'); @endphp
-                                        <img src="{{ $faqBanner }}" data-src="{{ $faqBanner }}" alt="Banner">
+                                        @php $faqBanner = \App\Models\Setting::get('faq_banner_image'); @endphp
+                                        @if($faqBanner)
+                                            <img src="{{ asset('storage/' . $faqBanner) }}" data-src="{{ asset('storage/' . $faqBanner) }}" alt="Banner">
+                                        @else
+                                            <img src="/images/ochaka/blog/side-banner.jpg" data-src="/images/ochaka/blog/side-banner.jpg" alt="Banner">
+                                        @endif
                                     </a>
                                     <div class="content">
                                         <h5 class="sub-title text-primary">Browse our range</h5>
