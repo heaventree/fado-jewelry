@@ -4,30 +4,34 @@
 
 @section('content')
 
-{{-- Banner Slider — Ochaka tf-slideshow type-abs exact structure --}}
+{{-- Banner Slider — wired to DB via Slider model --}}
+@if($sliders->isNotEmpty())
 <div class="tf-slideshow type-abs tf-btn-swiper-main">
     <div dir="ltr" class="swiper tf-swiper sw-slide-show slider_effect_fade" data-auto="false" data-loop="true" data-effect="fade" data-delay="3000">
         <div class="swiper-wrapper">
-
+            @foreach($sliders as $slide)
             <div class="swiper-slide">
                 <div class="slider-wrap">
                     <div class="sld_image">
-                        <img src="/images/ochaka/slider/slider-22.jpg" data-src="/images/ochaka/slider/slider-22.jpg" alt="FADÓ Jewellery" class="lazyload ani-zoom">
+                        <img src="{{ Storage::url($slide->image) }}" data-src="{{ Storage::url($slide->image) }}" alt="{{ $slide->heading }}" class="lazyload ani-zoom">
                     </div>
                     <div class="sld_content text-center">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="content-sld_wrap">
-                                        <p class="sub-title_sld-2 font-2 h3 text-white fade-item fade-item-1">Handcrafted</p>
-                                        <h1 class="title_sld text-white text-display fade-item fade-item-2">Irish Claddagh Rings</h1>
-                                        <p class="sub-text_sld h5 text-white fade-item fade-item-3">Two hands holding a crowned heart — a timeless symbol of love, loyalty and friendship.</p>
+                                        @if($slide->subheading)
+                                        <p class="sub-title_sld-2 font-2 h3 text-white fade-item fade-item-1">{{ $slide->subheading }}</p>
+                                        @endif
+                                        <h1 class="title_sld text-white text-display fade-item fade-item-2">{{ $slide->heading }}</h1>
+                                        @if($slide->button_text && $slide->button_url)
                                         <div class="fade-item fade-item-4">
-                                            <a href="{{ route('shop.category', 'rings') }}" class="tf-btn btn-white animate-btn animate-dark fw-semibold">
-                                                Shop now
+                                            <a href="{{ $slide->button_url }}" class="tf-btn btn-white animate-btn animate-dark fw-semibold">
+                                                {{ $slide->button_text }}
                                                 <i class="icon icon-arrow-right"></i>
                                             </a>
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -35,65 +39,12 @@
                     </div>
                 </div>
             </div>
-
-            <div class="swiper-slide">
-                <div class="slider-wrap style-3">
-                    <div class="sld_image">
-                        <img src="/images/ochaka/slider/slider-23.jpg" data-src="/images/ochaka/slider/slider-23.jpg" alt="FADÓ Jewellery" class="lazyload ani-zoom">
-                    </div>
-                    <div class="sld_content text-center">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="content-sld_wrap">
-                                        <p class="sub-title_sld-2 font-2 h3 text-white fade-item fade-item-1">Fine Irish Silver &amp; Gold</p>
-                                        <h1 class="title_sld text-white text-display fade-item fade-item-2">The Jewellery Garden</h1>
-                                        <p class="sub-text_sld h5 text-white fade-item fade-item-3">Bluebells, daisies, forget-me-nots and butterflies — Ireland's wildflower meadows captured in sterling silver and gold.</p>
-                                        <div class="fade-item fade-item-4">
-                                            <a href="{{ route('shop.collections') }}" class="tf-btn btn-white animate-btn animate-dark fw-semibold">
-                                                Explore the Collection
-                                                <i class="icon icon-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="swiper-slide">
-                <div class="slider-wrap">
-                    <div class="sld_image">
-                        <img src="/images/ochaka/slider/slider-24.jpg" data-src="/images/ochaka/slider/slider-24.jpg" alt="FADÓ Jewellery" class="lazyload ani-zoom">
-                    </div>
-                    <div class="sld_content text-center">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="content-sld_wrap">
-                                        <p class="sub-title_sld-2 font-2 h3 text-white fade-item fade-item-1">Forever Together</p>
-                                        <h1 class="title_sld text-white text-display fade-item fade-item-2">Wedding &amp; Engagement</h1>
-                                        <p class="sub-text_sld h5 text-white fade-item fade-item-3">Celtic-inspired rings handcrafted for life's most important moment.</p>
-                                        <div class="fade-item fade-item-4">
-                                            <a href="{{ route('shop.category', 'rings') }}" class="tf-btn btn-white animate-btn animate-dark fw-semibold">
-                                                Shop now
-                                                <i class="icon icon-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            @endforeach
         </div>
         <div class="sw-dot-default-2 style-white tf-sw-pagination"></div>
     </div>
 </div>
+@endif
 {{-- /Banner Slider --}}
 
 {{-- Category — Ochaka widget-collection carousel exact structure --}}
@@ -477,7 +428,8 @@
 </div>
 {{-- /Box Icon --}}
 
-{{-- PLACEHOLDER: Testimonials — using Ochaka demo content (fake customer names/quotes/products), needs real client reviews before launch --}}
+{{-- Testimonials — wired to DB via Testimonial model --}}
+@if($testimonials->isNotEmpty())
 <section class="flat-spacing">
     <div class="container">
         <div class="sect-title type-2">
@@ -497,132 +449,45 @@
         <div dir="ltr" class="swiper tf-swiper" data-preview="2" data-tablet="2" data-mobile-sm="1" data-mobile="1" data-space-lg="48"
             data-space-md="32" data-space="12" data-pagination="1" data-pagination-sm="1" data-pagination-md="2" data-pagination-lg="2">
             <div class="swiper-wrapper">
-                <!-- item 1 -->
+                @foreach($testimonials as $testimonial)
                 <div class="swiper-slide">
-                    <div class="testimonial-V02 type-space-2 hover-img wow fadeInUp">
+                    <div class="testimonial-V02 type-space-2 hover-img wow fadeInUp" @if(!$loop->first) data-wow-delay="0.{{ $loop->index }}s" @endif>
+                        @if($testimonial->product_name)
                         <div class="tes_product">
-                            <div class="product-image img-style">
-                                <img class="lazyload" src="/images/ochaka/products/jewelry/product-5.jpg"
-                                    data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="">
-                            </div>
                             <div class="product-infor">
-                                <h5 class="prd_name fw-normal">
-                                    <a href="#" class="link">
-                                        Silver Diamond Ring
-                                    </a>
-                                </h5>
-                                <h6 class="prd_price">$14,99</h6>
+                                <h5 class="prd_name fw-normal">{{ $testimonial->product_name }}</h5>
                             </div>
                         </div>
+                        @endif
                         <div class="tes_content">
                             <div class="tes_icon">
                                 <i class="icon icon-block-quote"></i>
                             </div>
-                            <h4 class="tes_title">Dedicated service</h4>
-                            <p class="tes_text h4">
-                                " The support from ACIS has been outstanding. Anytime we had a question or needed help, their team responded
-                                quickly and professionally. "
-                            </p>
+                            <p class="tes_text h4">"{{ $testimonial->body }}"</p>
                             <div class="tes_author">
-                                <p class="author-name h4">Brooklyn Simmons</p>
-                                <i class="author-verified icon-check-circle fs-24"></i>
+                                <p class="author-name h4">{{ $testimonial->name }}</p>
+                                @if($testimonial->location)
+                                <span class="h6 text-muted">{{ $testimonial->location }}</span>
+                                @endif
                             </div>
                             <div class="rate_wrap">
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
+                                @for($i = 1; $i <= 5; $i++)
+                                <i class="icon-star {{ $i <= $testimonial->rating ? 'text-star' : 'text-muted' }}"></i>
+                                @endfor
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- item 2 -->
-                <div class="swiper-slide">
-                    <div class="testimonial-V02 type-space-2 hover-img wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="tes_product">
-                            <div class="product-image img-style">
-                                <img class="lazyload" src="/images/ochaka/products/jewelry/product-9.jpg"
-                                    data-src="/images/ochaka/products/jewelry/product-9.jpg" alt="">
-                            </div>
-                            <div class="product-infor">
-                                <h5 class="prd_name fw-normal">
-                                    <a href="#" class="link">
-                                        Eternity Engagement Ring
-                                    </a>
-                                </h5>
-                                <h6 class="prd_price">$19,99</h6>
-                            </div>
-                        </div>
-                        <div class="tes_content">
-                            <div class="tes_icon">
-                                <i class="icon icon-block-quote"></i>
-                            </div>
-                            <h4 class="tes_title">Exceptional Reliability</h4>
-                            <p class="tes_text h4">
-                                "No surprises, just consistent and dependable performance every single time without fail."
-                            </p>
-                            <div class="tes_author">
-                                <p class="author-name h4">Mas Shin</p>
-                                <i class="author-verified icon-check-circle fs-24"></i>
-                            </div>
-                            <div class="rate_wrap">
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 3 -->
-                <div class="swiper-slide">
-                    <div class="testimonial-V02 type-space-2">
-                        <div class="tes_product">
-                            <div class="product-image">
-                                <img class="lazyload" src="/images/ochaka/products/jewelry/product-5.jpg"
-                                    data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="">
-                            </div>
-                            <div class="product-infor">
-                                <h5 class="prd_name fw-normal">
-                                    <a href="#" class="link">
-                                        UrbanCool Work Shirt
-                                    </a>
-                                </h5>
-                                <h6 class="prd_price">$14,99</h6>
-                            </div>
-                        </div>
-                        <div class="tes_content">
-                            <div class="tes_icon">
-                                <i class="icon icon-block-quote"></i>
-                            </div>
-                            <h4 class="tes_title">Best Product Quality</h4>
-                            <p class="tes_text h4">
-                                "The build quality is excellent and everything works smoothly. I can feel the difference compared to other
-                                brands"
-                            </p>
-                            <div class="tes_author">
-                                <p class="author-name h4">Sil Vox</p>
-                                <i class="author-verified icon-check-circle fs-24"></i>
-                            </div>
-                            <div class="rate_wrap">
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                                <i class="icon-star text-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
 </section>
-{{-- /PLACEHOLDER: Testimonials --}}
+@endif
+{{-- /Testimonials --}}
 
-{{-- PLACEHOLDER: Blog — using Ochaka demo content (no blog/post system exists in the database yet), needs real posts before launch --}}
+{{-- Blog section hidden: no posts system yet --}}
+@if(false)
 <section class="flat-spacing pt-0">
     <div class="container">
         <div class="sect-title text-center wow fadeInUp">
@@ -709,9 +574,11 @@
         </div>
     </div>
 </section>
-{{-- /PLACEHOLDER: Blog --}}
+@endif
+{{-- /Blog --}}
 
-{{-- PLACEHOLDER: Gallery "Shop Instagram" — using Ochaka demo content (no live Instagram integration exists), needs real feed/images before launch --}}
+{{-- Instagram section hidden: no live integration --}}
+@if(false)
 <section class="flat-spacing pb-xl-0">
     <div class="container">
         <div class="sect-title text-center wow fadeInUp">
@@ -774,6 +641,7 @@
         <div class="sw-dot-default tf-sw-pagination"></div>
     </div>
 </section>
-{{-- /PLACEHOLDER: Gallery "Shop Instagram" --}}
+@endif
+{{-- /Instagram --}}
 
 @endsection

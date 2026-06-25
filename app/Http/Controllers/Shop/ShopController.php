@@ -46,7 +46,10 @@ class ShopController extends Controller
             ? Product::with(['variants.metal', 'images'])->where('is_active', true)->find($featuredProductId)
             : null;
 
-        return view('shop.home', compact('topCategories', 'featuredCollections', 'newArrivals', 'bestSellers', 'onSale', 'featuredProduct'));
+        $sliders = \App\Models\Slider::active()->get();
+        $testimonials = \App\Models\Testimonial::active()->get();
+
+        return view('shop.home', compact('topCategories', 'featuredCollections', 'newArrivals', 'bestSellers', 'onSale', 'featuredProduct', 'sliders', 'testimonials'));
     }
 
     public function jewellery(Request $request): View
