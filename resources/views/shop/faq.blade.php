@@ -25,187 +25,30 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <ul class="faq-list">
-                            <li class="faq-item" id="myAccount">
-                                <h2 class="faq_title">My Account</h2>
-                                <div class="faq_wrap" id="my-account">
+                            @if($faqs->isNotEmpty())
+                            <li class="faq-item">
+                                <div class="faq_wrap" id="faq-all">
+                                    @foreach($faqs as $faq)
                                     <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title" data-bs-target="#faq-1-1" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="true" aria-controls="faq-1-1">
-                                            <span class="text h5">1. How do I create an account?</span>
+                                        <div class="accordion-title {{ $loop->first ? '' : 'collapsed' }}" data-bs-target="#faq-{{ $faq->id }}" role="button" data-bs-toggle="collapse"
+                                            aria-expanded="{{ $loop->first ? 'true' : 'false' }}" aria-controls="faq-{{ $faq->id }}">
+                                            <span class="text h5">{{ $loop->iteration }}. {{ $faq->question }}</span>
                                             <span class="icon"><span class="ic-accordion-custom"></span></span>
                                         </div>
-                                        <div id="faq-1-1" class="collapse show" data-bs-parent="#my-account">
+                                        <div id="faq-{{ $faq->id }}" class="collapse {{ $loop->first ? 'show' : '' }}" data-bs-parent="#faq-all">
                                             <div class="accordion-body">
-                                                <p class="h6">Click "Login" in the top right corner, then select "Register". You will need your name, email address and a password. Once registered you can save your wishlist, track orders and enjoy faster checkout.</p>
+                                                <p class="h6">{{ $faq->answer }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-1-2" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-1-2">
-                                            <span class="text h5">2. What if I forget my password?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-1-2" class="collapse" data-bs-parent="#my-account">
-                                            <div class="accordion-body">
-                                                <p class="h6">Click "Forgot your password?" on the login page and enter your email address. We will send you a link to reset your password.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-1-3" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-1-3">
-                                            <span class="text h5">3. Can I checkout as a guest?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-1-3" class="collapse" data-bs-parent="#my-account">
-                                            <div class="accordion-body">
-                                                <p class="h6">Yes. You do not need an account to place an order. However, creating an account lets you track your orders and save your shipping details for next time.</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </li>
-                            <li class="faq-item" id="ordersPurchases">
-                                <h2 class="faq_title">Orders &amp; Purchases</h2>
-                                <div class="faq_wrap" id="order-and-purchase">
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-2-1" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-2-1">
-                                            <span class="text h5">1. How do I place an order?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-2-1" class="collapse" data-bs-parent="#order-and-purchase">
-                                            <div class="accordion-body">
-                                                <p class="h6">Browse our collections, select your preferred metal and size, then add the item to your bag. When you are ready, proceed to checkout, fill in your shipping details and confirm payment.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-2-2" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-2-2">
-                                            <span class="text h5">2. Can I change or cancel my order?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-2-2" class="collapse" data-bs-parent="#order-and-purchase">
-                                            <div class="accordion-body">
-                                                <p class="h6">Please contact us as soon as possible. If your order has not yet been dispatched we will do our best to make changes or cancel it for you.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-2-3" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-2-3">
-                                            <span class="text h5">3. What ring sizes do you offer?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-2-3" class="collapse" data-bs-parent="#order-and-purchase">
-                                            <div class="accordion-body">
-                                                <p class="h6">We offer US ring sizes from 5 to 10. If you are unsure of your size, please contact us and we can help you find the right fit.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            @else
+                            <li class="faq-item">
+                                <p class="h6 text-muted text-center py-4">No FAQs available yet.</p>
                             </li>
-                            <li class="faq-item" id="shippingTracking">
-                                <h2 class="faq_title">Shipping &amp; Delivery</h2>
-                                <div class="faq_wrap" id="shipping-and-tracking">
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-3-1" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-3-1">
-                                            <span class="text h5">1. Do you offer free shipping?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-3-1" class="collapse" data-bs-parent="#shipping-and-tracking">
-                                            <div class="accordion-body">
-                                                <p class="h6">Yes, we offer free shipping on orders over the threshold shown at checkout. Shipping rates for Ireland and international orders are calculated at checkout.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-3-2" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-3-2">
-                                            <span class="text h5">2. How long does delivery take?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-3-2" class="collapse" data-bs-parent="#shipping-and-tracking">
-                                            <div class="accordion-body">
-                                                <p class="h6">Ireland deliveries typically arrive within 2-4 business days. International orders usually take 5-10 business days depending on the destination.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-3-3" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-3-3">
-                                            <span class="text h5">3. Do you ship internationally?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-3-3" class="collapse" data-bs-parent="#shipping-and-tracking">
-                                            <div class="accordion-body">
-                                                <p class="h6">Yes, we ship to the UK, EU, US, Canada, Australia and more. International shipping rates are calculated at checkout.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="faq-item" id="returnsRefunds">
-                                <h2 class="faq_title">Returns &amp; Refunds</h2>
-                                <div class="faq_wrap" id="return-and-refund">
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-4-1" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-4-1">
-                                            <span class="text h5">1. What is your return policy?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-4-1" class="collapse" data-bs-parent="#return-and-refund">
-                                            <div class="accordion-body">
-                                                <p class="h6">We accept returns within 30 days of delivery for unworn items in their original packaging. Please contact us to arrange a return.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-4-2" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-4-2">
-                                            <span class="text h5">2. How do I get a refund?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-4-2" class="collapse" data-bs-parent="#return-and-refund">
-                                            <div class="accordion-body">
-                                                <p class="h6">Once we receive your returned item and inspect it, we will process your refund to the original payment method within 5-7 business days.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="faq-item" id="otherTopic">
-                                <h2 class="faq_title">Other Questions</h2>
-                                <div class="faq_wrap" id="orther-topic">
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-5-1" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-5-1">
-                                            <span class="text h5">1. Can I book a consultation?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-5-1" class="collapse" data-bs-parent="#orther-topic">
-                                            <div class="accordion-body">
-                                                <p class="h6">Yes! Visit our <a href="{{ route('shop.contact') }}#consultation" class="link fw-semibold">Contact page</a> to book a one-to-one consultation with our team.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-faq accor-mn-pl">
-                                        <div class="accordion-title collapsed" data-bs-target="#faq-5-2" role="button" data-bs-toggle="collapse"
-                                            aria-expanded="false" aria-controls="faq-5-2">
-                                            <span class="text h5">2. Are your pieces hallmarked?</span>
-                                            <span class="icon"><span class="ic-accordion-custom"></span></span>
-                                        </div>
-                                        <div id="faq-5-2" class="collapse" data-bs-parent="#orther-topic">
-                                            <div class="accordion-body">
-                                                <p class="h6">Yes, all our gold and silver pieces are hallmarked at the Dublin Assay Office, guaranteeing the quality of the metal used.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                            @endif
                         </ul>
                     </div>
                     <div class="col-lg-3 d-none d-lg-block">

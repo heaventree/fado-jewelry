@@ -267,7 +267,9 @@ class ShopController extends Controller
 
     public function faq(): View
     {
-        return view('shop.faq');
+        $faqs = \App\Models\Faq::active()->get();
+
+        return view('shop.faq', compact('faqs'));
     }
 
     public function about(): View

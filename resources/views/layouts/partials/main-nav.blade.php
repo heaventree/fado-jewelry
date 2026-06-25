@@ -177,6 +177,29 @@
                 </a>
             </li>
 
+            <li class="menu-title mt-2">Content</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.sliders.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:slider-vertical-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Sliders </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.testimonials.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Testimonials </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.faqs.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:question-circle-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> FAQs </span>
+                </a>
+            </li>
+
             {{-- Settings: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.settings.index') }}">

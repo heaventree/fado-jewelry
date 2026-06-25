@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
             CollectionsSeeder::class,
             DummyProductsSeeder::class,
             DummyCustomerDataSeeder::class,
+            SliderSeeder::class,
+            TestimonialSeeder::class,
+            FaqSeeder::class,
         ]);
     }
 }

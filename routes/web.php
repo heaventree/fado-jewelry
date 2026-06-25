@@ -20,6 +20,9 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\FaqController;
 
 require __DIR__ . '/auth.php';
 
@@ -118,6 +121,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('coupons/{coupon}', [CouponController::class, 'update'])->name('coupons.update');
     Route::delete('coupons/{coupon}', [CouponController::class, 'destroy'])->name('coupons.destroy');
     Route::patch('coupons/{coupon}/toggle', [CouponController::class, 'toggleActive'])->name('coupons.toggle');
+
+    // Content management
+    Route::resource('sliders', SliderController::class);
+    Route::resource('testimonials', TestimonialController::class);
+    Route::resource('faqs', FaqController::class);
 
     // Currency management — custom routes (not a standard CRUD resource)
     Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');
