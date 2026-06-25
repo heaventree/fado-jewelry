@@ -138,6 +138,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Content management
     Route::resource('sliders', SliderController::class);
     Route::resource('testimonials', TestimonialController::class);
+    Route::post('faqs/settings', [FaqController::class, 'updateSettings'])->name('faqs.settings');
     Route::resource('faqs', FaqController::class);
 
     // Attribute management
@@ -152,8 +153,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::post('home', [PageController::class, 'updateHome'])->name('home.update');
         Route::get('about', [PageController::class, 'about'])->name('about');
         Route::post('about', [PageController::class, 'updateAbout'])->name('about.update');
-        Route::get('faq', [PageController::class, 'faq'])->name('faq');
-        Route::post('faq', [PageController::class, 'updateFaq'])->name('faq.update');
         Route::get('contact', [PageController::class, 'contact'])->name('contact');
         Route::post('contact', [PageController::class, 'updateContact'])->name('contact.update');
         Route::get('terms', [PageController::class, 'terms'])->name('terms');

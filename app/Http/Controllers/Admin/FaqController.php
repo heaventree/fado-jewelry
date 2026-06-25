@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
+use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -13,8 +14,9 @@ class FaqController extends Controller
     public function index(): View
     {
         $faqs = Faq::orderBy('sort_order')->get();
+        $faqBannerImage = Setting::get('faq_banner_image', '');
 
-        return view('admin.faqs.index', compact('faqs'));
+        return view('admin.faqs.index', compact('faqs', 'faqBannerImage'));
     }
 
     public function create(): View
@@ -62,5 +64,15 @@ class FaqController extends Controller
         $faq->delete();
 
         return redirect()->route('admin.faqs.index')->with('success', 'FAQ deleted.');
+    }
+
+    public function updateSettings(Request $request): RedirectResponse
+    {
+        if ($request->hasFile('faq_banner_image_file')) {
+            $path = $request->file('faq_banner_image_file')->store('pages', 'public');
+            Setting::set('faq_banner_image', $path);
+        }
+
+        return redirect()->route('admin.faqs.index')->with('success', 'FAQ page settings saved.');
     }
 }

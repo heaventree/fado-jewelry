@@ -65,18 +65,6 @@ class PageController extends Controller
         return back()->with('success', 'About page content saved.');
     }
 
-    public function faq(): View
-    {
-        return view('admin.pages.faq', ['settings' => $this->load(['faq_banner_image'])]);
-    }
-
-    public function updateFaq(Request $request): RedirectResponse
-    {
-        $this->handleUpload($request, 'faq_banner_image_file', 'faq_banner_image');
-
-        return back()->with('success', 'FAQ page content saved.');
-    }
-
     public function contact(): View
     {
         return view('admin.pages.contact', ['settings' => $this->load(['store_lat', 'store_lng'])]);

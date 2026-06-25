@@ -231,12 +231,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.pages.faq') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:question-circle-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> FAQ </span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.pages.contact') }}">
                     <span class="nav-icon"><iconify-icon icon="solar:mailbox-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Contact </span>

@@ -9,6 +9,28 @@
 </div>
 @endif
 
+{{-- FAQ Page Settings --}}
+<div class="card mb-4">
+    <div class="card-header"><h5 class="card-title mb-0">FAQ Page Settings</h5></div>
+    <div class="card-body">
+        <form action="{{ route('admin.faqs.settings') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Sidebar Banner Image</label>
+                <input type="file" name="faq_banner_image_file" class="form-control" accept="image/*">
+                @if($faqBannerImage)
+                    <img src="{{ asset('storage/' . $faqBannerImage) }}" alt="FAQ Banner" class="mt-2 rounded" style="max-height:120px">
+                @endif
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">
+                <iconify-icon icon="solar:diskette-bold-duotone" class="me-1"></iconify-icon>
+                Save Settings
+            </button>
+        </form>
+    </div>
+</div>
+
+{{-- FAQ Q&A Management --}}
 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
     <div>
         <h4 class="fw-semibold mb-1">FAQs</h4>
