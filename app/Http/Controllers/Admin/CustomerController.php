@@ -39,7 +39,7 @@ class CustomerController extends Controller
 
     public function show(User $customer): View
     {
-        $customer->loadCount('orders');
+        $customer->load('addresses')->loadCount('orders');
 
         $orders = $customer->orders()
             ->with('items')

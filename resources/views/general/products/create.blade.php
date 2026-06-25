@@ -14,9 +14,14 @@
         <div class="card mb-3">
             <div class="card-header"><h4 class="card-title mb-0">Status</h4></div>
             <div class="card-body">
-                <div class="form-check form-switch">
+                <div class="form-check form-switch mb-2">
                     <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" checked>
                     <label class="form-check-label" for="is_active">Active (visible on site)</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="is_bestseller" name="is_bestseller" value="1"
+                           {{ old('is_bestseller') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="is_bestseller">Mark as Bestseller</label>
                 </div>
             </div>
         </div>
@@ -151,8 +156,11 @@
                             <tr>
                                 <th style="min-width:160px">Metal <span class="text-danger">*</span></th>
                                 <th style="min-width:150px">Gemstone</th>
+                                <th style="min-width:150px">Second Metal</th>
                                 <th style="min-width:120px">SKU</th>
                                 <th style="min-width:110px">Price (€) <span class="text-danger">*</span></th>
+                                <th style="min-width:110px">Sale Price (€)</th>
+                                <th style="min-width:110px">Colour</th>
                                 <th style="min-width:90px">Stock</th>
                                 <th style="width:60px" class="text-center">Active</th>
                                 <th style="width:48px"></th>
@@ -182,8 +190,20 @@
                                         @endforeach
                                     </select>
                                 </td>
+                                <td>
+                                    <select name="variants[{{ $i }}][second_metal_id]" class="form-select form-select-sm">
+                                        <option value="">None</option>
+                                        @foreach($metals as $metal)
+                                            <option value="{{ $metal->id }}" {{ (string)($v['second_metal_id'] ?? '') === (string)$metal->id ? 'selected' : '' }}>
+                                                {{ $metal->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
                                 <td><input type="text" name="variants[{{ $i }}][sku]" class="form-control form-control-sm" value="{{ $v['sku'] ?? '' }}" placeholder="SKU"></td>
                                 <td><input type="number" name="variants[{{ $i }}][price_eur]" class="form-control form-control-sm" value="{{ $v['price_eur'] ?? '' }}" step="0.01" min="0" required></td>
+                                <td><input type="number" name="variants[{{ $i }}][sale_price_eur]" class="form-control form-control-sm" value="{{ $v['sale_price_eur'] ?? '' }}" step="0.01" min="0" placeholder="0.00"></td>
+                                <td><input type="text" name="variants[{{ $i }}][colour]" class="form-control form-control-sm" value="{{ $v['colour'] ?? '' }}" placeholder="e.g. Rose"></td>
                                 <td><input type="number" name="variants[{{ $i }}][stock]" class="form-control form-control-sm" value="{{ $v['stock'] ?? 0 }}" min="0"></td>
                                 <td class="text-center"><input type="checkbox" name="variants[{{ $i }}][is_active]" value="1" class="form-check-input" {{ !empty($v['is_active']) ? 'checked' : '' }}></td>
                                 <td><button type="button" class="btn btn-link text-danger p-0" onclick="removeVariantRow(this)" title="Remove"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="fs-18"></iconify-icon></button></td>
@@ -260,8 +280,18 @@
                 @endforeach
             </select>
         </td>
+        <td>
+            <select name="variants[__INDEX__][second_metal_id]" class="form-select form-select-sm">
+                <option value="">None</option>
+                @foreach($metals as $metal)
+                <option value="{{ $metal->id }}">{{ $metal->name }}</option>
+                @endforeach
+            </select>
+        </td>
         <td><input type="text" name="variants[__INDEX__][sku]" class="form-control form-control-sm" placeholder="SKU"></td>
         <td><input type="number" name="variants[__INDEX__][price_eur]" class="form-control form-control-sm" step="0.01" min="0" required placeholder="0.00"></td>
+        <td><input type="number" name="variants[__INDEX__][sale_price_eur]" class="form-control form-control-sm" step="0.01" min="0" placeholder="0.00"></td>
+        <td><input type="text" name="variants[__INDEX__][colour]" class="form-control form-control-sm" placeholder="e.g. Rose"></td>
         <td><input type="number" name="variants[__INDEX__][stock]" class="form-control form-control-sm" min="0" value="0"></td>
         <td class="text-center"><input type="checkbox" name="variants[__INDEX__][is_active]" value="1" class="form-check-input" checked></td>
         <td><button type="button" class="btn btn-link text-danger p-0" onclick="removeVariantRow(this)" title="Remove"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="fs-18"></iconify-icon></button></td>

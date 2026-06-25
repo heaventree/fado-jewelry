@@ -63,6 +63,7 @@ class ProductController extends Controller
             'description'       => $request->input('description', ''),
             'short_description' => $request->input('short_description', ''),
             'is_active'         => $request->boolean('is_active'),
+            'is_bestseller'     => $request->boolean('is_bestseller'),
         ]);
 
         $product->categories()->sync($request->input('category_ids', []));
@@ -100,6 +101,7 @@ class ProductController extends Controller
             'description'       => $request->input('description', ''),
             'short_description' => $request->input('short_description', ''),
             'is_active'         => $request->boolean('is_active'),
+            'is_bestseller'     => $request->boolean('is_bestseller'),
         ]);
 
         $product->categories()->sync($request->input('category_ids', []));
@@ -160,10 +162,13 @@ class ProductController extends Controller
                 'gemstone_id' => ($data['gemstone_id'] ?? '') ?: null,
             ];
             $values = [
-                'sku'       => $data['sku'] ?? null,
-                'price_eur' => (float) ($data['price_eur'] ?? 0),
-                'stock'     => (int) ($data['stock'] ?? 0),
-                'is_active' => ! empty($data['is_active']),
+                'sku'             => $data['sku'] ?? null,
+                'price_eur'       => (float) ($data['price_eur'] ?? 0),
+                'sale_price_eur'  => ($data['sale_price_eur'] ?? '') !== '' ? (float) $data['sale_price_eur'] : null,
+                'second_metal_id' => ($data['second_metal_id'] ?? '') ?: null,
+                'colour'          => ($data['colour'] ?? '') ?: null,
+                'stock'           => (int) ($data['stock'] ?? 0),
+                'is_active'       => ! empty($data['is_active']),
             ];
 
             if (! empty($data['id'])) {

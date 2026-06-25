@@ -176,6 +176,61 @@
             </div>
             @endif
         </div>
+
+        {{-- Saved Addresses --}}
+        <div class="card mt-3">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h4 class="card-title mb-0">
+                    Saved Addresses
+                    <span class="text-muted fw-normal fs-13">({{ $customer->addresses->count() }})</span>
+                </h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0 table-hover table-centered">
+                    <thead class="bg-light-subtle">
+                        <tr>
+                            <th>Label</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>County</th>
+                            <th>Postcode</th>
+                            <th>Country</th>
+                            <th>Phone</th>
+                            <th style="width:70px">Default</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($customer->addresses as $address)
+                        <tr>
+                            <td class="fw-semibold">{{ $address->label ?? '—' }}</td>
+                            <td>{{ $address->name }}</td>
+                            <td>
+                                {{ $address->line1 }}
+                                @if($address->line2)<br><span class="text-muted fs-12">{{ $address->line2 }}</span>@endif
+                            </td>
+                            <td>{{ $address->city }}</td>
+                            <td>{{ $address->county ?? '—' }}</td>
+                            <td>{{ $address->postcode ?? '—' }}</td>
+                            <td>{{ $address->country }}</td>
+                            <td>{{ $address->phone ?? '—' }}</td>
+                            <td class="text-center">
+                                @if($address->is_default)
+                                    <span class="badge bg-success-subtle text-success">Default</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="9" class="text-center py-4 text-muted fst-italic">
+                                No saved addresses.
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
 </div>
