@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\RingSizeController;
 use App\Http\Controllers\Admin\ColourController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MenuItemController;
+use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\BlogController;
@@ -108,6 +109,10 @@ Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.sho
 
 // ── Admin routes — real controllers, must come before the Larkon catch-all ───
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    // Admin profile
+    Route::get('profile', [AdminProfileController::class, 'edit'])->name('profile');
+    Route::post('profile', [AdminProfileController::class, 'update'])->name('profile.update');
+
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('collections', CollectionController::class);
