@@ -2,7 +2,7 @@
 **Continuation of fado-workflow-prompts.md**  
 **Date:** June 2026
 
-Same rules apply: verify first, build second. Read WORKFLOW.md before every session.
+Same rules apply: verify first, build second. Read CLAUDE.md before every session.
 
 ---
 
@@ -19,7 +19,7 @@ Same rules apply: verify first, build second. Read WORKFLOW.md before every sess
 **STEP 1 — Send this first:**
 
 ```
-Read WORKFLOW.md first. Do not make any changes yet.
+Read CLAUDE.md first. Do not make any changes yet.
 
 Check and report:
 
@@ -66,7 +66,7 @@ Then: git push origin main
 **STEP 1 — Send this first:**
 
 ```
-Read WORKFLOW.md first. Do not make any changes yet.
+Read CLAUDE.md first. Do not make any changes yet.
 
 Check and report:
 
@@ -245,7 +245,7 @@ php artisan db:seed --class=MenuSeeder
 **STEP 1 — Send this first:**
 
 ```
-Read WORKFLOW.md first. Do not make any changes yet.
+Read CLAUDE.md first. Do not make any changes yet.
 
 Check and report:
 
