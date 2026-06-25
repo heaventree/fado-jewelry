@@ -177,6 +177,15 @@
                 </a>
             </li>
 
+            <li class="menu-title mt-2">Navigation</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.menus.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:hamburger-menu-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Menus </span>
+                </a>
+            </li>
+
             <li class="menu-title mt-2">Content</li>
 
             <li class="nav-item">

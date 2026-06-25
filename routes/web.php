@@ -27,6 +27,8 @@ use App\Http\Controllers\Admin\MetalController;
 use App\Http\Controllers\Admin\GemstoneController;
 use App\Http\Controllers\Admin\RingSizeController;
 use App\Http\Controllers\Admin\ColourController;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\MenuItemController;
 
 require __DIR__ . '/auth.php';
 
@@ -136,6 +138,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('gemstones', GemstoneController::class);
     Route::get('ring-sizes', [RingSizeController::class, 'index'])->name('ring-sizes.index');
     Route::resource('colours', ColourController::class);
+
+    // Menu management
+    Route::resource('menus', MenuController::class);
+    Route::post('menus/{menu}/items', [MenuItemController::class, 'store'])->name('menu-items.store');
+    Route::put('menus/{menu}/items/{item}', [MenuItemController::class, 'update'])->name('menu-items.update');
+    Route::delete('menus/{menu}/items/{item}', [MenuItemController::class, 'destroy'])->name('menu-items.destroy');
+    Route::post('menus/{menu}/items/reorder', [MenuItemController::class, 'reorder'])->name('menu-items.reorder');
 
     // Currency management — custom routes (not a standard CRUD resource)
     Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');

@@ -122,14 +122,15 @@
         @endif
     </li>
 
-    {{-- About Us — plain dropdown-free link (no sub-menu, single page) --}}
+    {{-- Remaining nav items from header menu (About Us, Contact, etc.) --}}
+    @php
+        $headerMenu = \App\Models\Menu::getByLocation('header');
+        $headerPlainItems = $headerMenu?->items->filter(fn ($i) => !in_array($i->url, ['/jewellery', '/collections'])) ?? collect();
+    @endphp
+    @foreach($headerPlainItems as $navItem)
     <li class="menu-item">
-        <a href="{{ route('shop.about') }}" class="item-link">About Us</a>
+        <a href="{{ $navItem->getResolvedUrl() }}" class="item-link" @if($navItem->target === '_blank') target="_blank" @endif>{{ $navItem->label }}</a>
     </li>
-
-    {{-- Contact — plain link --}}
-    <li class="menu-item">
-        <a href="{{ route('shop.contact') }}" class="item-link">Contact</a>
-    </li>
+    @endforeach
 
 </ul>

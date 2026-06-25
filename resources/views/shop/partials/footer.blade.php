@@ -75,10 +75,7 @@
                         <p class="footer-heading footer-heading-mobile">Shopping</p>
                         <div class="tf-collapse-content">
                             <ul class="footer-menu-list">
-                                <li><a href="{{ route('shop.jewellery') }}" class="link h6">Jewellery</a></li>
-                                <li><a href="{{ route('shop.collections') }}" class="link h6">Collections</a></li>
-                                <li><a href="{{ route('shop.wishlist') }}" class="link h6">My Wishlist</a></li>
-                                <li><a href="{{ route('shop.cart') }}" class="link h6">My Bag</a></li>
+                                <x-menu-links location="footer_col_1" />
                             </ul>
                         </div>
                     </div>
@@ -88,11 +85,7 @@
                         <p class="footer-heading footer-heading-mobile">Information</p>
                         <div class="tf-collapse-content">
                             <ul class="footer-menu-list">
-                                <li><a href="{{ route('shop.about') }}" class="link h6">About Us</a></li>
-                                <li><a href="{{ route('shop.contact') }}" class="link h6">Contact</a></li>
-                                <li><a href="{{ route('shop.contact') }}#consultation" class="link h6">Book a Consultation</a></li>
-                                <li><a href="{{ route('shop.faq') }}" class="link h6">Help & FAQs</a></li>
-                                <li><a href="{{ route('shop.privacy') }}" class="link h6">Privacy Policy</a></li>
+                                <x-menu-links location="footer_col_2" />
                             </ul>
                         </div>
                     </div>
