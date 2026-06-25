@@ -176,6 +176,7 @@ wishlists, consultations, redirects, coupons, settings
 ### Phase 2 — Admin panel ✅ COMPLETE
 - ✅ Step 1: Product management — full CRUD with variants (metals/gemstones), images, sizes
 - ✅ Step 2: Category management — CRUD with banner image upload and live preview
+  - The mega menu (nav-menu.blade.php) also uses banner_image for category image tiles. It filters categories where banner_image is set and renders the first 2 as image tiles in the mega menu col-6 column. No separate menu_image field exists — this is intentional.
 - ✅ Step 3: Collection management — CRUD with banner image upload
 - ✅ Step 4: Currency admin — manual rate updates, region toggle, conversion preview
 - ✅ Step 5: Order management — list, detail, status timeline, inline status update
