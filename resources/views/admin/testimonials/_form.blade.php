@@ -11,6 +11,16 @@
     </div>
 </div>
 <div class="mb-3">
+    <label class="form-label fw-semibold">Customer Photo (Avatar)</label>
+    <input type="file" name="avatar_file" class="form-control" accept="image/*">
+    <small class="text-muted">Recommended: square image, min 100x100px</small>
+    @if($t?->avatar)
+        <div class="mt-2">
+            <img src="{{ asset('storage/' . $t->avatar) }}" alt="Avatar" style="max-height:80px; border-radius:50%;">
+        </div>
+    @endif
+</div>
+<div class="mb-3">
     <label class="form-label fw-semibold">Review Text <span class="text-danger">*</span></label>
     <textarea name="body" rows="4" class="form-control" required maxlength="1000">{{ old('body', $t?->body) }}</textarea>
 </div>

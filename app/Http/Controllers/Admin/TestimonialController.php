@@ -35,6 +35,11 @@ class TestimonialController extends Controller
         ]);
 
         $data['active'] = $request->boolean('active');
+
+        if ($request->hasFile('avatar_file')) {
+            $data['avatar'] = $request->file('avatar_file')->store('testimonials', 'public');
+        }
+
         Testimonial::create($data);
 
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial created.');
@@ -58,6 +63,11 @@ class TestimonialController extends Controller
         ]);
 
         $data['active'] = $request->boolean('active');
+
+        if ($request->hasFile('avatar_file')) {
+            $data['avatar'] = $request->file('avatar_file')->store('testimonials', 'public');
+        }
+
         $testimonial->update($data);
 
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial updated.');

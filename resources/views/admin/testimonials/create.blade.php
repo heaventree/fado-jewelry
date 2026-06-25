@@ -13,7 +13,7 @@
         <div class="alert alert-danger"><ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
         @endif
 
-        <form action="{{ route('admin.testimonials.store') }}" method="POST">
+        <form action="{{ route('admin.testimonials.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @include('admin.testimonials._form')
             <button type="submit" class="btn btn-primary">Create Testimonial</button>
