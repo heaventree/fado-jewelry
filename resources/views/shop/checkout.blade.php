@@ -106,17 +106,43 @@
                                     <div class="tf-select">
                                         <select class="w-100" id="checkout-country" name="country" required data-ire-rate="{{ $ireRate }}" data-intl-rate="{{ $intlRate }}" data-threshold="{{ $threshold }}">
                                             <option value="IE" selected>Ireland</option>
-                                            <option value="GB">United Kingdom</option>
-                                            <option value="US">United States</option>
+                                            <option value="AT">Austria</option>
+                                            <option value="AU">Australia</option>
+                                            <option value="BE">Belgium</option>
+                                            <option value="BG">Bulgaria</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="HR">Croatia</option>
+                                            <option value="CY">Cyprus</option>
+                                            <option value="CZ">Czech Republic</option>
+                                            <option value="DK">Denmark</option>
+                                            <option value="EE">Estonia</option>
+                                            <option value="FI">Finland</option>
                                             <option value="FR">France</option>
                                             <option value="DE">Germany</option>
-                                            <option value="ES">Spain</option>
+                                            <option value="GR">Greece</option>
+                                            <option value="HU">Hungary</option>
                                             <option value="IT">Italy</option>
+                                            <option value="JP">Japan</option>
+                                            <option value="LV">Latvia</option>
+                                            <option value="LT">Lithuania</option>
+                                            <option value="LU">Luxembourg</option>
+                                            <option value="MT">Malta</option>
                                             <option value="NL">Netherlands</option>
-                                            <option value="BE">Belgium</option>
+                                            <option value="NZ">New Zealand</option>
+                                            <option value="NO">Norway</option>
+                                            <option value="PL">Poland</option>
                                             <option value="PT">Portugal</option>
-                                            <option value="CA">Canada</option>
-                                            <option value="AU">Australia</option>
+                                            <option value="RO">Romania</option>
+                                            <option value="SG">Singapore</option>
+                                            <option value="SK">Slovakia</option>
+                                            <option value="SI">Slovenia</option>
+                                            <option value="ZA">South Africa</option>
+                                            <option value="ES">Spain</option>
+                                            <option value="SE">Sweden</option>
+                                            <option value="CH">Switzerland</option>
+                                            <option value="AE">United Arab Emirates</option>
+                                            <option value="GB">United Kingdom</option>
+                                            <option value="US">United States</option>
                                         </select>
                                     </div>
                                 </fieldset>
@@ -172,7 +198,7 @@
                             </p>
                             <div class="checkbox-wrap">
                                 <input id="agree" type="checkbox" class="tf-check style-2" required>
-                                <label for="agree" class="h6">I have read and agree to the website <span class="text-primary">terms and conditions *</span></label>
+                                <label for="agree" class="h6">I have read and agree to the website <a href="{{ route('shop.privacy') }}" target="_blank" class="text-primary">terms and conditions</a> *</label>
                             </div>
                         </div>
                         <div class="box-ip-shipping">

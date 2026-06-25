@@ -160,17 +160,27 @@
                         </p>
                         @endif
 
-                        {{-- Real social proof — data sources documented in ShopController::product().
-                             Both hidden entirely when not meaningful (viewingCount/recentBuyersCount
-                             are pre-thresholded server-side: viewing hidden below 2, buyers hidden at 0). --}}
+                        {{-- "Viewing" badge: byte-for-byte from product-detail.html:735-741
+                             (`.tf-product-info-liveview > .liveview-count` — black pill, white text,
+                             per styles.css:11438-11463 — `+ p`). Real data sources documented in
+                             ShopController::product(); hidden below 2 viewers (see prior summary).
+                             No "X people bought this" badge exists anywhere in product-detail.html
+                             (confirmed via grep — no such class/markup in the reference) so it can't
+                             be copied byte-for-byte; styled here with the same red already used for
+                             "Out of Stock" in this file (line ~145) and the real cart icon, rather
+                             than guessing an Ochaka class that doesn't exist. Hidden at 0 buyers. --}}
                         @if($viewingCount > 0)
-                        <p class="h6" style="color:var(--fado-green-mid); margin-bottom:4px">
-                            <i class="icon icon-view"></i> {{ $viewingCount }} {{ Str::plural('person', $viewingCount) }} viewing this right now
-                        </p>
+                        <div class="tf-product-info-liveview">
+                            <div class="liveview-count">
+                                <i class="icon icon-view"></i>
+                                <span class="count fw-6 h6">{{ $viewingCount }}</span>
+                            </div>
+                            <p class="fw-6 h6">{{ Str::plural('Person', $viewingCount) }} viewing this right now</p>
+                        </div>
                         @endif
                         @if($recentBuyersCount > 0)
-                        <p class="h6" style="color:var(--fado-warm-grey); margin-bottom:4px">
-                            <i class="icon icon-bag"></i> {{ $recentBuyersCount }} {{ Str::plural('person', $recentBuyersCount) }} bought this in the last 48 hours
+                        <p class="h6" style="color:#dc3545; margin-bottom:4px">
+                            <i class="icon icon-shopping-cart-simple"></i> {{ $recentBuyersCount }} {{ Str::plural('person', $recentBuyersCount) }} bought this in the last 48 hours
                         </p>
                         @endif
 
@@ -330,8 +340,7 @@
                             <div class="tab-policy">
                                 <div class="">
                                     <h5 class="mb_16 text-black">Delivery & Shipping</h5>
-                                    <p class="h6">{{ \App\Models\Setting::get('shipping_notice', 'Free delivery on orders over €75') }}. Orders are dispatched within 2–3 working days and typically arrive within 5–7 working days across Ireland and Europe.</p>
-                                    <p class="h6">Express delivery (1–2 working days) is available at checkout. International shipping to the US and worldwide is also available.</p>
+                                    {!! nl2br(e(\App\Models\Setting::get('delivery_info', "Orders dispatched within 2–3 working days. Free standard delivery on orders over €50.\nExpress delivery (1–2 working days) is available at checkout. International shipping to the US and worldwide is also available."))) !!}
                                 </div>
                             </div>
                         </div>
@@ -339,8 +348,7 @@
                             <div class="tab-policy">
                                 <div class="">
                                     <h5 class="mb_16 text-black">Returns & Exchanges</h5>
-                                    <p class="h6">We offer a 30-day return policy on all unworn items in their original packaging. For size exchanges, please contact us within 30 days of receiving your order.</p>
-                                    <p class="h6">Custom or engraved pieces cannot be returned unless faulty.</p>
+                                    {!! nl2br(e(\App\Models\Setting::get('returns_policy', "30-day return policy on all unworn items in original packaging. For size exchanges, contact us within 30 days.\nCustom or engraved pieces cannot be returned unless faulty."))) !!}
                                 </div>
                             </div>
                         </div>
