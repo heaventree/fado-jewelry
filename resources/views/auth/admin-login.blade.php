@@ -32,11 +32,11 @@
                                         @endif
 
                                         <div class="mb-3">
-                                            <label class="form-label" for="admin-email">Email</label>
-                                            <input type="email" id="admin-email" name="email"
-                                                   class="form-control @error('email') is-invalid @enderror"
-                                                   placeholder="Enter your email"
-                                                   value="{{ old('email') }}" required autofocus>
+                                            <label class="form-label" for="admin-username">Username</label>
+                                            <input type="text" id="admin-username" name="username"
+                                                   class="form-control @error('username') is-invalid @enderror"
+                                                   placeholder="Enter your username"
+                                                   value="{{ old('username') }}" required autofocus>
                                         </div>
 
                                         <div class="mb-3">
