@@ -101,7 +101,7 @@
     <div class="container">
         <div class="sect-title text-center wow fadeInUp">
             <h1 class="title mb-8">Shop By Categories</h1>
-            <p class="s-subtitle h6">From classic rings to Celtic crosses — discover Irish jewellery for every occasion</p>
+            <p class="s-subtitle h6">{{ \App\Models\Setting::get('homepage_subtitle_1', 'From classic rings to Celtic crosses — discover Irish jewellery for every occasion') }}</p>
         </div>
         <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-preview="5" data-tablet="4" data-mobile-sm="3" data-mobile="2"
             data-space-lg="40" data-space-md="32" data-space="12" data-pagination="2" data-pagination-sm="3" data-pagination-md="4"
@@ -266,7 +266,8 @@
             </a>
         </div>
         <div class="banner_img">
-            <img class="lazyload" src="/images/ochaka/banner/banner-cd-V01.jpg" data-src="/images/ochaka/banner/banner-cd-V01.jpg" alt="On sale">
+            @php $saleBannerImg = \App\Models\Setting::get('sale_banner_image', '/images/ochaka/banner/banner-cd-V01.jpg'); @endphp
+            <img class="lazyload" src="{{ $saleBannerImg }}" data-src="{{ $saleBannerImg }}" alt="On sale">
         </div>
     </div>
 </section>
@@ -364,17 +365,6 @@
                                 {{ $featuredProduct->name }}
                             </a>
                         </h1>
-                        <div class="product-info-meta">
-                            <div class="rating">
-                                <div class="rate_wrap">
-                                    <i class="icon-star text-star"></i>
-                                    <i class="icon-star text-star"></i>
-                                    <i class="icon-star text-star"></i>
-                                    <i class="icon-star text-star"></i>
-                                    <i class="icon-star text-star"></i>
-                                </div>
-                            </div>
-                        </div>
                         <div class="tf-product-heading p-0 border-0">
                             <div class="product-info-price price-wrap">
                                 @if($fpVariant?->isOnSale())
@@ -442,8 +432,8 @@
                             <i class="icon-package"></i>
                         </span>
                         <div class="content">
-                            <h4 class="title fw-normal">30 days return</h4>
-                            <p class="text">30-day returns on unworn pieces</p>
+                            <h4 class="title fw-normal">{{ \App\Models\Setting::get('trust_label_1', '30 Day Returns') }}</h4>
+                            <p class="text">{{ \App\Models\Setting::get('trust_sub_1', '30-day returns on unworn pieces') }}</p>
                         </div>
                     </div>
                 </div>
@@ -453,8 +443,8 @@
                             <i class="icon-check-circle"></i>
                         </span>
                         <div class="content">
-                            <h4 class="title fw-normal">Secure checkout</h4>
-                            <p class="text">Encrypted, secure payment</p>
+                            <h4 class="title fw-normal">{{ \App\Models\Setting::get('trust_label_2', 'Secure Payment') }}</h4>
+                            <p class="text">{{ \App\Models\Setting::get('trust_sub_2', 'Encrypted, secure payment') }}</p>
                         </div>
                     </div>
                 </div>
@@ -464,8 +454,8 @@
                             <i class="icon-boat"></i>
                         </span>
                         <div class="content">
-                            <h4 class="title fw-normal">Free shipping</h4>
-                            <p class="text">{{ $boxIconFreeShipping }}</p>
+                            <h4 class="title fw-normal">{{ \App\Models\Setting::get('trust_label_3', 'Free Delivery') }}</h4>
+                            <p class="text">{{ \App\Models\Setting::get('trust_sub_3', $boxIconFreeShipping) }}</p>
                         </div>
                     </div>
                 </div>
@@ -475,8 +465,8 @@
                             <i class="icon-headset"></i>
                         </span>
                         <div class="content">
-                            <h4 class="title fw-normal">Customer support</h4>
-                            <p class="text"><a href="{{ route('shop.contact') }}" class="link">Contact us</a> for any questions</p>
+                            <h4 class="title fw-normal">{{ \App\Models\Setting::get('trust_label_4', 'Irish Crafted') }}</h4>
+                            <p class="text">{{ \App\Models\Setting::get('trust_sub_4', 'Contact us for any questions') }}</p>
                         </div>
                     </div>
                 </div>
@@ -493,7 +483,7 @@
         <div class="sect-title type-2">
             <div class="flex-sm-1 wow fadeInUp">
                 <h1 class="s-title mb-8">Customer Reviews</h1>
-                <p class="s-subtitle h6">Up to 50% off Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <p class="s-subtitle h6">{{ \App\Models\Setting::get('homepage_subtitle_2', '') }}</p>
             </div>
             <div class="group-btn-slider wow fadeInUp" data-wow-delay="0.1s">
                 <div class="tf-sw-nav style-2 type-small nav-prev-swiper">
