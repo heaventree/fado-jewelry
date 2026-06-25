@@ -141,6 +141,25 @@
                 </div>
             </li>
 
+            {{-- Coupons: super_admin + store_admin only --}}
+            <li class="nav-item">
+                <a class="nav-link menu-arrow" href="#sidebarCoupons" data-bs-toggle="collapse" role="button"
+                   aria-expanded="false" aria-controls="sidebarCoupons">
+                    <span class="nav-icon"><iconify-icon icon="solar:leaf-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Coupons </span>
+                </a>
+                <div class="collapse" id="sidebarCoupons">
+                    <ul class="nav sub-navbar-nav">
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.coupons.index') }}">All Coupons</a>
+                        </li>
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.coupons.create') }}">Add Coupon</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
             {{-- Consultations: all admin roles --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.consultations.index') }}">
@@ -299,26 +318,6 @@
                 </a>
             </li>
 
-            <li class="menu-title mt-2">Other</li>
-
-            {{-- Coupons: super_admin + store_admin only --}}
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarCoupons" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarCoupons">
-                    <span class="nav-icon"><iconify-icon icon="solar:leaf-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Coupons </span>
-                </a>
-                <div class="collapse" id="sidebarCoupons">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('admin.coupons.index') }}">All Coupons</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('admin.coupons.create') }}">Add Coupon</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
             @endif {{-- end $isAdminPlus --}}
 
         </ul>
