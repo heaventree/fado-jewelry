@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\RingSizeController;
 use App\Http\Controllers\Admin\ColourController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MenuItemController;
+use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\BlogController;
 
@@ -144,6 +145,22 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('gemstones', GemstoneController::class);
     Route::get('ring-sizes', [RingSizeController::class, 'index'])->name('ring-sizes.index');
     Route::resource('colours', ColourController::class);
+
+    // Page content editors
+    Route::prefix('pages')->name('pages.')->group(function () {
+        Route::get('home', [PageController::class, 'home'])->name('home');
+        Route::post('home', [PageController::class, 'updateHome'])->name('home.update');
+        Route::get('about', [PageController::class, 'about'])->name('about');
+        Route::post('about', [PageController::class, 'updateAbout'])->name('about.update');
+        Route::get('faq', [PageController::class, 'faq'])->name('faq');
+        Route::post('faq', [PageController::class, 'updateFaq'])->name('faq.update');
+        Route::get('contact', [PageController::class, 'contact'])->name('contact');
+        Route::post('contact', [PageController::class, 'updateContact'])->name('contact.update');
+        Route::get('terms', [PageController::class, 'terms'])->name('terms');
+        Route::post('terms', [PageController::class, 'updateTerms'])->name('terms.update');
+        Route::get('privacy', [PageController::class, 'privacy'])->name('privacy');
+        Route::post('privacy', [PageController::class, 'updatePrivacy'])->name('privacy.update');
+    });
 
     // Blog posts management
     Route::resource('posts', PostController::class);

@@ -216,6 +216,45 @@
                 </a>
             </li>
 
+            <li class="menu-title mt-2">Pages</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.pages.home') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Home Page </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.pages.about') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:info-circle-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> About Us </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.pages.faq') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:question-circle-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> FAQ </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.pages.contact') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:mailbox-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Contact </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.pages.terms') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:document-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Terms & Conditions </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.pages.privacy') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:shield-check-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Privacy Policy </span>
+                </a>
+            </li>
+
             {{-- Settings: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.settings.index') }}">
