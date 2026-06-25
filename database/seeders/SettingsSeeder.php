@@ -63,6 +63,48 @@ class SettingsSeeder extends Seeder
             // ── Consultation ─────────────────────────────────────────────
             'consultation_enabled'    => '1',
             'consultation_intro_text' => 'Book a private consultation with our jewellery specialists — in-store, by phone, or video call.',
+
+            // ── Contact (location) ──────────────────────────────────────
+            'store_lat' => '53.3498',
+            'store_lng' => '-6.2603',
+
+            // ── Homepage ────────────────────────────────────────────────
+            'homepage_subtitle_1' => 'From classic rings to Celtic crosses — discover Irish jewellery for every occasion',
+            'homepage_subtitle_2' => '',
+            'homepage_subtitle_3' => '',
+            'trust_label_1' => '30 Day Returns',
+            'trust_label_2' => 'Secure Payment',
+            'trust_label_3' => 'Free Delivery',
+            'trust_label_4' => 'Irish Crafted',
+            'trust_sub_1' => '30-day returns on unworn pieces',
+            'trust_sub_2' => 'Encrypted, secure payment',
+            'trust_sub_3' => 'Free delivery on orders over €75',
+            'trust_sub_4' => 'Handcrafted in Ireland',
+            'sale_banner_image' => '',
+            'newsletter_intro' => 'Become the first to know about new collections and offers.',
+
+            // ── Product ─────────────────────────────────────────────────
+            'delivery_info'  => "Orders dispatched within 2–3 working days. Free standard delivery on orders over €50.\nExpress delivery (1–2 working days) is available at checkout. International shipping to the US and worldwide is also available.",
+            'returns_policy' => "30-day return policy on all unworn items in original packaging. For size exchanges, contact us within 30 days.\nCustom or engraved pieces cannot be returned unless faulty.",
+
+            // ── About ───────────────────────────────────────────────────
+            'about_hero_image' => '',
+            'about_heading' => 'Our Story',
+            'about_story' => '',
+            'about_gallery_1' => '',
+            'about_gallery_2' => '',
+            'about_gallery_3' => '',
+            'craft_value_1_title' => 'Handcrafted with care',
+            'craft_value_1_text' => 'Every piece made by skilled Irish artisans',
+            'craft_value_2_title' => 'Dublin hallmarked',
+            'craft_value_2_text' => 'Guaranteed quality since 1637',
+            'craft_value_3_title' => 'Gift-ready packaging',
+            'craft_value_3_text' => 'Presented in our signature green box',
+
+            // ── Legal ───────────────────────────────────────────────────
+            'privacy_policy' => '',
+            'terms_conditions' => '',
+            'faq_banner_image' => '',
         ];
 
         foreach ($defaults as $key => $value) {

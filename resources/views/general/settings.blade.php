@@ -415,7 +415,7 @@
     </div>
 
     {{-- Consultation --}}
-    <div class="card">
+    <div class="card mb-4">
         <div class="card-header">
             <h5 class="card-title mb-0 d-flex align-items-center gap-2">
                 <iconify-icon icon="solar:calendar-bold-duotone" class="text-primary fs-18"></iconify-icon>
@@ -437,6 +437,276 @@
                           maxlength="500"
                           placeholder="Book a private consultation with our jewellery specialists…">{{ old('consultation_intro_text', $settings['consultation_intro_text'] ?? '') }}</textarea>
                 @error('consultation_intro_text')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+    </div>
+
+    {{-- Homepage --}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:home-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                Homepage
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Category Section Subtitle</label>
+                <input type="text" name="homepage_subtitle_1" maxlength="300"
+                       value="{{ old('homepage_subtitle_1', $settings['homepage_subtitle_1'] ?? '') }}"
+                       class="form-control @error('homepage_subtitle_1') is-invalid @enderror"
+                       placeholder="From classic rings to Celtic crosses…">
+                @error('homepage_subtitle_1')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Reviews Section Subtitle</label>
+                <input type="text" name="homepage_subtitle_2" maxlength="300"
+                       value="{{ old('homepage_subtitle_2', $settings['homepage_subtitle_2'] ?? '') }}"
+                       class="form-control @error('homepage_subtitle_2') is-invalid @enderror"
+                       placeholder="What our customers say">
+                @error('homepage_subtitle_2')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Section Subtitle 3 (spare)</label>
+                <input type="text" name="homepage_subtitle_3" maxlength="300"
+                       value="{{ old('homepage_subtitle_3', $settings['homepage_subtitle_3'] ?? '') }}"
+                       class="form-control @error('homepage_subtitle_3') is-invalid @enderror">
+                @error('homepage_subtitle_3')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <hr>
+            <p class="fw-semibold text-muted fs-13 mb-2">Trust Strip Labels</p>
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label class="form-label">Label 1</label>
+                    <input type="text" name="trust_label_1" maxlength="100" value="{{ old('trust_label_1', $settings['trust_label_1'] ?? '') }}" class="form-control" placeholder="30 Day Returns">
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label">Sublabel 1</label>
+                    <input type="text" name="trust_sub_1" maxlength="200" value="{{ old('trust_sub_1', $settings['trust_sub_1'] ?? '') }}" class="form-control" placeholder="30-day returns on unworn pieces">
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label class="form-label">Label 2</label>
+                    <input type="text" name="trust_label_2" maxlength="100" value="{{ old('trust_label_2', $settings['trust_label_2'] ?? '') }}" class="form-control" placeholder="Secure Payment">
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label">Sublabel 2</label>
+                    <input type="text" name="trust_sub_2" maxlength="200" value="{{ old('trust_sub_2', $settings['trust_sub_2'] ?? '') }}" class="form-control" placeholder="Encrypted, secure payment">
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label class="form-label">Label 3</label>
+                    <input type="text" name="trust_label_3" maxlength="100" value="{{ old('trust_label_3', $settings['trust_label_3'] ?? '') }}" class="form-control" placeholder="Free Delivery">
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label">Sublabel 3</label>
+                    <input type="text" name="trust_sub_3" maxlength="200" value="{{ old('trust_sub_3', $settings['trust_sub_3'] ?? '') }}" class="form-control" placeholder="Free delivery on orders over €75">
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label class="form-label">Label 4</label>
+                    <input type="text" name="trust_label_4" maxlength="100" value="{{ old('trust_label_4', $settings['trust_label_4'] ?? '') }}" class="form-control" placeholder="Irish Crafted">
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label">Sublabel 4</label>
+                    <input type="text" name="trust_sub_4" maxlength="200" value="{{ old('trust_sub_4', $settings['trust_sub_4'] ?? '') }}" class="form-control" placeholder="Handcrafted in Ireland">
+                </div>
+            </div>
+            <hr>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Sale Banner Image URL</label>
+                <input type="text" name="sale_banner_image" maxlength="500"
+                       value="{{ old('sale_banner_image', $settings['sale_banner_image'] ?? '') }}"
+                       class="form-control @error('sale_banner_image') is-invalid @enderror"
+                       placeholder="/images/ochaka/banner/banner-cd-V01.jpg">
+                @error('sale_banner_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-0">
+                <label class="form-label fw-semibold">Newsletter Intro Text</label>
+                <input type="text" name="newsletter_intro" maxlength="300"
+                       value="{{ old('newsletter_intro', $settings['newsletter_intro'] ?? '') }}"
+                       class="form-control @error('newsletter_intro') is-invalid @enderror"
+                       placeholder="Become the first to know about new collections and offers.">
+                @error('newsletter_intro')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+    </div>
+
+    {{-- Product --}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:bag-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                Product Page
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Delivery &amp; Shipping Info</label>
+                <textarea name="delivery_info" rows="4"
+                          class="form-control @error('delivery_info') is-invalid @enderror"
+                          placeholder="Orders dispatched within 2–3 working days…">{{ old('delivery_info', $settings['delivery_info'] ?? '') }}</textarea>
+                <div class="form-text">Shown on the product page Delivery tab.</div>
+                @error('delivery_info')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-0">
+                <label class="form-label fw-semibold">Returns &amp; Exchanges Policy</label>
+                <textarea name="returns_policy" rows="4"
+                          class="form-control @error('returns_policy') is-invalid @enderror"
+                          placeholder="30-day return policy on all unworn items…">{{ old('returns_policy', $settings['returns_policy'] ?? '') }}</textarea>
+                <div class="form-text">Shown on the product page Returns tab.</div>
+                @error('returns_policy')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+    </div>
+
+    {{-- About --}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:info-circle-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                About Us Page
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Hero Image URL</label>
+                <input type="text" name="about_hero_image" maxlength="500"
+                       value="{{ old('about_hero_image', $settings['about_hero_image'] ?? '') }}"
+                       class="form-control @error('about_hero_image') is-invalid @enderror"
+                       placeholder="/images/ochaka/section/about-us.jpg">
+                @error('about_hero_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Hero Heading</label>
+                <input type="text" name="about_heading" maxlength="200"
+                       value="{{ old('about_heading', $settings['about_heading'] ?? '') }}"
+                       class="form-control @error('about_heading') is-invalid @enderror"
+                       placeholder="HANDCRAFTED IRISH JEWELLERY WITH HERITAGE & HEART">
+                @error('about_heading')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Brand Story</label>
+                <textarea name="about_story" rows="6"
+                          class="form-control @error('about_story') is-invalid @enderror"
+                          placeholder="Your brand story…">{{ old('about_story', $settings['about_story'] ?? '') }}</textarea>
+                @error('about_story')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-sm-4">
+                    <label class="form-label">Gallery Image 1 URL</label>
+                    <input type="text" name="about_gallery_1" maxlength="500" value="{{ old('about_gallery_1', $settings['about_gallery_1'] ?? '') }}" class="form-control">
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label">Gallery Image 2 URL</label>
+                    <input type="text" name="about_gallery_2" maxlength="500" value="{{ old('about_gallery_2', $settings['about_gallery_2'] ?? '') }}" class="form-control">
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label">Gallery Image 3 URL</label>
+                    <input type="text" name="about_gallery_3" maxlength="500" value="{{ old('about_gallery_3', $settings['about_gallery_3'] ?? '') }}" class="form-control">
+                </div>
+            </div>
+            <hr>
+            <p class="fw-semibold text-muted fs-13 mb-2">Craft Values Strip</p>
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label class="form-label">Value 1 Title</label>
+                    <input type="text" name="craft_value_1_title" maxlength="100" value="{{ old('craft_value_1_title', $settings['craft_value_1_title'] ?? '') }}" class="form-control" placeholder="Handcrafted with care">
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label">Value 1 Text</label>
+                    <input type="text" name="craft_value_1_text" maxlength="200" value="{{ old('craft_value_1_text', $settings['craft_value_1_text'] ?? '') }}" class="form-control">
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label class="form-label">Value 2 Title</label>
+                    <input type="text" name="craft_value_2_title" maxlength="100" value="{{ old('craft_value_2_title', $settings['craft_value_2_title'] ?? '') }}" class="form-control" placeholder="Dublin hallmarked">
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label">Value 2 Text</label>
+                    <input type="text" name="craft_value_2_text" maxlength="200" value="{{ old('craft_value_2_text', $settings['craft_value_2_text'] ?? '') }}" class="form-control">
+                </div>
+            </div>
+            <div class="row g-3 mb-0">
+                <div class="col-sm-6">
+                    <label class="form-label">Value 3 Title</label>
+                    <input type="text" name="craft_value_3_title" maxlength="100" value="{{ old('craft_value_3_title', $settings['craft_value_3_title'] ?? '') }}" class="form-control" placeholder="Gift-ready packaging">
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label">Value 3 Text</label>
+                    <input type="text" name="craft_value_3_text" maxlength="200" value="{{ old('craft_value_3_text', $settings['craft_value_3_text'] ?? '') }}" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Contact --}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:map-point-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                Contact Page
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3 mb-0">
+                <div class="col-sm-6">
+                    <label class="form-label fw-semibold">Store Latitude</label>
+                    <input type="text" name="store_lat" maxlength="20"
+                           value="{{ old('store_lat', $settings['store_lat'] ?? '') }}"
+                           class="form-control @error('store_lat') is-invalid @enderror"
+                           placeholder="53.3498">
+                    @error('store_lat')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label fw-semibold">Store Longitude</label>
+                    <input type="text" name="store_lng" maxlength="20"
+                           value="{{ old('store_lng', $settings['store_lng'] ?? '') }}"
+                           class="form-control @error('store_lng') is-invalid @enderror"
+                           placeholder="-6.2603">
+                    @error('store_lng')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+            </div>
+            <div class="form-text">Used for the Google Maps embed on the Contact page.</div>
+        </div>
+    </div>
+
+    {{-- Legal --}}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:document-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                Legal Pages
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Privacy Policy (HTML)</label>
+                <textarea name="privacy_policy" rows="10"
+                          class="form-control @error('privacy_policy') is-invalid @enderror"
+                          placeholder="Your privacy policy content…">{{ old('privacy_policy', $settings['privacy_policy'] ?? '') }}</textarea>
+                <div class="form-text">Rendered as raw HTML on the Privacy Policy page. Use &lt;h5&gt;/&lt;p&gt; tags for formatting.</div>
+                @error('privacy_policy')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Terms &amp; Conditions (HTML)</label>
+                <textarea name="terms_conditions" rows="10"
+                          class="form-control @error('terms_conditions') is-invalid @enderror"
+                          placeholder="Your terms and conditions content…">{{ old('terms_conditions', $settings['terms_conditions'] ?? '') }}</textarea>
+                <div class="form-text">Rendered as raw HTML on the Terms &amp; Conditions page.</div>
+                @error('terms_conditions')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-0">
+                <label class="form-label fw-semibold">FAQ Sidebar Banner Image URL</label>
+                <input type="text" name="faq_banner_image" maxlength="500"
+                       value="{{ old('faq_banner_image', $settings['faq_banner_image'] ?? '') }}"
+                       class="form-control @error('faq_banner_image') is-invalid @enderror"
+                       placeholder="/images/ochaka/blog/side-banner.jpg">
+                @error('faq_banner_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
     </div>

@@ -304,6 +304,11 @@ class ShopController extends Controller
         return view('shop.coming-soon', ['page' => 'Privacy Policy']);
     }
 
+    public function terms(): View
+    {
+        return view('shop.terms');
+    }
+
     /**
      * Reuses the same shop.listing view + shop.partials.listing-results AJAX partial as
      * jewellery/category/collection — no dedicated search results template, filtered by

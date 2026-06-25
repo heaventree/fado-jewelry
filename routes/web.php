@@ -81,6 +81,7 @@ Route::prefix('/')->name('shop.')->group(function () {
     Route::get('/contact', [ShopController::class, 'contact'])->name('contact');
     Route::post('/contact', [ShopController::class, 'contactStore'])->name('contact.store')->middleware('throttle:contact');
     Route::get('/privacy', [ShopController::class, 'privacy'])->name('privacy');
+    Route::get('/terms', [ShopController::class, 'terms'])->name('terms');
 
     // Newsletter subscribe (POST)
     Route::post('/newsletter', [ShopController::class, 'newsletterSubscribe'])->name('newsletter.subscribe');

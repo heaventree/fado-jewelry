@@ -198,7 +198,7 @@
                             </p>
                             <div class="checkbox-wrap">
                                 <input id="agree" type="checkbox" class="tf-check style-2" required>
-                                <label for="agree" class="h6">I have read and agree to the website <a href="{{ route('shop.privacy') }}" target="_blank" class="text-primary">terms and conditions</a> *</label>
+                                <label for="agree" class="h6">I have read and agree to the website <a href="{{ route('shop.terms') }}" target="_blank" class="text-primary">terms and conditions</a> *</label>
                             </div>
                         </div>
                         <div class="box-ip-shipping">
