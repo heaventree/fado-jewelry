@@ -20,15 +20,18 @@
     </div>
 </div>
 
-<form action="{{ route('admin.pages.about.update') }}" method="POST">
+<form action="{{ route('admin.pages.about.update') }}" method="POST" enctype="multipart/form-data">
 @csrf
 
 <div class="card mb-4">
     <div class="card-header"><h5 class="card-title mb-0">Hero Section</h5></div>
     <div class="card-body">
         <div class="mb-3">
-            <label class="form-label fw-semibold">Hero Image Path</label>
-            <input type="text" name="about_hero_image" class="form-control" value="{{ $settings['about_hero_image'] }}" placeholder="/images/about-hero.jpg">
+            <label class="form-label fw-semibold">Hero Image</label>
+            <input type="file" name="about_hero_image_file" class="form-control" accept="image/*">
+            @if($settings['about_hero_image'])
+                <img src="{{ asset('storage/' . $settings['about_hero_image']) }}" alt="Hero" class="mt-2 rounded" style="max-height:120px">
+            @endif
         </div>
         <div class="mb-3">
             <label class="form-label fw-semibold">Page Heading</label>
@@ -51,18 +54,15 @@
     <div class="card-header"><h5 class="card-title mb-0">Gallery Images</h5></div>
     <div class="card-body">
         <div class="row g-3">
+            @for($g = 1; $g <= 3; $g++)
             <div class="col-md-4">
-                <label class="form-label fw-semibold">Gallery Image 1</label>
-                <input type="text" name="about_gallery_1" class="form-control" value="{{ $settings['about_gallery_1'] }}" placeholder="/images/gallery-1.jpg">
+                <label class="form-label fw-semibold">Gallery Image {{ $g }}</label>
+                <input type="file" name="about_gallery_{{ $g }}_file" class="form-control" accept="image/*">
+                @if($settings['about_gallery_' . $g])
+                    <img src="{{ asset('storage/' . $settings['about_gallery_' . $g]) }}" alt="Gallery {{ $g }}" class="mt-2 rounded" style="max-height:120px">
+                @endif
             </div>
-            <div class="col-md-4">
-                <label class="form-label fw-semibold">Gallery Image 2</label>
-                <input type="text" name="about_gallery_2" class="form-control" value="{{ $settings['about_gallery_2'] }}" placeholder="/images/gallery-2.jpg">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-semibold">Gallery Image 3</label>
-                <input type="text" name="about_gallery_3" class="form-control" value="{{ $settings['about_gallery_3'] }}" placeholder="/images/gallery-3.jpg">
-            </div>
+            @endfor
         </div>
     </div>
 </div>

@@ -20,15 +20,18 @@
     </div>
 </div>
 
-<form action="{{ route('admin.pages.faq.update') }}" method="POST">
+<form action="{{ route('admin.pages.faq.update') }}" method="POST" enctype="multipart/form-data">
 @csrf
 
 <div class="card mb-4">
     <div class="card-header"><h5 class="card-title mb-0">FAQ Sidebar</h5></div>
     <div class="card-body">
         <div class="mb-3">
-            <label class="form-label fw-semibold">Sidebar Banner Image Path</label>
-            <input type="text" name="faq_banner_image" class="form-control" value="{{ $settings['faq_banner_image'] }}" placeholder="/images/faq-banner.jpg">
+            <label class="form-label fw-semibold">Sidebar Banner Image</label>
+            <input type="file" name="faq_banner_image_file" class="form-control" accept="image/*">
+            @if($settings['faq_banner_image'])
+                <img src="{{ asset('storage/' . $settings['faq_banner_image']) }}" alt="FAQ Banner" class="mt-2 rounded" style="max-height:120px">
+            @endif
         </div>
     </div>
 </div>

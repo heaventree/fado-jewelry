@@ -28,8 +28,9 @@ class PageController extends Controller
             'homepage_subtitle_1', 'homepage_subtitle_2', 'homepage_subtitle_3',
             'trust_label_1', 'trust_label_2', 'trust_label_3', 'trust_label_4',
             'trust_sub_1', 'trust_sub_2', 'trust_sub_3', 'trust_sub_4',
-            'sale_banner_image',
         ]));
+
+        $this->handleUpload($request, 'sale_banner_image_file', 'sale_banner_image');
 
         return back()->with('success', 'Home page content saved.');
     }
@@ -50,12 +51,16 @@ class PageController extends Controller
     public function updateAbout(Request $request): RedirectResponse
     {
         Setting::setMany($request->only([
-            'about_hero_image', 'about_heading', 'about_story',
-            'about_gallery_1', 'about_gallery_2', 'about_gallery_3',
+            'about_heading', 'about_story',
             'craft_value_1_title', 'craft_value_1_text',
             'craft_value_2_title', 'craft_value_2_text',
             'craft_value_3_title', 'craft_value_3_text',
         ]));
+
+        $this->handleUpload($request, 'about_hero_image_file', 'about_hero_image');
+        $this->handleUpload($request, 'about_gallery_1_file', 'about_gallery_1');
+        $this->handleUpload($request, 'about_gallery_2_file', 'about_gallery_2');
+        $this->handleUpload($request, 'about_gallery_3_file', 'about_gallery_3');
 
         return back()->with('success', 'About page content saved.');
     }
@@ -67,7 +72,7 @@ class PageController extends Controller
 
     public function updateFaq(Request $request): RedirectResponse
     {
-        Setting::setMany($request->only(['faq_banner_image']));
+        $this->handleUpload($request, 'faq_banner_image_file', 'faq_banner_image');
 
         return back()->with('success', 'FAQ page content saved.');
     }
@@ -115,5 +120,13 @@ class PageController extends Controller
             $settings[$key] = Setting::get($key, '');
         }
         return $settings;
+    }
+
+    private function handleUpload(Request $request, string $fileField, string $settingKey): void
+    {
+        if ($request->hasFile($fileField)) {
+            $path = $request->file($fileField)->store('pages', 'public');
+            Setting::set($settingKey, $path);
+        }
     }
 }
