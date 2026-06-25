@@ -459,7 +459,7 @@
                         @if($testimonial->product_name)
                         <div class="tes_product">
                             <div class="product-infor">
-                                <h5 class="prd_name fw-normal">{{ $testimonial->product_name }}</h5>
+                                <h5 class="prd_name fw-normal" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;">{{ $testimonial->product_name }}</h5>
                             </div>
                         </div>
                         @endif
@@ -468,11 +468,16 @@
                                 <i class="icon icon-block-quote"></i>
                             </div>
                             <p class="tes_text h4">"{{ $testimonial->body }}"</p>
-                            <div class="tes_author">
-                                <p class="author-name h4">{{ $testimonial->name }}</p>
-                                @if($testimonial->location)
-                                <span class="h6 text-muted">{{ $testimonial->location }}</span>
+                            <div class="tes_author d-flex align-items-center gap-2">
+                                @if($testimonial->avatar)
+                                <img src="{{ asset('storage/' . $testimonial->avatar) }}" alt="{{ $testimonial->name }}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">
                                 @endif
+                                <div>
+                                    <p class="author-name h4 mb-0">{{ $testimonial->name }}</p>
+                                    @if($testimonial->location)
+                                    <span class="h6 text-muted">{{ $testimonial->location }}</span>
+                                    @endif
+                                </div>
                             </div>
                             <div class="rate_wrap">
                                 @for($i = 1; $i <= 5; $i++)
