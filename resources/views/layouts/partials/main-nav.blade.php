@@ -11,13 +11,13 @@
     <!-- Sidebar Logo -->
     <div class="logo-box">
         <a href="{{ route('second', [ 'dashboards' , 'index']) }}" class="logo-dark">
-            <img src="/images/logo-sm.png" class="logo-sm" alt="logo sm">
-            <img src="/images/logo-dark.png" class="logo-lg" alt="logo dark">
+            <img src="/images/logo-sm.png" class="logo-sm" alt="FADÓ">
+            <span class="logo-lg fw-bold fs-20" style="color:#044705;">FADÓ</span>
         </a>
 
         <a href="{{ route('second', [ 'dashboards' , 'index']) }}" class="logo-light">
-            <img src="/images/logo-sm.png" class="logo-sm" alt="logo sm">
-            <img src="/images/logo-light.png" class="logo-lg" alt="logo light">
+            <img src="/images/logo-sm.png" class="logo-sm" alt="FADÓ">
+            <span class="logo-lg fw-bold fs-20 text-white">FADÓ</span>
         </a>
     </div>
 

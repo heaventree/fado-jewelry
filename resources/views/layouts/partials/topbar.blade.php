@@ -11,7 +11,7 @@
 
                 <!-- Menu Toggle Button -->
                 <div class="topbar-item">
-                    <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">{{ $title ?? 'Larkon' }}</h4>
+                    <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">{{ $title ?? 'Dashboard' }}</h4>
                 </div>
             </div>
 
