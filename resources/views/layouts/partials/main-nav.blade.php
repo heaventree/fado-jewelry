@@ -189,6 +189,13 @@
             <li class="menu-title mt-2">Content</li>
 
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.posts.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:document-text-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Blog Posts </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.sliders.index') }}">
                     <span class="nav-icon"><iconify-icon icon="solar:slider-vertical-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Sliders </span>

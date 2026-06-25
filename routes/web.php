@@ -29,6 +29,8 @@ use App\Http\Controllers\Admin\RingSizeController;
 use App\Http\Controllers\Admin\ColourController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MenuItemController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\BlogController;
 
 require __DIR__ . '/auth.php';
 
@@ -92,6 +94,10 @@ Route::prefix('/')->name('shop.')->group(function () {
     Route::get('/privacy', [ShopController::class, 'privacy'])->name('privacy');
     Route::get('/terms', [ShopController::class, 'terms'])->name('terms');
 
+    // Blog
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
+
     // Newsletter subscribe (POST)
     Route::post('/newsletter', [ShopController::class, 'newsletterSubscribe'])->name('newsletter.subscribe');
 
@@ -138,6 +144,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('gemstones', GemstoneController::class);
     Route::get('ring-sizes', [RingSizeController::class, 'index'])->name('ring-sizes.index');
     Route::resource('colours', ColourController::class);
+
+    // Blog posts management
+    Route::resource('posts', PostController::class);
 
     // Menu management
     Route::resource('menus', MenuController::class);

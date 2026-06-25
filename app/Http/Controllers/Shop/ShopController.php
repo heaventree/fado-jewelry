@@ -48,8 +48,9 @@ class ShopController extends Controller
 
         $sliders = \App\Models\Slider::active()->get();
         $testimonials = \App\Models\Testimonial::active()->get();
+        $posts = \App\Models\Post::published()->take(3)->get();
 
-        return view('shop.home', compact('topCategories', 'featuredCollections', 'newArrivals', 'bestSellers', 'onSale', 'featuredProduct', 'sliders', 'testimonials'));
+        return view('shop.home', compact('topCategories', 'featuredCollections', 'newArrivals', 'bestSellers', 'onSale', 'featuredProduct', 'sliders', 'testimonials', 'posts'));
     }
 
     public function jewellery(Request $request): View

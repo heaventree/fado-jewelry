@@ -486,91 +486,52 @@
 @endif
 {{-- /Testimonials --}}
 
-{{-- Blog section hidden: no posts system yet --}}
-@if(false)
+{{-- Blog section — dynamic from posts table --}}
+@if($posts->isNotEmpty())
 <section class="flat-spacing pt-0">
     <div class="container">
         <div class="sect-title text-center wow fadeInUp">
             <h1 class="s-title mb-8">Our Blog</h1>
-            <p class="s-subtitle h6">Up to 50% off Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+            <p class="s-subtitle h6">Stories, inspiration, and the craft behind FADÓ jewellery</p>
         </div>
         <div dir="ltr" class="swiper tf-swiper" data-preview="3" data-tablet="3" data-mobile-sm="2" data-mobile="1" data-space-lg="48"
             data-space-md="32" data-space="12" data-pagination="1" data-pagination-sm="2" data-pagination-md="3" data-pagination-lg="3">
             <div class="swiper-wrapper">
-                <!-- item 1 -->
+                @foreach($posts as $post)
                 <div class="swiper-slide">
-                    <div class="article-blog type-space-2 hover-img4 wow fadeInLeft">
-                        <a href="#" class="entry_image img-style4">
-                            <img src="/images/ochaka/blog/blog-11.jpg" data-src="/images/ochaka/blog/blog-11.jpg" alt="Blog" class="lazyload aspect-ratio-0">
+                    <div class="article-blog type-space-2 hover-img4 wow fadeInLeft" @if(!$loop->first) data-wow-delay="{{ ($loop->index) * 0.1 }}s" @endif>
+                        <a href="{{ route('blog.show', $post) }}" class="entry_image img-style4">
+                            @if($post->featured_image)
+                                <img src="{{ Storage::url($post->featured_image) }}" data-src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" class="lazyload aspect-ratio-0">
+                            @else
+                                <img src="/images/ochaka/blog/blog-11.jpg" data-src="/images/ochaka/blog/blog-11.jpg" alt="{{ $post->title }}" class="lazyload aspect-ratio-0">
+                            @endif
                         </a>
                         <div class="entry_tag">
-                            <a href="#" class="name-tag h6 link">March 2, 2025</a>
+                            <span class="name-tag h6">{{ $post->published_at->format('F j, Y') }}</span>
                         </div>
-
                         <div class="blog-content">
-                            <a href="#" class="entry_name link h4">
-                                5 Most Expensive Diamond Rings In The World
+                            <a href="{{ route('blog.show', $post) }}" class="entry_name link h4">
+                                {{ $post->title }}
                             </a>
-                            <p class="text h6">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit in malesuada magna faucibus. Pellentesque eget finibus
-                                nunc.
-                            </p>
-                            <a href="#" class="tf-btn-line">
+                            @if($post->excerpt)
+                            <p class="text h6">{{ Str::limit($post->excerpt, 120) }}</p>
+                            @endif
+                            <a href="{{ route('blog.show', $post) }}" class="tf-btn-line">
                                 Read more
                             </a>
                         </div>
                     </div>
                 </div>
-                <!-- item 2 -->
-                <div class="swiper-slide">
-                    <div class="article-blog type-space-2 hover-img4 wow fadeInLeft" data-wow-delay="0.1s">
-                        <a href="#" class="entry_image img-style4">
-                            <img src="/images/ochaka/blog/blog-12.jpg" data-src="/images/ochaka/blog/blog-12.jpg" alt="Blog" class="lazyload aspect-ratio-0">
-                        </a>
-                        <div class="entry_tag">
-                            <a href="#" class="name-tag h6 link">March 2, 2025</a>
-                        </div>
-
-                        <div class="blog-content">
-                            <a href="#" class="entry_name link h4">
-                                Natural Diamond Manufacturing
-                            </a>
-                            <p class="text h6">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit in malesuada magna faucibus. Pellentesque eget finibus
-                                nunc.
-                            </p>
-                            <a href="#" class="tf-btn-line">
-                                Read more
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 3 -->
-                <div class="swiper-slide">
-                    <div class="article-blog type-space-2 hover-img4 wow fadeInLeft" data-wow-delay="0.2s">
-                        <a href="#" class="entry_image img-style4">
-                            <img src="/images/ochaka/blog/blog-12.jpg" data-src="/images/ochaka/blog/blog-12.jpg" alt="Blog" class="lazyload aspect-ratio-0">
-                        </a>
-                        <div class="entry_tag">
-                            <a href="#" class="name-tag h6 link">March 2, 2025</a>
-                        </div>
-
-                        <div class="blog-content">
-                            <a href="#" class="entry_name link h4">
-                                Diamond Jewelry For Amazing Wedding
-                            </a>
-                            <p class="text h6">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit in malesuada magna faucibus. Pellentesque eget finibus
-                                nunc.
-                            </p>
-                            <a href="#" class="tf-btn-line">
-                                Read more
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="sw-dot-default tf-sw-pagination"></div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ route('blog.index') }}" class="tf-btn animate-btn">
+                View All Posts
+                <i class="icon icon-arrow-right"></i>
+            </a>
         </div>
     </div>
 </section>

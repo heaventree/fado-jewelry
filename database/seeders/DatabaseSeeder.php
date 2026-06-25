@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             TestimonialSeeder::class,
             FaqSeeder::class,
             MenuSeeder::class,
+            PostSeeder::class,
         ]);
     }
 }
