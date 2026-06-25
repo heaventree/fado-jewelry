@@ -301,6 +301,15 @@ class ShopController extends Controller
 
         Consultation::create($data);
 
+        try {
+            $notifyEmail = Setting::get('consultation_email', Setting::get('store_email'));
+            if ($notifyEmail) {
+                \Illuminate\Support\Facades\Mail::to($notifyEmail)->send(new \App\Mail\ConsultationReceived($data));
+            }
+        } catch (\Exception $e) {
+            \Log::error('Consultation email failed: ' . $e->getMessage());
+        }
+
         return back()->with('consultation_sent', true);
     }
 

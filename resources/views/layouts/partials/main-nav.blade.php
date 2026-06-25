@@ -226,15 +226,34 @@
                 </div>
             </li>
 
-            {{-- Roles: super_admin only --}}
-            @if($isSuperAdmin)
+            {{-- Roles & Permissions: not yet implemented --}}
+
+            <li class="menu-title mt-2">Attributes</li>
+
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('second', ['users', 'pages-permission'])}}">
-                    <span class="nav-icon"><iconify-icon icon="solar:user-speak-rounded-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Roles &amp; Permissions </span>
+                <a class="nav-link" href="{{ route('admin.metals.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:medal-ribbons-star-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Metals </span>
                 </a>
             </li>
-            @endif
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.gemstones.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:diamond-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Gemstones </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.ring-sizes.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:ring-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Ring Sizes </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.colours.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:pallete-2-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Colours </span>
+                </a>
+            </li>
 
             <li class="menu-title mt-2">Other</li>
 

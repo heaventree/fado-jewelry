@@ -23,6 +23,10 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\MetalController;
+use App\Http\Controllers\Admin\GemstoneController;
+use App\Http\Controllers\Admin\RingSizeController;
+use App\Http\Controllers\Admin\ColourController;
 
 require __DIR__ . '/auth.php';
 
@@ -126,6 +130,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('sliders', SliderController::class);
     Route::resource('testimonials', TestimonialController::class);
     Route::resource('faqs', FaqController::class);
+
+    // Attribute management
+    Route::resource('metals', MetalController::class);
+    Route::resource('gemstones', GemstoneController::class);
+    Route::get('ring-sizes', [RingSizeController::class, 'index'])->name('ring-sizes.index');
+    Route::resource('colours', ColourController::class);
 
     // Currency management — custom routes (not a standard CRUD resource)
     Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');

@@ -141,6 +141,15 @@ class CheckoutController extends Controller
 
         $this->cart->clear();
 
+        try {
+            $recipientEmail = $order->user?->email ?? $order->shipping_address['email'] ?? null;
+            if ($recipientEmail) {
+                \Illuminate\Support\Facades\Mail::to($recipientEmail)->send(new \App\Mail\OrderConfirmed($order));
+            }
+        } catch (\Exception $e) {
+            \Log::error('Order confirmation email failed: ' . $e->getMessage());
+        }
+
         // Store order ID in session so the guest can view their confirmation
         session(['last_order_id' => $order->id]);
 
