@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\ColourController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\BlogController;
@@ -165,6 +166,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('privacy', [PageController::class, 'privacy'])->name('privacy');
         Route::post('privacy', [PageController::class, 'updatePrivacy'])->name('privacy.update');
     });
+
+    // Admin user management
+    Route::resource('users', AdminUserController::class);
 
     // Blog posts management
     Route::resource('posts', PostController::class);

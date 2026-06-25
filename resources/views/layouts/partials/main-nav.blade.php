@@ -259,23 +259,18 @@
 
             <li class="menu-title mt-2">Users</li>
 
-            {{-- Customers: super_admin + store_admin only --}}
             <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarCustomers" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarCustomers">
+                <a class="nav-link" href="{{ route('admin.users.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:shield-user-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Admin Users </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.customers.index') }}">
                     <span class="nav-icon"><iconify-icon icon="solar:users-group-two-rounded-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Customers </span>
                 </a>
-                <div class="collapse" id="sidebarCustomers">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('admin.customers.index') }}">All Customers</a>
-                        </li>
-                    </ul>
-                </div>
             </li>
-
-            {{-- Roles & Permissions: not yet implemented --}}
 
             <li class="menu-title mt-2">Attributes</li>
 

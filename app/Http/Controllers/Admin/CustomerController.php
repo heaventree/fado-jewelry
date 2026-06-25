@@ -10,10 +10,13 @@ use Illuminate\View\View;
 
 class CustomerController extends Controller
 {
+    private const ADMIN_ROLES = ['super_admin', 'store_admin', 'staff'];
+
     public function index(Request $request): View
     {
         $query = User::withCount('orders')
             ->withSum('orders', 'total')
+            ->whereDoesntHave('roles', fn ($q) => $q->whereIn('name', self::ADMIN_ROLES))
             ->latest();
 
         if ($search = $request->input('search')) {
@@ -25,9 +28,11 @@ class CustomerController extends Controller
 
         $customers = $query->paginate(25)->withQueryString();
 
+        $customerScope = User::whereDoesntHave('roles', fn ($q) => $q->whereIn('name', self::ADMIN_ROLES));
+
         $stats = [
-            'total'         => User::count(),
-            'with_orders'   => User::has('orders')->count(),
+            'total'         => (clone $customerScope)->count(),
+            'with_orders'   => (clone $customerScope)->has('orders')->count(),
             'orders_total'  => Order::count(),
             'revenue_eur'   => Order::whereNotIn('status', ['cancelled', 'refunded'])
                                     ->where('currency_code', 'EUR')
