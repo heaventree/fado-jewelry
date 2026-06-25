@@ -50,7 +50,7 @@
    back to the SVG's own intrinsic ratio here. */
 .logo-site img {
     aspect-ratio: auto !important;
-    width: 80px !important;
+    width: 150px !important;
     height: auto !important;
     max-height: none !important;
 }
@@ -83,7 +83,11 @@
     background-color: #fff;
 }
 .canvas-header .logo-site img {
-    width: 60px !important;
+    width: 100px !important;
+    height: auto !important;
+}
+.footer .logo-site img, footer .logo-site img {
+    width: 150px !important;
     height: auto !important;
 }
 
