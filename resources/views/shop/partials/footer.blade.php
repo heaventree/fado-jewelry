@@ -103,7 +103,7 @@
                         <div class="tf-collapse-content">
                             <div class="footer-newsletter">
                                 <p class="h6 caption">
-                                    Become the first to know about new collections and offers.
+                                    {{ \App\Models\Setting::get('newsletter_intro', 'Become the first to know about new collections and offers.') }}
                                 </p>
                                 <form action="{{ route('shop.newsletter.subscribe') }}" method="POST" class="sib-form sib-form_footer">
                                     @csrf

@@ -1,6 +1,6 @@
 @extends('shop.layouts.app')
 
-@section('title', 'Order #' . $order->id . ' — FADÓ Jewellery')
+@section('title', 'Order #' . $order->id . ' — ' . \App\Models\Setting::get('store_name', 'FADÓ Jewellery'))
 @section('meta_robots', 'noindex, nofollow')
 
 @section('content')

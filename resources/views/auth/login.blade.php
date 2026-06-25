@@ -1,6 +1,6 @@
 @extends('shop.layouts.app')
 
-@section('title', 'Login — FADÓ Jewellery')
+@section('title', 'Login — ' . \App\Models\Setting::get('store_name', 'FADÓ Jewellery'))
 @section('meta_robots', 'noindex, nofollow')
 
 @section('content')
@@ -63,7 +63,7 @@
                     <div class="col-right">
                         <h1 class="heading">New Customer</h1>
                         <p class="h6 text-sub">
-                            Create an account with FADÓ Jewellery to save your wishlist, track orders, and enjoy a faster checkout experience.
+                            Create an account with {{ \App\Models\Setting::get('store_name', 'FADÓ Jewellery') }} to save your wishlist, track orders, and enjoy a faster checkout experience.
                         </p>
                         <a href="{{ route('register') }}" class="btn_log tf-btn animate-btn">
                             Register
