@@ -31,16 +31,72 @@
 
             <li class="menu-title">General</li>
 
-            {{-- Dashboard: all admin roles --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('second', [ 'dashboards' , 'index']) }}">
                     <span class="nav-icon"><iconify-icon icon="solar:widget-5-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Dashboard </span>
                 </a>
             </li>
-
-            {{-- Products: super_admin + store_admin only --}}
+            <li class="nav-item">
+                <a class="nav-link menu-arrow" href="#sidebarOrders" data-bs-toggle="collapse" role="button"
+                   aria-expanded="false" aria-controls="sidebarOrders">
+                    <span class="nav-icon"><iconify-icon icon="solar:bag-smile-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Orders </span>
+                </a>
+                <div class="collapse" id="sidebarOrders">
+                    <ul class="nav sub-navbar-nav">
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.orders.index') }}">All Orders</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             @if($isAdminPlus)
+            <li class="nav-item">
+                <a class="nav-link menu-arrow" href="#sidebarCoupons" data-bs-toggle="collapse" role="button"
+                   aria-expanded="false" aria-controls="sidebarCoupons">
+                    <span class="nav-icon"><iconify-icon icon="solar:leaf-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Coupons </span>
+                </a>
+                <div class="collapse" id="sidebarCoupons">
+                    <ul class="nav sub-navbar-nav">
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.coupons.index') }}">All Coupons</a>
+                        </li>
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.coupons.create') }}">Add Coupon</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            @endif
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.consultations.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:calendar-mark-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Consultations </span>
+                    @if($consultationUnread > 0)
+                        <span class="badge bg-danger badge-pill ms-auto">{{ $consultationUnread }}</span>
+                    @endif
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-arrow" href="#sidebarInvoice" data-bs-toggle="collapse" role="button"
+                   aria-expanded="false" aria-controls="sidebarInvoice">
+                    <span class="nav-icon"><iconify-icon icon="solar:bill-list-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Invoices </span>
+                </a>
+                <div class="collapse" id="sidebarInvoice">
+                    <ul class="nav sub-navbar-nav">
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link" href="{{ route('admin.invoices.index') }}">All Invoices</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            @if($isAdminPlus)
+            <li class="menu-title mt-2">Catalogue</li>
+
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarProducts" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarProducts">
@@ -58,8 +114,6 @@
                     </ul>
                 </div>
             </li>
-
-            {{-- Attributes: directly below Products --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarAttributes" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarAttributes">
@@ -83,13 +137,11 @@
                     </ul>
                 </div>
             </li>
-
-            {{-- Category: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarCategory" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarCategory">
                     <span class="nav-icon"><iconify-icon icon="solar:clipboard-list-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Category </span>
+                    <span class="nav-text"> Categories </span>
                 </a>
                 <div class="collapse" id="sidebarCategory">
                     <ul class="nav sub-navbar-nav">
@@ -102,8 +154,6 @@
                     </ul>
                 </div>
             </li>
-
-            {{-- Collections: super_admin + store_admin only --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarCollections" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarCollections">
@@ -122,8 +172,6 @@
                 </div>
             </li>
             @endif
-
-            {{-- Inventory: all admin roles --}}
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarInventory" data-bs-toggle="collapse" role="button"
                    aria-expanded="false" aria-controls="sidebarInventory">
@@ -150,74 +198,31 @@
                 </div>
             </li>
 
-            {{-- Orders: all admin roles --}}
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarOrders" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarOrders">
-                    <span class="nav-icon"><iconify-icon icon="solar:bag-smile-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Orders </span>
-                </a>
-                <div class="collapse" id="sidebarOrders">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('admin.orders.index') }}">All Orders</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            {{-- Coupons: super_admin + store_admin only --}}
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarCoupons" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarCoupons">
-                    <span class="nav-icon"><iconify-icon icon="solar:leaf-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Coupons </span>
-                </a>
-                <div class="collapse" id="sidebarCoupons">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('admin.coupons.index') }}">All Coupons</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('admin.coupons.create') }}">Add Coupon</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            {{-- Consultations: all admin roles --}}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.consultations.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:calendar-mark-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Consultations </span>
-                    @if($consultationUnread > 0)
-                        <span class="badge bg-danger badge-pill ms-auto">{{ $consultationUnread }}</span>
-                    @endif
-                </a>
-            </li>
-
-            {{-- Invoices: all admin roles --}}
-            <li class="nav-item">
-                <a class="nav-link menu-arrow" href="#sidebarInvoice" data-bs-toggle="collapse" role="button"
-                   aria-expanded="false" aria-controls="sidebarInvoice">
-                    <span class="nav-icon"><iconify-icon icon="solar:bill-list-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Invoices </span>
-                </a>
-                <div class="collapse" id="sidebarInvoice">
-                    <ul class="nav sub-navbar-nav">
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" href="{{ route('admin.invoices.index') }}">All Invoices</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            {{-- Currencies: super_admin + store_admin only --}}
             @if($isAdminPlus)
+            <li class="menu-title mt-2">Content</li>
+
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.currencies.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Currencies </span>
+                <a class="nav-link" href="{{ route('admin.sliders.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:slider-vertical-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Sliders </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.testimonials.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Testimonials </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.posts.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:document-text-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Blog Posts </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.faqs.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:question-circle-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> FAQs </span>
                 </a>
             </li>
 
@@ -227,36 +232,6 @@
                 <a class="nav-link" href="{{ route('admin.menus.index') }}">
                     <span class="nav-icon"><iconify-icon icon="solar:hamburger-menu-bold-duotone"></iconify-icon></span>
                     <span class="nav-text"> Menus </span>
-                </a>
-            </li>
-
-            <li class="menu-title mt-2">Content</li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.posts.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:document-text-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Blog Posts </span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.sliders.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:slider-vertical-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Sliders </span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.testimonials.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Testimonials </span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.faqs.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:question-circle-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> FAQs </span>
                 </a>
             </li>
 
@@ -293,14 +268,6 @@
                 </a>
             </li>
 
-            {{-- Settings: super_admin + store_admin only --}}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.settings.index') }}">
-                    <span class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone"></iconify-icon></span>
-                    <span class="nav-text"> Settings </span>
-                </a>
-            </li>
-
             <li class="menu-title mt-2">Users</li>
 
             <li class="nav-item">
@@ -316,7 +283,20 @@
                 </a>
             </li>
 
+            <li class="menu-title mt-2">Other</li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.currencies.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Currencies </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.settings.index') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Settings </span>
+                </a>
+            </li>
             @endif {{-- end $isAdminPlus --}}
 
         </ul>
