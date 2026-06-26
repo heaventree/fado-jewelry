@@ -134,13 +134,17 @@
           Ochaka's demo "Queen fashion long sleeve shirt" filler.
     --}}
     @php
-        $searchModalCategories = \App\Models\Category::whereNull('parent_id')->orderBy('sort_order')->limit(7)->get();
-        $searchModalTrending = \App\Models\Product::with('primaryImage')
-            ->where('is_active', true)
-            ->where('is_bestseller', true)
-            ->latest()
-            ->limit(4)
-            ->get();
+        $searchModalCategories = \Illuminate\Support\Facades\Cache::remember('search_modal_categories', 300, function () {
+            return \App\Models\Category::whereNull('parent_id')->orderBy('sort_order')->limit(7)->get();
+        });
+        $searchModalTrending = \Illuminate\Support\Facades\Cache::remember('search_modal_trending', 300, function () {
+            return \App\Models\Product::with('primaryImage')
+                ->where('is_active', true)
+                ->where('is_bestseller', true)
+                ->latest()
+                ->limit(4)
+                ->get();
+        });
     @endphp
     <div class="modal modalCentered fade modal-search" id="search">
         <div class="modal-dialog modal-dialog-centered">

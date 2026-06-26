@@ -49,6 +49,18 @@ class WishlistService
         return array_key_exists($productId, $this->rawSession());
     }
 
+    /** Get all wishlisted product IDs in one query (avoids N+1 in loops). */
+    public function wishlistedIds(): array
+    {
+        if (Auth::check()) {
+            return Wishlist::where('user_id', Auth::id())
+                ->pluck('product_id')
+                ->all();
+        }
+
+        return array_keys($this->rawSession());
+    }
+
     /**
      * Return hydrated wishlist items.
      *

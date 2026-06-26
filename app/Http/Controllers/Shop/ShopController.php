@@ -21,24 +21,29 @@ class ShopController extends Controller
 {
     public function home(): View
     {
+        $limit = (int) Setting::get('new_arrivals_count', 8);
+
         $topCategories = Category::whereNull('parent_id')->orderBy('sort_order')->get();
         $featuredCollections = Collection::limit((int) Setting::get('featured_collections_count', 6))->get();
-        $newArrivals = Product::with(['variants.metal', 'primaryImage', 'images'])
+
+        $productEagerLoad = ['variants.metal', 'primaryImage', 'images' => fn ($q) => $q->orderBy('sort_order')->limit(2)];
+
+        $newArrivals = Product::with($productEagerLoad)
             ->where('is_active', true)
             ->latest()
-            ->limit((int) Setting::get('new_arrivals_count', 8))
+            ->limit($limit)
             ->get();
-        $bestSellers = Product::with(['variants.metal', 'primaryImage', 'images'])
+        $bestSellers = Product::with($productEagerLoad)
             ->where('is_active', true)
             ->where('is_bestseller', true)
             ->latest()
-            ->limit((int) Setting::get('new_arrivals_count', 8))
+            ->limit($limit)
             ->get();
-        $onSale = Product::with(['variants.metal', 'primaryImage', 'images'])
+        $onSale = Product::with($productEagerLoad)
             ->where('is_active', true)
             ->whereHas('variants', fn ($q) => $q->whereNotNull('sale_price_eur')->whereColumn('sale_price_eur', '<', 'price_eur'))
             ->latest()
-            ->limit((int) Setting::get('new_arrivals_count', 8))
+            ->limit($limit)
             ->get();
 
         $featuredProductId = Setting::get('featured_product_id');
@@ -50,7 +55,17 @@ class ShopController extends Controller
         $testimonials = \App\Models\Testimonial::active()->get();
         $posts = \App\Models\Post::published()->take(3)->get();
 
-        return view('shop.home', compact('topCategories', 'featuredCollections', 'newArrivals', 'bestSellers', 'onSale', 'featuredProduct', 'sliders', 'testimonials', 'posts'));
+        $activeCoupon = \App\Models\Coupon::where('is_active', true)
+            ->where(fn($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()))
+            ->first();
+
+        $wishlistedIds = app(\App\Services\WishlistService::class)->wishlistedIds();
+
+        return view('shop.home', compact(
+            'topCategories', 'featuredCollections', 'newArrivals', 'bestSellers',
+            'onSale', 'featuredProduct', 'sliders', 'testimonials', 'posts',
+            'activeCoupon', 'wishlistedIds'
+        ));
     }
 
     public function jewellery(Request $request): View

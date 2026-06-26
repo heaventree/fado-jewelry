@@ -71,10 +71,10 @@
                     <a href="{{ route('shop.category', $cat->slug) }}" class="widget-collection type-space-2 hover-img">
                         <div class="collection_image img-style">
                             @if($cat->banner_image)
-                                <img class="lazyload" src="{{ \Illuminate\Support\Facades\Storage::url($cat->banner_image) }}" data-src="{{ \Illuminate\Support\Facades\Storage::url($cat->banner_image) }}" alt="{{ $cat->name }}">
+                                <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="{{ \Illuminate\Support\Facades\Storage::url($cat->banner_image) }}" alt="{{ $cat->name }}">
                             @else
                                 @php $fb = $catImgFallbacks[$i % count($catImgFallbacks)]; @endphp
-                                <img class="lazyload" src="/images/ochaka/category/{{ $fb }}.jpg" data-src="/images/ochaka/category/{{ $fb }}.jpg" alt="{{ $cat->name }}">
+                                <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="/images/ochaka/category/{{ $fb }}.jpg" alt="{{ $cat->name }}">
                             @endif
                         </div>
                         <p class="collection_name h5 link fw-semibold">{{ $cat->name }}</p>
@@ -101,9 +101,9 @@
             <div class="box-image_V02 type-space-3 hover-img">
                 <a href="{{ route('shop.collection', $col->slug) }}" class="box-image_image img-style">
                     @if($col->banner_image)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($col->banner_image) }}" data-src="{{ \Illuminate\Support\Facades\Storage::url($col->banner_image) }}" alt="{{ $col->name }}" class="lazyload">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="{{ \Illuminate\Support\Facades\Storage::url($col->banner_image) }}" alt="{{ $col->name }}" class="lazyload">
                     @else
-                        <img src="/images/ochaka/section/box-image-{{ $i == 0 ? '8' : '9' }}.jpg" data-src="/images/ochaka/section/box-image-{{ $i == 0 ? '8' : '9' }}.jpg" alt="{{ $col->name }}" class="lazyload">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="/images/ochaka/section/box-image-{{ $i == 0 ? '8' : '9' }}.jpg" alt="{{ $col->name }}" class="lazyload">
                     @endif
                 </a>
                 <div class="box-image_content wow fadeInUp">
@@ -155,7 +155,7 @@
                     data-pagination-lg="4">
                     <div class="swiper-wrapper">
                         @forelse($newArrivals as $product)
-                        @include('shop.partials.home-product-card', ['product' => $product])
+                        @include('shop.partials.home-product-card', ['product' => $product, 'wishlistedIds' => $wishlistedIds])
                         @empty
                         <div class="swiper-slide"><p class="h6 text-center">New arrivals coming soon.</p></div>
                         @endforelse
@@ -171,7 +171,7 @@
                     data-pagination-lg="4">
                     <div class="swiper-wrapper">
                         @forelse($bestSellers as $product)
-                        @include('shop.partials.home-product-card', ['product' => $product])
+                        @include('shop.partials.home-product-card', ['product' => $product, 'wishlistedIds' => $wishlistedIds])
                         @empty
                         <div class="swiper-slide"><p class="h6 text-center">No best sellers marked yet.</p></div>
                         @endforelse
@@ -187,7 +187,7 @@
                     data-pagination-lg="4">
                     <div class="swiper-wrapper">
                         @forelse($onSale as $product)
-                        @include('shop.partials.home-product-card', ['product' => $product, 'showSale' => true])
+                        @include('shop.partials.home-product-card', ['product' => $product, 'showSale' => true, 'wishlistedIds' => $wishlistedIds])
                         @empty
                         <div class="swiper-slide"><p class="h6 text-center">No items on sale right now.</p></div>
                         @endforelse
@@ -202,11 +202,6 @@
 {{-- /Best Seller --}}
 
 {{-- Banner Countdown — Ochaka banner-cd_v01 exact structure --}}
-@php
-    $activeCoupon = \App\Models\Coupon::where('is_active', true)
-        ->where(fn($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()))
-        ->first();
-@endphp
 @if($activeCoupon)
 <section class="themesFlat">
     <div class="banner-cd_v01 flex-md-nowrap">
@@ -226,9 +221,9 @@
         <div class="banner_img">
             @php $saleBannerRaw = \App\Models\Setting::get('sale_banner_image'); @endphp
             @if($saleBannerRaw)
-            <img class="lazyload" src="{{ asset('storage/' . $saleBannerRaw) }}" data-src="{{ asset('storage/' . $saleBannerRaw) }}" alt="On sale">
+            <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="{{ asset('storage/' . $saleBannerRaw) }}" alt="On sale">
             @else
-            <img class="lazyload" src="/images/ochaka/banner/banner-cd-V01.jpg" data-src="/images/ochaka/banner/banner-cd-V01.jpg" alt="On sale">
+            <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="/images/ochaka/banner/banner-cd-V01.jpg" alt="On sale">
             @endif
         </div>
     </div>
@@ -251,7 +246,7 @@
             data-pagination-lg="4">
             <div class="swiper-wrapper">
                 @forelse($newArrivals as $product)
-                @include('shop.partials.home-product-card', ['product' => $product])
+                @include('shop.partials.home-product-card', ['product' => $product, 'wishlistedIds' => $wishlistedIds])
                 @empty
                 <div class="swiper-slide"><p class="h6 text-center">Coming soon.</p></div>
                 @endforelse
@@ -283,13 +278,13 @@
                                 @forelse($featuredProduct->images as $img)
                                 <div class="swiper-slide stagger-item">
                                     <div class="item">
-                                        <img class="lazyload" src="{{ asset($img->path) }}" data-src="{{ asset($img->path) }}" alt="{{ $featuredProduct->name }}">
+                                        <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="{{ asset($img->path) }}" alt="{{ $featuredProduct->name }}">
                                     </div>
                                 </div>
                                 @empty
                                 <div class="swiper-slide stagger-item">
                                     <div class="item">
-                                        <img class="lazyload" src="/images/ochaka/products/jewelry/product-21.jpg" data-src="/images/ochaka/products/jewelry/product-21.jpg" alt="{{ $featuredProduct->name }}">
+                                        <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="/images/ochaka/products/jewelry/product-21.jpg" alt="{{ $featuredProduct->name }}">
                                     </div>
                                 </div>
                                 @endforelse
@@ -301,13 +296,13 @@
                                     @forelse($featuredProduct->images as $img)
                                     <div class="swiper-slide">
                                         <a href="{{ asset($img->path) }}" target="_blank" class="item">
-                                            <img class="tf-image-zoom lazyload" data-zoom="{{ asset($img->path) }}" data-src="{{ asset($img->path) }}" src="{{ asset($img->path) }}" alt="{{ $featuredProduct->name }}">
+                                            <img class="tf-image-zoom lazyload" data-zoom="{{ asset($img->path) }}" data-src="{{ asset($img->path) }}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="{{ $featuredProduct->name }}">
                                         </a>
                                     </div>
                                     @empty
                                     <div class="swiper-slide">
                                         <a href="/images/ochaka/products/jewelry/product-21.jpg" target="_blank" class="item">
-                                            <img class="tf-image-zoom lazyload" data-zoom="/images/ochaka/products/jewelry/product-21.jpg" data-src="/images/ochaka/products/jewelry/product-21.jpg" src="/images/ochaka/products/jewelry/product-21.jpg" alt="{{ $featuredProduct->name }}">
+                                            <img class="tf-image-zoom lazyload" data-zoom="/images/ochaka/products/jewelry/product-21.jpg" data-src="/images/ochaka/products/jewelry/product-21.jpg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="{{ $featuredProduct->name }}">
                                         </a>
                                     </div>
                                     @endforelse
@@ -518,9 +513,9 @@
                     <div class="article-blog type-space-2 hover-img4 wow fadeInLeft" @if(!$loop->first) data-wow-delay="{{ ($loop->index) * 0.1 }}s" @endif>
                         <a href="{{ route('blog.show', $post) }}" class="entry_image img-style4">
                             @if($post->featured_image)
-                                <img src="{{ Storage::url($post->featured_image) }}" data-src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" class="lazyload aspect-ratio-0">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" class="lazyload aspect-ratio-0">
                             @else
-                                <img src="/images/ochaka/blog/blog-11.jpg" data-src="/images/ochaka/blog/blog-11.jpg" alt="{{ $post->title }}" class="lazyload aspect-ratio-0">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="/images/ochaka/blog/blog-11.jpg" alt="{{ $post->title }}" class="lazyload aspect-ratio-0">
                             @endif
                         </a>
                         <div class="entry_tag">

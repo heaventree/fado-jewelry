@@ -4,19 +4,19 @@
     $variantForSale = $product->variants->first(fn ($v) => $v->isOnSale());
     $from = $product->variants->min('price_eur');
     $showSale = $showSale ?? false;
-    $isWishlisted = app(\App\Services\WishlistService::class)->has($product->id);
+    $isWishlisted = isset($wishlistedIds) ? in_array($product->id, $wishlistedIds) : app(\App\Services\WishlistService::class)->has($product->id);
 @endphp
 <div class="swiper-slide">
     <div class="card-product">
         <div class="card-product_wrapper d-flex">
             <a href="{{ route('shop.product', $product) }}" class="product-img">
                 @if($img)
-                    <img class="lazyload img-product" src="{{ asset($img) }}" data-src="{{ asset($img) }}" alt="{{ $product->name }}">
+                    <img class="lazyload img-product" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="{{ asset($img) }}" alt="{{ $product->name }}">
                     @if($img2)
-                    <img class="lazyload img-hover" src="{{ asset($img2) }}" data-src="{{ asset($img2) }}" alt="{{ $product->name }}">
+                    <img class="lazyload img-hover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="{{ asset($img2) }}" alt="{{ $product->name }}">
                     @endif
                 @else
-                    <img class="lazyload img-product" src="/images/ochaka/products/jewelry/product-5.jpg" data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="{{ $product->name }}">
+                    <img class="lazyload img-product" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="/images/ochaka/products/jewelry/product-5.jpg" alt="{{ $product->name }}">
                 @endif
             </a>
             <ul class="product-action_list">
