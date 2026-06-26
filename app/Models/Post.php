@@ -34,6 +34,24 @@ class Post extends Model
             if (empty($post->slug)) {
                 $post->slug = Str::slug($post->title);
             }
+            $post->slug = static::uniqueSlug($post->slug);
         });
+    }
+
+    private static function uniqueSlug(string $base, ?int $excludeId = null): string
+    {
+        $slug = $base ?: 'post';
+        $original = $slug;
+        $counter = 1;
+
+        while (
+            static::where('slug', $slug)
+                ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
+                ->exists()
+        ) {
+            $slug = $original . '-' . $counter++;
+        }
+
+        return $slug;
     }
 }

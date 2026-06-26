@@ -36,9 +36,8 @@ class PostController extends Controller
             'sort_order'     => ['nullable', 'integer', 'min:0'],
         ]);
 
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
-        }
+        $base = !empty($data['slug']) ? $data['slug'] : Str::slug($data['title']);
+        $data['slug'] = $this->uniqueSlug($base);
 
         if ($request->hasFile('featured_image')) {
             $data['featured_image'] = $request->file('featured_image')->store('blog', 'public');
@@ -67,9 +66,8 @@ class PostController extends Controller
             'sort_order'     => ['nullable', 'integer', 'min:0'],
         ]);
 
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
-        }
+        $base = !empty($data['slug']) ? $data['slug'] : Str::slug($data['title']);
+        $data['slug'] = ($base === $post->slug) ? $post->slug : $this->uniqueSlug($base, $post->id);
 
         if ($request->hasFile('featured_image')) {
             $data['featured_image'] = $request->file('featured_image')->store('blog', 'public');
@@ -80,6 +78,23 @@ class PostController extends Controller
         $post->update($data);
 
         return redirect()->route('admin.posts.index')->with('success', 'Post updated.');
+    }
+
+    private function uniqueSlug(string $base, ?int $excludeId = null): string
+    {
+        $slug = $base ?: 'post';
+        $original = $slug;
+        $counter = 1;
+
+        while (
+            Post::where('slug', $slug)
+                ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
+                ->exists()
+        ) {
+            $slug = $original . '-' . $counter++;
+        }
+
+        return $slug;
     }
 
     public function destroy(Post $post): RedirectResponse
