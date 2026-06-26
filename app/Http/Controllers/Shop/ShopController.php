@@ -53,7 +53,7 @@ class ShopController extends Controller
 
         $sliders = \App\Models\Slider::active()->get();
         $testimonials = \App\Models\Testimonial::active()->get();
-        $posts = \App\Models\Post::published()->take(3)->get();
+        $posts = \App\Models\Post::published()->take(9)->get();
 
         $activeCoupon = \App\Models\Coupon::where('is_active', true)
             ->where(fn($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()))

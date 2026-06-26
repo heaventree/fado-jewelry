@@ -505,8 +505,9 @@
             <h1 class="s-title mb-8">Our Blog</h1>
             <p class="s-subtitle h6">Stories, inspiration, and the craft behind FADÓ jewellery</p>
         </div>
-        <div dir="ltr" class="swiper tf-swiper" data-preview="3" data-tablet="3" data-mobile-sm="2" data-mobile="1" data-space-lg="48"
-            data-space-md="32" data-space="12" data-pagination="1" data-pagination-sm="2" data-pagination-md="3" data-pagination-lg="3">
+        <div dir="ltr" class="swiper tf-swiper" data-preview="3" data-tablet="2" data-mobile-sm="1" data-mobile="1" data-space-lg="48"
+            data-space-md="32" data-space="12" data-pagination="1" data-pagination-sm="2" data-pagination-md="3" data-pagination-lg="3"
+            data-auto="true" data-delay="4000" data-loop="true">
             <div class="swiper-wrapper">
                 @foreach($posts as $post)
                 <div class="swiper-slide">
