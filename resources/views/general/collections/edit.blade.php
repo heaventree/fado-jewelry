@@ -159,7 +159,14 @@
             </div>
         </div>
 
-        {{-- Danger zone --}}
+    </div>
+</div>
+</form>
+
+{{-- Delete form — MUST be outside the main edit form to avoid nested form bug --}}
+<div class="row g-3">
+    <div class="col-xl-3 col-lg-4"></div>
+    <div class="col-xl-9 col-lg-8">
         <div class="card mb-4 border-danger-subtle">
             <div class="card-header bg-danger-subtle">
                 <h4 class="card-title mb-0 text-danger">Danger Zone</h4>
@@ -182,10 +189,8 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-</form>
 
 @endsection
 
