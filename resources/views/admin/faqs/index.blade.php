@@ -22,6 +22,16 @@
                     <img src="{{ asset('storage/' . $faqBannerImage) }}" alt="FAQ Banner" class="mt-2 rounded" style="max-height:120px">
                 @endif
             </div>
+            <hr>
+            <p class="fw-semibold text-muted fs-13 mb-2">SEO Settings</p>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Page Title</label>
+                <input type="text" name="faq_meta_title" class="form-control" value="{{ $faqMetaTitle ?? '' }}" maxlength="120" placeholder="Custom title (leave blank for default)">
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Meta Description</label>
+                <textarea name="faq_meta_description" class="form-control" rows="3" maxlength="300" placeholder="Custom description (leave blank for default)">{{ $faqMetaDescription ?? '' }}</textarea>
+            </div>
             <button type="submit" class="btn btn-primary btn-sm">
                 <iconify-icon icon="solar:diskette-bold-duotone" class="me-1"></iconify-icon>
                 Save Settings

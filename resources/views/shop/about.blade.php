@@ -7,8 +7,11 @@
     $storeAddr  = \App\Models\Setting::get('store_address');
 @endphp
 
-@section('title', 'About Us — ' . $storeName)
-@section('meta_description', 'Learn about ' . $storeName . ', a fine Irish jewellery brand handcrafting Claddagh rings, Celtic crosses, and contemporary pieces in sterling silver and gold.')
+@section('title', \App\Models\Setting::get('about_meta_title') ?: 'About Us — ' . $storeName)
+@section('meta_description', \App\Models\Setting::get('about_meta_description') ?: 'Learn about ' . $storeName . ', a fine Irish jewellery brand handcrafting Claddagh rings, Celtic crosses, and contemporary pieces in sterling silver and gold.')
+@if(\App\Models\Setting::get('about_og_image'))
+@section('og_image', asset('storage/' . \App\Models\Setting::get('about_og_image')))
+@endif
 
 @section('content')
         <!-- Page Title -->

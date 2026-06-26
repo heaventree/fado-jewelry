@@ -1,6 +1,10 @@
 @extends('shop.layouts.app')
 
-@section('title', \App\Models\Setting::get('store_name', 'FADÓ Jewellery') . ' — Fine Irish Jewellery')
+@section('title', \App\Models\Setting::get('home_meta_title') ?: \App\Models\Setting::get('store_name', 'FADÓ Jewellery') . ' — Fine Irish Jewellery')
+@section('meta_description', \App\Models\Setting::get('home_meta_description') ?: \App\Models\Setting::get('meta_description', ''))
+@if(\App\Models\Setting::get('home_og_image'))
+@section('og_image', asset('storage/' . \App\Models\Setting::get('home_og_image')))
+@endif
 
 @section('content')
 

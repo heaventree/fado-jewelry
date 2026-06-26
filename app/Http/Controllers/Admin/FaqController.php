@@ -15,8 +15,10 @@ class FaqController extends Controller
     {
         $faqs = Faq::orderBy('sort_order')->get();
         $faqBannerImage = Setting::get('faq_banner_image', '');
+        $faqMetaTitle = Setting::get('faq_meta_title', '');
+        $faqMetaDescription = Setting::get('faq_meta_description', '');
 
-        return view('admin.faqs.index', compact('faqs', 'faqBannerImage'));
+        return view('admin.faqs.index', compact('faqs', 'faqBannerImage', 'faqMetaTitle', 'faqMetaDescription'));
     }
 
     public function create(): View
@@ -72,6 +74,8 @@ class FaqController extends Controller
             $path = $request->file('faq_banner_image_file')->store('pages', 'public');
             Setting::set('faq_banner_image', $path);
         }
+
+        Setting::setMany($request->only(['faq_meta_title', 'faq_meta_description']));
 
         return redirect()->route('admin.faqs.index')->with('success', 'FAQ page settings saved.');
     }

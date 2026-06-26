@@ -11,8 +11,8 @@
     $consultationIntro = \App\Models\Setting::get('consultation_intro_text', 'Whether you have a question about a piece, need help choosing the perfect gift, or want to book a consultation — our team is here to help.');
 @endphp
 
-@section('title', 'Contact Us — ' . $storeName)
-@section('meta_description', 'Get in touch with ' . $storeName . '. Contact us by phone, email or book a consultation.')
+@section('title', \App\Models\Setting::get('contact_meta_title') ?: 'Contact Us — ' . $storeName)
+@section('meta_description', \App\Models\Setting::get('contact_meta_description') ?: 'Get in touch with ' . $storeName . '. Contact us by phone, email or book a consultation.')
 
 @section('content')
         <!-- Page Title -->

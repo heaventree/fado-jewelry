@@ -72,6 +72,8 @@
     </div>
 </div>
 
+@include('admin.pages._seo', ['seoPrefix' => 'home', 'hasOgImage' => true])
+
 <button type="submit" class="btn btn-primary">
     <iconify-icon icon="solar:diskette-bold-duotone" class="me-1"></iconify-icon>
     Save Changes

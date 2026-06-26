@@ -1,6 +1,7 @@
 ﻿@extends('shop.layouts.app')
 
-@section('title', 'FAQ — ' . \App\Models\Setting::get('store_name', 'FADÓ Jewellery'))
+@section('title', \App\Models\Setting::get('faq_meta_title') ?: 'FAQ — ' . \App\Models\Setting::get('store_name', 'FADÓ Jewellery'))
+@section('meta_description', \App\Models\Setting::get('faq_meta_description') ?: '')
 
 @section('content')
         <!-- Page Title -->
