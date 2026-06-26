@@ -42,7 +42,10 @@
                 <label class="form-label fw-semibold">OG Share Image</label>
                 <input type="file" name="{{ $prefix }}_og_image_file" class="form-control" accept="image/*">
                 @if(!empty($settings[$prefix . '_og_image']))
-                    <img src="{{ asset('storage/' . $settings[$prefix . '_og_image']) }}" alt="OG Image" class="mt-2 rounded" style="max-height:120px">
+                    <div class="mt-2">
+                        <img src="{{ asset('storage/' . $settings[$prefix . '_og_image']) }}" alt="OG Image" class="rounded" style="max-height:120px">
+                        <x-file-size :path="$settings[$prefix . '_og_image']" />
+                    </div>
                 @endif
                 <div class="form-text">Recommended: 1200x630px</div>
             </div>

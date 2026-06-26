@@ -30,7 +30,10 @@
             <label class="form-label fw-semibold">Sidebar Banner Image</label>
             <input type="file" name="faq_banner_image_file" class="form-control" accept="image/*">
             @if($settings['faq_banner_image'])
-                <img src="{{ asset('storage/' . $settings['faq_banner_image']) }}" alt="FAQ Banner" class="mt-2 rounded" style="max-height:120px">
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $settings['faq_banner_image']) }}" alt="FAQ Banner" class="rounded" style="max-height:120px">
+                    <x-file-size :path="$settings['faq_banner_image']" />
+                </div>
             @endif
         </div>
     </div>

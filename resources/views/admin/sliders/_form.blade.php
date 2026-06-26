@@ -27,7 +27,10 @@
 <div class="mb-3">
     <label class="form-label fw-semibold">Image{{ $s ? '' : ' *' }}</label>
     @if($s?->image)
-        <div class="mb-2"><img src="{{ Storage::url($s->image) }}" alt="" class="rounded" style="max-height:120px"></div>
+        <div class="mb-2">
+            <img src="{{ Storage::url($s->image) }}" alt="" class="rounded" style="max-height:120px">
+            <x-file-size :path="$s->image" />
+        </div>
     @endif
     <input type="file" name="image" class="form-control" accept="image/*" {{ $s ? '' : 'required' }}>
     <div class="form-text">Recommended: 1920×800px. Max 5MB.</div>

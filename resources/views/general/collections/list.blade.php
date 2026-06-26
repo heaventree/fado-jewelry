@@ -47,6 +47,7 @@
                                         <img src="{{ Storage::url($collection->banner_image) }}"
                                              alt="{{ $collection->name }}"
                                              class="avatar-md object-fit-cover">
+                                        <x-file-size :path="$collection->banner_image" />
                                     @else
                                         <iconify-icon icon="solar:gallery-broken" class="fs-22 text-muted"></iconify-icon>
                                     @endif

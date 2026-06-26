@@ -36,6 +36,7 @@
                         <div class="d-flex align-items-center gap-3 mb-2">
                             @if($user->avatar)
                                 <img src="{{ asset('storage/' . $user->avatar) }}" alt="Avatar" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
+                                <x-file-size :path="$user->avatar" />
                             @else
                                 <div style="width:80px;height:80px;border-radius:50%;background:#e9ecef;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;color:#6c757d;">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}

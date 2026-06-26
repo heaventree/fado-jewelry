@@ -17,6 +17,7 @@
     @if($t?->avatar)
         <div class="mt-2">
             <img src="{{ asset('storage/' . $t->avatar) }}" alt="Avatar" style="max-height:80px; border-radius:50%;">
+            <x-file-size :path="$t->avatar" />
         </div>
     @endif
 </div>

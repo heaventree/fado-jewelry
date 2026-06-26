@@ -55,6 +55,7 @@
                                         <img src="{{ Storage::url($category->banner_image) }}"
                                              alt="{{ $category->name }}"
                                              class="avatar-md object-fit-cover">
+                                        <x-file-size :path="$category->banner_image" />
                                     @else
                                         <iconify-icon icon="solar:gallery-broken" class="fs-22 text-muted"></iconify-icon>
                                     @endif

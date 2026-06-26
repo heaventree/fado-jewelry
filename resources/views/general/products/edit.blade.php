@@ -153,6 +153,9 @@
                     <div class="col-6 col-sm-4 col-md-3">
                         <div class="border rounded p-2 text-center position-relative">
                             <img src="{{ $image->url }}" alt="" class="img-fluid rounded mb-2" style="max-height:120px;object-fit:cover">
+                            @if(file_exists(public_path($image->path)))
+                                <span class="badge bg-light text-muted fw-normal d-block mb-1" style="font-size:11px">{{ round(filesize(public_path($image->path)) / 1024, 1) }} KB</span>
+                            @endif
                             @if($image->is_primary)
                                 <span class="badge bg-success position-absolute top-0 start-0 m-1">Primary</span>
                             @endif

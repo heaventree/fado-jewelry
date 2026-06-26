@@ -25,7 +25,10 @@
         <label class="form-label fw-semibold">Featured Image</label>
         <input type="file" name="featured_image" class="form-control" accept="image/*">
         @if(!empty($post->featured_image))
-        <img src="{{ Storage::url($post->featured_image) }}" alt="Featured" class="mt-2 rounded" style="max-height:120px">
+        <div class="mt-2">
+            <img src="{{ Storage::url($post->featured_image) }}" alt="Featured" class="rounded" style="max-height:120px">
+            <x-file-size :path="$post->featured_image" />
+        </div>
         @endif
     </div>
     <div class="col-md-3">

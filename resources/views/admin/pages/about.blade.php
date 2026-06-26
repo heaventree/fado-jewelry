@@ -30,7 +30,10 @@
             <label class="form-label fw-semibold">Hero Image</label>
             <input type="file" name="about_hero_image_file" class="form-control" accept="image/*">
             @if($settings['about_hero_image'])
-                <img src="{{ asset('storage/' . $settings['about_hero_image']) }}" alt="Hero" class="mt-2 rounded" style="max-height:120px">
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $settings['about_hero_image']) }}" alt="Hero" class="rounded" style="max-height:120px">
+                    <x-file-size :path="$settings['about_hero_image']" />
+                </div>
             @endif
         </div>
         <div class="mb-3">
@@ -59,7 +62,10 @@
                 <label class="form-label fw-semibold">Gallery Image {{ $g }}</label>
                 <input type="file" name="about_gallery_{{ $g }}_file" class="form-control" accept="image/*">
                 @if($settings['about_gallery_' . $g])
-                    <img src="{{ asset('storage/' . $settings['about_gallery_' . $g]) }}" alt="Gallery {{ $g }}" class="mt-2 rounded" style="max-height:120px">
+                    <div class="mt-2">
+                        <img src="{{ asset('storage/' . $settings['about_gallery_' . $g]) }}" alt="Gallery {{ $g }}" class="rounded" style="max-height:120px">
+                        <x-file-size :path="$settings['about_gallery_' . $g]" />
+                    </div>
                 @endif
             </div>
             @endfor

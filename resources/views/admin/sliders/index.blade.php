@@ -37,6 +37,7 @@
                 <tr>
                     <td>
                         <img src="{{ Storage::url($slider->image) }}" alt="" class="rounded" style="width:60px;height:40px;object-fit:cover">
+                        <x-file-size :path="$slider->image" />
                     </td>
                     <td>
                         <span class="fw-semibold">{{ $slider->heading }}</span>

@@ -66,7 +66,10 @@
             <label class="form-label fw-semibold">Sale Banner Image</label>
             <input type="file" name="sale_banner_image_file" class="form-control" accept="image/*">
             @if($settings['sale_banner_image'])
-                <img src="{{ asset('storage/' . $settings['sale_banner_image']) }}" alt="Sale Banner" class="mt-2 rounded" style="max-height:120px">
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $settings['sale_banner_image']) }}" alt="Sale Banner" class="rounded" style="max-height:120px">
+                    <x-file-size :path="$settings['sale_banner_image']" />
+                </div>
             @endif
         </div>
     </div>
