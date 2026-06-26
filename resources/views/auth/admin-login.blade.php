@@ -9,11 +9,8 @@
                         <div class="col-lg-6 py-lg-5">
                             <div class="d-flex flex-column h-100 justify-content-center">
                                 <div class="auth-logo mb-4">
-                                    <a href="{{ route('admin.login') }}" class="logo-dark">
-                                        <img src="/images/logo-dark.png" height="24" alt="logo dark">
-                                    </a>
-                                    <a href="{{ route('admin.login') }}" class="logo-light">
-                                        <img src="/images/logo-light.png" height="24" alt="logo light">
+                                    <a href="{{ route('admin.login') }}">
+                                        <img src="/images/FADO_Green_Transparent.png" height="60" alt="FADÓ Jewellery">
                                     </a>
                                 </div>
 
