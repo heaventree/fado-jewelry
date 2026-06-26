@@ -18,8 +18,14 @@ class SettingController extends Controller
         'orders_email', 'consultation_email',
         'order_email_from_name', 'order_email_from_address',
         'store_lat', 'store_lng',
-        // SEO
+        // SEO & Tracking
         'meta_title', 'meta_description', 'google_analytics_id',
+        'gtm_code', 'fb_pixel_id', 'custom_head_scripts', 'custom_body_scripts',
+        // Per-page SEO
+        'home_meta_title', 'home_meta_description', 'home_og_image',
+        'about_meta_title', 'about_meta_description', 'about_og_image',
+        'faq_meta_title', 'faq_meta_description',
+        'contact_meta_title', 'contact_meta_description',
         // Social
         'facebook_url', 'instagram_url', 'twitter_url',
         // Maintenance

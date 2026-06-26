@@ -159,6 +159,30 @@
                 <div class="form-text">GA4 measurement ID (starts with G-) or Universal Analytics ID (UA-).</div>
                 @error('google_analytics_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
+            <div class="mb-3 mt-3">
+                <label class="form-label fw-semibold">Google Tag Manager ID</label>
+                <input type="text" name="gtm_code"
+                       value="{{ old('gtm_code', $settings['gtm_code'] ?? '') }}"
+                       class="form-control" placeholder="GTM-XXXXXXX" style="max-width:240px">
+                <div class="form-text">Container ID (starts with GTM-).</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Facebook Pixel ID</label>
+                <input type="text" name="fb_pixel_id"
+                       value="{{ old('fb_pixel_id', $settings['fb_pixel_id'] ?? '') }}"
+                       class="form-control" placeholder="123456789012345" style="max-width:240px">
+                <div class="form-text">Numeric Pixel ID from Meta Events Manager.</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Custom Head Scripts</label>
+                <textarea name="custom_head_scripts" rows="4" class="form-control" placeholder="Paste custom HTML/JS to inject before &lt;/head&gt;">{{ old('custom_head_scripts', $settings['custom_head_scripts'] ?? '') }}</textarea>
+                <div class="form-text">Injected before &lt;/head&gt; on every frontend page. Use for additional tracking pixels or meta tags.</div>
+            </div>
+            <div class="mb-0">
+                <label class="form-label fw-semibold">Custom Body Scripts</label>
+                <textarea name="custom_body_scripts" rows="4" class="form-control" placeholder="Paste custom HTML/JS to inject after &lt;body&gt;">{{ old('custom_body_scripts', $settings['custom_body_scripts'] ?? '') }}</textarea>
+                <div class="form-text">Injected after &lt;body&gt; on every frontend page. Use for noscript fallbacks or chat widgets.</div>
+            </div>
         </div>
     </div>
 
