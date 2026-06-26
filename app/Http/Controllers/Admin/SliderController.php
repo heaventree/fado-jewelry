@@ -7,10 +7,12 @@ use App\Models\Slider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\OptimizesImages;
 use Illuminate\View\View;
 
 class SliderController extends Controller
 {
+    use OptimizesImages;
     public function index(): View
     {
         $sliders = Slider::orderBy('sort_order')->get();
@@ -35,7 +37,7 @@ class SliderController extends Controller
             'active'      => ['nullable', 'boolean'],
         ]);
 
-        $data['image']  = $request->file('image')->store('sliders', 'public');
+        $data['image']  = $this->storeOptimizedImage($request->file('image'), 'sliders', 1920, 82);
         $data['active'] = $request->boolean('active');
 
         Slider::create($data);
@@ -62,7 +64,7 @@ class SliderController extends Controller
 
         if ($request->hasFile('image')) {
             Storage::disk('public')->delete($slider->image);
-            $data['image'] = $request->file('image')->store('sliders', 'public');
+            $data['image'] = $this->storeOptimizedImage($request->file('image'), 'sliders', 1920, 82);
         } else {
             unset($data['image']);
         }

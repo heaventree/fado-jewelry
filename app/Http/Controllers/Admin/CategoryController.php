@@ -10,10 +10,12 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Traits\OptimizesImages;
 use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
+    use OptimizesImages;
     public function index(Request $request): View
     {
         $query = Category::with('parent')
@@ -45,7 +47,7 @@ class CategoryController extends Controller
         );
 
         $bannerPath = $request->hasFile('banner_image')
-            ? $request->file('banner_image')->store('categories', 'public')
+            ? $this->storeOptimizedImage($request->file('banner_image'), 'categories', 1600, 82)
             : null;
 
         Category::create([
@@ -87,7 +89,7 @@ class CategoryController extends Controller
             if ($category->banner_image) {
                 Storage::disk('public')->delete($category->banner_image);
             }
-            $bannerPath = $request->file('banner_image')->store('categories', 'public');
+            $bannerPath = $this->storeOptimizedImage($request->file('banner_image'), 'categories', 1600, 82);
         } else {
             $bannerPath = $category->banner_image;
         }

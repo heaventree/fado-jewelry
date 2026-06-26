@@ -10,10 +10,12 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Traits\OptimizesImages;
 use Illuminate\View\View;
 
 class CollectionController extends Controller
 {
+    use OptimizesImages;
     public function index(Request $request): View
     {
         $query = Collection::withCount('products')->orderBy('name');
@@ -39,7 +41,7 @@ class CollectionController extends Controller
         );
 
         $bannerPath = $request->hasFile('banner_image')
-            ? $request->file('banner_image')->store('collections', 'public')
+            ? $this->storeOptimizedImage($request->file('banner_image'), 'collections', 1600, 82)
             : null;
 
         Collection::create([
@@ -75,7 +77,7 @@ class CollectionController extends Controller
             if ($collection->banner_image) {
                 Storage::disk('public')->delete($collection->banner_image);
             }
-            $bannerPath = $request->file('banner_image')->store('collections', 'public');
+            $bannerPath = $this->storeOptimizedImage($request->file('banner_image'), 'collections', 1600, 82);
         } else {
             $bannerPath = $collection->banner_image;
         }

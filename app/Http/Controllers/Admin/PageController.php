@@ -8,12 +8,14 @@ use App\Models\Collection;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Setting;
+use App\Traits\OptimizesImages;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
+    use OptimizesImages;
     private const SEO_SUFFIXES = [
         '_meta_title', '_meta_description', '_focus_keyword', '_keywords',
         '_robots', '_canonical',
@@ -190,7 +192,7 @@ class PageController extends Controller
     private function handleUpload(Request $request, string $fileField, string $settingKey): void
     {
         if ($request->hasFile($fileField)) {
-            $path = $request->file($fileField)->store('pages', 'public');
+            $path = $this->storeOptimizedImage($request->file($fileField), 'pages', 1920, 82);
             Setting::set($settingKey, $path);
         }
     }

@@ -7,10 +7,12 @@ use App\Models\Faq;
 use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Traits\OptimizesImages;
 use Illuminate\View\View;
 
 class FaqController extends Controller
 {
+    use OptimizesImages;
     public function index(): View
     {
         $faqs = Faq::orderBy('sort_order')->get();
@@ -71,7 +73,7 @@ class FaqController extends Controller
     public function updateSettings(Request $request): RedirectResponse
     {
         if ($request->hasFile('faq_banner_image_file')) {
-            $path = $request->file('faq_banner_image_file')->store('pages', 'public');
+            $path = $this->storeOptimizedImage($request->file('faq_banner_image_file'), 'pages', 1600, 82);
             Setting::set('faq_banner_image', $path);
         }
 
