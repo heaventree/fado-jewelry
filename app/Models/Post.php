@@ -24,7 +24,7 @@ class Post extends Model
     public function scopePublished($query)
     {
         return $query->whereNotNull('published_at')
-            ->where('published_at', '<=', now())
+            ->whereDate('published_at', '<=', now())
             ->orderByDesc('published_at');
     }
 
