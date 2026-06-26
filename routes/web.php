@@ -34,6 +34,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\RobotsController;
 
 require __DIR__ . '/auth.php';
 
@@ -42,6 +43,9 @@ Route::get('/', [ShopController::class, 'home'])->name('shop.home');
 
 // Sitemap (public, no auth, outside shop prefix so URL is /sitemap.xml)
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+
+// Robots.txt (dynamic, from settings)
+Route::get('/robots.txt', [RobotsController::class, 'index'])->name('robots');
 
 // ── Shop (customer-facing) routes ─────────────────────────────────────────────
 Route::prefix('/')->name('shop.')->group(function () {
@@ -165,6 +169,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::post('terms', [PageController::class, 'updateTerms'])->name('terms.update');
         Route::get('privacy', [PageController::class, 'privacy'])->name('privacy');
         Route::post('privacy', [PageController::class, 'updatePrivacy'])->name('privacy.update');
+        Route::get('sitemap', [PageController::class, 'sitemap'])->name('sitemap');
+        Route::get('robots', [PageController::class, 'robots'])->name('robots');
+        Route::post('robots', [PageController::class, 'updateRobots'])->name('robots.update');
     });
 
     // Admin user management

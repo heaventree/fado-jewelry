@@ -2,6 +2,9 @@
 
 @section('title', \App\Models\Setting::get('faq_meta_title') ?: 'FAQ — ' . \App\Models\Setting::get('store_name', 'FADÓ Jewellery'))
 @section('meta_description', \App\Models\Setting::get('faq_meta_description') ?: '')
+@section('meta_keywords', \App\Models\Setting::get('faq_keywords', ''))
+@section('meta_robots', \App\Models\Setting::get('faq_robots', 'index, follow'))
+@section('canonical', \App\Models\Setting::get('faq_canonical') ?: url('/faq'))
 
 @section('content')
         <!-- Page Title -->

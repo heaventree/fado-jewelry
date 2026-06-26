@@ -13,6 +13,9 @@
 
 @section('title', \App\Models\Setting::get('contact_meta_title') ?: 'Contact Us — ' . $storeName)
 @section('meta_description', \App\Models\Setting::get('contact_meta_description') ?: 'Get in touch with ' . $storeName . '. Contact us by phone, email or book a consultation.')
+@section('meta_keywords', \App\Models\Setting::get('contact_keywords', ''))
+@section('meta_robots', \App\Models\Setting::get('contact_robots', 'index, follow'))
+@section('canonical', \App\Models\Setting::get('contact_canonical') ?: url('/contact'))
 
 @section('content')
         <!-- Page Title -->

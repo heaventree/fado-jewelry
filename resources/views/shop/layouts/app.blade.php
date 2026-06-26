@@ -19,8 +19,15 @@
     <meta name="author" content="{{ Setting::get('store_name', 'FADÓ Jewellery') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="@yield('meta_description', $defaultDescription)">
-    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
+    <meta name="keywords" content="@yield('meta_keywords', Setting::get('meta_keywords', ''))">
+    <meta name="robots" content="@yield('meta_robots', Setting::get('default_robots', 'index, follow'))">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if(Setting::get('google_site_verification'))
+    <meta name="google-site-verification" content="{{ Setting::get('google_site_verification') }}">
+    @endif
+    @if(Setting::get('bing_site_verification'))
+    <meta name="msvalidate.01" content="{{ Setting::get('bing_site_verification') }}">
+    @endif
     <link rel="canonical" href="@yield('canonical', $canonicalUrl)">
 
     {{-- Open Graph / Twitter Card --}}
@@ -30,7 +37,8 @@
     <meta property="og:url"         content="@yield('canonical', $canonicalUrl)">
     {{-- No dedicated FADO Open Graph share image has been supplied yet, so the favicon is used as a
          non-broken placeholder fallback until one is provided. --}}
-    <meta property="og:image"       content="@yield('og_image', asset('favicon.ico'))">
+    @php $defaultOgImage = Setting::get('default_og_image') ? asset('storage/' . Setting::get('default_og_image')) : asset('favicon.ico'); @endphp
+    <meta property="og:image"       content="@yield('og_image', $defaultOgImage)">
     <meta property="og:site_name"   content="{{ Setting::get('store_name', 'FADÓ Jewellery') }}">
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="@yield('title', $defaultTitle)">

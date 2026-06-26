@@ -16,7 +16,7 @@
             <iconify-icon icon="solar:question-circle-bold-duotone" class="text-primary me-1"></iconify-icon>
             FAQ Page
         </h4>
-        <p class="text-muted mb-0 fs-13">Edit the FAQ page sidebar banner image.</p>
+        <p class="text-muted mb-0 fs-13">Edit the FAQ page sidebar banner image and SEO settings.</p>
     </div>
 </div>
 
@@ -35,6 +35,8 @@
         </div>
     </div>
 </div>
+
+@include('admin.pages._seo', ['seoPrefix' => 'faq', 'hasOgImage' => false])
 
 <button type="submit" class="btn btn-primary">
     <iconify-icon icon="solar:diskette-bold-duotone" class="me-1"></iconify-icon>

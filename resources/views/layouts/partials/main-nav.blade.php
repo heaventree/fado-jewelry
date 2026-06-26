@@ -267,6 +267,18 @@
                     <span class="nav-text"> Privacy Policy </span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.pages.sitemap') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:sitemap-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Sitemap </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.pages.robots') }}">
+                    <span class="nav-icon"><iconify-icon icon="solar:bug-bold-duotone"></iconify-icon></span>
+                    <span class="nav-text"> Robots.txt </span>
+                </a>
+            </li>
 
             <li class="menu-title mt-2">Users</li>
 

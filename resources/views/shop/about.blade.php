@@ -9,6 +9,9 @@
 
 @section('title', \App\Models\Setting::get('about_meta_title') ?: 'About Us — ' . $storeName)
 @section('meta_description', \App\Models\Setting::get('about_meta_description') ?: 'Learn about ' . $storeName . ', a fine Irish jewellery brand handcrafting Claddagh rings, Celtic crosses, and contemporary pieces in sterling silver and gold.')
+@section('meta_keywords', \App\Models\Setting::get('about_keywords', ''))
+@section('meta_robots', \App\Models\Setting::get('about_robots', 'index, follow'))
+@section('canonical', \App\Models\Setting::get('about_canonical') ?: url('/about'))
 @if(\App\Models\Setting::get('about_og_image'))
 @section('og_image', asset('storage/' . \App\Models\Setting::get('about_og_image')))
 @endif

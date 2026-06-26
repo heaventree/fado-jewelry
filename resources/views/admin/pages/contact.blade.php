@@ -16,7 +16,7 @@
             <iconify-icon icon="solar:mailbox-bold-duotone" class="text-primary me-1"></iconify-icon>
             Contact Page
         </h4>
-        <p class="text-muted mb-0 fs-13">Edit the Contact page map coordinates.</p>
+        <p class="text-muted mb-0 fs-13">Edit the Contact page map coordinates and SEO settings.</p>
     </div>
 </div>
 

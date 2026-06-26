@@ -19,13 +19,14 @@ class SettingController extends Controller
         'order_email_from_name', 'order_email_from_address',
         'store_lat', 'store_lng',
         // SEO & Tracking
-        'meta_title', 'meta_description', 'google_analytics_id',
+        'site_name', 'title_separator',
+        'meta_title', 'meta_description', 'meta_keywords',
+        'default_og_image', 'default_robots',
+        'google_site_verification', 'bing_site_verification',
+        'google_analytics_id',
         'gtm_code', 'fb_pixel_id', 'custom_head_scripts', 'custom_body_scripts',
-        // Per-page SEO
-        'home_meta_title', 'home_meta_description', 'home_og_image',
-        'about_meta_title', 'about_meta_description', 'about_og_image',
-        'faq_meta_title', 'faq_meta_description',
-        'contact_meta_title', 'contact_meta_description',
+        // Global SEO extras
+        'robots_txt',
         // Social
         'facebook_url', 'instagram_url', 'twitter_url',
         // Maintenance
@@ -86,8 +87,15 @@ class SettingController extends Controller
             'order_email_from_name'    => ['nullable', 'string', 'max:100'],
             'order_email_from_address' => ['nullable', 'email', 'max:200'],
             // SEO
+            'site_name'          => ['nullable', 'string', 'max:120'],
+            'title_separator'    => ['nullable', 'string', 'max:10'],
             'meta_title'         => ['nullable', 'string', 'max:120'],
             'meta_description'   => ['nullable', 'string', 'max:300'],
+            'meta_keywords'      => ['nullable', 'string', 'max:500'],
+            'default_og_image'   => ['nullable', 'string', 'max:500'],
+            'default_robots'     => ['nullable', 'string', 'max:30'],
+            'google_site_verification' => ['nullable', 'string', 'max:100'],
+            'bing_site_verification'   => ['nullable', 'string', 'max:100'],
             'google_analytics_id' => ['nullable', 'string', 'max:30', 'regex:/^(G-|UA-)[A-Z0-9\-]+$/i'],
             // Social
             'facebook_url'       => ['nullable', 'url', 'max:300'],
@@ -155,6 +163,11 @@ class SettingController extends Controller
             // Consultation
             'consultation_enabled'    => ['nullable', 'boolean'],
             'consultation_intro_text' => ['nullable', 'string', 'max:500'],
+            // Tracking
+            'gtm_code'              => ['nullable', 'string', 'max:30'],
+            'fb_pixel_id'           => ['nullable', 'string', 'max:30'],
+            'custom_head_scripts'   => ['nullable', 'string', 'max:10000'],
+            'custom_body_scripts'   => ['nullable', 'string', 'max:10000'],
         ]);
 
         // Normalise boolean checkboxes

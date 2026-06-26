@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Collection;
+use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Http\Response;
 
@@ -24,7 +25,12 @@ class SitemapController extends Controller
             ->orderBy('name')
             ->get();
 
-        $content = view('sitemap', compact('products', 'categories', 'collections'))->render();
+        $posts = Post::published()
+            ->select('slug', 'updated_at')
+            ->orderBy('published_at', 'desc')
+            ->get();
+
+        $content = view('sitemap', compact('products', 'categories', 'collections', 'posts'))->render();
 
         return response($content, 200, [
             'Content-Type'  => 'application/xml; charset=UTF-8',

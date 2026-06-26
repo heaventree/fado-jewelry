@@ -148,10 +148,25 @@
             <div class="card-header">
                 <h5 class="card-title mb-0 d-flex align-items-center gap-2">
                     <iconify-icon icon="solar:global-bold-duotone" class="text-primary fs-18"></iconify-icon>
-                    SEO &amp; Tracking
+                    Global SEO
                 </h5>
             </div>
             <div class="card-body">
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-8">
+                        <label class="form-label fw-semibold">Site Name</label>
+                        <input type="text" name="site_name"
+                               value="{{ old('site_name', $settings['site_name'] ?? '') }}"
+                               class="form-control" placeholder="FADÓ Jewellery">
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="form-label fw-semibold">Title Separator</label>
+                        <input type="text" name="title_separator"
+                               value="{{ old('title_separator', $settings['title_separator'] ?? '|') }}"
+                               class="form-control" placeholder="|" style="max-width:80px">
+                        <div class="form-text">Used between page title and site name</div>
+                    </div>
+                </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Default Meta Title</label>
                     <input type="text" name="meta_title"
@@ -170,7 +185,56 @@
                     <div class="form-text">Used on pages that don't have their own description. Keep under 160 characters.</div>
                     @error('meta_description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Default Focus Keyword</label>
+                    <input type="text" name="meta_keywords"
+                           value="{{ old('meta_keywords', $settings['meta_keywords'] ?? '') }}"
+                           class="form-control" placeholder="Irish jewellery, Claddagh rings, Celtic crosses">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Default OG Image</label>
+                    <div class="form-text mb-1">Upload via Pages → Home or About (OG Share Image). Current fallback: favicon.ico</div>
+                    <input type="text" name="default_og_image"
+                           value="{{ old('default_og_image', $settings['default_og_image'] ?? '') }}"
+                           class="form-control" placeholder="pages/og-image.jpg">
+                    <div class="form-text">Fallback social share image 1200x630px. Enter storage path or leave blank.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Default Robots</label>
+                    <select name="default_robots" class="form-select" style="max-width:240px">
+                        @php $defRobots = old('default_robots', $settings['default_robots'] ?? 'index, follow'); @endphp
+                        <option value="index, follow" {{ $defRobots === 'index, follow' ? 'selected' : '' }}>index, follow</option>
+                        <option value="noindex, follow" {{ $defRobots === 'noindex, follow' ? 'selected' : '' }}>noindex, follow</option>
+                        <option value="index, nofollow" {{ $defRobots === 'index, nofollow' ? 'selected' : '' }}>index, nofollow</option>
+                        <option value="noindex, nofollow" {{ $defRobots === 'noindex, nofollow' ? 'selected' : '' }}>noindex, nofollow</option>
+                    </select>
+                </div>
                 <hr>
+                <div class="row g-3 mb-0">
+                    <div class="col-sm-6">
+                        <label class="form-label fw-semibold">Google Site Verification</label>
+                        <input type="text" name="google_site_verification"
+                               value="{{ old('google_site_verification', $settings['google_site_verification'] ?? '') }}"
+                               class="form-control" placeholder="google-site-verification content value">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label fw-semibold">Bing Site Verification</label>
+                        <input type="text" name="bing_site_verification"
+                               value="{{ old('bing_site_verification', $settings['bing_site_verification'] ?? '') }}"
+                               class="form-control" placeholder="Bing Webmaster Tools verification code">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:chart-2-bold-duotone" class="text-primary fs-18"></iconify-icon>
+                    Tracking Codes
+                </h5>
+            </div>
+            <div class="card-body">
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Google Analytics ID</label>
                     <input type="text" name="google_analytics_id"
@@ -197,12 +261,12 @@
                 <hr>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Custom Head Scripts</label>
-                    <textarea name="custom_head_scripts" rows="4" class="form-control" placeholder="Paste custom HTML/JS to inject before &lt;/head&gt;">{{ old('custom_head_scripts', $settings['custom_head_scripts'] ?? '') }}</textarea>
+                    <textarea name="custom_head_scripts" rows="4" class="form-control" style="font-family:monospace" placeholder="Paste custom HTML/JS to inject before &lt;/head&gt;">{{ old('custom_head_scripts', $settings['custom_head_scripts'] ?? '') }}</textarea>
                     <div class="form-text">Injected before &lt;/head&gt; on every frontend page.</div>
                 </div>
                 <div class="mb-0">
                     <label class="form-label fw-semibold">Custom Body Scripts</label>
-                    <textarea name="custom_body_scripts" rows="4" class="form-control" placeholder="Paste custom HTML/JS to inject after &lt;body&gt;">{{ old('custom_body_scripts', $settings['custom_body_scripts'] ?? '') }}</textarea>
+                    <textarea name="custom_body_scripts" rows="4" class="form-control" style="font-family:monospace" placeholder="Paste custom HTML/JS to inject after &lt;body&gt;">{{ old('custom_body_scripts', $settings['custom_body_scripts'] ?? '') }}</textarea>
                     <div class="form-text">Injected after &lt;body&gt; on every frontend page.</div>
                 </div>
             </div>

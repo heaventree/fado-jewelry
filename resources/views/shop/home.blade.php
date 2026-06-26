@@ -2,6 +2,9 @@
 
 @section('title', \App\Models\Setting::get('home_meta_title') ?: \App\Models\Setting::get('store_name', 'FADÓ Jewellery') . ' — Fine Irish Jewellery')
 @section('meta_description', \App\Models\Setting::get('home_meta_description') ?: \App\Models\Setting::get('meta_description', ''))
+@section('meta_keywords', \App\Models\Setting::get('home_keywords', ''))
+@section('meta_robots', \App\Models\Setting::get('home_robots', 'index, follow'))
+@section('canonical', \App\Models\Setting::get('home_canonical') ?: url('/'))
 @if(\App\Models\Setting::get('home_og_image'))
 @section('og_image', asset('storage/' . \App\Models\Setting::get('home_og_image')))
 @endif
