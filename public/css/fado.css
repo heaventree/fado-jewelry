@@ -54,11 +54,15 @@
     height: auto !important;
     max-height: none !important;
 }
-/* Logo swap: .logo-default = white logo, .logo-sticky = dark logo.
+/* Logo swap: .logo-default = white logo, .logo-sticky = same image
+   recoloured black via filter (not a separate white-fado-logo-black.png —
+   that asset was missing the "Fine Irish Jewellery" tagline baked into the
+   white version, so reusing one source image keeps them in sync).
    Homepage (header-abs-2): show white logo, swap to dark on sticky.
    Inner pages (bg-off-white): show dark logo always. */
 .logo-site .logo-sticky {
     display: none;
+    filter: brightness(0);
 }
 .header-sticky .logo-site .logo-default {
     display: none;
