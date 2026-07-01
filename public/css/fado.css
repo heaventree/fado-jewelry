@@ -107,12 +107,16 @@
     height: auto !important;
 }
 
-/* ── Homepage blog cards — align "Read more" across the row ─────────────── */
+/* ── Homepage blog cards — align image/heading/description/read-more across the row ── */
 /* .swiper-wrapper is flex with the default align-items:stretch, so each
-   .swiper-slide already matches the tallest slide's height — but styles.css
-   never stretches .article-blog/.blog-content to fill that slide, so a
-   1-line title vs a 2-line title still left the "Read more" link sitting
-   at a different height per card. */
+   .swiper-slide already matches the tallest slide's height, but that alone
+   only equalises the CARD's total height. styles.css clamps .entry_name to
+   2 lines and .text to 3 lines as a MAX, not a reserved minimum, so a
+   1-line title vs a 2-line title (or a short vs long excerpt) still shifted
+   every element below it — description start, and "Read more" — down by a
+   different amount per card. Reserving the full clamped height on both
+   keeps every card's internal layout identical regardless of actual text
+   length. */
 .tf-swiper .article-blog.type-space-2 {
     height: 100%;
 }
@@ -120,6 +124,12 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+}
+.tf-swiper .article-blog.type-space-2 .entry_name {
+    min-height: calc(clamp(26px, 4vw, 32px) * 2);
+}
+.tf-swiper .article-blog.type-space-2 .text {
+    min-height: calc(24px * 3);
 }
 .tf-swiper .article-blog.type-space-2 .tf-btn-line {
     margin-top: auto;
