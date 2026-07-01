@@ -108,7 +108,7 @@
                 <input type="file" id="thumbnail_image" name="thumbnail_image"
                        class="form-control @error('thumbnail_image') is-invalid @enderror"
                        accept="image/*">
-                <div class="form-text">Shown in the "Shop By Categories" tile on the homepage — separate from the banner image above. If left blank, the banner image is used as a fallback. PNG or JPG, max 8 MB. Recommended: 800 × 800 px (square).</div>
+                <div class="form-text">Shown in the "Shop By Categories" tile on the homepage — separate from the banner image above; never falls back to it. If left blank, a generic placeholder is shown instead. PNG or JPG, max 8 MB. Recommended: 800 × 800 px (square).</div>
                 @error('thumbnail_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>

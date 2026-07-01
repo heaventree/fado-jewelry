@@ -58,7 +58,7 @@
                     <iconify-icon id="thumbnail-placeholder" icon="solar:gallery-add-broken" class="fs-48 text-muted"></iconify-icon>
                     <img id="thumbnail-preview-img" src="#" alt="" class="img-fluid d-none w-100" style="height:160px;object-fit:cover">
                 </div>
-                <p class="text-muted fs-12 mb-0">Falls back to the banner image above until one is uploaded.</p>
+                <p class="text-muted fs-12 mb-0">Until uploaded, the homepage tile shows a generic placeholder — it never uses the banner image above.</p>
                 @endif
                 <p class="text-muted fs-12 mb-0">Recommended: 800 × 800 px (square)</p>
             </div>
