@@ -107,13 +107,21 @@
     height: auto !important;
 }
 
-/* ── Blog cards — don't crop non-landscape featured images ──────────────── */
-/* styles.css uses object-fit:cover on a fixed 1.28 (landscape) aspect-ratio
-   box. A featured image uploaded at a different ratio (e.g. a square photo)
-   gets scaled up and cropped hard to fill that frame, making its subject
-   look zoomed-in/larger than photos that already match 1.28. object-fit:
-   contain scales any ratio down to fit without cropping instead — the
-   tradeoff is letterboxing (blank bars) on images that aren't 1.28. */
+/* ── Blog cards — fix broken aspect-ratio + don't crop non-landscape images ── */
+/* The lazyload placeholder gives every blog image `aspect-ratio-0` (aspect-
+   ratio:0 !important, styles.css) so it takes no space before loading. The
+   lazyload JS adds `lazyloaded` once the real photo is in, but never REMOVES
+   `aspect-ratio-0` — so that degenerate ratio stays forced, and the browser
+   falls back to each image's own natural ratio for box sizing instead of the
+   intended 1.28 landscape box. A square (e.g. 540x540) featured image ends
+   up in a literally square box, taller than the other landscape-photo cards.
+   Restoring 1.28 here (higher specificity than the lone .aspect-ratio-0
+   rule) fixes the box shape for every card regardless of load state.
+   object-fit:contain (instead of styles.css's cover) then scales a
+   non-landscape photo down to fit that box without cropping/zooming it. */
+.article-blog .entry_image img.aspect-ratio-0 {
+    aspect-ratio: 1.28 !important;
+}
 .article-blog .entry_image img {
     object-fit: contain;
     background-color: var(--white, #fff);
