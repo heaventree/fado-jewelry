@@ -107,6 +107,18 @@
     height: auto !important;
 }
 
+/* ── Blog cards — don't crop non-landscape featured images ──────────────── */
+/* styles.css uses object-fit:cover on a fixed 1.28 (landscape) aspect-ratio
+   box. A featured image uploaded at a different ratio (e.g. a square photo)
+   gets scaled up and cropped hard to fill that frame, making its subject
+   look zoomed-in/larger than photos that already match 1.28. object-fit:
+   contain scales any ratio down to fit without cropping instead — the
+   tradeoff is letterboxing (blank bars) on images that aren't 1.28. */
+.article-blog .entry_image img {
+    object-fit: contain;
+    background-color: var(--white, #fff);
+}
+
 /* ── Homepage blog cards — align image/heading/description/read-more across the row ── */
 /* .swiper-wrapper is flex with the default align-items:stretch, so each
    .swiper-slide already matches the tallest slide's height, but that alone
