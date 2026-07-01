@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="140 60 520 520">
+<g fill="none" stroke="#044705" stroke-width="14" stroke-linecap="round">
+<path d="M330 120 L260 160 Q270 240 330 300"/>
+<path d="M470 120 L400 140 L400 300 Q430 210 470 120"/>
+<line x1="395" y1="90" x2="395" y2="330"/>
+</g>
+<g fill="#044705">
+<circle cx="250" cy="380" r="16"/>
+<circle cx="340" cy="380" r="16"/>
+<circle cx="450" cy="380" r="16"/>
+<circle cx="540" cy="380" r="16"/>
+<path d="M170 430 Q400 500 630 430 Q560 520 240 520 Z"/>
+</g>
+<path d="M260 500 Q360 470 450 505 Q520 530 580 510" fill="none" stroke="#044705" stroke-width="14"/>
+<path d="M330 520 Q420 490 520 540" fill="none" stroke="#044705" stroke-width="14"/>
+</svg>
