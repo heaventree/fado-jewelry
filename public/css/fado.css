@@ -84,6 +84,13 @@
 .header-abs-2:not(.header-sticky) .nav-icon-item {
     color: #fff !important;
 }
+/* styles.css hardcodes .item-link .icon (the Jewellery/Collections dropdown
+   caret) to var(--black) regardless of the link's own colour, so it stayed
+   invisible against the dark hero even after the link text above went
+   white. */
+.header-abs-2:not(.header-sticky) .item-link .icon {
+    color: #fff !important;
+}
 .header-abs-2:not(.header-sticky) .btn-mobile-menu span,
 .header-abs-2:not(.header-sticky) .btn-mobile-menu span::before,
 .header-abs-2:not(.header-sticky) .btn-mobile-menu span::after {
