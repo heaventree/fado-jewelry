@@ -50,12 +50,17 @@ class CategoryController extends Controller
             ? $this->storeOptimizedImage($request->file('banner_image'), 'categories', 1600, 82)
             : null;
 
+        $thumbnailPath = $request->hasFile('thumbnail_image')
+            ? $this->storeOptimizedImage($request->file('thumbnail_image'), 'categories', 800, 82)
+            : null;
+
         Category::create([
             'name'               => $request->input('name'),
             'slug'               => $slug,
             'parent_id'          => $request->input('parent_id') ?: null,
             'sort_order'         => (int) $request->input('sort_order', 0),
             'banner_image'       => $bannerPath,
+            'thumbnail_image'    => $thumbnailPath,
             'banner_title'       => $request->input('banner_title'),
             'banner_description' => $request->input('banner_description'),
         ]);
@@ -94,6 +99,18 @@ class CategoryController extends Controller
             $bannerPath = $category->banner_image;
         }
 
+        if ($request->boolean('remove_thumbnail') && $category->thumbnail_image) {
+            Storage::disk('public')->delete($category->thumbnail_image);
+            $thumbnailPath = null;
+        } elseif ($request->hasFile('thumbnail_image')) {
+            if ($category->thumbnail_image) {
+                Storage::disk('public')->delete($category->thumbnail_image);
+            }
+            $thumbnailPath = $this->storeOptimizedImage($request->file('thumbnail_image'), 'categories', 800, 82);
+        } else {
+            $thumbnailPath = $category->thumbnail_image;
+        }
+
         // Prevent a category from being its own parent
         $parentId = $request->input('parent_id') ?: null;
         if ($parentId == $category->id) {
@@ -106,6 +123,7 @@ class CategoryController extends Controller
             'parent_id'          => $parentId,
             'sort_order'         => (int) $request->input('sort_order', 0),
             'banner_image'       => $bannerPath,
+            'thumbnail_image'    => $thumbnailPath,
             'banner_title'       => $request->input('banner_title'),
             'banner_description' => $request->input('banner_description'),
         ]);
@@ -122,6 +140,9 @@ class CategoryController extends Controller
 
         if ($category->banner_image) {
             Storage::disk('public')->delete($category->banner_image);
+        }
+        if ($category->thumbnail_image) {
+            Storage::disk('public')->delete($category->thumbnail_image);
         }
 
         $category->delete();

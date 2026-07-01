@@ -70,8 +70,11 @@
                 <div class="swiper-slide">
                     <a href="{{ route('shop.category', $cat->slug) }}" class="widget-collection type-space-2 hover-img">
                         <div class="collection_image img-style">
-                            @if($cat->banner_image)
-                                <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="{{ \Illuminate\Support\Facades\Storage::url($cat->banner_image) }}" alt="{{ $cat->name }}">
+                            @if($cat->thumbnail_image ?? $cat->banner_image)
+                                {{-- thumbnail_image is the dedicated homepage tile image; banner_image
+                                     (the category page hero) is only a fallback for categories that
+                                     haven't had a thumbnail uploaded yet. --}}
+                                <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="{{ \Illuminate\Support\Facades\Storage::url($cat->thumbnail_image ?? $cat->banner_image) }}" alt="{{ $cat->name }}">
                             @else
                                 @php $fb = $catImgFallbacks[$i % count($catImgFallbacks)]; @endphp
                                 <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="/images/ochaka/category/{{ $fb }}.jpg" alt="{{ $cat->name }}">

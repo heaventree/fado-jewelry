@@ -15,6 +15,7 @@ class Category extends Model
         'parent_id',
         'sort_order',
         'banner_image',
+        'thumbnail_image',
         'banner_title',
         'banner_description',
     ];

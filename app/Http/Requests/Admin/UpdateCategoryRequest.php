@@ -20,6 +20,8 @@ class UpdateCategoryRequest extends FormRequest
             'sort_order'         => ['nullable', 'integer', 'min:0'],
             'banner_image'       => ['nullable', 'image', 'max:8192'],
             'remove_banner'      => ['nullable', 'boolean'],
+            'thumbnail_image'    => ['nullable', 'image', 'max:8192'],
+            'remove_thumbnail'   => ['nullable', 'boolean'],
             'banner_title'       => ['nullable', 'string', 'max:255'],
             'banner_description' => ['nullable', 'string', 'max:1000'],
         ];

@@ -37,6 +37,33 @@
             </div>
         </div>
 
+        {{-- Current / preview thumbnail --}}
+        <div class="card mb-3">
+            <div class="card-header"><h4 class="card-title mb-0">Homepage Thumbnail</h4></div>
+            <div class="card-body text-center">
+                @if($category->thumbnail_image)
+                <div id="thumbnail-preview-wrap" class="rounded overflow-hidden mb-2" style="height:160px">
+                    <img id="thumbnail-preview-img"
+                         src="{{ Storage::url($category->thumbnail_image) }}"
+                         alt="{{ $category->name }}"
+                         class="img-fluid w-100" style="height:160px;object-fit:cover">
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" name="remove_thumbnail" value="1" id="remove_thumbnail">
+                    <label class="form-check-label text-danger fs-12" for="remove_thumbnail">Remove thumbnail image</label>
+                </div>
+                @else
+                <div id="thumbnail-preview-wrap" class="rounded bg-light-subtle d-flex align-items-center justify-content-center overflow-hidden mb-2"
+                     style="height:160px">
+                    <iconify-icon id="thumbnail-placeholder" icon="solar:gallery-add-broken" class="fs-48 text-muted"></iconify-icon>
+                    <img id="thumbnail-preview-img" src="#" alt="" class="img-fluid d-none w-100" style="height:160px;object-fit:cover">
+                </div>
+                <p class="text-muted fs-12 mb-0">Falls back to the banner image above until one is uploaded.</p>
+                @endif
+                <p class="text-muted fs-12 mb-0">Recommended: 800 × 800 px (square)</p>
+            </div>
+        </div>
+
         {{-- Product count info --}}
         <div class="card mb-3">
             <div class="card-body text-center py-3">
@@ -127,6 +154,18 @@
                        accept="image/*">
                 <div class="form-text">Full-width hero banner for the category page. PNG or JPG, max 8 MB. Recommended: 1600 × 500 px.</div>
                 @error('banner_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+
+        {{-- Thumbnail image upload --}}
+        <div class="card mb-3">
+            <div class="card-header"><h4 class="card-title mb-0">{{ $category->thumbnail_image ? 'Replace' : 'Upload' }} Homepage Thumbnail</h4></div>
+            <div class="card-body">
+                <input type="file" id="thumbnail_image" name="thumbnail_image"
+                       class="form-control @error('thumbnail_image') is-invalid @enderror"
+                       accept="image/*">
+                <div class="form-text">Shown in the "Shop By Categories" tile on the homepage — separate from the banner image above. PNG or JPG, max 8 MB. Recommended: 800 × 800 px (square).</div>
+                @error('thumbnail_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
 
@@ -221,6 +260,21 @@
         reader.onload = function (e) {
             const img = document.getElementById('banner-preview-img');
             const placeholder = document.getElementById('banner-placeholder');
+            img.src = e.target.result;
+            img.classList.remove('d-none');
+            if (placeholder) placeholder.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Thumbnail image live preview on file select
+    document.getElementById('thumbnail_image').addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const img = document.getElementById('thumbnail-preview-img');
+            const placeholder = document.getElementById('thumbnail-placeholder');
             img.src = e.target.result;
             img.classList.remove('d-none');
             if (placeholder) placeholder.classList.add('d-none');
