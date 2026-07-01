@@ -1,0 +1,51 @@
+name: Deploy to 20i
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install JS dependencies and build assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to 20i
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.DEPLOY_20I_HOST }}
+          username: ${{ secrets.DEPLOY_20I_USERNAME }}
+          password: ${{ secrets.DEPLOY_20I_PASSWORD }}
+          protocol: ftps
+          server-dir: ${{ secrets.DEPLOY_20I_REMOTE_DIR }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/tests/**
+            **/.env
+            **/.env.example
+
+      # Migrations, seeders, and cache warm-up still run manually via 20i SSH
+      # per the checklist in CLAUDE.md — this workflow only syncs built files.

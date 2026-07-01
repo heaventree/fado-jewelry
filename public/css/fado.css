@@ -72,15 +72,27 @@
 .bg-off-white .logo-site .logo-sticky {
     display: block;
 }
-/* Homepage overlay header — white nav text + icons over dark hero */
-.header-abs-2 .item-link,
-.header-abs-2 .nav-icon-item {
+/* Homepage overlay header — white nav text + icons over dark hero.
+   Scoped to :not(.header-sticky) because header-sticky flips the header's
+   background to solid white (styles.css) — without this guard the nav
+   text/icons/hamburger stayed forced white and vanished against it. */
+.header-abs-2:not(.header-sticky) .item-link,
+.header-abs-2:not(.header-sticky) .nav-icon-item {
     color: #fff !important;
 }
-.header-abs-2 .btn-mobile-menu span,
-.header-abs-2 .btn-mobile-menu span::before,
-.header-abs-2 .btn-mobile-menu span::after {
+.header-abs-2:not(.header-sticky) .btn-mobile-menu span,
+.header-abs-2:not(.header-sticky) .btn-mobile-menu span::before,
+.header-abs-2:not(.header-sticky) .btn-mobile-menu span::after {
     background-color: #fff;
+}
+.header-abs-2.header-sticky .item-link,
+.header-abs-2.header-sticky .nav-icon-item {
+    color: var(--black) !important;
+}
+.header-abs-2.header-sticky .btn-mobile-menu span,
+.header-abs-2.header-sticky .btn-mobile-menu span::before,
+.header-abs-2.header-sticky .btn-mobile-menu span::after {
+    background-color: var(--black);
 }
 .canvas-header .logo-site img {
     width: 150px !important;
