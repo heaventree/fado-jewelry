@@ -35,10 +35,12 @@ class SliderController extends Controller
             'image'       => ['required', 'image', 'max:5120'],
             'sort_order'  => ['nullable', 'integer', 'min:0'],
             'active'      => ['nullable', 'boolean'],
+            'image_quality' => ['nullable', 'in:high,balanced,small'],
         ]);
 
-        $data['image']  = $this->storeOptimizedImage($request->file('image'), 'sliders', 1920, 82);
+        $data['image']  = $this->storeImageWithQuality($request->file('image'), 'sliders', $request->input('image_quality'), 1920, 82);
         $data['active'] = $request->boolean('active');
+        unset($data['image_quality']);
 
         Slider::create($data);
 
@@ -60,16 +62,18 @@ class SliderController extends Controller
             'image'       => ['nullable', 'image', 'max:5120'],
             'sort_order'  => ['nullable', 'integer', 'min:0'],
             'active'      => ['nullable', 'boolean'],
+            'image_quality' => ['nullable', 'in:high,balanced,small'],
         ]);
 
         if ($request->hasFile('image')) {
             Storage::disk('public')->delete($slider->image);
-            $data['image'] = $this->storeOptimizedImage($request->file('image'), 'sliders', 1920, 82);
+            $data['image'] = $this->storeImageWithQuality($request->file('image'), 'sliders', $request->input('image_quality'), 1920, 82);
         } else {
             unset($data['image']);
         }
 
         $data['active'] = $request->boolean('active');
+        unset($data['image_quality']);
         $slider->update($data);
 
         return redirect()->route('admin.sliders.index')->with('success', 'Slide updated.');

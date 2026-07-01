@@ -41,7 +41,7 @@ class CollectionController extends Controller
         );
 
         $bannerPath = $request->hasFile('banner_image')
-            ? $this->storeOptimizedImage($request->file('banner_image'), 'collections', 1600, 82)
+            ? $this->storeImageWithQuality($request->file('banner_image'), 'collections', $request->input('image_quality'), 1600, 82)
             : null;
 
         Collection::create([
@@ -77,7 +77,7 @@ class CollectionController extends Controller
             if ($collection->banner_image) {
                 Storage::disk('public')->delete($collection->banner_image);
             }
-            $bannerPath = $this->storeOptimizedImage($request->file('banner_image'), 'collections', 1600, 82);
+            $bannerPath = $this->storeImageWithQuality($request->file('banner_image'), 'collections', $request->input('image_quality'), 1600, 82);
         } else {
             $bannerPath = $collection->banner_image;
         }

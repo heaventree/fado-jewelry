@@ -36,14 +36,16 @@ class PostController extends Controller
             'author'         => ['nullable', 'string', 'max:100'],
             'published_at'   => ['nullable', 'date'],
             'sort_order'     => ['nullable', 'integer', 'min:0'],
+            'image_quality'  => ['nullable', 'in:high,balanced,small'],
         ]);
 
         $base = !empty($data['slug']) ? $data['slug'] : Str::slug($data['title']);
         $data['slug'] = $this->uniqueSlug($base);
 
         if ($request->hasFile('featured_image')) {
-            $data['featured_image'] = $this->storeOptimizedImage($request->file('featured_image'), 'blog', 1200, 82);
+            $data['featured_image'] = $this->storeImageWithQuality($request->file('featured_image'), 'blog', $request->input('image_quality'), 1200, 82);
         }
+        unset($data['image_quality']);
 
         Post::create($data);
 
@@ -66,16 +68,18 @@ class PostController extends Controller
             'author'         => ['nullable', 'string', 'max:100'],
             'published_at'   => ['nullable', 'date'],
             'sort_order'     => ['nullable', 'integer', 'min:0'],
+            'image_quality'  => ['nullable', 'in:high,balanced,small'],
         ]);
 
         $base = !empty($data['slug']) ? $data['slug'] : Str::slug($data['title']);
         $data['slug'] = ($base === $post->slug) ? $post->slug : $this->uniqueSlug($base, $post->id);
 
         if ($request->hasFile('featured_image')) {
-            $data['featured_image'] = $this->storeOptimizedImage($request->file('featured_image'), 'blog', 1200, 82);
+            $data['featured_image'] = $this->storeImageWithQuality($request->file('featured_image'), 'blog', $request->input('image_quality'), 1200, 82);
         } else {
             unset($data['featured_image']);
         }
+        unset($data['image_quality']);
 
         $post->update($data);
 

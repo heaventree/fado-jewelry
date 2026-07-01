@@ -113,6 +113,13 @@
             </div>
         </div>
 
+        {{-- Image quality — applies to banner and/or thumbnail uploaded above --}}
+        <div class="card mb-3">
+            <div class="card-body">
+                @include('general.partials.image-quality-select')
+            </div>
+        </div>
+
         {{-- Banner overlay text — Sheila Fleet style --}}
         <div class="card mb-3">
             <div class="card-header">

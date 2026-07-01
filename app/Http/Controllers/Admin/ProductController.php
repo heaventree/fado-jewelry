@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductSize;
 use App\Models\ProductVariant;
+use App\Traits\OptimizesImages;
 use Database\Seeders\RingSizeSeeder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,6 +23,8 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
+    use OptimizesImages;
+
     public function index(Request $request): View
     {
         $query = Product::with(['primaryImage', 'variants', 'categories'])
@@ -71,7 +74,7 @@ class ProductController extends Controller
 
         $this->syncVariants($product, $request->input('variants', []));
         $this->syncSizes($product, $request->input('sizes', []));
-        $this->uploadImages($product, $request->file('images', []));
+        $this->uploadImages($product, $request->file('images', []), $request->input('image_quality'));
 
         return redirect()->route('admin.products.index')
             ->with('success', "Product \"{$product->name}\" created.");
@@ -117,7 +120,7 @@ class ProductController extends Controller
 
         $this->syncVariants($product, $request->input('variants', []));
         $this->syncSizes($product, $request->input('sizes', []));
-        $this->uploadImages($product, $request->file('images', []));
+        $this->uploadImages($product, $request->file('images', []), $request->input('image_quality'));
 
         return redirect()->route('admin.products.edit', $product)
             ->with('success', "Product \"{$product->name}\" updated.");
@@ -212,13 +215,13 @@ class ProductController extends Controller
             ->delete();
     }
 
-    private function uploadImages(Product $product, array $files): void
+    private function uploadImages(Product $product, array $files, ?string $qualityLevel = null): void
     {
         $hasPrimary = $product->images()->where('is_primary', true)->exists();
         $sortOrder  = $product->images()->max('sort_order') ?? 0;
 
         foreach ($files as $file) {
-            $path = $file->store("products/{$product->id}", 'public');
+            $path = $this->storeImageWithQuality($file, "products/{$product->id}", $qualityLevel, 1600, 82);
             ProductImage::create([
                 'product_id' => $product->id,
                 'path'       => $path,

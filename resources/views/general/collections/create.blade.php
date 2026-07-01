@@ -92,6 +92,7 @@
                     Recommended: <strong>1600 × 500 px</strong> (wide landscape).
                 </div>
                 @error('banner_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                @include('general.partials.image-quality-select')
             </div>
         </div>
 

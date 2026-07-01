@@ -47,11 +47,11 @@ class CategoryController extends Controller
         );
 
         $bannerPath = $request->hasFile('banner_image')
-            ? $this->storeOptimizedImage($request->file('banner_image'), 'categories', 1600, 82)
+            ? $this->storeImageWithQuality($request->file('banner_image'), 'categories', $request->input('image_quality'), 1600, 82)
             : null;
 
         $thumbnailPath = $request->hasFile('thumbnail_image')
-            ? $this->storeOptimizedImage($request->file('thumbnail_image'), 'categories', 800, 82)
+            ? $this->storeImageWithQuality($request->file('thumbnail_image'), 'categories', $request->input('image_quality'), 800, 82)
             : null;
 
         Category::create([
@@ -94,7 +94,7 @@ class CategoryController extends Controller
             if ($category->banner_image) {
                 Storage::disk('public')->delete($category->banner_image);
             }
-            $bannerPath = $this->storeOptimizedImage($request->file('banner_image'), 'categories', 1600, 82);
+            $bannerPath = $this->storeImageWithQuality($request->file('banner_image'), 'categories', $request->input('image_quality'), 1600, 82);
         } else {
             $bannerPath = $category->banner_image;
         }
@@ -106,7 +106,7 @@ class CategoryController extends Controller
             if ($category->thumbnail_image) {
                 Storage::disk('public')->delete($category->thumbnail_image);
             }
-            $thumbnailPath = $this->storeOptimizedImage($request->file('thumbnail_image'), 'categories', 800, 82);
+            $thumbnailPath = $this->storeImageWithQuality($request->file('thumbnail_image'), 'categories', $request->input('image_quality'), 800, 82);
         } else {
             $thumbnailPath = $category->thumbnail_image;
         }

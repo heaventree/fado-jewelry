@@ -18,6 +18,7 @@ class UpdateCollectionRequest extends FormRequest
             'slug'               => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9\-]+$/'],
             'banner_image'       => ['nullable', 'image', 'max:8192'],
             'remove_banner'      => ['nullable', 'boolean'],
+            'image_quality'      => ['nullable', 'in:high,balanced,small'],
             'banner_title'       => ['nullable', 'string', 'max:255'],
             'banner_description' => ['nullable', 'string', 'max:1000'],
         ];

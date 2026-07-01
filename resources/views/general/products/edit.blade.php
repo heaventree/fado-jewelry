@@ -183,6 +183,7 @@
                 <input type="file" name="images[]" id="images" class="form-control" multiple accept="image/*">
                 <div class="form-text">PNG, JPG, WebP — max 5 MB each.</div>
                 @error('images.*')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                @include('general.partials.image-quality-select')
             </div>
         </div>
 

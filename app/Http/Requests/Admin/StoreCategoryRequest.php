@@ -20,6 +20,7 @@ class StoreCategoryRequest extends FormRequest
             'sort_order'         => ['nullable', 'integer', 'min:0'],
             'banner_image'       => ['nullable', 'image', 'max:8192'],
             'thumbnail_image'    => ['nullable', 'image', 'max:8192'],
+            'image_quality'      => ['nullable', 'in:high,balanced,small'],
             'banner_title'       => ['nullable', 'string', 'max:255'],
             'banner_description' => ['nullable', 'string', 'max:1000'],
         ];

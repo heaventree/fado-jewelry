@@ -25,6 +25,7 @@
                     </div>
                 @endif
             </div>
+            @include('general.partials.image-quality-select')
             <hr>
             <p class="fw-semibold text-muted fs-13 mb-2">SEO Settings</p>
             <div class="mb-3">

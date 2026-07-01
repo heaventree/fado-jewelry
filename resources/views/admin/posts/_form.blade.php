@@ -31,6 +31,9 @@
         </div>
         @endif
     </div>
+    <div class="col-md-2">
+        @include('general.partials.image-quality-select')
+    </div>
     <div class="col-md-3">
         <label class="form-label fw-semibold">Author</label>
         <input type="text" name="author" class="form-control" value="{{ old('author', $post->author ?? '') }}" maxlength="100">

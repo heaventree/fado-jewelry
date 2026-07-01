@@ -35,6 +35,9 @@
     <input type="file" name="image" class="form-control" accept="image/*" {{ $s ? '' : 'required' }}>
     <div class="form-text">Recommended: 1920×800px. Max 5MB.</div>
 </div>
+<div class="mb-3">
+    @include('general.partials.image-quality-select')
+</div>
 <div class="mb-3 form-check form-switch">
     <input class="form-check-input" type="checkbox" name="active" id="active" value="1"
            {{ old('active', $s?->active ?? true) ? 'checked' : '' }}>

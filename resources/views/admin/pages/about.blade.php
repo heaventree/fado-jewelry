@@ -40,6 +40,10 @@
             <label class="form-label fw-semibold">Page Heading</label>
             <input type="text" name="about_heading" class="form-control" value="{{ $settings['about_heading'] }}">
         </div>
+        <div class="mb-0">
+            {{-- Applies to every image uploaded on this page (hero, gallery, OG image) --}}
+            @include('general.partials.image-quality-select')
+        </div>
     </div>
 </div>
 

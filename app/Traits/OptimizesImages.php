@@ -50,4 +50,20 @@ trait OptimizesImages
 
         return $filename;
     }
+
+    /**
+     * Resolves the admin's chosen "Image Quality" (high/balanced/small) against
+     * a base max width + quality, then stores the optimized image. "balanced"
+     * keeps the base values (i.e. prior default behavior) unchanged.
+     */
+    protected function storeImageWithQuality(UploadedFile $file, string $folder, ?string $qualityLevel, int $baseMaxWidth, int $baseQuality = 82): string
+    {
+        [$maxWidth, $quality] = match ($qualityLevel) {
+            'high'  => [$baseMaxWidth, 95],
+            'small' => [(int) round($baseMaxWidth * 0.6), 60],
+            default => [$baseMaxWidth, $baseQuality],
+        };
+
+        return $this->storeOptimizedImage($file, $folder, $maxWidth, $quality);
+    }
 }

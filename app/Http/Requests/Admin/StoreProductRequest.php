@@ -35,6 +35,7 @@ class StoreProductRequest extends FormRequest
             'sizes.*.stock'             => ['nullable', 'integer', 'min:0'],
             'images'                    => ['nullable', 'array'],
             'images.*'                  => ['image', 'max:5120'],
+            'image_quality'             => ['nullable', 'in:high,balanced,small'],
         ];
     }
 }

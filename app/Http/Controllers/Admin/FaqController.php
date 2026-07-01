@@ -72,8 +72,10 @@ class FaqController extends Controller
 
     public function updateSettings(Request $request): RedirectResponse
     {
+        $request->validate(['image_quality' => ['nullable', 'in:high,balanced,small']]);
+
         if ($request->hasFile('faq_banner_image_file')) {
-            $path = $this->storeOptimizedImage($request->file('faq_banner_image_file'), 'pages', 1600, 82);
+            $path = $this->storeImageWithQuality($request->file('faq_banner_image_file'), 'pages', $request->input('image_quality'), 1600, 82);
             Setting::set('faq_banner_image', $path);
         }
 

@@ -72,6 +72,10 @@
                 </div>
             @endif
         </div>
+        <div class="mb-0">
+            {{-- Applies to the Sale Banner and the OG Share Image below --}}
+            @include('general.partials.image-quality-select')
+        </div>
     </div>
 </div>
 

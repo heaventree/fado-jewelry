@@ -192,7 +192,7 @@ class PageController extends Controller
     private function handleUpload(Request $request, string $fileField, string $settingKey): void
     {
         if ($request->hasFile($fileField)) {
-            $path = $this->storeOptimizedImage($request->file($fileField), 'pages', 1920, 82);
+            $path = $this->storeImageWithQuality($request->file($fileField), 'pages', $request->input('image_quality'), 1920, 82);
             Setting::set($settingKey, $path);
         }
     }
