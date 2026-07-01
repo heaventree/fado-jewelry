@@ -37,7 +37,7 @@ jobs:
           server: ${{ secrets.DEPLOY_20I_HOST }}
           username: ${{ secrets.DEPLOY_20I_USERNAME }}
           password: ${{ secrets.DEPLOY_20I_PASSWORD }}
-          protocol: ftps
+          protocol: ftp
           server-dir: ${{ secrets.DEPLOY_20I_REMOTE_DIR }}
           exclude: |
             **/.git*
