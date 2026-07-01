@@ -3,10 +3,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "deploy:20i": "node scripts/deploy-20i.mjs"
   },
   "devDependencies": {
     "axios": "^1.11.0",
+    "basic-ftp": "^5.0.5",
     "concurrently": "^9.0.1",
     "laravel-vite-plugin": "^2.0.0",
     "sass": "1.77.8",
