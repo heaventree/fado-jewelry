@@ -107,6 +107,24 @@
     height: auto !important;
 }
 
+/* ── Homepage blog cards — align "Read more" across the row ─────────────── */
+/* .swiper-wrapper is flex with the default align-items:stretch, so each
+   .swiper-slide already matches the tallest slide's height — but styles.css
+   never stretches .article-blog/.blog-content to fill that slide, so a
+   1-line title vs a 2-line title still left the "Read more" link sitting
+   at a different height per card. */
+.tf-swiper .article-blog.type-space-2 {
+    height: 100%;
+}
+.tf-swiper .article-blog.type-space-2 .blog-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+.tf-swiper .article-blog.type-space-2 .tf-btn-line {
+    margin-top: auto;
+}
+
 /* ── Hero slider — full viewport height ─────────────────────────────────── */
 /* Ochaka's CSS only defines breakpoint heights that REDUCE from a base.
    We set the base at ≥1440px so the hero fills the full screen on desktop. */
